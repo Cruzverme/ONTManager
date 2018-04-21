@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
     <?php session_start(); ?>
     <head>
         <?php include_once "classes/head.php"; ?>

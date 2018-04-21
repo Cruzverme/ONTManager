@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 
     <?php 
         // Verificador de sessão 
@@ -61,7 +61,10 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="ont_transfer.php"><i class="fa fa-table fa-fw"></i> Transferir ONT</a>
+                            <a href="ont_register.php"><i class="fa fa-table fa-fw"></i> Cadastrar ONT</a>
+                        </li>
+                        <li>
+                            <a href="ont_change.php"><i class="fa fa-table fa-fw"></i> Alterar ONT</a>
                         </li>
                         <li>
                             <a href="ont_delete.php"><i class="fa fa-table fa-fw"></i> Remover ONT</a>
@@ -79,41 +82,10 @@
                     <div class="col-md-4 col-md-offset-4">
                         <div class="login-panel panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title">Cadastro de ONT</h3>
+                                <h3 class="panel-title">Remover ONT</h3>
                             </div>
                             <div class="panel-body">
                                 <form role="form" action="classes/cadastrar.php" method="post">
-                                    <fieldset>
-                                        <div class="form-group">
-                                                <label>Qual Plano</label>
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>INTERNET
-                                                    </label>
-                                                </div>
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">IPTV
-                                                    </label>
-                                                </div>
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="optionsRadios" id="optionsRadios3" value="Sim">INTERNET | VOIP | IPTV
-                                                    </label>
-                                                </div>
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">INTERNET | IPTV
-                                                    </label>
-                                                </div>
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="optionsRadios" id="optionsRadios3" value="Sim">INTERNET | VOIP
-                                                    </label>
-                                                </div>
-                                        </div>
-                                    </fieldset>
-
                                     <fieldset>
                                         <div class="form-group">
                                             <label>Contrato</label> 
