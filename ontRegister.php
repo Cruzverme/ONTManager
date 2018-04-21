@@ -85,6 +85,37 @@
                                 <form role="form" action="classes/cadastrar.php" method="post">
                                     <fieldset>
                                         <div class="form-group">
+                                                <label>Qual Plano</label>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>INTERNET
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">IPTV
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="optionsRadios" id="optionsRadios3" value="Sim">INTERNET | VOIP | IPTV
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">INTERNET | IPTV
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="optionsRadios" id="optionsRadios3" value="Sim">INTERNET | VOIP
+                                                    </label>
+                                                </div>
+                                        </div>
+                                    </fieldset>
+
+                                    <fieldset>
+                                        <div class="form-group">
                                             <label>Contrato</label> 
                                             <input class="form-control" placeholder="Contrato" name="contrato" type="text" autofocus>
                                         </div>
@@ -116,54 +147,28 @@
                                             <input class="form-control" placeholder="1" name="porta" type="number" autofocus>
                                         </div>
                                         
-                                        
-                                        <div class="form-group">
-                                            <label>telefone</label>
-                                            <input class="form-control" placeholder="telefone" name="numeroTel" type="text" autofocus>
+                                        <div class="camposTelefone" style="display:none" >                                   
+                                            <div class="form-group">
+                                                <label>telefone</label>
+                                                <input class="form-control" placeholder="telefone" name="numeroTel" type="text" autofocus>
+                                            </div>
+
+                                            
+                                            <div class="form-group">
+                                                <label>password telefone</label>
+                                                <input class="form-control" placeholder="password telefone" name="passwordTel" type="text" autofocus>
+                                            </div>
+
+                                            
+                                            <div class="form-group">
+                                                <label>userTel</label>
+                                                <input class="form-control" placeholder="userTel" name="telUser" type="text" autofocus>
+                                            </div>
                                         </div>
 
-                                        
-                                        <div class="form-group">
-                                            <label>password telefone</label>
-                                            <input class="form-control" placeholder="password telefone" name="passwordTel" type="text" autofocus>
-                                        </div>
-
-                                        
-                                        <div class="form-group">
-                                            <label>userTel</label>
-                                            <input class="form-control" placeholder="userTel" name="telUser" type="text" autofocus>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>Radio Buttons</label>
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>INTERNET
-                                                </label>
-                                            </div>
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">IPTV
-                                                </label>
-                                            </div>
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">INTERNET | VOIP | IPTV
-                                                </label>
-                                            </div>
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">INTERNET | IPTV
-                                                </label>
-                                            </div>
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">INTERNET | VOIP
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <button class="btn btn-lg btn-success btn-block">Cadastrar</button>
                                     </fieldset>
+                                    <button class="btn btn-lg btn-success btn-block">Cadastrar</button>
+
                                 </form>
                             </div>
                         </div>
@@ -187,6 +192,9 @@
 
         <!-- Custom Theme JavaScript -->
         <script src="dist/js/sb-admin-2.js"></script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="vendor/vertv/vertv.js"></script>
 
     </body>
 
