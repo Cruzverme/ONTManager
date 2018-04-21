@@ -14,6 +14,7 @@
         if(isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem']))
         {
             print "<script>alert(\"{$_SESSION['menssagem']}\")</script>";
+            unset( $_SESSION['menssagem'] );
         }
     
     ?>
@@ -55,6 +56,8 @@
 
         <!-- /.navbar-header -->
         </nav>
+
+
 
         <div id="page-wrapper">
 

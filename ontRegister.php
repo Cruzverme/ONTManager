@@ -4,6 +4,13 @@
     <?php 
         // Verificador de sessão 
         include "classes/verifica_sessao.php"; 
+
+        #capturar mensagem
+        if(isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem']))
+        {
+            print "<script>alert(\"{$_SESSION['menssagem']}\")</script>";
+            unset( $_SESSION['menssagem'] );
+        }
     ?>
 
     <head>
@@ -50,6 +57,21 @@
             </ul>
         </nav>
 
+                <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a href="ont_transfer.php"><i class="fa fa-table fa-fw"></i> Transferir ONT</a>
+                        </li>
+                        <li>
+                            <a href="ont_delete.php"><i class="fa fa-table fa-fw"></i> Remover ONT</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+        </div>
+        <!-- /.navbar-static-side -->
+
         <div id="page-wrapper">
 
             <div class="container">
@@ -60,7 +82,7 @@
                                 <h3 class="panel-title">Cadastro de ONT</h3>
                             </div>
                             <div class="panel-body">
-                                <form role="form" action="#" method="post">
+                                <form role="form" action="classes/cadastrar.php" method="post">
                                     <fieldset>
                                         <div class="form-group">
                                             <label>Contrato</label> 
@@ -68,17 +90,19 @@
                                         </div>
                                         
                                         <div class="form-group">
-                                            <label>Porta</label>                                                
+                                            <label>Pon MAC</label>                                                
                                             <input class="form-control" placeholder="MAC PON" name="serial" type="text">
                                         </div>
                                         <div class="form-group">
+                                            <?php include "classes/listaPlanos.php" ?>
                                             <label>Pacote</label>
-                                            <select class="form-control">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
+                                            <select class="form-control" name="pacote">
+                                                <?php 
+                                                    foreach($listaPlanosInternet as $planoInternet) 
+                                                    {
+                                                        echo "<option value='$planoInternet'>$planoInternet</option>"; 
+                                                    }                                                
+                                                ?>
                                             </select>
                                         </div>
 
@@ -86,11 +110,30 @@
                                             <label>CTO</label>
                                             <input class="form-control" placeholder="CTO" name="cto" type="text" autofocus>
                                         </div>
+                                    
                                         <div class="form-group">
-                                            <label>Porta</label>
+                                            <label>Porta Atendimento</label>
                                             <input class="form-control" placeholder="1" name="porta" type="number" autofocus>
                                         </div>
-                     
+                                        
+                                        
+                                        <div class="form-group">
+                                            <label>telefone</label>
+                                            <input class="form-control" placeholder="telefone" name="numeroTel" type="text" autofocus>
+                                        </div>
+
+                                        
+                                        <div class="form-group">
+                                            <label>password telefone</label>
+                                            <input class="form-control" placeholder="password telefone" name="passwordTel" type="text" autofocus>
+                                        </div>
+
+                                        
+                                        <div class="form-group">
+                                            <label>userTel</label>
+                                            <input class="form-control" placeholder="userTel" name="telUser" type="text" autofocus>
+                                        </div>
+
                                         <div class="form-group">
                                             <label>Radio Buttons</label>
                                             <div class="radio">
