@@ -66,7 +66,7 @@
         </div>
     </div>
 
-
+    <?php session_destroy(); ?>
         <!-- jQuery -->
         <script src="vendor/jquery/jquery.min.js"></script>
 
