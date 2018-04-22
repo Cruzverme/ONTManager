@@ -30,7 +30,7 @@
                             xit;
                         }else{
                             $_SESSION['menssagem'] = "ONU Não Cadastrada!";
-                            header('Location: ../ontRegister.php');
+                            header('Location: ../ont_register.php');
                             exit;
                         }
                 }
