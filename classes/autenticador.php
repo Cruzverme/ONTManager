@@ -30,7 +30,7 @@
                             // TUDO OK! Agora, passa os dados para a sessão e redireciona o usuário 
                             $_SESSION["id_usuario"]= $dados["usuario_id"]; 
                             $_SESSION["nome_usuario"] = $dados["nome"]; 
-                            header('Location: ../ontRegister.php');
+                            header('Location: ../ont_register.php');
                             exit;
                         }
 
