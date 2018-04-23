@@ -85,7 +85,7 @@
                                 <h3 class="panel-title">Mudança de ONT</h3>
                             </div>
                             <div class="panel-body">
-                                <form role="form" action="classes/cadastrar.php" method="post">
+                                <form role="form" action="classes/buscar_ont.php" method="post">
                                     <fieldset>
                                         <div class="form-group">
                                             <label>Contrato</label> 
@@ -108,17 +108,7 @@
                                                 ?>
                                             </select>
                                         </div>
-
-                                        <div class="form-group">
-                                            <label>CTO</label>
-                                            <input class="form-control" placeholder="CTO" name="cto" type="text" autofocus>
-                                        </div>
-                                    
-                                        <div class="form-group">
-                                            <label>Porta Atendimento</label>
-                                            <input class="form-control" placeholder="1" name="porta" type="number" autofocus>
-                                        </div>
-                                        
+                                                                         
                                         <div class="camposTelefone" style="display:none" >                                   
                                             <div class="form-group">
                                                 <label>telefone</label>
@@ -139,7 +129,7 @@
                                         </div>
 
                                     </fieldset>
-                                    <button class="btn btn-lg btn-success btn-block">Cadastrar</button>
+                                    <button class="btn btn-lg btn-success btn-block">Alterar</button>
 
                                 </form>
                             </div>
