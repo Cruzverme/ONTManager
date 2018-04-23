@@ -30,7 +30,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Gerenciador ONT</a>
+                <a class="navbar-brand" href="#">Gerenciador ONT</a>
             </div>
         <!-- /.navbar-header -->
         </nav>
@@ -48,7 +48,6 @@
                             </div>
                             <div class="panel-body">
                                 <form role="form" action="classes/autenticador.php" method="post">
-                                    <fieldset>
                                         <div class="form-group">
                                             <input class="form-control" placeholder="Usuario" name="usuario" type="text" autofocus>
                                         </div>
@@ -56,7 +55,6 @@
                                             <input class="form-control" placeholder="Password" name="password" type="password">
                                         </div>
                                         <button class="btn btn-lg btn-success btn-block">Login</button>
-                                    </fieldset>
                                 </form>
                             </div>
                         </div>

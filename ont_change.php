@@ -86,7 +86,6 @@
                             </div>
                             <div class="panel-body">
                                 <form role="form" action="classes/alterar.php" method="post">
-                                    <fieldset>
                                         <div class="form-group">
                                             <label>Contrato</label> 
                                             <input class="form-control" placeholder="Contrato" name="contrato" type="text" autofocus>
@@ -128,7 +127,6 @@
                                             </div>
                                         </div>
 
-                                    </fieldset>
                                     <button class="btn btn-lg btn-success btn-block">Alterar</button>
 
                                 </form>
