@@ -20,10 +20,12 @@
                         {
                             $_SESSION['menssagem'] = "Usuario inexistente!";
                             header('Location: ../index.php');
+                            mysqli_close($conectar);
                             exit;
                         }elseif (mysqli_num_rows($checar_password) == 0) {
                             $_SESSION['menssagem'] = "Senha Incorreta!";
                             header('Location: ../index.php');
+                            mysqli_close($conectar);
                             exit;
                         }else{
                             $dados = @mysqli_fetch_array($checar_login); 
@@ -31,6 +33,7 @@
                             $_SESSION["id_usuario"]= $dados["usuario_id"]; 
                             $_SESSION["nome_usuario"] = $dados["nome"]; 
                             header('Location: ../ont_register.php');
+                            mysqli_close($conectar);
                             exit;
                         }
 
@@ -46,4 +49,5 @@
                     $response["message"] = "Nao consegui entrar no servidor";
                     echo json_encode($response);
         }
+        
 ?>

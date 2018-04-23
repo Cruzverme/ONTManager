@@ -33,10 +33,12 @@
             {
                 $_SESSION['menssagem'] = "ONU Cadastrada!";
                 header('Location: ../ont_register.php');
+                mysqli_close($conectar);
                 exit;
             }else{
-                $_SESSION['menssagem'] = "ONU Não Cadastrada!";
+                $_SESSION['menssagem'] = "ONU Não Cadastrada! \n 'Houve erro na execuão da query SQL: '.mysqli_error($conectar)";
                 header('Location: ../ont_register.php');
+                mysqli_close($conectar);
                 exit;
             }
       }
@@ -44,11 +46,13 @@
       {
           $_SESSION['menssagem'] = "Campos Faltando!";
           header('Location: ../ont_register.php');
+          mysqli_close($conectar);
           exit;
       }
   }else{
       $_SESSION['menssagem'] = "Não Consegui Contato com Servidor!";
       header('Location: ../ont_register.php');
+      mysqli_close($conectar);
       exit;
   }
 

@@ -85,7 +85,7 @@
                                 <h3 class="panel-title">Remover ONT</h3>
                             </div>
                             <div class="panel-body">
-                                <form role="form" action="classes/cadastrar.php" method="post">
+                                <form role="form" action="classes/deletar.php" method="post">
                                     <fieldset>
                                         <div class="form-group">
                                             <label>Contrato</label> 
@@ -95,29 +95,7 @@
                                         <div class="form-group">
                                             <label>Pon MAC</label>                                                
                                             <input class="form-control" placeholder="MAC PON" name="serial" type="text">
-                                        </div>
-                                        <div class="form-group">
-                                            <?php include "classes/listaPlanos.php" ?>
-                                            <label>Pacote</label>
-                                            <select class="form-control" name="pacote">
-                                                <?php 
-                                                    foreach($listaPlanosInternet as $planoInternet) 
-                                                    {
-                                                        echo "<option value='$planoInternet'>$planoInternet</option>"; 
-                                                    }                                                
-                                                ?>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>CTO</label>
-                                            <input class="form-control" placeholder="CTO" name="cto" type="text" autofocus>
-                                        </div>
-                                    
-                                        <div class="form-group">
-                                            <label>Porta Atendimento</label>
-                                            <input class="form-control" placeholder="1" name="porta" type="number" autofocus>
-                                        </div>
+                                        </div>                                                                                                    
                                         
                                         <div class="camposTelefone" style="display:none" >                                   
                                             <div class="form-group">
@@ -139,7 +117,7 @@
                                         </div>
 
                                     </fieldset>
-                                    <button class="btn btn-lg btn-success btn-block">Cadastrar</button>
+                                    <button class="btn btn-lg btn-success btn-block">Remover</button>
 
                                 </form>
                             </div>

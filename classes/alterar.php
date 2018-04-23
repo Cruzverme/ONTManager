@@ -19,10 +19,12 @@
                     {
                         $_SESSION['menssagem'] = "Velocidade Alterada!";
                         header('Location: ../ont_change.php');
+                        mysqli_close($conectar);
                         exit;
                     }else{
-                        $_SESSION['menssagem'] = "Velocidade Não Alterada!";
+                        $_SESSION['menssagem'] = "Velocidade Não Alterada! \n 'Houve erro na execuão da query SQL: '.mysqli_error($conectar)";
                         header('Location: ../ont_change.php');
+                        mysqli_close($conectar);
                         exit;
                     }
                 }
@@ -30,11 +32,13 @@
                 {
                     $_SESSION['menssagem'] = "Campos Faltando!";
                     header('Location: ../ont_change.php');
+                    mysqli_close($conectar);
                     exit;
                 }
         }else{
             $_SESSION['menssagem'] = "Não Consegui Contato com Servidor!";
             header('Location: ../ont_change.php');
+            mysqli_close($conectar);
             exit;
         }
 

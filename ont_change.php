@@ -85,7 +85,7 @@
                                 <h3 class="panel-title">Mudança de ONT</h3>
                             </div>
                             <div class="panel-body">
-                                <form role="form" action="classes/buscar_ont.php" method="post">
+                                <form role="form" action="classes/alterar.php" method="post">
                                     <fieldset>
                                         <div class="form-group">
                                             <label>Contrato</label> 
