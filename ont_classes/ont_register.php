@@ -3,7 +3,7 @@
 
     <?php 
         // Verificador de sessão 
-        include "classes/verifica_sessao.php"; 
+        include "../classes/verifica_sessao.php"; 
 
         #capturar mensagem
         if(isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem']))
@@ -14,10 +14,10 @@
     ?>
 
     <head>
-        <?php include_once "classes/head.php"; ?>
+        <?php include_once "../classes/head.php"; ?>
     </head>
 
-    <?php require_once "db/db_config_mysql.php"; ?>
+    <?php require_once "../db/db_config_mysql.php"; ?>
     
     <body>               
     <div id="wrapper">
@@ -74,7 +74,6 @@
                 <!-- /.sidebar-collapse -->
         </div>
         <!-- /.navbar-static-side -->
-
         <div id="page-wrapper">
 
             <div class="container">
@@ -128,7 +127,7 @@
                                             <input class="form-control" placeholder="MAC PON" name="serial" type="text">
                                         </div>
                                         <div class="form-group">
-                                            <?php include "classes/listaPlanos.php" ?>
+                                            <?php include "../classes/listaPlanos.php" ?>
                                             <label>Pacote</label>
                                             <select class="form-control" name="pacote">
                                                 <?php 
@@ -178,26 +177,25 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
 
 
         <!-- jQuery -->
-        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="../vendor/jquery/jquery.min.js"></script>
 
         <!-- Bootstrap Core JavaScript -->
-        <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+        <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 
         <!-- Metis Menu Plugin JavaScript -->
-        <script src="vendor/metisMenu/metisMenu.min.js"></script>
+        <script src="../vendor/metisMenu/metisMenu.min.js"></script>
 
         <!-- Custom Theme JavaScript -->
-        <script src="dist/js/sb-admin-2.js"></script>
+        <script src="../dist/js/sb-admin-2.js"></script>
 
         <!-- Metis Menu Plugin JavaScript -->
-        <script src="vendor/vertv/vertv.js"></script>
+        <script src="../vendor/vertv/vertv.js"></script>
 
     </body>
 

@@ -19,18 +19,18 @@
                         if ( $total = mysqli_affected_rows($conectar))    //retorna quantas rows foram afetadas           
                         {
                             $_SESSION['menssagem'] = "$total ONU Removida!";
-                            header('Location: ../ont_delete.php');
+                            header('Location: ../ont_classes/ont_delete.php');
                             mysqli_close($conectar);
                             exit;
                         }else{
                             $_SESSION['menssagem'] = "ONU Não Removida!";
-                            header('Location: ../ont_delete.php');
+                            header('Location: ../ont_classes/ont_delete.php');
                             mysqli_close($conectar);
                             exit;
                         }
                     }else{
                         $_SESSION['menssagem'] = 'Houve erro na execuão da query SQL: '.mysqli_error($conectar);
-                        header('Location: ../ont_delete.php');
+                        header('Location: ../ont_classes/ont_delete.php');
                         mysqli_close($conectar);
                         exit;
                     }
@@ -39,13 +39,13 @@
                 else
                 {
                     $_SESSION['menssagem'] = "Campos Faltando!";
-                    header('Location: ../ont_delete.php');
+                    header('Location: ../ont_classes/ont_delete.php');
                     mysqli_close($conectar);
                     exit;
                 }
         }else{
             $_SESSION['menssagem'] = "Não Consegui Contato com Servidor!";
-            header('Location: ../ont_delete.php');
+            header('Location: ../ont_classes/ont_delete.php');
             mysqli_close($conectar);
             exit;
         }
