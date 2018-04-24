@@ -84,7 +84,7 @@
                                 <h3 class="panel-title">Cadastro de ONT</h3>
                             </div>
                             <div class="panel-body">
-                                <form role="form" action="classes/cadastrar.php" method="post">
+                                <form role="form" action="../classes/cadastrar.php" method="post">
                                     <fieldset>
                                         <div class="form-group">
                                                 <label>Qual Plano</label>

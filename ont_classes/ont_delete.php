@@ -85,7 +85,7 @@
                                 <h3 class="panel-title">Remover ONT</h3>
                             </div>
                             <div class="panel-body">
-                                <form role="form" action="classes/deletar.php" method="post">
+                                <form role="form" action="../classes/deletar.php" method="post">
                                         <div class="form-group">
                                             <label>Contrato</label> 
                                             <input class="form-control" placeholder="Contrato" name="contrato" type="text" autofocus>

@@ -9,7 +9,7 @@ $name = $_SESSION["nome_usuario"];
 if(!isset($user) || !isset($name) ) 
 { 
     // Usuário não logado! Redireciona para a página de login 
-    header("Location: index.php"); 
+    header("Location: ../index.php"); 
     exit; 
 } 
 ?> 
