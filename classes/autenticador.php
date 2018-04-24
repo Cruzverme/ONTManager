@@ -5,7 +5,8 @@
 
         if (!mysqli_connect_errno())
         {
-                if( isset($_POST["usuario"]) && isset($_POST["password"]) )
+                if( isset($_POST["usuario"]) && isset($_POST["password"]) 
+                    && !empty($_POST["usuario"]) && !empty($_POST["password"]) )
                 {
                         $usuario = $_POST["usuario"];
                         $senha = md5($_POST["password"]);
@@ -40,14 +41,16 @@
                 }
                 else
                 {
-                    $response["success"] = 0;
-                    $response["message"] = "Campo Faltando!";
-                    echo json_encode($response);
+                    $_SESSION['menssagem'] = "Campo Faltando!";
+                    header('Location: ../index.php');
+                    mysqli_close($conectar);
+                    exit;
                 }
         }else{
-                    $response["success"] = 0;
-                    $response["message"] = "Nao consegui entrar no servidor";
-                    echo json_encode($response);
+            $_SESSION['menssagem'] = "Nao consegui entrar no servidor";
+            header('Location: ../index.php');
+            mysqli_close($conectar);
+            exit;
         }
         
 ?>
