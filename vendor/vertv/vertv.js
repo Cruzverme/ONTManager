@@ -13,10 +13,9 @@ $("tr.porta").on('click',function() {
      }).get();
      horario = $.trim(tableData[0]);
      window.location.href='../classes/salva_porta_atendimento.php?porta_atendimento_selecionada='+horario;
-//     alert(horario);
 });
 
-//ACAO AO CLICAR NO BOTAO
+//ACAO AO CLICAR NO BOTAO IMPLEMENTAR FUTURAMENTE
 $('.btn-salvar').on('click',function(){
   alert('Salvo');
    $('#modal-texto').modal('hide');

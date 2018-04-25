@@ -10,6 +10,7 @@
       $porta_selecionada = $_GET["porta_atendimento_selecionada"];
       
       $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 1 WHERE porta_atendimento= $porta_selecionada";
+      //$sql_atualiza_porta "UPDATE ont SET porta= $porta_selecionada WHERE serial = $serial ";
       $executa_query = mysqli_query($conectar,$sql_insere_porta);
       
       if ($executa_query )               
