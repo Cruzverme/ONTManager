@@ -2,10 +2,10 @@
 <html lang="pt">
     <?php session_start(); ?>
     <head>
-        <?php include_once "classes/head.php"; ?>
+        <?php include_once "../classes/head.php"; ?>
     </head>
 
-    <?php include "db/db_config_mysql.php" ?>
+    <?php include "../db/db_config_mysql.php" ?>
 
     <body>
     <?php 
