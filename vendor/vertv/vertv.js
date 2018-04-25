@@ -5,3 +5,20 @@ $('input[name="optionsRadios"]').change(function () {
         $('.camposTelefone').hide();
     }
 });
+
+$("tr.porta").on('click',function() {
+    var horario;
+     var tableData = $(this).children("td").map(function()         {
+     return $(this).text();
+     }).get();
+     horario = $.trim(tableData[0]);
+     window.location.href='../classes/salva_porta_atendimento.php?porta_atendimento_selecionada='+horario;
+//     alert(horario);
+});
+
+//ACAO AO CLICAR NO BOTAO
+$('.btn-salvar').on('click',function(){
+  alert('Salvo');
+   $('#modal-texto').modal('hide');
+});
+

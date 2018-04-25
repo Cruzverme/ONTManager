@@ -19,8 +19,6 @@ echo '
     <head>';
         include_once "head.php";
 echo '   </head>
-
-    <?php require_once "../db/db_config_mysql.php"; ?>
     
     <body>               
     <div id="wrapper">

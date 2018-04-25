@@ -57,9 +57,9 @@
             </ul>
         </nav>
 
-                <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class="nav" id="side-menu">
                         <li>
                             <a href="ont_register.php"><i class="fa fa-table fa-fw"></i> Cadastrar ONT</a>
                         </li>
@@ -140,13 +140,21 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label>CTO</label>
-                                            <input class="form-control" placeholder="CTO" name="cto" type="text" autofocus required>
-                                        </div>
-                                    
-                                        <div class="form-group">
-                                            <label>Porta Atendimento</label>
-                                            <input class="form-control" placeholder="1" name="porta" type="number" autofocus required>
+                                          <label>CTO</label>
+                                          <select class="form-control" name="caixa_atendimento_select">
+                                            <?php 
+                                              $sql_consulta_cto = "SELECT DISTINCT caixa_atendimento FROM ctos 
+                                                WHERE porta_atendimento_disponivel = 0";
+                                              $executa_query = mysqli_query($conectar,$sql_consulta_cto);
+                                              while ($cto = mysqli_fetch_array($executa_query, MYSQLI_BOTH)) 
+                                              {
+                                                echo "<option value=$cto[caixa_atendimento]>$cto[caixa_atendimento]</option>";
+                                              }
+
+                                              $caixa_selecionada = $_POST['caixa_atendimento_select'];
+                                            ?>
+                                          </select>
+                                          
                                         </div>
                                         
                                         <div class="camposTelefone" style="display:none" >                                   

@@ -5,14 +5,14 @@
 
   if (!mysqli_connect_errno())
   {
-      if( isset($_SESSION["id_usuario"]) && isset($_POST["contrato"]) && isset($_POST["serial"]) && isset($_POST["cto"])
-      && isset($_POST["porta"]) && isset($_POST["pacote"]) )
+      if( isset($_SESSION["id_usuario"]) && isset($_POST["contrato"]) && isset($_POST["serial"]) && isset($_POST["caixa_atendimento_select"])
+        && isset($_POST["pacote"]) )
       {
             $usuario = $_SESSION["id_usuario"];
             $contrato = $_POST["contrato"];
             $serial = $_POST["serial"];
-            $cto = $_POST["cto"];
-            $porta = $_POST["porta"];
+            $cto = $_POST["caixa_atendimento_select"];
+            //$porta = $_POST["porta"];
             $pacote = $_POST["pacote"];
             $telNumber = $_POST["numeroTel"];
             $telPass = $_POST["passwordTel"];
@@ -25,18 +25,21 @@
                 $telUser = 0;
             }
           
-            $sql_registra_onu = ("INSERT INTO ont (contrato, pon_mac, cto, tel_number, tel_user, tel_password, pacote, usuario_id, porta) 
-                                    VALUES ('$contrato','$serial','$cto','$telNumber','$telUser','$telPass','$pacote','$usuario','$porta')" );
+            $sql_registra_onu = ("INSERT INTO ont (contrato, serial, celula, tel_number, tel_user, tel_password, pacote, fk_usuario_id) 
+                                    VALUES ('$contrato','$serial','$cto','$telNumber','$telUser','$telPass','$pacote','$usuario')" );
 
             $cadastrar = mysqli_query($conectar,$sql_registra_onu);
             if ($cadastrar )               
             {
-                $_SESSION['menssagem'] = "ONU Cadastrada!";
-                header('Location: ../ont_classes/ont_register.php');
+                $_SESSION['menssagem'] = "Selecione a Porta de Atendimento!";
+                $caixa_atendimento = $_GET['caixa_atendimento_select'] = $cto;
+                header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_select=$caixa_atendimento");
+                //header('Location: ../ont_classes/ont_register.php');
                 mysqli_close($conectar);
                 exit;
             }else{
-                $_SESSION['menssagem'] = "ONU Não Cadastrada! \n 'Houve erro na execuão da query SQL: '.mysqli_error($conectar)";
+                $erro = mysqli_error($conectar);
+                $_SESSION['menssagem'] = "Houve erro na execuão da query SQL: $erro";
                 header('Location: ../ont_classes/ont_register.php');
                 mysqli_close($conectar);
                 exit;
