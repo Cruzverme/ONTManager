@@ -47,7 +47,7 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="classes/logout.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="../classes/logout.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -119,12 +119,12 @@
                                     <fieldset>
                                         <div class="form-group">
                                             <label>Contrato</label> 
-                                            <input class="form-control" placeholder="Contrato" name="contrato" type="text" autofocus>
+                                            <input class="form-control" placeholder="Contrato" name="contrato" type="text" autofocus required>
                                         </div>
                                         
                                         <div class="form-group">
                                             <label>Pon MAC</label>                                                
-                                            <input class="form-control" placeholder="MAC PON" name="serial" type="text">
+                                            <input class="form-control" placeholder="MAC PON" name="serial" type="text" required>
                                         </div>
                                         <div class="form-group">
                                             <?php include "../classes/listaPlanos.php" ?>
@@ -141,12 +141,12 @@
 
                                         <div class="form-group">
                                             <label>CTO</label>
-                                            <input class="form-control" placeholder="CTO" name="cto" type="text" autofocus>
+                                            <input class="form-control" placeholder="CTO" name="cto" type="text" autofocus required>
                                         </div>
                                     
                                         <div class="form-group">
                                             <label>Porta Atendimento</label>
-                                            <input class="form-control" placeholder="1" name="porta" type="number" autofocus>
+                                            <input class="form-control" placeholder="1" name="porta" type="number" autofocus required>
                                         </div>
                                         
                                         <div class="camposTelefone" style="display:none" >                                   

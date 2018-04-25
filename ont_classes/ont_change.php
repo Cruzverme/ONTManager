@@ -47,7 +47,7 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="classes/logout.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="../classes/logout.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -88,12 +88,12 @@
                                 <form role="form" action="../classes/alterar.php" method="post">
                                         <div class="form-group">
                                             <label>Contrato</label> 
-                                            <input class="form-control" placeholder="Contrato" name="contrato" type="text" autofocus>
+                                            <input class="form-control" placeholder="Contrato" name="contrato" type="text" autofocus required>
                                         </div>
                                         
                                         <div class="form-group">
                                             <label>Pon MAC</label>                                                
-                                            <input class="form-control" placeholder="MAC PON" name="serial" type="text">
+                                            <input class="form-control" placeholder="MAC PON" name="serial" type="text" required>
                                         </div>
                                         <div class="form-group">
                                             <?php include "../classes/listaPlanos.php" ?>
@@ -142,19 +142,20 @@
 
 
         <!-- jQuery -->
-        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="../vendor/jquery/jquery.min.js"></script>
 
         <!-- Bootstrap Core JavaScript -->
-        <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+        <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 
         <!-- Metis Menu Plugin JavaScript -->
-        <script src="vendor/metisMenu/metisMenu.min.js"></script>
+        <script src="../vendor/metisMenu/metisMenu.min.js"></script>
 
         <!-- Custom Theme JavaScript -->
-        <script src="dist/js/sb-admin-2.js"></script>
+        <script src="../dist/js/sb-admin-2.js"></script>
 
         <!-- Metis Menu Plugin JavaScript -->
-        <script src="vendor/vertv/vertv.js"></script>
+        <script src="../vendor/vertv/vertv.js"></script>
+
 
     </body>
 

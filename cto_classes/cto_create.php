@@ -13,7 +13,7 @@
                     <form role="form" action="../classes/cadastrar_cto.php" method="post">
                             <div class="form-group">
                                 <label>Nome CTO</label> 
-                                <input class="form-control" placeholder="CTO" name="cto" type="text" autofocus>
+                                <input class="form-control" placeholder="CTO" name="cto" type="text" autofocus required>
                             </div>
                             
                             <div class="form-group">

@@ -70,10 +70,10 @@
                             <div class="panel-body">
                                 <form role="form" action="classes/autenticador.php" method="post">
                                         <div class="form-group">
-                                            <input class="form-control" placeholder="Usuario" name="usuario" type="text" autofocus>
+                                            <input class="form-control" placeholder="Usuario" name="usuario" type="text" autofocus required>
                                         </div>
                                         <div class="form-group">
-                                            <input class="form-control" placeholder="Password" name="password" type="password">
+                                            <input class="form-control" placeholder="Password" name="password" type="password" required>
                                         </div>
                                         <button class="btn btn-lg btn-success btn-block">Login</button>
                                 </form>
