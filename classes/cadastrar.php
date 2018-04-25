@@ -27,13 +27,13 @@
           
             $sql_registra_onu = ("INSERT INTO ont (contrato, serial, celula, tel_number, tel_user, tel_password, pacote, fk_usuario_id) 
                                     VALUES ('$contrato','$serial','$cto','$telNumber','$telUser','$telPass','$pacote','$usuario')" );
-
+            
             $cadastrar = mysqli_query($conectar,$sql_registra_onu);
             if ($cadastrar )               
             {
                 $_SESSION['menssagem'] = "Selecione a Porta de Atendimento!";
                 $caixa_atendimento = $_GET['caixa_atendimento_select'] = $cto;
-                header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_select=$caixa_atendimento");
+                header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_select=$caixa_atendimento&serial=$serial");
                 //header('Location: ../ont_classes/ont_register.php');
                 mysqli_close($conectar);
                 exit;

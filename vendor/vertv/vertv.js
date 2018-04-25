@@ -7,12 +7,18 @@ $('input[name="optionsRadios"]').change(function () {
 });
 
 $("tr.porta").on('click',function() {
-    var horario;
-     var tableData = $(this).children("td").map(function()         {
-     return $(this).text();
-     }).get();
-     horario = $.trim(tableData[0]);
-     window.location.href='../classes/salva_porta_atendimento.php?porta_atendimento_selecionada='+horario;
+    var porta_selecionada;
+    var serial;
+    var caixa;
+    var tableData = $(this).children("td").map(function()         {
+    return $(this).text();
+    }).get();
+
+    caixa = $.trim(tableData[2]);
+    serial = $.trim(tableData[1]);
+    porta_selecionada = $.trim(tableData[0]);
+    window.location.href='../classes/salva_porta_atendimento.php?porta_atendimento_selecionada='+porta_selecionada+
+        '&caixa_atendimento='+caixa +'&serial='+serial;
 });
 
 //ACAO AO CLICAR NO BOTAO IMPLEMENTAR FUTURAMENTE

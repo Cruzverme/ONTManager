@@ -29,9 +29,10 @@
 
                   if (!mysqli_connect_errno())
                   {
-                    if( isset($_GET["caixa_atendimento_select"]) )
+                    if( isset($_GET["caixa_atendimento_select"]) && isset($_GET["serial"]))
                     {
                       $caixa_selecionada = $_GET["caixa_atendimento_select"];
+                      $serial = $_GET["serial"];
                       
                       $sql_consulta_cto = "SELECT porta_atendimento, porta_atendimento_disponivel 
                                             FROM ctos WHERE caixa_atendimento = '$caixa_selecionada'";
@@ -44,6 +45,8 @@
                         {
                           echo "<tr class='porta'>
                                   <td>$porta_disponivel[porta_atendimento]</td>
+                                  <td style='visibility: hidden';>$serial</td>
+                                  <td style='visibility: hidden';>$caixa_selecionada</td>
                                 </tr>";
                         }
                       }
