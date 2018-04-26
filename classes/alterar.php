@@ -1,5 +1,6 @@
 <?php
 include_once "../db/db_config_mysql.php";
+include_once "../db/db_config_radius.php";
 // Inicia sessões 
 session_start();
 
@@ -12,25 +13,26 @@ if (!mysqli_connect_errno())
     echo $serial = $_POST["serial"];
     echo $pacote = $_POST["pacote"];
 
-    $sql_muda_plano_onu = ("UPDATE ont SET pacote = '$pacote' WHERE contrato = '$contrato' AND pon_mac = '$serial'" );
+    $sql_muda_plano_onu = ("UPDATE ont SET pacote = '$pacote' WHERE contrato = '$contrato' AND serial = '$serial'" );
 
     $novo_pacote = mysqli_query($conectar,$sql_muda_plano_onu);
     if ( $novo_pacote )
     {
-      $atualiza_qos_radius = "UPDATE radcheck SET value=$pacote WHERE username='2500/13/0/$serial@vertv' 
+      $atualiza_qos_radius = "UPDATE radcheck SET value='$pacote' WHERE username='2500/13/0/$serial@vertv' 
           AND attribute='Huawei-Qos-Profile-Name' ";
       $executa_query= mysqli_query($conectar_radius,$atualiza_qos_radius);
       
-      if ($executa_query) {
+      if ($executa_query) 
+      {
         $_SESSION['menssagem'] = "Velocidade Alterada!";
-        header('Location: ../ont_change.php');
+        header('Location: ../ont_classes/ont_change.php');
         mysqli_close($conectar_radius);
         mysqli_close($conectar);
         exit;  
       }else{
-        $erro = mysqli_error($conectar);
+        $erro = mysqli_error($conectar_radius);
         $_SESSION['menssagem'] = "Ocorreu um erro ao alterar no radius SQL: $erro";
-        header('Location: ../ont_change.php');
+        header('Location: ../ont_classes/ont_change.php');
         mysqli_close($conectar_radius);
         mysqli_close($conectar);
         exit;
@@ -38,7 +40,7 @@ if (!mysqli_connect_errno())
     }else{
       $erro = mysqli_error($conectar);
       $_SESSION['menssagem'] = "Velocidade Não Alterada! SQL: $erro";
-      header('Location: ../ont_change.php');
+      header('Location: ../ont_classes/ont_change.php');
       mysqli_close($conectar_radius);
       mysqli_close($conectar);
       exit;
@@ -47,14 +49,14 @@ if (!mysqli_connect_errno())
   else
   {
     $_SESSION['menssagem'] = "Campos Faltando!";
-    header('Location: ../ont_change.php');
+    header('Location: ../ont_classes/ont_change.php');
     mysqli_close($conectar_radius);
     mysqli_close($conectar);
     exit;
   }
 }else{
   $_SESSION['menssagem'] = "Não Consegui Contato com Servidor!";
-  header('Location: ../ont_change.php');
+  header('Location: ../ont_classes/ont_change.php');
   mysqli_close($conectar);
   exit;
 }
