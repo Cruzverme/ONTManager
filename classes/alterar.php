@@ -8,10 +8,10 @@ if (!mysqli_connect_errno())
 {
   if( isset($_SESSION["id_usuario"]) && isset($_POST["contrato"]) && isset($_POST["serial"]) && isset($_POST["pacote"]) )
   {
-    echo $usuario = $_SESSION["id_usuario"];
-    echo $contrato = $_POST["contrato"];
-    echo $serial = $_POST["serial"];
-    echo $pacote = $_POST["pacote"];
+    $usuario = $_SESSION["id_usuario"];
+    $contrato = $_POST["contrato"];
+    $serial = $_POST["serial"];
+    $pacote = $_POST["pacote"];
 
     $sql_muda_plano_onu = ("UPDATE ont SET pacote = '$pacote' WHERE contrato = '$contrato' AND serial = '$serial'" );
 

@@ -5,15 +5,15 @@ echo '
 <html lang="pt">
 ';
     
-        // Verificador de sessão 
-        include "../classes/verifica_sessao.php"; 
+    // Verificador de sessão 
+    include "../classes/verifica_sessao.php"; 
 
-        #capturar mensagem
-        if(isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem']))
-        {
-            print "<script>alert(\"{$_SESSION['menssagem']}\")</script>";
-            unset( $_SESSION['menssagem'] );
-        }
+    #capturar mensagem
+    if(isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem']))
+    {
+      print "<script>alert(\"{$_SESSION['menssagem']}\")</script>";
+      unset( $_SESSION['menssagem'] );
+    }
     
 echo '
     <head>';
@@ -45,10 +45,10 @@ echo '   </head>
                     <ul class="dropdown-menu dropdown-user">
                         <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
                         </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        <li><a href="../users/usuario_edit.php"><i class="fa fa-gear fa-fw"></i> Alterar Senha</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="classes/logout.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="../classes/logout.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
