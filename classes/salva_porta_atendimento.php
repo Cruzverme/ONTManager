@@ -20,7 +20,7 @@
       if ($executa_porta_ont )               
       {
         
-        $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 1, serial = $serial
+        $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 1, serial = '$serial'
           WHERE caixa_atendimento = '$caixa' AND porta_atendimento= $porta_selecionada";
         $executa_query = mysqli_query($conectar,$sql_insere_porta);
 
@@ -32,7 +32,13 @@
           exit;        
         }else{
           $erro = mysqli_error($conectar);
-          $_SESSION['menssagem'] = "Houve erro na execuão da query SQL: $erro";
+          $_SESSION['menssagem'] = "Houve um erro ao inserir a porta SQL: $erro";
+
+          //se deu problema ele retornará o valor da porta na tabela local ont para 0
+          $sql_atualiza_porta_ont = "UPDATE ont SET porta= NULL
+            WHERE serial = '$serial' and cto = '$caixa'";
+          mysqli_query($conectar,$sql_atualiza_porta_ont);
+
           header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_select=$caixa&serial=$serial");
           mysqli_close($conectar);
           exit;
