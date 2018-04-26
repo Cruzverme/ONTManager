@@ -33,28 +33,27 @@
         }else{
           $erro = mysqli_error($conectar);
           $_SESSION['menssagem'] = "Houve erro na execuão da query SQL: $erro";
-          header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_selecionada=$caixa");
+          header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_select=$caixa&serial=$serial");
           mysqli_close($conectar);
           exit;
         } 
-      }else{
-        
+      }else{       
           $erro = mysqli_error($conectar);
           $_SESSION['menssagem'] = "Houve erro na execuão da query SQL: $erro";
-          header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_selecionada=$caixa");
+          header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_select=$caixa&serial=$serial");
           mysqli_close($conectar);
           exit;
       }
     }else{
-      echo "LIXO";
       $_SESSION['menssagem'] = "Campos Faltando!";
       mysqli_close($conectar);
-      #header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_selecionada=$caixa");
-      #exit;
+      header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_select=$caixa&serial=$serial");
+      exit;
     }
   }else{
-    $_SESSION['menssagem'] = "Não Consegui Contato com Servidor!";
-    header('Location: ../usuario_new.php');
+    $erro = mysqli_error($conectar);
+    $_SESSION['menssagem'] = "Não Consegui Contato com Servidor! $erro";
+    header('Location: ../index.php');
     mysqli_close($conectar);
     exit;
   }
