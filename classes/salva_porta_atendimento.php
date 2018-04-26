@@ -20,7 +20,7 @@
       if ($executa_porta_ont )               
       {
         
-        $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 1 
+        $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 1, serial = $serial
           WHERE caixa_atendimento = '$caixa' AND porta_atendimento= $porta_selecionada";
         $executa_query = mysqli_query($conectar,$sql_insere_porta);
 
