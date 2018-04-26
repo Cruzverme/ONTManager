@@ -50,6 +50,7 @@ if (!mysqli_connect_errno())
           $_SESSION['menssagem'] = "Selecione a Porta de Atendimento!";
           $caixa_atendimento = $_GET['caixa_atendimento_select'] = $cto;
           header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_select=$caixa_atendimento&serial=$serial");
+          mysqli_close($conectar_radius);
           mysqli_close($conectar);
           exit;
         }else{
@@ -61,6 +62,7 @@ if (!mysqli_connect_errno())
           mysqli_query($conectar,$sql_apagar_onu); 
 
           header('Location: ../ont_classes/ont_register.php');
+          mysqli_close($conectar_radius);
           mysqli_close($conectar);
           exit;
         }
@@ -68,6 +70,7 @@ if (!mysqli_connect_errno())
         $erro = mysqli_error($conectar);
         $_SESSION['menssagem'] = "Houve erro na execuão da query SQL: $erro";
         header('Location: ../ont_classes/ont_register.php');
+        mysqli_close($conectar_radius);
         mysqli_close($conectar);
         exit;
     }
@@ -76,12 +79,14 @@ if (!mysqli_connect_errno())
   {
       $_SESSION['menssagem'] = "Campos Faltando!";
       header('Location: ../ont_classes/ont_register.php');
+      mysqli_close($conectar_radius);
       mysqli_close($conectar);
       exit;
   }
 }else{
   $_SESSION['menssagem'] = "Não Consegui Contato com Servidor!";
   header('Location: ../ont_classes/ont_register.php');
+  mysqli_close($conectar_radius);
   mysqli_close($conectar);
   exit;
 }
