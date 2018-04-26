@@ -12,7 +12,6 @@
             $contrato = $_POST["contrato"];
             $serial = $_POST["serial"];
             $cto = $_POST["caixa_atendimento_select"];
-            //$porta = $_POST["porta"];
             $pacote = $_POST["pacote"];
             $telNumber = $_POST["numeroTel"];
             $telPass = $_POST["passwordTel"];
@@ -25,7 +24,7 @@
                 $telUser = 0;
             }
           
-            $sql_registra_onu = ("INSERT INTO ont (contrato, serial, celula, tel_number, tel_user, tel_password, pacote, fk_usuario_id) 
+            $sql_registra_onu = ("INSERT INTO ont (contrato, serial, cto, tel_number, tel_user, tel_password, pacote, usuario_id) 
                                     VALUES ('$contrato','$serial','$cto','$telNumber','$telUser','$telPass','$pacote','$usuario')" );
             
             $cadastrar = mysqli_query($conectar,$sql_registra_onu);
