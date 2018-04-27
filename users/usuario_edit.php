@@ -12,13 +12,13 @@
               <div class="panel-body">
                 <form role="form" action="../classes/edit_usuario_save.php" method="post">
                   <div class="form-group">
-                      <input class="form-control" placeholder="Senha Atual" name="senha" type="password" autofocus>
+                      <input class="form-control" placeholder="Senha Atual" name="senha" type="password" autofocus required>
                   </div>
                   <div class="form-group">
-                      <input class="form-control" placeholder="Nova Senha" name="nova_senha" type="password">
+                      <input class="form-control" placeholder="Nova Senha" name="nova_senha" type="password" required>
                   </div>
                   <div class="form-group">
-                      <input class="form-control" placeholder="Repita a Nova Senha" name="repete_nova_senha" type="password">
+                      <input class="form-control" placeholder="Repita a Nova Senha" name="repete_nova_senha" type="password" required>
                   </div>
                   <button class="btn btn-lg btn-success btn-block">Alterar</button>
                 </form>
