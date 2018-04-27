@@ -22,7 +22,7 @@ echo '   </head>
     
     <body>               
     <div id="wrapper">
-
+      
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
@@ -60,8 +60,8 @@ echo '   </head>
 
                 <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                        <li>
+                    <ul class="nav" id="side-menu">';
+echo '                  <li>
                             <a href="../ont_classes/ont_register.php"><i class="fa fa-table fa-fw"></i> Cadastrar ONT</a>
                         </li>
                         <li>
@@ -69,8 +69,20 @@ echo '   </head>
                         </li>
                         <li>
                             <a href="../ont_classes/ont_delete.php"><i class="fa fa-table fa-fw"></i> Remover ONT</a>
-                        </li>
-                    </ul>
+                        </li>';
+            if($_SESSION["nivel_usuario"] > 0)
+            {
+              echo '  <li>
+                          <a href="../cto_classes/cto_create.php"><i class="fa fa-table fa-fw"></i> Cadastrar CTO</a>
+                      </li>
+                      <li>
+                          <a href="../users/usuario_new.php"><i class="fa fa-table fa-fw"></i> Cadastrar Usuario</a>
+                      </li>
+                      <li>
+                          <a href="#"><i class="fa fa-table fa-fw"></i>  </a>
+                      </li>';
+            }
+            echo'   </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
         </div>

@@ -11,7 +11,7 @@ if (!mysqli_connect_errno())
   {
     $usuario = $_SESSION["id_usuario"];
     $contrato = $_POST["contrato"];
-    $serial = $_POST["serial"];
+    $serial = strtoupper($_POST["serial"]);
     $cto = $_POST["caixa_atendimento_select"];
     $pacote = $_POST["pacote"];
     $telNumber = $_POST["numeroTel"];

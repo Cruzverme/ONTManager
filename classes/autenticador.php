@@ -11,7 +11,7 @@
                         $usuario = $_POST["usuario"];
                         $senha = md5($_POST["password"]);
 
-                        $sql_verifica_login = ("SELECT usuario_id, usuario, nome FROM usuarios WHERE usuario = '$usuario' " );
+                        $sql_verifica_login = ("SELECT usuario_id, usuario, nome, nivel_user FROM usuarios WHERE usuario = '$usuario' " );
                         $sql_verifica_password = ("SELECT usuario,senha FROM usuarios WHERE usuario = '$usuario' AND senha = '$senha'" );
 
                         $checar_login = mysqli_query($conectar,$sql_verifica_login);
@@ -33,6 +33,7 @@
                             // TUDO OK! Agora, passa os dados para a sessão e redireciona o usuário
                             $_SESSION["id_usuario"]= $dados["usuario_id"];
                             $_SESSION["nome_usuario"] = $dados["nome"];
+                            $_SESSION['nivel_usuario'] = $dados["nivel_user"];
                             header('Location: ../ont_classes/ont_register.php');
                             mysqli_close($conectar);
                             exit;
