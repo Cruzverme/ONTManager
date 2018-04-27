@@ -32,7 +32,7 @@ echo '   </head>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Gerenciador ONT</a>
+                <a class="navbar-brand" href="#">Gerenciador ONT</a>
             </div>
             <!-- /.navbar-header -->
 

@@ -58,7 +58,7 @@
 
 
 
-        <div id="page-wrapper">
+        <div id="page-wrapper" style="border-left:none">
 
             <div class="container">
                 <div class="row">

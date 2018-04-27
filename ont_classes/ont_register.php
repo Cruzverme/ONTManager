@@ -1,4 +1,8 @@
-<?php include_once "../classes/html_inicio.php";?>
+<?php 
+include_once "../classes/html_inicio.php";
+    include_once "../db/db_config_mysql.php";
+?>
+    
         <div id="page-wrapper">
 
             <div class="container">
