@@ -11,6 +11,11 @@
         $usuario = $_POST["usuario"];
         $senha = md5($_POST["password"]);
         $nome = $_POST["nome_usuario"];
+        $nivel_usuario = $_POST["nivel"];
+
+        if ($nivel_usuario != 1) {
+          $nivel_usuario = 0;
+        }
 
         $sql_usuario_repetido = ("SELECT usuario FROM usuarios WHERE usuario = '$usuario'");
         $checar_repetido = mysqli_query($conectar,$sql_usuario_repetido);
@@ -20,25 +25,25 @@
           if ($repetido = mysqli_num_rows($checar_repetido) != 0) 
           {
             $_SESSION['menssagem'] ="Usuario ja existe, favor tentar outro!";
-            header('Location: ../usuario_new.php');
+            header('Location: ../users/usuario_new.php');
             mysqli_close($conectar);
             exit;
           }else
           {
-            $sql_registra_usuario = "INSERT INTO usuarios (usuario,senha,nome) 
-                                  VALUES ('$usuario','$senha','$nome')" ;
+            $sql_registra_usuario = "INSERT INTO usuarios (usuario,senha,nome,nivel_user) 
+                                  VALUES ('$usuario','$senha','$nome',$nivel_usuario)";
 
             $cadastrar = mysqli_query($conectar,$sql_registra_usuario);
             if($cadastrar)
             {
               $_SESSION['menssagem'] = "Usuario Cadastrado!";
-              header('Location: ../index.php');
+              header('Location: ../users/usuario_new.php');
               mysqli_close($conectar);
               exit;
             }else{
               $erro = mysqli_error($conectar);
-              $_SESSION['menssagem'] = "Usuario Não Cadastrado! \n\n $erro";  
-              header('Location: ../usuario_new.php');
+              $_SESSION['menssagem'] = "Usuario Não Cadastrado! $erro";  
+              header('Location: ../users/usuario_new.php');
               mysqli_close($conectar);
               exit;
             }
@@ -46,13 +51,13 @@
         }
     }else{
       $_SESSION['menssagem'] = "Campos Faltando!";
-      header('Location: ../usuario_new.php');
+      header('Location: ../users/usuario_new.php');
       mysqli_close($conectar);
       exit;
     }
   }else{
     $_SESSION['menssagem'] = "Não Consegui Contato com Servidor!";
-    header('Location: ../usuario_new.php');
+    header('Location: ../users/usuario_new.php');
     mysqli_close($conectar);
     exit;
   }
