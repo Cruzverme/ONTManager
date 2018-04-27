@@ -39,7 +39,8 @@
 
   /*
   SQL PARA SALVAR NO RADIUS
-  INSERT INTO radcheck( username, attribute, op, value) VALUES ( '2500/13/0/485754439C96D58B@vertv', 'User-Name', ':=', '2500/13/0/485754430CEA4E9A@vertv' );
+  INSERT INTO radcheck( username, attribute, op, value) VALUES ( 'vlan2500/slot13/porta0/485754439C96D58B@vertv', 
+  'User-Name', ':=', '2500/13/0/485754430CEA4E9A@vertv' ); qual olt
 
   INSERT INTO radcheck( username, attribute, op, value) VALUES ( '2500/13/0/485754439C96D58B@vertv', 'User-Password', ':=', ‘vlan’ );
 

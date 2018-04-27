@@ -202,17 +202,27 @@ a:hover{
 	}
 }
 
+.login{
+}
+
 a{
 	color: #333;
 	text-decoration: none;
 }
 
 .login-panel{
-	margin-top:25%;
-	background: #666
+	margin-top:20%;
+	background: #666;
+	
 }
 
-.panel-default {
+.login{
+	margin-top:50%;
+	margin-left: -33.667%;
+}
+
+.panel-default 
+{
 	border-color: #363b41;
 }
 
