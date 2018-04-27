@@ -19,12 +19,15 @@
               <div class="panel-body">
                 <form role="form" action="../classes/cadastrar_usuario.php" method="post">
                   <div class="form-group">
+                      <label>Usuario</label>
                       <input class="form-control" placeholder="Usuario" name="usuario" type="text" autofocus required>
                   </div>
                   <div class="form-group">
+                      <label>Nome</label>
                       <input class="form-control" placeholder="Nome" name="nome_usuario" type="text" required>
                   </div>
                   <div class="form-group">
+                      <label>Senha</label>
                       <input class="form-control" placeholder="Password" name="password" type="password" required>
                   </div>
                   <div class="form-group">

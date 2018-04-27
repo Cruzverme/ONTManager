@@ -24,7 +24,9 @@ if (!mysqli_connect_errno())
         $telPass = 0;
         $telUser = 0;
     }
-  
+    
+    
+
     $sql_registra_onu = ("INSERT INTO ont (contrato, serial, cto, tel_number, tel_user, tel_password, pacote, usuario_id) 
                             VALUES ('$contrato','$serial','$cto','$telNumber','$telUser','$telPass','$pacote','$usuario')" );
     

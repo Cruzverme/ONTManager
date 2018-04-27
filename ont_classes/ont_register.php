@@ -47,7 +47,8 @@ include_once "../classes/html_inicio.php";
                 <fieldset>
                     <div class="form-group">
                         <label>Contrato</label> 
-                        <input class="form-control" placeholder="Contrato" name="contrato" type="text" autofocus required>
+                        <input class="form-control" placeholder="Contrato" 
+                          name="contrato" type="text" autofocus required>
                     </div>
                     
                     <div class="form-group">

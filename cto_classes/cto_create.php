@@ -15,11 +15,16 @@
                                 <label>Nome CTO</label> 
                                 <input class="form-control" placeholder="CTO" name="cto" type="text" autofocus required>
                             </div>
-                            
+                            <div class="form-group">
+                                <label>PON</label> 
+                                <select class="form-control" name="pon">
+                                    
+                                </select>
+                            </div>
                             <div class="form-group">
                                 <label>Porta</label>                                                
                                 <select class="form-control" name="porta">
-                                    echo "<option value=8>8</option>";   
+                                    echo "<option value=8>8</option>";
                                 </select>
                             </div>                                                    
                         <button class="btn btn-lg btn-success btn-block">Cadastrar</button>
