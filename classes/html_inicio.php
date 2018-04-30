@@ -43,8 +43,8 @@ echo '   </head>
                         <i class="fa fa-user fa-fw"></i>'; echo $_SESSION["nome_usuario"]; echo ' <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
+                        <!--<li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        </li> -->
                         <li><a href="../users/usuario_edit.php"><i class="fa fa-gear fa-fw"></i> Alterar Senha</a>
                         </li>
                         <li class="divider"></li>
@@ -62,21 +62,21 @@ echo '   </head>
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">';
 echo '                  <li>
-                            <a href="../ont_classes/ont_register.php"><i class="fa fa-table fa-fw"></i> Cadastrar ONT</a>
+                            <a href="../ont_classes/ont_register.php"><i class="fa fa-cloud-upload fa-fw"></i> Cadastrar ONT</a>
                         </li>
                         <li>
-                            <a href="../ont_classes/ont_change.php"><i class="fa fa-table fa-fw"></i> Alterar ONT</a>
+                            <a href="../ont_classes/ont_change.php"><i class="fa fa-wrench fa-fw"></i> Alterar ONT</a>
                         </li>
                         <li>
-                            <a href="../ont_classes/ont_delete.php"><i class="fa fa-table fa-fw"></i> Remover ONT</a>
+                            <a href="../ont_classes/ont_delete.php"><i class="fa fa-ban fa-fw"></i> Remover ONT</a>
                         </li>';
             if($_SESSION["nivel_usuario"] > 0)
             {
               echo '  <li>
-                          <a href="../cto_classes/cto_create.php"><i class="fa fa-table fa-fw"></i> Cadastrar CTO</a>
+                          <a href="../cto_classes/cto_create.php"><i class="fa fa-columns fa-fw"></i> Cadastrar CTO</a>
                       </li>
                       <li>
-                          <a href="../users/usuario_new.php"><i class="fa fa-table fa-fw"></i> Cadastrar Usuario</a>
+                          <a href="../users/usuario_new.php"><i class="fa fa-users fa-fw"></i> Cadastrar Usuario</a>
                       </li>
                       <li>
                           <a href="#"><i class="fa fa-table fa-fw"></i>  </a>

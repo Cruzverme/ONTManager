@@ -13,7 +13,7 @@ include_once "../classes/html_inicio.php";
             </div>
             <div class="panel-body">
               <form role="form" action="../classes/cadastrar.php" method="post">
-                <fieldset>
+                <fieldset class="radio-planos">
                     <div class="form-group">
                       <label>Qual Plano</label>
                       <div class="radio">

@@ -23,8 +23,8 @@ body{
 }
 
 form fieldset{
-	float: left;
-	width: 50%;
+/*	float: left;
+	width: 50%;*/
 }
 
 .navbar-default {
@@ -216,10 +216,33 @@ a{
 	
 }
 
-.login{
-	margin-top:50%;
-	margin-left: -33.667%;
+.col-md-offset-4 {
+	margin-left: 26.333%;
 }
+
+.col-md-4 {
+	width: 50.333%;
+}
+
+.radio-planos{
+	display: inline-block;
+}
+
+.radio-planos label{
+	display: block;
+}
+
+
+.radio-planos .form-group .radio{
+	display: inline-block;
+	padding: 1em
+}
+
+.login{
+	width: 50.333%;
+	margin-top: 11%;
+	margin-left: 17.333%
+}	
 
 .panel-default 
 {
