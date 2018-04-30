@@ -202,9 +202,6 @@ a:hover{
 	}
 }
 
-.login{
-}
-
 a{
 	color: #333;
 	text-decoration: none;
@@ -212,8 +209,7 @@ a{
 
 .login-panel{
 	margin-top:20%;
-	background: #666;
-	
+	background: #666;	
 }
 
 .col-md-offset-4 {
@@ -307,4 +303,3 @@ table.dataTable thead .sorting:after{
 	font-family:fontawesome;
 	color:rgba(50,50,50,.5)
 }
-
