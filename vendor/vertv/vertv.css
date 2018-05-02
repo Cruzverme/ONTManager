@@ -5,6 +5,8 @@ body{
 	font-family: "Arial Rounded MT Bold";
 }
 
+
+
 .btn:focus{
 	color: #000;
 	background-color: #ff9700;
@@ -305,4 +307,18 @@ table.dataTable thead .sorting:after{
 	float:right;
 	font-family:fontawesome;
 	color:rgba(50,50,50,.5)
+}
+
+.form-control::-webkit-input-placeholder {
+	color:#333;
+	
+}
+
+.form-control::-ms-placeholder {
+	color:#333;
+	opacity: 1;
+}
+
+.form-control::placeholder {
+	color:#333;
 }

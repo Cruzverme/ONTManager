@@ -1,5 +1,7 @@
 <?php include "../classes/html_inicio.php"; ?>
 
+<?php include "../db/db_config_mysql.php"; ?>
+
 <div id="page-wrapper">
 
 <div class="container">
@@ -16,10 +18,20 @@
                                 <input class="form-control" placeholder="CTO" name="cto" type="text" autofocus required>
                             </div>
                             <div class="form-group">
-                                <label>PON</label> 
-                                <select class="form-control" name="pon">
-                                    
-                                </select>
+                              <label>PON</label> 
+                              <select class="form-control" name="pon">
+                                <?php 
+                                  $sql_consulta_serial = "SELECT slot,porta FROM pon";
+                                  $executa_query = mysqli_query($conectar,$sql_consulta_serial);
+                                  while ($ont = mysqli_fetch_array($executa_query, MYSQLI_BOTH)) 
+                                  {
+                                    for($porta = 0;$porta < $ont['porta'];$porta++)
+                                    {
+                                      echo "<option value=$ont[slot]-$porta>Slot: $ont[slot]  Porta: $porta </option>";
+                                    }
+                                  }
+                                ?>
+                              </select>
                             </div>
                             <div class="form-group">
                                 <label>Porta</label>                                                

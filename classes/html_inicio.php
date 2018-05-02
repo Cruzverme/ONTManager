@@ -76,10 +76,10 @@ echo '                  <li>
                           <a href="../cto_classes/cto_create.php"><i class="fa fa-columns fa-fw"></i> Cadastrar CTO</a>
                       </li>
                       <li>
-                          <a href="../users/usuario_new.php"><i class="fa fa-users fa-fw"></i> Cadastrar Usuario</a>
+                          <a href="../cto_classes/pon_create.php"><i class="fa fa-road fa-fw"></i> Cadastrar de PON </a>
                       </li>
                       <li>
-                          <a href="#"><i class="fa fa-table fa-fw"></i>  </a>
+                          <a href="../users/usuario_new.php"><i class="fa fa-users fa-fw"></i> Cadastrar Usuario</a>
                       </li>';
             }
             echo'   </ul>
