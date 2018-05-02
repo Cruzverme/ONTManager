@@ -10,50 +10,17 @@
                                 <h3 class="panel-title">Mudança de ONT</h3>
                             </div>
                             <div class="panel-body">
-                                <form role="form" action="../classes/alterar.php" method="post">
-                                        <div class="form-group">
+                                <form role="form" action="_ont_change_search_result.php" method="post">
+                                    <div class="form-group">
+                                        <div class="input-group">
                                             <label>Contrato</label> 
-                                            <input class="form-control" placeholder="Contrato" name="contrato" type="text" autofocus required>
+                                            <input class="form-control" placeholder="Contrato" name="contrato" type="search" autofocus required>
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-secondary" type="button">Buscar</button>
+                                            </span>
                                         </div>
-                                        
-                                        <div class="form-group">
-                                            <label>Pon MAC</label>                                                
-                                            <input class="form-control" placeholder="MAC PON" name="serial" type="text" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <?php include "../classes/listaPlanos.php" ?>
-                                            <label>Pacote</label>
-                                            <select class="form-control" name="pacote">
-                                                <?php 
-                                                    foreach($listaPlanosInternet as $planoInternet) 
-                                                    {
-                                                        echo "<option value='$planoInternet'>$planoInternet</option>"; 
-                                                    }                                                
-                                                ?>
-                                            </select>
-                                        </div>
-                                                                         
-                                        <div class="camposTelefone" style="display:none" >                                   
-                                            <div class="form-group">
-                                                <label>telefone</label>
-                                                <input class="form-control" placeholder="telefone" name="numeroTel" type="text" autofocus>
-                                            </div>
-
                                             
-                                            <div class="form-group">
-                                                <label>password telefone</label>
-                                                <input class="form-control" placeholder="password telefone" name="passwordTel" type="text" autofocus>
-                                            </div>
-
-                                            
-                                            <div class="form-group">
-                                                <label>userTel</label>
-                                                <input class="form-control" placeholder="userTel" name="telUser" type="text" autofocus>
-                                            </div>
-                                        </div>
-
-                                    <button class="btn btn-lg btn-success btn-block">Alterar</button>
-
+                                    </div>
                                 </form>
                             </div>
                         </div>

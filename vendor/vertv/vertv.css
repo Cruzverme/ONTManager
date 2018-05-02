@@ -61,6 +61,9 @@ a:hover{
 	border-color: #ff9700;
 }
 
+.input-group-btn > .btn {
+	margin-top: 25px;
+}
 .navbar-default .navbar-brand {
 	color:#ff9700;
 }
