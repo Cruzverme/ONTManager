@@ -25,7 +25,22 @@ if (!mysqli_connect_errno())
         $telUser = 0;
     }
     
-    
+    $sql_verifica_limite = "SELECT limite_equipamentos FROM ont WHERE contrato='$contrato'";
+    $sql_limite_result = mysqli_query($conectar,$sql_verifica_limite); 
+
+    while ($limite = mysqli_fetch_array($sql_limite_result, MYSQLI_BOTH)) 
+    {
+       $limite_registro = $limite['limite_equipamentos'];
+    }
+
+    if ($limite_registro < 1) 
+    {
+      $_SESSION['menssagem'] = "Favor, entrar em contato com o TI, para solicitar aumento de registro de equipamentos";
+      header('Location: ../ont_classes/ont_register.php');
+      mysqli_close($conectar_radius);
+      mysqli_close($conectar);
+      exit;
+    }
 
     $sql_registra_onu = ("INSERT INTO ont (contrato, serial, cto, tel_number, tel_user, tel_password, pacote, usuario_id) 
                             VALUES ('$contrato','$serial','$cto','$telNumber','$telUser','$telPass','$pacote','$usuario')" );
@@ -47,7 +62,10 @@ if (!mysqli_connect_errno())
         $executa_query_password= mysqli_query($conectar_radius,$insere_ont_radius_password);
         $executa_query_qos_profile= mysqli_query($conectar_radius,$insere_ont_radius_qos_profile);
 
-        if ($executa_query_qos_profile && $executa_query_password && $executa_query_username) 
+        $sql_atualiza_limite = "UPDATE ont SET limite_equipamentos=0 WHERE contrato = $contrato";
+        $diminui_limite = mysqli_query($conectar,$sql_atualiza_limite);
+
+        if ($executa_query_qos_profile && $executa_query_password && $executa_query_username && $diminui_limite) 
         {
           $_SESSION['menssagem'] = "Selecione a Porta de Atendimento!";
           $caixa_atendimento = $_GET['caixa_atendimento_select'] = $cto;
