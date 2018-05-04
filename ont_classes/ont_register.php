@@ -87,24 +87,24 @@ include_once "../classes/html_inicio.php";
                     
                     <div class="camposTelefone" style="display:none" >                                   
                       <div class="form-group">
-                          <label>telefone</label>
-                          <input class="form-control" placeholder="telefone" name="numeroTel" type="text" autofocus>
+                          <label>Telefone</label>
+                          <input class="form-control" placeholder="Telefone" name="numeroTel" type="text" autofocus>
                       </div>
 
                       
                       <div class="form-group">
-                          <label>password telefone</label>
-                          <input class="form-control" placeholder="password telefone" name="passwordTel" type="text" autofocus>
+                          <label>Senha do Telefone</label>
+                          <input class="form-control" placeholder="Senha do Telefone" name="passwordTel" type="text" autofocus>
                       </div>
 
                       
                       <div class="form-group">
-                          <label>userTel</label>
-                          <input class="form-control" placeholder="userTel" name="telUser" type="text" autofocus>
+                          <label>Usuario do Telefone</label>
+                          <input class="form-control" placeholder="Usuario do Telefone" name="telUser" type="text" autofocus>
                       </div>
                     </div>
                 </fieldset>
-                <button class="btn btn-lg btn-success btn-block">Cadastrar</button>
+                <button class="btn btn-lg btn-success btn-block">Avançar</button>
               </form>
             </div>
           </div>
