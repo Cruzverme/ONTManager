@@ -26,11 +26,7 @@ include_once "../classes/html_inicio.php";
                               <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">IPTV
                           </label>
                       </div>
-                      <div class="radio">
-                          <label>
-                              <input type="radio" name="optionsRadios" id="optionsRadios3" value="Sim">INTERNET | TELEFONE | IPTV
-                          </label>
-                      </div>
+                      
                       <div class="radio">
                           <label>
                               <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">INTERNET | IPTV
@@ -39,6 +35,11 @@ include_once "../classes/html_inicio.php";
                       <div class="radio">
                           <label>
                               <input type="radio" name="optionsRadios" id="optionsRadios3" value="Sim">INTERNET | TELEFONE
+                          </label>
+                      </div>
+                      <div class="radio">
+                          <label>
+                              <input type="radio" name="optionsRadios" id="optionsRadios3" value="Sim">INTERNET | TELEFONE | IPTV
                           </label>
                       </div>
                     </div>
@@ -59,12 +60,15 @@ include_once "../classes/html_inicio.php";
                       <?php include "../classes/listaPlanos.php" ?>
                       <label>Pacote</label>
                       <select class="form-control" name="pacote">
-                        <?php 
-                          foreach($listaPlanosInternet as $planoInternet) 
-                          {
-                            echo "<option value='$planoInternet'>$planoInternet</option>"; 
-                          }                                                
-                        ?>
+                      <?php 
+                        $sql_lista_velocidades = "SELECT nome,nomenclatura_velocidade FROM planos";
+                        $executa_query = mysqli_query($conectar,$sql_lista_velocidades);
+                        while ($listaPlanos = mysqli_fetch_array($executa_query, MYSQLI_BOTH)) 
+                        {
+                          echo "<option value='$listaPlanos[nomenclatura_velocidade]'>$listaPlanos[nome]</option>"; 
+                        }
+                        mysqli_free_result($executa_query);                                                
+                      ?>
                       </select>
                     </div>
 
@@ -91,17 +95,16 @@ include_once "../classes/html_inicio.php";
                         <input class="form-control" placeholder="Telefone" name="numeroTel" type="text" autofocus>
                       </div>
 
+                      <div class="form-group">
+                        <label>Usuario do Telefone</label>
+                        <input class="form-control" placeholder="Usuario do Telefone" name="telUser" type="text" autofocus>
+                      </div>
                       
                       <div class="form-group">
                         <label>Senha do Telefone</label>
-                        <input class="form-control" placeholder="Senha do Telefone" name="passwordTel" type="text" autofocus>
+                        <input class="form-control" placeholder="Senha do Telefone" name="passwordTel" type="password" autofocus>
                       </div>
-
                       
-                      <div class="form-group">
-                          <label>Usuario do Telefone</label>
-                          <input class="form-control" placeholder="Usuario do Telefone" name="telUser" type="text" autofocus>
-                      </div>
                     </div>
                 </fieldset>
                 <button class="btn btn-lg btn-success btn-block">Avançar</button>

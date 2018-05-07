@@ -36,16 +36,17 @@
                   </select>
                 </div>
                 
-                <div class="form-group">
-                
-                  <?php include "../classes/listaPlanos.php" ?>
+                <div class="form-group">                
                   <label>Pacote</label>
                   <select class="form-control" name="pacote">
                     <?php 
-                      foreach($listaPlanosInternet as $planoInternet) 
+                      $sql_lista_velocidades = "SELECT nome,nomenclatura_velocidade FROM planos";
+                      $executa_query = mysqli_query($conectar,$sql_lista_velocidades);
+                      while ($listaPlanos = mysqli_fetch_array($executa_query, MYSQLI_BOTH)) 
                       {
-                        echo "<option value='$planoInternet'>$planoInternet</option>"; 
-                      }                                                
+                        echo "<option value='$listaPlanos[nomenclatura_velocidade]'>$listaPlanos[nome]</option>"; 
+                      }
+                      mysqli_free_result($executa_query);                                                
                     ?>
                   </select>
                 </div>                                                                         
