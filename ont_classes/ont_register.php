@@ -87,14 +87,14 @@ include_once "../classes/html_inicio.php";
                     
                     <div class="camposTelefone" style="display:none" >                                   
                       <div class="form-group">
-                          <label>Telefone</label>
-                          <input class="form-control" placeholder="Telefone" name="numeroTel" type="text" autofocus>
+                        <label>Telefone</label>
+                        <input class="form-control" placeholder="Telefone" name="numeroTel" type="text" autofocus>
                       </div>
 
                       
                       <div class="form-group">
-                          <label>Senha do Telefone</label>
-                          <input class="form-control" placeholder="Senha do Telefone" name="passwordTel" type="text" autofocus>
+                        <label>Senha do Telefone</label>
+                        <input class="form-control" placeholder="Senha do Telefone" name="passwordTel" type="text" autofocus>
                       </div>
 
                       

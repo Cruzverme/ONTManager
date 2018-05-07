@@ -18,7 +18,7 @@ if (!mysqli_connect_errno())
     $novo_pacote = mysqli_query($conectar,$sql_muda_plano_onu);
     if ( $novo_pacote )
     {
-      $atualiza_qos_radius = "UPDATE radcheck SET value='$pacote' WHERE username='2500/13/0/$serial@vertv' 
+      $atualiza_qos_radius = "UPDATE radreply SET value='$pacote' WHERE username='2500/13/0/$serial@vertv' 
           AND attribute='Huawei-Qos-Profile-Name' ";
       $executa_query= mysqli_query($conectar_radius,$atualiza_qos_radius);
       
@@ -45,9 +45,7 @@ if (!mysqli_connect_errno())
       mysqli_close($conectar);
       exit;
     }
-  }
-  else
-  {
+  }else{
     $_SESSION['menssagem'] = "Campos Faltando!";
     header('Location: ../ont_classes/ont_change.php');
     mysqli_close($conectar_radius);

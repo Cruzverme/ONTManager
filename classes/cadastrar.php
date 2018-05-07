@@ -55,7 +55,7 @@ if (!mysqli_connect_errno())
         $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value) 
                 VALUES ( '2500/13/0/$serial@vertv', 'User-Password', ':=', 'vlan' )";
 
-        $insere_ont_radius_qos_profile = "INSERT INTO radcheck( username, attribute, op, value) 
+        $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
                 VALUES ( '2500/13/0/$serial@vertv', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";
 
         $executa_query_username= mysqli_query($conectar_radius,$insere_ont_radius_username);

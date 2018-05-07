@@ -79,8 +79,12 @@ echo '                  <li>
                           <a href="../cto_classes/pon_create.php"><i class="fa fa-road fa-fw"></i> Cadastrar de PON </a>
                       </li>
                       <li>
+                          <a href="../planos/planos_create.php"><i class="fa fa-wifi fa-fw"></i> Cadastrar Nova Velocidade</a>
+                      </li>
+                      <li>
                           <a href="../users/usuario_new.php"><i class="fa fa-users fa-fw"></i> Cadastrar Usuario</a>
                       </li>';
+                      
             }
             echo'   </ul>
                 </div>

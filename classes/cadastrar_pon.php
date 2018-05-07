@@ -6,10 +6,6 @@
   $slot = filter_input(INPUT_POST, 'slot');
   $porta = filter_input(INPUT_POST,'porta');
 
-  echo $frame;
-  echo $slot;
-  echo $porta;
-
   if($frame && $slot && $porta)
   {
     if (!mysqli_connect_errno())
