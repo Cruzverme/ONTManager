@@ -10,12 +10,11 @@
   
   $nomenclatura = str_replace('??',"$velocidade_download",$tipo_plano);
   
-  if($nome_velocidade && $velocidade_download && $velocidade_upload)
+  if($nome_velocidade && $velocidade_download && $velocidade_upload && $tipo_plano)
   {
     $velocidade_download = $velocidade_download * 1024;
     $velocidade_upload = $velocidade_upload * 1024;
 
-    
 
     if (!mysqli_connect_errno())
     {

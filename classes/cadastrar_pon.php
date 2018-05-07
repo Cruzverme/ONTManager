@@ -2,13 +2,14 @@
   include_once "../db/db_config_mysql.php";
 //iniciando sessao para enviar as msgs
   session_start();
+
   $frame = filter_input(INPUT_POST, 'frame');
   $slot = filter_input(INPUT_POST, 'slot');
   $porta = filter_input(INPUT_POST,'porta');
 
-  if($frame && $slot && $porta)
+  if($frame || $frame == 0 && $slot && $porta  )
   {
-    if (!mysqli_connect_errno())
+    if(!mysqli_connect_errno())
     {
       $sql_insere_pon = ("INSERT INTO pon(frame,slot,porta) VALUES('$frame','$slot',$porta)");
       $checar_insert = mysqli_query($conectar,$sql_insere_pon);
@@ -27,6 +28,7 @@
       exit;
     }
   }else{
+
     echo $_SESSION['menssagem'] = "Campos Faltando!";
     header('Location: ../cto_classes/pon_create.php');
     mysqli_close($conectar);
