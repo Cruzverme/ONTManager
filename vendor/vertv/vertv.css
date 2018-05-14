@@ -213,12 +213,12 @@ a{
 }
 
 .login-panel{
-	margin-top:20%;
+	margin-top:10%;
 	background: #666;	
 }
 
 .col-md-offset-4 {
-	margin-left: 26.333%;
+	margin-left: 15.333%;
 }
 
 .col-md-4 {
@@ -241,8 +241,8 @@ a{
 
 .login{
 	width: 50.333%;
-	margin-top: 11%;
-	margin-left: 17.333%
+	margin-top: 5%;
+	margin-left: 6.333%
 }	
 
 .panel-default 

@@ -33,7 +33,7 @@ if (!mysqli_connect_errno())
        $limite_registro = $limite['limite_equipamentos'];
     }
 
-    if ($limite_registro < 1) 
+    if ($limite_registro < 1 AND $limite_registro != null) 
     {
       $_SESSION['menssagem'] = "Favor, entrar em contato com o TI, para solicitar aumento de registro de equipamentos";
       header('Location: ../ont_classes/ont_register.php');
