@@ -21,13 +21,13 @@
                               <label>PON</label> 
                               <select class="form-control" name="pon">
                                 <?php 
-                                  $sql_consulta_serial = "SELECT slot,porta FROM pon";
+                                  $sql_consulta_serial = "SELECT frame,slot,porta FROM pon";
                                   $executa_query = mysqli_query($conectar,$sql_consulta_serial);
                                   while ($ont = mysqli_fetch_array($executa_query, MYSQLI_BOTH)) 
                                   {
                                     for($porta = 0;$porta < $ont['porta'];$porta++)
                                     {
-                                      echo "<option value=$ont[slot]-$porta>Slot: $ont[slot]  Porta: $porta </option>";
+                                      echo "<option value=$ont[frame]-$ont[slot]-$porta>Frame: $ont[frame] Slot: $ont[slot]  Porta: $porta </option>";
                                     }
                                   }
                                 ?>
