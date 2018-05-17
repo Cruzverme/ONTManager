@@ -14,7 +14,7 @@
         
         for($portas = 1; $portas <= $porta_atendimento; $portas++)
         {
-          $sql_insere_caixa = ("INSERT INTO ctos(caixa_atendimento,porta_atendimento,slot_pon) VALUES('$cto',$portas,'$pon')");
+          $sql_insere_caixa = ("INSERT INTO ctos(caixa_atendimento,porta_atendimento,frame_slot_pon) VALUES('$cto',$portas,'$pon')");
           $checar_insert = mysqli_query($conectar,$sql_insere_caixa);
         }
 
