@@ -1,6 +1,6 @@
 <?php
 include_once "../db/db_config_mysql.php";
-//include_once "../db/db_config_radius.php";
+include_once "../db/db_config_radius.php";
 include_once "../u2000/tl1_sender.php";
 // Inicia sessões 
 session_start();
@@ -55,25 +55,25 @@ if (!mysqli_connect_errno())
       if ($cadastrar )               
       {
 
-        //   $insere_ont_radius_username = "INSERT INTO radcheck( username, attribute, op, value) 
-        //       VALUES ( '2500/13/0/$serial@vertv', 'User-Name', ':=', '2500/13/0/$serial@vertv' )";
+           $insere_ont_radius_username = "INSERT INTO radcheck( username, attribute, op, value) 
+               VALUES ( '2500/13/0/$serial@vertv', 'User-Name', ':=', '2500/13/0/$serial@vertv' )";
 
-        //   $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value) 
-        //           VALUES ( '2500/13/0/$serial@vertv', 'User-Password', ':=', 'vlan' )";
+           $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value) 
+                   VALUES ( '2500/13/0/$serial@vertv', 'User-Password', ':=', 'vlan' )";
 
-        //   $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
-        //           VALUES ( '2500/13/0/$serial@vertv', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";
+           $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
+                   VALUES ( '2500/13/0/$serial@vertv', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";
 
-        //   $executa_query_username= mysqli_query($conectar_radius,$insere_ont_radius_username);
-        //   $executa_query_password= mysqli_query($conectar_radius,$insere_ont_radius_password);
-        //   $executa_query_qos_profile= mysqli_query($conectar_radius,$insere_ont_radius_qos_profile);
+           $executa_query_username= mysqli_query($conectar_radius,$insere_ont_radius_username);
+           $executa_query_password= mysqli_query($conectar_radius,$insere_ont_radius_password);
+           $executa_query_qos_profile= mysqli_query($conectar_radius,$insere_ont_radius_qos_profile);
 
-        //  $sql_atualiza_limite = "UPDATE ont SET limite_equipamentos=0 WHERE contrato = $contrato";
-        //  $diminui_limite = mysqli_query($conectar,$sql_atualiza_limite);
+          $sql_atualiza_limite = "UPDATE ont SET limite_equipamentos=0 WHERE contrato = $contrato";
+          $diminui_limite = mysqli_query($conectar,$sql_atualiza_limite);
 
-        //  if ($executa_query_qos_profile && $executa_query_password && $executa_query_username && $diminui_limite) 
-        //  {  #####TL1 INICIO#####
-        //      //SELECIONA O FRAME SLOT e PON PARA ENVIAR VIA TL1
+          if ($executa_query_qos_profile && $executa_query_password && $executa_query_username && $diminui_limite) 
+          {  #####TL1 INICIO#####
+              //SELECIONA O FRAME SLOT e PON PARA ENVIAR VIA TL1
           $select_frame_slot_pon = "SELECT distinct frame_slot_pon FROM ctos WHERE caixa_atendimento = '$cto'";
           $executa_select_frame_slot_pon= mysqli_query($conectar,$select_frame_slot_pon);
           
@@ -135,19 +135,19 @@ if (!mysqli_connect_errno())
              mysqli_close($conectar);
              exit;
            }
-        //  }else{
-        //    $erro = mysqli_error($conectar_radius);
-        //    $_SESSION['menssagem'] = "Houve erro ao inserir no Radius SQL: $erro";
+          }else{
+            $erro = mysqli_error($conectar_radius);
+            $_SESSION['menssagem'] = "Houve erro ao inserir no Radius SQL: $erro";
 
-        //      //se der erro ele irá apagar o registro salvo na tabela local ont
-        //    $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
-        //    mysqli_query($conectar,$sql_apagar_onu); 
+              //se der erro ele irá apagar o registro salvo na tabela local ont
+            $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
+            mysqli_query($conectar,$sql_apagar_onu); 
 
-        //    header('Location: ../ont_classes/ont_register.php');
-        //    mysqli_close($conectar_radius);
-        //    mysqli_close($conectar);
-        //    exit;
-        //  }
+            header('Location: ../ont_classes/ont_register.php');
+            mysqli_close($conectar_radius);
+            mysqli_close($conectar);
+            exit;
+          }
       }else{
         $erro = mysqli_error($conectar);
         $_SESSION['menssagem'] = "Houve erro na execuão da query SQL: $erro";
