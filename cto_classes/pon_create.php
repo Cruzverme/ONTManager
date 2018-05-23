@@ -12,6 +12,10 @@
                 <div class="panel-body">
                     <form role="form" action="../classes/cadastrar_pon.php" method="post">
                       <div class="form-group">
+                        <label>Nome</label> 
+                        <input class="form-control" placeholder="Nome do Dispositivo" name="frame" type="text" autofocus required>
+                      </div>
+                      <div class="form-group">
                         <label>Frame</label> 
                         <input class="form-control" placeholder="FRAME" name="frame" type="number" min=0 autofocus required>
                       </div>

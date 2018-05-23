@@ -8,30 +8,33 @@
     if( isset($_POST["cto"]) && !empty($_POST["cto"]) && isset($_POST["porta"]) && !empty($_POST["porta"])
         && isset($_POST["pon"]) )
     {
+        list($pon_id,$frame,$slot,$porta) = explode("-",$_POST["pon"]);
         $cto = $_POST["cto"];
         $porta_atendimento = $_POST["porta"];
-        $pon = $_POST["pon"];
+        $pon = "$frame-$slot-$porta";
         
-        for($portas = 1; $portas <= $porta_atendimento; $portas++)
-        {
-          $sql_insere_caixa = ("INSERT INTO ctos(caixa_atendimento,porta_atendimento,frame_slot_pon) VALUES('$cto',$portas,'$pon')");
-          $checar_insert = mysqli_query($conectar,$sql_insere_caixa);
-        }
 
-        if($checar_insert)
-        { 
-            echo  $_SESSION['menssagem'] = "Caixa Registrada!";
-            header('Location: ../cto_classes/cto_create.php');
-            mysqli_close($conectar);
-            exit;
-        }else{
-          echo $pon;
-          $erro = mysqli_error($conectar);
-          $_SESSION['menssagem'] = "CTO Não Cadastrada! SQL: $erro";
-          header('Location: ../cto_classes/cto_create.php');
-          mysqli_close('$conectar');
-          exit;
-        }
+        
+         for($portas = 1; $portas <= $porta_atendimento; $portas++)
+         {
+           $sql_insere_caixa = ("INSERT INTO ctos(caixa_atendimento,porta_atendimento,frame_slot_pon,pon_id_fk) VALUES('$cto',$portas,'$pon','$pon_id')");
+           $checar_insert = mysqli_query($conectar,$sql_insere_caixa);
+         }
+
+         if($checar_insert)
+         { 
+             echo  $_SESSION['menssagem'] = "Caixa Registrada!";
+             header('Location: ../cto_classes/cto_create.php');
+             mysqli_close($conectar);
+             exit;
+         }else{
+           echo $pon;
+           $erro = mysqli_error($conectar);
+           $_SESSION['menssagem'] = "CTO Não Cadastrada! SQL: $erro";
+           header('Location: ../cto_classes/cto_create.php');
+           mysqli_close('$conectar');
+           exit;
+         }
     }else{
       echo $_SESSION['menssagem'] = "Campos Faltando!";
       header('Location: ../cto_classes/cto_create.php');

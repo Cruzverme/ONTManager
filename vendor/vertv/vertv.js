@@ -1,5 +1,6 @@
 $('input[name="optionsRadios"]').change(function () {
-    if ($('input[name="optionsRadios"]:checked').val() === "Sim") {
+    if ($('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP" || 
+    $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-IPTV" ) {
         $('.camposTelefone').show();
     } else {
         $('.camposTelefone').hide();

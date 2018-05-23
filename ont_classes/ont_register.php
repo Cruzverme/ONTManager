@@ -18,28 +18,28 @@ include_once "../classes/html_inicio.php";
                       <label>Qual Plano</label>
                       <div class="radio">
                           <label>
-                              <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>INTERNET
+                              <input type="radio" name="optionsRadios" id="optionsRadios1" value="VAS_Internet" checked>INTERNET
                           </label>
                       </div>
                       <div class="radio">
                           <label>
-                              <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">IPTV
+                              <input type="radio" name="optionsRadios" id="optionsRadios2" value="VAS_IPTV">IPTV
                           </label>
                       </div>
                       
                       <div class="radio">
                           <label>
-                              <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">INTERNET | IPTV
+                              <input type="radio" name="optionsRadios" id="optionsRadios3" value="VAS_Internet-IPTV">INTERNET | IPTV
                           </label>
                       </div>
                       <div class="radio">
                           <label>
-                              <input type="radio" name="optionsRadios" id="optionsRadios3" value="Sim">INTERNET | TELEFONE
+                              <input type="radio" name="optionsRadios" id="optionsRadios3" value="VAS_Internet-VoIP">INTERNET | TELEFONE
                           </label>
                       </div>
                       <div class="radio">
                           <label>
-                              <input type="radio" name="optionsRadios" id="optionsRadios3" value="Sim">INTERNET | TELEFONE | IPTV
+                              <input type="radio" name="optionsRadios" id="optionsRadios3" value="VAS_Internet-VoIP-IPTV">INTERNET | TELEFONE | IPTV
                           </label>
                       </div>
                     </div>
@@ -71,17 +71,32 @@ include_once "../classes/html_inicio.php";
                       ?>
                       </select>
                     </div>
-
+                    
+                    <div class="form-group">
+                      <label>Equipamento</label>
+                      <select class="form-control" name="equipamentos">
+                        <?php 
+                          $sql_consulta_equipamentos = "SELECT * FROM equipamentos";
+                          $executa_query_equipamentos = mysqli_query($conectar,$sql_consulta_equipamentos);
+                          while ($equipamentos = mysqli_fetch_array($executa_query_equipamentos, MYSQLI_BOTH)) 
+                          {
+                            echo "<option value=$equipamentos[modelo]>$equipamentos[modelo]</option>";
+                          }
+                        ?>
+                      </select>
+                    </div>
+                    
                     <div class="form-group">
                       <label>CTO</label>
                       <select class="form-control" name="caixa_atendimento_select">
                         <?php 
-                          $sql_consulta_cto = "SELECT DISTINCT caixa_atendimento FROM ctos 
+                          $sql_consulta_cto = "SELECT DISTINCT caixa_atendimento, pon_id_fk FROM ctos 
                             WHERE porta_atendimento_disponivel = 0";
                           $executa_query = mysqli_query($conectar,$sql_consulta_cto);
-                          while ($cto = mysqli_fetch_array($executa_query, MYSQLI_BOTH)) 
+                          
+                          while ($cto = mysqli_fetch_array($executa_query, MYSQLI_BOTH))
                           {
-                            echo "<option value=$cto[caixa_atendimento]>$cto[caixa_atendimento]</option>";
+                            echo "<option value=$cto[pon_id_fk]-$cto[caixa_atendimento]>$cto[caixa_atendimento]</option>";
                           }
 
                           $caixa_selecionada = $_POST['caixa_atendimento_select'];
