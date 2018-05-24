@@ -56,22 +56,24 @@ include_once "../classes/html_inicio.php";
                         <label>Pon MAC</label>                                                
                         <input class="form-control" placeholder="MAC PON" name="serial" type="text" required>
                     </div>
-                    <div class="form-group">
-                      <?php include "../classes/listaPlanos.php" ?>
-                      <label>Pacote</label>
-                      <select class="form-control" name="pacote">
-                      <?php 
-                        $sql_lista_velocidades = "SELECT nome,nomenclatura_velocidade FROM planos";
-                        $executa_query = mysqli_query($conectar,$sql_lista_velocidades);
-                        while ($listaPlanos = mysqli_fetch_array($executa_query, MYSQLI_BOTH)) 
-                        {
-                          echo "<option value='$listaPlanos[nomenclatura_velocidade]'>$listaPlanos[nome]</option>"; 
-                        }
-                        mysqli_free_result($executa_query);                                                
-                      ?>
-                      </select>
-                    </div>
-                    
+                    <div class="camposPacotes" style="display:visible" >                                   
+                      <div class="form-group" >
+                        <?php include "../classes/listaPlanos.php" ?>
+                        <label>Pacote</label>
+                        <select class="form-control" name="pacote">
+                        <?php 
+                          $sql_lista_velocidades = "SELECT nome,nomenclatura_velocidade FROM planos";
+                          $executa_query = mysqli_query($conectar,$sql_lista_velocidades);
+                          while ($listaPlanos = mysqli_fetch_array($executa_query, MYSQLI_BOTH)) 
+                          {
+                            echo "<option value='$listaPlanos[nomenclatura_velocidade]'>$listaPlanos[nome]</option>"; 
+                          }
+                          mysqli_free_result($executa_query);                                                
+                        ?>
+                        </select>
+                      </div>
+                    </div> <!-- fim div pacote -->
+
                     <div class="form-group">
                       <label>Equipamento</label>
                       <select class="form-control" name="equipamentos">

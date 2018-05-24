@@ -7,6 +7,15 @@ $('input[name="optionsRadios"]').change(function () {
     }
 });
 
+$('input[name="optionsRadios"]').change(function () {
+    if ($('input[name="optionsRadios"]:checked').val() === "VAS_IPTV")
+    {
+        $('.camposPacotes').hide();
+    } else {
+        $('.camposPacotes').show();
+    }
+});
+
 $("tr.porta").on('click',function() {
     var porta_selecionada;
     var serial;

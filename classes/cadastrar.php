@@ -119,7 +119,6 @@ if (!mysqli_connect_errno())
             $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/13/0/$serial@vertv' ";
             $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
 
-
             header('Location: ../ont_classes/ont_register.php');
             mysqli_close($conectar_radius);
             mysqli_close($conectar);
@@ -132,7 +131,62 @@ if (!mysqli_connect_errno())
             
             $insere_ont_id = "UPDATE ont SET ontID='$onuID' WHERE serial = '$serial'";
             $executa_insere_ont_id = mysqli_query($conectar,$insere_ont_id);
+          ##### IPTV SERVICE PORT ######
+            if($vasProfile == "VAS_IPTV" || $vasProfile== "VAS_Internet-VoIP-IPTV") ####SERVICE 
+            {
+              $servicePortIPTV = get_service_port_iptv($deviceName,$frame,$slot,$pon,$onuID,$contrato);
 
+              $tira_ponto_virgula = explode(";",$servicePortIPTV);
+              $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
+              $remove_desc = explode("ENDESC=",$check_sucesso[1]);
+              $errorCode = trim($remove_desc[0]);
+              if($errorCode != "0") //se der erro na service port internet
+              {
+                $_SESSION['menssagem'] = "Houve erro Inserir a Service Port de IPTV: $errorCode";
+
+                //se der erro ele irá apagar o registro salvo na tabela local ont
+                $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
+                mysqli_query($conectar,$sql_apagar_onu);
+
+                $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/13/0/$serial@vertv' 
+                  AND attribute='Huawei-Qos-Profile-Name' ";
+                $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
+
+                $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/13/0/$serial@vertv' ";
+                $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
+                
+                deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID);
+                
+                header('Location: ../ont_classes/ont_register.php');
+                mysqli_close($conectar_radius);
+                mysqli_close($conectar);
+                exit;
+
+              }else{
+                $remove_barras_para_pegar_id = explode("--------------",$tira_ponto_virgula[1]);
+                $pegar_servicePorta_ID = explode("\r\n",$remove_barras_para_pegar_id[1]);
+                
+                $pega_id = explode("	",$pegar_servicePorta_ID[2]);//posicao 4 será sempre o ONTID
+                
+                $servicePortIptvID= $pega_id[0] - 1; 
+                
+                $insere_service_iptv = "UPDATE ont SET service_port_iptv='$servicePortIptvID' WHERE serial = '$serial'";
+                $executa_insere_service_iptv = mysqli_query($conectar,$insere_service_iptv);
+                
+                if($vasProfile == "VAS_IPTV")
+                {
+                  $_SESSION['menssagem'] = "Selecione a Porta de Atendimento!";
+                  $caixa_atendimento = $_GET['caixa_atendimento_select'] = $cto;
+                  header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_select=$caixa_atendimento&serial=$serial");
+                  mysqli_close($conectar_radius);
+                  mysqli_close($conectar);
+                  exit;
+                }
+              }//fim service port iptv
+              ##### IPTV SERVICE PORT ######
+            }
+            
+            ###INICIO TELEFONIA TL1###
             if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV") //ATIVAR TELEFONIA
             {
               //echo "\n <br><br> DEV: $deviceName | $frame | $slot | $pon | $onuID | $telNumber | $telPass | $telNumber <br><br> \n";
