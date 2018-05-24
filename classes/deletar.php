@@ -7,8 +7,8 @@
 
   if (!mysqli_connect_errno())
   {
-    if( isset($_SESSION["id_usuario"]) && isset($_POST["contrato"]) && isset($_POST["serial"]) )
-    {
+     if( isset($_SESSION["id_usuario"]) && isset($_POST["contrato"]) && isset($_POST["serial"]) )
+     {
       $usuario = $_SESSION["id_usuario"];
       $contrato = $_POST["contrato"];
       $serial = $_POST["serial"];
@@ -33,7 +33,6 @@
             INNER JOIN ctos ct ON ct.serial='$serial' AND ct.caixa_atendimento= onu.cto 
             INNER JOIN pon p ON p.pon_id = ct.pon_id_fk 
             WHERE onu.serial='$serial' AND onu.contrato='$contrato'";
-
             $sql_ont_info_execute = mysqli_query($conectar,$select_ont_info);
 
             while($onu_info = mysqli_fetch_array($sql_ont_info_execute, MYSQLI_BOTH))
@@ -54,13 +53,14 @@
             $errorCode = trim($remove_desc[0]);
             if($errorCode != "0")
             {
-              $_SESSION['menssagem'] = "Houve erro ao inserir no u2000 SQL: $erroCode";
+              $_SESSION['menssagem'] = "Houve erro ao inserir no u2000 SQL: $errorCode";
 
               header('Location: ../ont_classes/ont_delete.php');
               mysqli_close($conectar_radius);
               mysqli_close($conectar);
               exit;
-            }else{
+            }else
+            {
               $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
 
               $deletar_onu = mysqli_query($conectar,$sql_apagar_onu);

@@ -31,7 +31,7 @@ if (!mysqli_connect_errno())
     
      $sql_verifica_limite = "SELECT limite_equipamentos FROM ont WHERE contrato='$contrato'";
      $sql_limite_result = mysqli_query($conectar,$sql_verifica_limite);
-
+     
      while ($limite = mysqli_fetch_array($sql_limite_result, MYSQLI_BOTH)) 
      {
        $limite_registro = $limite['limite_equipamentos'];
@@ -120,20 +120,50 @@ if (!mysqli_connect_errno())
             exit;
           }else{
             $remove_barras_para_pegar_id = explode("---------------------------",$tira_ponto_virgula[1]);
-            $filtra_espaco = explode("\r\n",$remove_barras_para_pegar_id[1]); 
+            $filtra_espaco = explode("\r\n",$remove_barras_para_pegar_id[1]);
             $pega_id = explode("	",$filtra_espaco[2]);//posicao 4 será sempre o ONTID
-            $onuID = $pega_id[4];
-            echo "<br>IDOnu: $onuID";
-
+            $onuID=trim($pega_id[4]);
+            
             $insere_ont_id = "UPDATE ont SET ontID='$onuID' WHERE serial = '$serial'";
             $executa_insere_ont_id = mysqli_query($conectar,$insere_ont_id);
+
+            if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV") //ATIVAR TELEFONIA
+            {
+              //echo "\n <br><br> DEV: $deviceName | $frame | $slot | $pon | $onuID | $telUser | $telPass | $telNumber <br><br> \n";
+              $telefone_on = ativa_telefonia($deviceName,$frame,$slot,$pon,$onuID,$telUser,$telPass,$telNumber);
+
+              //echo "<br> TELON: $telefone_on<br>"; var_dump($telefone_on); echo "<br><br>";
+
+              $tira_ponto_virgula = explode(";",$telefone_on);
+              $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
+              $remove_desc = explode("ENDESC=",$check_sucesso[1]);
+              $errorCode = trim($remove_desc[0]);
+              if($errorCode != "0")
+              {
+                $_SESSION['menssagem'] = "Houve erro ao inserir no u2000 SQL: $errorCode";
+                $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
+                mysqli_query($conectar,$sql_apagar_onu);
+
+                header('Location: ../ont_classes/ont_register.php');
+                mysqli_close($conectar_radius);
+                mysqli_close($conectar);
+                exit;
+              }else{
+                $_SESSION['menssagem'] = "Selecione a Porta de Atendimento!";
+                $caixa_atendimento = $_GET['caixa_atendimento_select'] = $cto;
+                header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_select=$caixa_atendimento&serial=$serial");
+                mysqli_close($conectar_radius);
+                mysqli_close($conectar);
+                exit;
+              }
+            }  
             ########FIM TL1########
-             $_SESSION['menssagem'] = "Selecione a Porta de Atendimento!";
-             $caixa_atendimento = $_GET['caixa_atendimento_select'] = $cto;
-             header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_select=$caixa_atendimento&serial=$serial");
-             mysqli_close($conectar_radius);
-             mysqli_close($conectar);
-             exit;
+              $_SESSION['menssagem'] = "Selecione a Porta de Atendimento!";
+              $caixa_atendimento = $_GET['caixa_atendimento_select'] = $cto;
+              header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_select=$caixa_atendimento&serial=$serial");
+              mysqli_close($conectar_radius);
+              mysqli_close($conectar);
+              exit;
            }
           }else{
             $erro = mysqli_error($conectar_radius);
