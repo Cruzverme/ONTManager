@@ -108,16 +108,11 @@ include_once "../classes/html_inicio.php";
                       <div class="form-group">
                         <label>Telefone</label>
                         <input class="form-control" placeholder="Telefone" name="numeroTel" type="text" autofocus>
-                      </div>
-
-                      <div class="form-group">
-                        <label>Usuario do Telefone</label>
-                        <input class="form-control" placeholder="Usuario do Telefone" name="telUser" type="text" autofocus>
-                      </div>
+                      </div> 
                       
                       <div class="form-group">
                         <label>Senha do Telefone</label>
-                        <input class="form-control" placeholder="Senha do Telefone" name="passwordTel" type="password" autofocus>
+                        <input class="form-control" placeholder="Senha do Telefone" name="passwordTel" type="text" autofocus>
                       </div>
                       
                     </div>

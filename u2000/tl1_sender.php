@@ -103,7 +103,7 @@ SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V
       echo "ERROR: $errno - $errstr<br />\n";
     }else{     
       $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
-
+//DEL-ONT::DEV=A1_VERTV-01,FN=0,SN=13,PN=1,ONTID=0,DELCONFIG=TRUE:1::;
       $comando_deletar = "DEL-ONT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon,ONTID=$ontID,DELCONFIG=TRUE:1::;";
 
       fwrite($fp,$login_command);
@@ -126,8 +126,81 @@ SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V
 
   }
 
-  function get_service_porta_internet($dev,$frame,$slot,$pon,$ontID)
+  function get_service_port_internet($dev,$frame,$slot,$pon,$ontID,$contrato)
   {
-    $comando = "CRT-SERVICEPORT::DEV=A1_VERTV-01,FN=0,SN=13,PN=0:3::VLANID=2500,SVPID=INTERNET-CONTRATO,ONTID=3,GEMPORTID=6,UV=2500,RETURID=TRUE;";
+    include "telnet_config.php";
+    $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
+
+    if(!$fp) 
+    {
+      echo "ERROR: $errno - $errstr<br />\n";
+    }else{     
+      $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
+    
+      $comando = "CRT-SERVICEPORT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:3::VLANID=2500,SVPID=INTERNET-$contrato,ONTID=$ontID,GEMPORTID=6,UV=2500,RETURID=TRUE;";
+        
+      fwrite($fp,$login_command);
+      fwrite($fp,$comando);
+
+      stream_set_timeout($fp,5);
+      while($c = fgetc($fp)!==false)
+      {
+       $retornoTL1 = fread($fp,2024);
+       return $retornoTL1;
+      }  
+      fclose($fp);
+    }
+  }
+
+  function get_service_port_iptv($dev,$frame,$slot,$pon,$ontID,$contrato)
+  {
+    include "telnet_config.php";
+    $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
+
+    if(!$fp) 
+    {
+      echo "ERROR: $errno - $errstr<br />\n";
+    }else{     
+      $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
+    
+      $comando = "CRT-SERVICEPORT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:3::VLANID=2502,SVPID=IPTV-$contrato,ONTID=$ontID,GEMPORTID=8,UV=2502,RETURID=TRUE;";
+      
+      fwrite($fp,$login_command);
+      fwrite($fp,$comando);
+
+      stream_set_timeout($fp,5);
+      while($c = fgetc($fp)!==false)
+      {
+       $retornoTL1 = fread($fp,2024);
+       return $retornoTL1;
+      }  
+      fclose($fp);
+    }
+  }
+
+  function get_service_port_telefone($dev,$frame,$slot,$pon,$ontID,$contrato)
+  {
+    include "telnet_config.php";
+    $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
+
+    if(!$fp) 
+    {
+      echo "ERROR: $errno - $errstr<br />\n";
+    }else{     
+      $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
+    
+      $comando = "CRT-SERVICEPORT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:3::VLANID=2501,SVPID=TELEFONE-$contrato,ONTID=$ontID,GEMPORTID=7,UV=2501,RETURID=TRUE;";
+      var_dump($comando);
+      fwrite($fp,$login_command);
+      fwrite($fp,$comando);
+
+      stream_set_timeout($fp,5);
+      while($c = fgetc($fp)!==false)
+      {
+       $retornoTL1 = fread($fp,2024);
+       return $retornoTL1;
+      }  
+      fclose($fp);
+    }
   }
 ?>

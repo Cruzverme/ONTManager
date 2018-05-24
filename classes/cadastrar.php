@@ -18,15 +18,13 @@ if (!mysqli_connect_errno())
     $pacote = $_POST["pacote"];
     $telNumber = $_POST["numeroTel"];
     $telPass = $_POST["passwordTel"];
-    $telUser = $_POST["telUser"];
     $vasProfile = $_POST["optionsRadios"];
     $porta_atendimento = '5';
 
-     if(empty($telNumber) && empty($telPass) && empty($telUser) )
+     if(empty($telNumber) && empty($telPass) )
      {
          $telNumber = 0;
          $telPass = 0;
-         $telUser = 0;
      }
     
      $sql_verifica_limite = "SELECT limite_equipamentos FROM ont WHERE contrato='$contrato'";
@@ -38,7 +36,7 @@ if (!mysqli_connect_errno())
      }
 
      $sql_verifica_limite = "SELECT limite_equipamentos FROM ont WHERE contrato='$contrato'";
-
+     $limite_registro = "";
      if ($limite_registro < 1 AND $limite_registro != null) 
      {
        $_SESSION['menssagem'] = "Favor, entrar em contato com o TI, para solicitar aumento de registro de equipamentos";
@@ -49,7 +47,7 @@ if (!mysqli_connect_errno())
      }
 
       $sql_registra_onu = ("INSERT INTO ont (contrato, serial, cto, tel_number, tel_user, tel_password, pacote, usuario_id) 
-                              VALUES ('$contrato','$serial','$cto','$telNumber','$telUser','$telPass','$pacote','$usuario')" );
+                              VALUES ('$contrato','$serial','$cto','$telNumber','$telNumber','$telPass','$pacote','$usuario')" );
     
       $cadastrar = mysqli_query($conectar,$sql_registra_onu);
       if ($cadastrar )               
@@ -114,6 +112,14 @@ if (!mysqli_connect_errno())
             $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
             mysqli_query($conectar,$sql_apagar_onu);
 
+            $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/13/0/$serial@vertv' 
+              AND attribute='Huawei-Qos-Profile-Name' ";
+            $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
+
+            $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/13/0/$serial@vertv' ";
+            $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
+
+
             header('Location: ../ont_classes/ont_register.php');
             mysqli_close($conectar_radius);
             mysqli_close($conectar);
@@ -129,8 +135,8 @@ if (!mysqli_connect_errno())
 
             if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV") //ATIVAR TELEFONIA
             {
-              //echo "\n <br><br> DEV: $deviceName | $frame | $slot | $pon | $onuID | $telUser | $telPass | $telNumber <br><br> \n";
-              $telefone_on = ativa_telefonia($deviceName,$frame,$slot,$pon,$onuID,$telUser,$telPass,$telNumber);
+              //echo "\n <br><br> DEV: $deviceName | $frame | $slot | $pon | $onuID | $telNumber | $telPass | $telNumber <br><br> \n";
+              $telefone_on = ativa_telefonia($deviceName,$frame,$slot,$pon,$onuID,$telNumber,$telPass,$telNumber);
 
               //echo "<br> TELON: $telefone_on<br>"; var_dump($telefone_on); echo "<br><br>";
 
@@ -149,35 +155,112 @@ if (!mysqli_connect_errno())
                 mysqli_close($conectar);
                 exit;
               }else{
-                $_SESSION['menssagem'] = "Selecione a Porta de Atendimento!";
-                $caixa_atendimento = $_GET['caixa_atendimento_select'] = $cto;
-                header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_select=$caixa_atendimento&serial=$serial");
-                mysqli_close($conectar_radius);
-                mysqli_close($conectar);
-                exit;
+                  ## INICIO SERVICE PORT TELEFONE ##
+                $servicePortTelefone = get_service_port_telefone($deviceName,$frame,$slot,$pon,$onuID,$contrato);
+
+                $tira_ponto_virgula = explode(";",$servicePortTelefone);
+                $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
+                print_r($check_sucesso);echo "<br><br>";
+                $remove_desc = explode("ENDESC=",$check_sucesso[1]);
+                print_r($remove_desc);
+                $errorCode = trim($remove_desc[0]);
+                if($errorCode != "0") //se der erro na service port telefone
+                {
+                  $_SESSION['menssagem'] = "Houve erro Inserir a Service Port Telefonia: $errorCode";
+    
+                  //se der erro ele irá apagar o registro salvo na tabela local ont
+                   $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
+                   mysqli_query($conectar,$sql_apagar_onu);
+    
+                   $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/13/0/$serial@vertv' 
+                     AND attribute='Huawei-Qos-Profile-Name' ";
+                   $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
+    
+                   $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/13/0/$serial@vertv' ";
+                   $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
+                  
+                   deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID);
+                  
+                  header('Location: ../ont_classes/ont_register.php');
+                  mysqli_close($conectar_radius);
+                  mysqli_close($conectar);
+                  exit;
+                }else{
+                  $remove_barras_para_pegar_id = explode("--------------",$tira_ponto_virgula[1]);
+                  $pegar_servicePortTel_ID = explode("\r\n",$remove_barras_para_pegar_id[1]);
+                  
+                  $pega_id = explode("	",$pegar_servicePortTel_ID[2]);//posicao 4 será sempre o ONTID
+                  
+                  $servicePortTelefoneID= $pega_id[0] - 1; 
+                  
+                  $insere_service_telefone = "UPDATE ont SET service_port_telefone='$servicePortTelefoneID' WHERE serial = '$serial'";
+                  $executa_insere_service_telefone = mysqli_query($conectar,$insere_service_telefone);
+                  
+                }//fim service port telefonia
               }
-            }  
+            } //FIM ATIVA TELEFONIA  
             ########FIM TL1########
-              $_SESSION['menssagem'] = "Selecione a Porta de Atendimento!";
-              $caixa_atendimento = $_GET['caixa_atendimento_select'] = $cto;
-              header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_select=$caixa_atendimento&serial=$serial");
+            
+            $servicePortInternet = get_service_port_internet($deviceName,$frame,$slot,$pon,$onuID,$contrato);
+
+            $tira_ponto_virgula = explode(";",$servicePortInternet);
+            $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
+            $remove_desc = explode("ENDESC=",$check_sucesso[1]);
+            $errorCode = trim($remove_desc[0]);
+            if($errorCode != "0") //se der erro na service port internet
+            {
+              $_SESSION['menssagem'] = "Houve erro Inserir a Service Port de Internet: $errorCode";
+
+              //se der erro ele irá apagar o registro salvo na tabela local ont
+              $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
+              mysqli_query($conectar,$sql_apagar_onu);
+
+              $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/13/0/$serial@vertv' 
+                AND attribute='Huawei-Qos-Profile-Name' ";
+              $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
+
+              $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/13/0/$serial@vertv' ";
+              $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
+              
+              deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID);
+              
+              header('Location: ../ont_classes/ont_register.php');
               mysqli_close($conectar_radius);
               mysqli_close($conectar);
               exit;
-           }
-          }else{
-            $erro = mysqli_error($conectar_radius);
-            $_SESSION['menssagem'] = "Houve erro ao inserir no Radius SQL: $erro";
 
-              //se der erro ele irá apagar o registro salvo na tabela local ont
-            $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
-            mysqli_query($conectar,$sql_apagar_onu); 
-
-            header('Location: ../ont_classes/ont_register.php');
-            mysqli_close($conectar_radius);
-            mysqli_close($conectar);
-            exit;
+            }else{
+              $remove_barras_para_pegar_id = explode("--------------",$tira_ponto_virgula[1]);
+              $pegar_servicePorta_ID = explode("\r\n",$remove_barras_para_pegar_id[1]);
+              //print_r($pegar_servicePorta_ID);
+              $pega_id = explode("	",$pegar_servicePorta_ID[2]);//posicao 4 será sempre o ONTID
+              
+              $servicePortInternetID= $pega_id[0] - 1; 
+              
+              $insere_service_internet = "UPDATE ont SET service_port_internet='$servicePortInternetID' WHERE serial = '$serial'";
+              $executa_insere_service_internet = mysqli_query($conectar,$insere_service_internet);
+              
+               $_SESSION['menssagem'] = "Selecione a Porta de Atendimento!";
+               $caixa_atendimento = $_GET['caixa_atendimento_select'] = $cto;
+               header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_select=$caixa_atendimento&serial=$serial");
+               mysqli_close($conectar_radius);
+               mysqli_close($conectar);
+               exit;
+            }//fim service port internet
           }
+        }else{
+          $erro = mysqli_error($conectar_radius);
+          $_SESSION['menssagem'] = "Houve erro ao inserir no Radius SQL: $erro";
+
+            //se der erro ele irá apagar o registro salvo na tabela local ont
+          $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
+          mysqli_query($conectar,$sql_apagar_onu); 
+
+          header('Location: ../ont_classes/ont_register.php');
+          mysqli_close($conectar_radius);
+          mysqli_close($conectar);
+          exit;
+        }
       }else{
         $erro = mysqli_error($conectar);
         $_SESSION['menssagem'] = "Houve erro na execuão da query SQL: $erro";
