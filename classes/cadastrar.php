@@ -52,7 +52,8 @@ if (!mysqli_connect_errno())
       $cadastrar = mysqli_query($conectar,$sql_registra_onu);
       if ($cadastrar )               
       {
-
+        if($vasProfile != "VAS_IPTV")
+        {
            $insere_ont_radius_username = "INSERT INTO radcheck( username, attribute, op, value) 
                VALUES ( '2500/13/0/$serial@vertv', 'User-Name', ':=', '2500/13/0/$serial@vertv' )";
 
@@ -65,7 +66,11 @@ if (!mysqli_connect_errno())
            $executa_query_username= mysqli_query($conectar_radius,$insere_ont_radius_username);
            $executa_query_password= mysqli_query($conectar_radius,$insere_ont_radius_password);
            $executa_query_qos_profile= mysqli_query($conectar_radius,$insere_ont_radius_qos_profile);
-
+        }else{
+          $executa_query_username=true;
+          $executa_query_password=true;
+          $executa_query_qos_profile=true;
+        }
           $sql_atualiza_limite = "UPDATE ont SET limite_equipamentos=0 WHERE contrato = $contrato";
           $diminui_limite = mysqli_query($conectar,$sql_atualiza_limite);
 
@@ -147,16 +152,19 @@ if (!mysqli_connect_errno())
                 //se der erro ele irá apagar o registro salvo na tabela local ont
                 $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
                 mysqli_query($conectar,$sql_apagar_onu);
+                
+                if($vasProfile != "VAS_IPTV")//se for apenas iptv, nao apagara o radius, pois nao existe
+                {
+                  $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/13/0/$serial@vertv' 
+                    AND attribute='Huawei-Qos-Profile-Name' ";
+                  $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
 
-                $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/13/0/$serial@vertv' 
-                  AND attribute='Huawei-Qos-Profile-Name' ";
-                $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
-
-                $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/13/0/$serial@vertv' ";
-                $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
+                  $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/13/0/$serial@vertv' ";
+                  $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
+                }
                 
                 deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID);
-                
+                  
                 header('Location: ../ont_classes/ont_register.php');
                 mysqli_close($conectar_radius);
                 mysqli_close($conectar);
