@@ -1,6 +1,5 @@
 <?php 
 
-
   function logar_tl1()
   {
     include_once "telnet_config.php";
@@ -203,4 +202,57 @@ SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V
       fclose($fp);
     }
   }
+
+  function insere_btv_iptv($ip_olt,$servicePortIPTV)
+  {
+    include 'ssh_config.php';
+    
+    //set_include_path(get_include_path() . PATH_SEPARATOR . 'phpseclib');
+    include('ssh2/Net/SSH2.php');
+    
+    include('ssh2/File/ANSI.php');
+    
+    $ssh = new Net_SSH2($ip_olt);
+    
+    if (!$ssh->login($username, $psk)) {
+      return exit('Login Failed');
+    }
+
+    $comando_insere_btv = "igmp user add service-port $servicePortIPTV no-auth\n";
+    $comando_insere_multicastVlan = "igmp multicast-vlan member service-port $servicePortIPTV\n";
+
+    $ansi = new File_ANSI();
+    $ansi->appendString($ssh->read('MA5680T>'));
+
+    $ssh->write("en\n");
+    $ssh->write("conf\n");
+    $ssh->write("btv\n");
+    $ssh->write("$comando_insere_btv");
+    $ssh->write("\n"); //CONFIRMA a insersão do btv
+    $ssh->write("multicast-vlan 2502\n");
+    $ssh->write($comando_insere_multicastVlan);
+    $ssh->write("btv\n");
+    $ssh->write("display current-configuration\n");
+    $ssh->setTimeout(1);
+    $ansi->appendString($ssh->read());
+    
+    $retorno =  $ansi->getScreen(); // outputs HTML
+
+    ######## FILTRA O RESULTADO PARA MOSTRAR SE FOI OU NAO ######## 
+
+    $explo = explode(PHP_EOL, $retorno);
+    $filtraNulos = array_filter($explo, 'strlen');
+    $array_result = array_values($filtraNulos);
+
+    if(trim($array_result[13]) == "igmp user add service-port $servicePortIPTV no-auth") // se o retorno na posicao 13 for Command:, ele cai no Else
+    {
+      return "invalido";
+    }else{ //se a posicao 13 for o comando do igmp user
+      return "valido" ;
+    }
+
+    ########  FIM FILTRA O RESULTADO PARA MOSTRAR SE FOI OU NAO ########
+
+  }
+
 ?>

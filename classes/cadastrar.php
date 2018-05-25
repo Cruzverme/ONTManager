@@ -20,6 +20,7 @@ if (!mysqli_connect_errno())
     $telPass = $_POST["passwordTel"];
     $vasProfile = $_POST["optionsRadios"];
     $porta_atendimento = '5';
+    $ip_olt = NULL;
 
      if(empty($telNumber) && empty($telPass) )
      {
@@ -46,6 +47,10 @@ if (!mysqli_connect_errno())
        exit;
      }
 
+     if($vasProfile == "VAS_IPTV")
+     {
+      $pacote = NULL;
+     }
       $sql_registra_onu = ("INSERT INTO ont (contrato, serial, cto, tel_number, tel_user, tel_password, pacote, usuario_id) 
                               VALUES ('$contrato','$serial','$cto','$telNumber','$telNumber','$telPass','$pacote','$usuario')" );
     
@@ -93,6 +98,14 @@ if (!mysqli_connect_errno())
           $frame = 0;
           $slot = 0;
           $pon = 0;
+
+          #### SELECT OLT IP ####
+          $sql_pega_olt_ip = "SELECT olt_ip FROM pon WHERE deviceName=$deviceName";
+          $executa_pega_olt_ip = mysqli_query($conectar,$sql_pega_olt_ip);
+          while ($ip = mysqli_fetch_array($executa_select_deviceName, MYSQLI_BOTH))
+          {
+            $ip_olt = $ip['olt_ip'];
+          }
           
           while ($fram_slot_pon = mysqli_fetch_array($executa_select_frame_slot_pon, MYSQLI_BOTH))
           {
@@ -153,7 +166,7 @@ if (!mysqli_connect_errno())
                 $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
                 mysqli_query($conectar,$sql_apagar_onu);
                 
-                if($vasProfile != "VAS_IPTV")//se for apenas iptv, nao apagara o radius, pois nao existe
+                if($vasProfile != "VAS_IPTV")//se for apenas iptv nao apagara o radius, pois nao existe
                 {
                   $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/13/0/$serial@vertv' 
                     AND attribute='Huawei-Qos-Profile-Name' ";
@@ -176,11 +189,41 @@ if (!mysqli_connect_errno())
                 
                 $pega_id = explode("	",$pegar_servicePorta_ID[2]);//posicao 4 será sempre o ONTID
                 
-                $servicePortIptvID= $pega_id[0] - 1; 
+                $servicePortIptvID= $pega_id[0] - 1;
                 
                 $insere_service_iptv = "UPDATE ont SET service_port_iptv='$servicePortIptvID' WHERE serial = '$serial'";
                 $executa_insere_service_iptv = mysqli_query($conectar,$insere_service_iptv);
                 
+                ### BTV ###
+                $btv_olt = insere_btv_iptv("$ip_olt","$servicePortIptvID");
+
+                if($btv_olt != 'valido' )
+                {
+                  $_SESSION['menssagem'] = "Houve erro no BTV: $btv_olt";
+
+                  //se der erro ele irá apagar o registro salvo na tabela local ont
+                  $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
+                  mysqli_query($conectar,$sql_apagar_onu);
+                  
+                  if($vasProfile != "VAS_IPTV")//se for apenas iptv nao apagara o radius, pois nao existe
+                  {
+                    $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/13/0/$serial@vertv' 
+                      AND attribute='Huawei-Qos-Profile-Name' ";
+                    $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
+
+                    $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/13/0/$serial@vertv' ";
+                    $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
+                  }
+                  
+                  deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID);
+                    
+                  header('Location: ../ont_classes/ont_register.php');
+                  mysqli_close($conectar_radius);
+                  mysqli_close($conectar);
+                  exit;
+ 
+                }
+                ### FIM BTV ###
                 if($vasProfile == "VAS_IPTV")
                 {
                   $_SESSION['menssagem'] = "Selecione a Porta de Atendimento!";
