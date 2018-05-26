@@ -206,7 +206,7 @@ SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V
   function insere_btv_iptv($ip_olt,$servicePortIPTV)
   {
     include 'ssh_config.php';
-    
+    //include '/vendor/autoload.php'; 
     //set_include_path(get_include_path() . PATH_SEPARATOR . 'phpseclib');
     include('ssh2/Net/SSH2.php');
     
@@ -215,7 +215,7 @@ SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V
     $ssh = new Net_SSH2($ip_olt);
     
     if (!$ssh->login($username, $psk)) {
-      return exit('Login Failed');
+      return exit("IP:$ip_olt Login Failed");
     }
 
     $comando_insere_btv = "igmp user add service-port $servicePortIPTV no-auth\n";

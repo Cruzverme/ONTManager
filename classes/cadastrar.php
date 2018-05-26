@@ -100,7 +100,7 @@ if (!mysqli_connect_errno())
           $pon = 0;
 
           #### SELECT OLT IP ####
-          $sql_pega_olt_ip = "SELECT olt_ip FROM pon WHERE deviceName=$deviceName";
+          $sql_pega_olt_ip = "SELECT olt_ip FROM pon WHERE deviceName='$deviceName'";
           $executa_pega_olt_ip = mysqli_query($conectar,$sql_pega_olt_ip);
           while ($ip = mysqli_fetch_array($executa_select_deviceName, MYSQLI_BOTH))
           {
