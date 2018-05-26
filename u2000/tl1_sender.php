@@ -92,15 +92,22 @@ SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V
   }
 
 
-  function deletar_onu_2000($dev,$frame,$slot,$pon,$ontID)
+  function deletar_onu_2000($dev,$frame,$slot,$pon,$ontID,$ip,$servPortIPTV)
   {
     include_once "telnet_config.php";
+    include_once "../db/db_config_mysql.php";
     $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
 
     if(!$fp) 
     {
-      echo "ERROR: $errno - $errstr<br />\n";
+      return "ERROR: $errno - $errstr<br />\n";
     }else{     
+      if($servicePortIPTV == NULL)
+      {
+        deleta_btv_iptv($ip,$deviceName);
+      }
+      
+
       $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
 //DEL-ONT::DEV=A1_VERTV-01,FN=0,SN=13,PN=1,ONTID=0,DELCONFIG=TRUE:1::;
       $comando_deletar = "DEL-ONT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon,ONTID=$ontID,DELCONFIG=TRUE:1::;";
@@ -250,6 +257,54 @@ SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V
     }else{ //se a posicao 13 for o comando do igmp user
       return "valido" ;
     }
+
+    ########  FIM FILTRA O RESULTADO PARA MOSTRAR SE FOI OU NAO ########
+
+  }
+
+  function deleta_btv_iptv($ip_olt,$servicePortIPTV)
+  {
+    include 'ssh_config.php';
+    //include '/vendor/autoload.php'; 
+    //set_include_path(get_include_path() . PATH_SEPARATOR . 'phpseclib');
+    include('ssh2/Net/SSH2.php');
+    
+    include('ssh2/File/ANSI.php');
+    
+    $ssh = new Net_SSH2($ip_olt);
+    
+    if (!$ssh->login($username, $psk)) {
+      return exit("Falha no Login");
+    }
+
+    $comando_deleta_btv = "igmp user delete service-port $servicePortIPTV \n";
+    
+    $ansi = new File_ANSI();
+    $ansi->appendString($ssh->read('MA5680T>'));
+
+    $ssh->write("en\n");
+    $ssh->write("conf\n");
+    $ssh->write("btv\n");
+    $ssh->write("$comando_insere_btv");
+    $ssh->write("\n"); //CONFIRMA a insersão do btv
+    $ssh->write("display current-configuration\n");
+    $ssh->setTimeout(1);
+    $ansi->appendString($ssh->read());
+    
+    $retorno =  $ansi->getScreen(); // outputs HTML
+
+    ######## FILTRA O RESULTADO PARA MOSTRAR SE FOI OU NAO ######## 
+
+    // $explo = explode(PHP_EOL, $retorno);
+    // $filtraNulos = array_filter($explo, 'strlen');
+    // $array_result = array_values($filtraNulos);
+
+    // if(trim($array_result[13]) == "igmp user add service-port $servicePortIPTV no-auth") // se o retorno na posicao 13 for Command:, ele cai no Else
+    // {
+    //   return "invalido";
+    // }else{ //se a posicao 13 for o comando do igmp user
+    //   return "valido" ;
+    // }
 
     ########  FIM FILTRA O RESULTADO PARA MOSTRAR SE FOI OU NAO ########
 

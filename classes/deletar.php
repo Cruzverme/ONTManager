@@ -29,7 +29,7 @@
           if ($executa_query && $deletar_onu_radius) 
           {
             ########INICIO TL1########
-            $select_ont_info = "SELECT onu.ontID,ct.frame_slot_pon,ct.pon_id_fk,p.deviceName FROM ont onu 
+            $select_ont_info = "SELECT onu.ontID,onu.service_port_iptv,ct.frame_slot_pon,ct.pon_id_fk,p.deviceName,p.olt_ip FROM ont onu 
             INNER JOIN ctos ct ON ct.serial='$serial' AND ct.caixa_atendimento= onu.cto 
             INNER JOIN pon p ON p.pon_id = ct.pon_id_fk 
             WHERE onu.serial='$serial' AND onu.contrato='$contrato'";
@@ -41,11 +41,13 @@
               list($frame,$slot,$pon) = explode('-',$onu_info['frame_slot_pon']);
               $infoPonID = $onu_info['pon_id_fk'];
               $infoDev = $onu_info['deviceName'];
+              $ip = $onu_info['olt_ip'];
+              $servicePortIptv = $onu_info['service_port_iptv'];
             }
 
             //echo "<br>DEV: $infoDev | ONTID: $infoONTID | FN: $frame | SN: $slot | PN: $pon <br>";
 
-            $deletar_2000 = deletar_onu_2000($infoDev,$frame,$slot,$pon,$infoONTID);
+            $deletar_2000 = deletar_onu_2000($infoDev,$frame,$slot,$pon,$infoONTID,$ip,$servicePortIptv);
 
             $tira_ponto_virgula = explode(";",$deletar_2000);
             $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
