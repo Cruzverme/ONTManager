@@ -102,7 +102,7 @@ SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V
     {
       return "ERROR: $errno - $errstr<br />\n";
     }else{     
-      if($servicePortIPTV == NULL)
+      if($servicePortIPTV != NULL)
       {
         deleta_btv_iptv($ip,$deviceName);
       }
