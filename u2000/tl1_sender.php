@@ -102,9 +102,9 @@ SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V
     {
       return "ERROR: $errno - $errstr<br />\n";
     }else{     
-      if($servicePortIPTV != NULL)
+      if($servPortIPTV != NULL)
       {
-        deleta_btv_iptv($ip,$servicePortIPTV);
+        deleta_btv_iptv($ip,$servPortIPTV);
       }
       
 
@@ -285,17 +285,17 @@ SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V
     $ssh->write("en\n");
     $ssh->write("conf\n");
     $ssh->write("btv\n");
-    $ssh->write("$comando_insere_btv");
-    $ssh->write("\n"); //CONFIRMA a insersão do btv
+    $ssh->write("$comando_deleta_btv");
+    $ssh->write("y\n");
     $ssh->write("display current-configuration\n");
     $ssh->setTimeout(1);
     $ansi->appendString($ssh->read());
     
     $retorno =  $ansi->getScreen(); // outputs HTML
-
+  
     ######## FILTRA O RESULTADO PARA MOSTRAR SE FOI OU NAO ######## 
 
-    // $explo = explode(PHP_EOL, $retorno);
+    //$explo = explode(PHP_EOL, $retorno);
     // $filtraNulos = array_filter($explo, 'strlen');
     // $array_result = array_values($filtraNulos);
 
