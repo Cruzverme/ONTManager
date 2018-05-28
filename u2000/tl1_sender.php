@@ -126,12 +126,6 @@ SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V
     fclose($fp);
   }
 
-
-  function alterar_ont()
-  {
-
-  }
-
   function get_service_port_internet($dev,$frame,$slot,$pon,$ontID,$contrato)
   {
     include "telnet_config.php";
@@ -361,4 +355,65 @@ SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V
       fclose($fp);
     } 
   }
+
+  // function alterar_ont($dev,$frame,$slot,$pon,$ontID,$vasProfile,$serial)
+  // {
+  //   include "telnet_config.php";
+  //   $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
+
+  //   if(!$fp) 
+  //   {
+  //     echo "ERROR: $errno - $errstr<br />\n";
+  //   }else{
+  //     switch($vasProfile){
+
+  //       case "VAS_Internet":
+  //         if($vasProfile == "" )
+  //         {
+            
+  //         }
+  //       break;
+  //       case "VAS_Internet-VoIP":
+  //         if($vasProfile == "" )
+  //         {
+            
+  //         }
+  //       break;
+  //       case "VAS_IPTV":
+  //         if($vasProfile == "VAS_Internet" || $vasProfile == "VAS_Internet-IPTV" || $vasProfile == "VAS_Internet-VoIP-IPTV")
+  //         {
+
+  //         }
+  //         $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
+  //         $comando = "MOD-ONT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon,ONTID=$ontID:1::VAPROFILE=VAS_IPTV";
+  //         fwrite($fp,$login_command);
+  //         fwrite($fp,$comando_ativa);
+
+  //         stream_set_timeout($fp,5);
+  //         while($c = fgetc($fp)!==false)
+  //         {
+  //         $retornoTL1 = fread($fp,2024);
+  //         return $retornoTL1;
+  //         }
+  //         fclose($fp);
+
+  //       break;
+  //       case "VAS_Internet-IPTV":
+  //         if($vasProfile == "" )
+  //         {
+            
+  //         }
+  //       break;
+  //       case "VAS_Internet-VoIP-IPTV":
+  //         if($vasProfile == "" )
+  //         {
+            
+  //         }
+  //       break;
+  //       default:
+  //         return "DEU RUIM!";
+  //     }
+  //   }
+  // }
+
 ?>

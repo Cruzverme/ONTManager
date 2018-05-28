@@ -16,7 +16,7 @@
                                             <label>Contrato</label>
                                             <input class="form-control" placeholder="Contrato" name="contrato" type="search" autofocus required>
                                             <span class="input-group-btn">
-                                              <button class="btn btn-secondary" type="button">Buscar</button>
+                                              <button class="btn btn-secondary" type="submit">Buscar</button>
                                             </span>
                                         </div>
                                     </div>
