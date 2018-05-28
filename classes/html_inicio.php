@@ -5,19 +5,19 @@ echo '
 <html lang="pt">
 ';
     
-    // Verificador de sessão 
-    include "../classes/verifica_sessao.php"; 
+  // Verificador de sessão 
+  include "../classes/verifica_sessao.php"; 
 
-    #capturar mensagem
-    if(isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem']))
-    {
-      print "<script>alert(\"{$_SESSION['menssagem']}\")</script>";
-      unset( $_SESSION['menssagem'] );
-    }
+  #capturar mensagem
+  if(isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem']))
+  {
+    print "<script>alert(\"{$_SESSION['menssagem']}\")</script>";
+    unset( $_SESSION['menssagem'] );
+  }
     
 echo '
-    <head>';
-        include_once "head.php";
+  <head>';
+    include_once "head.php";
 echo '   </head>
     
     <body>               
@@ -70,13 +70,21 @@ echo '                  <li>
                         <li>
                             <a href="../ont_classes/ont_delete.php"><i class="fa fa-ban fa-fw"></i> Remover ONT</a>
                         </li>';
-            if($_SESSION["nivel_usuario"] > 0)
+            if($_SESSION["nivel_usuario"] > 1)
+            {
+              echo '  <li>
+                          <a href="../ont_classes/ont_disable.php"><i class="fa fa-columns fa-fw"></i> Desabilitar e Habilitar Cliente </a>
+                      </li>
+              ';
+                      
+            }
+            if($_SESSION["nivel_usuario"] > 3)
             {
               echo '  <li>
                           <a href="../cto_classes/cto_create.php"><i class="fa fa-columns fa-fw"></i> Cadastrar CTO</a>
                       </li>
                       <li>
-                          <a href="../cto_classes/pon_create.php"><i class="fa fa-road fa-fw"></i> Cadastrar de PON </a>
+                          <a href="../cto_classes/pon_create.php"><i class="fa fa-road fa-fw"></i> Cadastrar de OLT </a>
                       </li>
                       <li>
                           <a href="../planos/planos_create.php"><i class="fa fa-wifi fa-fw"></i> Cadastrar Nova Velocidade</a>
