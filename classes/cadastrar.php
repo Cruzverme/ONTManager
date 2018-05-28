@@ -51,8 +51,9 @@ if (!mysqli_connect_errno())
      {
       $pacote = NULL;
      }
-      $sql_registra_onu = ("INSERT INTO ont (contrato, serial, cto, tel_number, tel_user, tel_password, pacote, usuario_id) 
-                              VALUES ('$contrato','$serial','$cto','$telNumber','$telNumber','$telPass','$pacote','$usuario')" );
+      
+      $sql_registra_onu = ("INSERT INTO ont (contrato, serial, cto, tel_number, tel_user, tel_password, perfil, pacote, usuario_id) 
+                              VALUES ('$contrato','$serial','$cto','$telNumber','$telNumber','$telPass','$vasProfile','$pacote','$usuario')" );
     
       $cadastrar = mysqli_query($conectar,$sql_registra_onu);
       if ($cadastrar )               
@@ -150,7 +151,7 @@ if (!mysqli_connect_errno())
             $insere_ont_id = "UPDATE ont SET ontID='$onuID' WHERE serial = '$serial'";
             $executa_insere_ont_id = mysqli_query($conectar,$insere_ont_id);
           ##### IPTV SERVICE PORT ######
-            if($vasProfile == "VAS_IPTV" || $vasProfile== "VAS_Internet-VoIP-IPTV") ####SERVICE 
+            if($vasProfile == "VAS_IPTV" || $vasProfile== "VAS_Internet-VoIP-IPTV" || $vasProfile == "VAS_Internet-IPTV") ####SERVICE 
             {
               $servicePortIPTV = get_service_port_iptv($deviceName,$frame,$slot,$pon,$onuID,$contrato);
 

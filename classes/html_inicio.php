@@ -73,10 +73,9 @@ echo '                  <li>
             if($_SESSION["nivel_usuario"] > 1)
             {
               echo '  <li>
-                          <a href="../ont_classes/ont_disable.php"><i class="fa fa-columns fa-fw"></i> Desabilitar e Habilitar Cliente </a>
+                          <a href="../ont_classes/ont_disable.php"><i class="fa fa-pause-circle fa-fw"></i> Desabilitar e Habilitar Cliente </a>
                       </li>
               ';
-                      
             }
             if($_SESSION["nivel_usuario"] > 3)
             {

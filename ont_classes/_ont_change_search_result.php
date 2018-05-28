@@ -14,6 +14,37 @@
             </div>
             <div class="panel-body">
               <form role="form" action="../classes/alterar.php" method="post">
+                
+              <label>Qual Plano</label>
+              <div class="radio">
+                  <label>
+                      <input type="radio" name="optionsRadios" id="optionsRadios1" value="VAS_Internet" checked>INTERNET
+                  </label>
+              </div>
+              <div class="radio">
+                  <label>
+                      <input type="radio" name="optionsRadios" id="optionsRadios2" value="VAS_IPTV">IPTV
+                  </label>
+              </div>
+              
+              <div class="radio">
+                  <label>
+                      <input type="radio" name="optionsRadios" id="optionsRadios3" value="VAS_Internet-IPTV">INTERNET | IPTV
+                  </label>
+              </div>
+              <div class="radio">
+                  <label>
+                      <input type="radio" name="optionsRadios" id="optionsRadios3" value="VAS_Internet-VoIP">INTERNET | TELEFONE
+                  </label>
+              </div>
+              <div class="radio">
+                  <label>
+                      <input type="radio" name="optionsRadios" id="optionsRadios3" value="VAS_Internet-VoIP-IPTV">INTERNET | TELEFONE | IPTV
+                  </label>
+              </div>
+            
+              
+              
                 <div class="form-group">
                   <label>Contrato</label> 
                   <input class="form-control" placeholder="Contrato" name="contrato" type="text" value='<?php echo $contrato; ?>' autofocus readonly>
