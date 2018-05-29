@@ -45,9 +45,7 @@
       //                        SERIALNUM=48575443909B298B,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=HGW839M,
       //                        MAINSOFTVERSION=V3R016C10S130,VAPROFILE=VAS_Internet-VoIP-IPTV,BUILDTOPO=TRUE; \n\r\n";
 
-      $comando_cadastra_ont = "ADD-ONT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:1::
-NAME=$contrato,ALIAS=$contrato,LINEPROF=line-profile_11,SRVPROF=srv-profile_10,
-SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V3R016C10S130,VAPROFILE=$vasProfile,BUILDTOPO=TRUE;";
+      $comando_cadastra_ont = "ADD-ONT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:1::NAME=$contrato,ALIAS=$contrato,LINEPROF=line-profile_11,SRVPROF=srv-profile_10,SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V3R016C10S130,VAPROFILE=$vasProfile,BUILDTOPO=TRUE;";
 
       fwrite($fp,$login_command);
       fwrite($fp,$comando_cadastra_ont);
@@ -356,64 +354,64 @@ SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V
     } 
   }
 
-  // function alterar_ont($dev,$frame,$slot,$pon,$ontID,$vasProfile,$serial)
-  // {
-  //   include "telnet_config.php";
-  //   $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
+  function alterar_ont($dev,$frame,$slot,$pon,$ontID,$vasProfile,$serial)
+  {
+     include "telnet_config.php";
+     $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
 
-  //   if(!$fp) 
-  //   {
-  //     echo "ERROR: $errno - $errstr<br />\n";
-  //   }else{
-  //     switch($vasProfile){
+     if(!$fp) 
+     {
+       echo "ERROR: $errno - $errstr<br />\n";
+     }else{
+       switch($vasProfile){
 
-  //       case "VAS_Internet":
-  //         if($vasProfile == "" )
-  //         {
+         case "VAS_Internet":
+           if($vasProfile == "" )
+           {
+              cadastrar_ont($dev,$frame,$slot,$pon,$contrato,$splitter,$splitterPort,$serial,$equipment,$vasProfile);
+           }
+         break;
+         case "VAS_Internet-VoIP":
+           if($vasProfile == "" )
+           {
+              cadastrar_ont($dev,$frame,$slot,$pon,$contrato,$splitter,$splitterPort,$serial,$equipment,$vasProfile);
+           }
+         break;
+         case "VAS_IPTV":
+           if($vasProfile == "VAS_Internet" || $vasProfile == "VAS_Internet-IPTV" || $vasProfile == "VAS_Internet-VoIP-IPTV")
+           {
+              
+           }
+           $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
+           $comando = "MOD-ONT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon,ONTID=$ontID:1::VAPROFILE=VAS_IPTV";
+           fwrite($fp,$login_command);
+           fwrite($fp,$comando_ativa);
+
+           stream_set_timeout($fp,5);
+           while($c = fgetc($fp)!==false)
+           {
+           $retornoTL1 = fread($fp,2024);
+           return $retornoTL1;
+           }
+           fclose($fp);
+
+         break;
+         case "VAS_Internet-IPTV":
+           if($vasProfile == "" )
+           {
             
-  //         }
-  //       break;
-  //       case "VAS_Internet-VoIP":
-  //         if($vasProfile == "" )
-  //         {
+           }
+         break;
+         case "VAS_Internet-VoIP-IPTV":
+           if($vasProfile == "" )
+           {
             
-  //         }
-  //       break;
-  //       case "VAS_IPTV":
-  //         if($vasProfile == "VAS_Internet" || $vasProfile == "VAS_Internet-IPTV" || $vasProfile == "VAS_Internet-VoIP-IPTV")
-  //         {
-
-  //         }
-  //         $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
-  //         $comando = "MOD-ONT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon,ONTID=$ontID:1::VAPROFILE=VAS_IPTV";
-  //         fwrite($fp,$login_command);
-  //         fwrite($fp,$comando_ativa);
-
-  //         stream_set_timeout($fp,5);
-  //         while($c = fgetc($fp)!==false)
-  //         {
-  //         $retornoTL1 = fread($fp,2024);
-  //         return $retornoTL1;
-  //         }
-  //         fclose($fp);
-
-  //       break;
-  //       case "VAS_Internet-IPTV":
-  //         if($vasProfile == "" )
-  //         {
-            
-  //         }
-  //       break;
-  //       case "VAS_Internet-VoIP-IPTV":
-  //         if($vasProfile == "" )
-  //         {
-            
-  //         }
-  //       break;
-  //       default:
-  //         return "DEU RUIM!";
-  //     }
-  //   }
-  // }
+           }
+         break;
+         default:
+           return "DEU RUIM!";
+       }
+     }
+   }
 
 ?>

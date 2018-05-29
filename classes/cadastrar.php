@@ -24,8 +24,8 @@ if (!mysqli_connect_errno())
 
      if(empty($telNumber) && empty($telPass) )
      {
-         $telNumber = 0;
-         $telPass = 0;
+        $telNumber = 0;
+        $telPass = 0;
      }
     
      $sql_verifica_limite = "SELECT limite_equipamentos FROM ont WHERE contrato='$contrato'";
@@ -52,8 +52,8 @@ if (!mysqli_connect_errno())
       $pacote = NULL;
      }
       
-      $sql_registra_onu = ("INSERT INTO ont (contrato, serial, cto, tel_number, tel_user, tel_password, perfil, pacote, usuario_id) 
-                              VALUES ('$contrato','$serial','$cto','$telNumber','$telNumber','$telPass','$vasProfile','$pacote','$usuario')" );
+      $sql_registra_onu = ("INSERT INTO ont (contrato, serial, cto, tel_number, tel_user, tel_password, perfil, pacote, usuario_id,equipamento) 
+                              VALUES ('$contrato','$serial','$cto','$telNumber','$telNumber','$telPass','$vasProfile','$pacote','$usuario','$equipment')" );
     
       $cadastrar = mysqli_query($conectar,$sql_registra_onu);
       if ($cadastrar )               

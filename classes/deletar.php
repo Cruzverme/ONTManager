@@ -54,7 +54,7 @@
             $remove_desc = explode("ENDESC=",$check_sucesso[1]);
             $errorCode = trim($remove_desc[0]);
             if($errorCode != "0")
-            {echo "$deletar_2000";
+            {
               $_SESSION['menssagem'] = "Houve erro ao inserir no u2000 SQL: $errorCode";
               header('Location: ../ont_classes/ont_delete.php');
               mysqli_close($conectar_radius);

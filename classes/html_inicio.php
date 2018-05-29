@@ -83,7 +83,7 @@ echo '                  <li>
                           <a href="../cto_classes/cto_create.php"><i class="fa fa-columns fa-fw"></i> Cadastrar CTO</a>
                       </li>
                       <li>
-                          <a href="../cto_classes/pon_create.php"><i class="fa fa-road fa-fw"></i> Cadastrar de OLT </a>
+                          <a href="../cto_classes/pon_create.php"><i class="fa fa-road fa-fw"></i> Cadastro de OLT </a>
                       </li>
                       <li>
                           <a href="../planos/planos_create.php"><i class="fa fa-wifi fa-fw"></i> Cadastrar Nova Velocidade</a>
