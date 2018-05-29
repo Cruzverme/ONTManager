@@ -113,7 +113,7 @@ if (!mysqli_connect_errno())
         $pega_id = explode("	",$filtra_espaco[2]);//posicao 4 será sempre o ONTID
         $onuID=trim($pega_id[4]);
         
-        $insere_ont_id = "UPDATE ont SET ontID='$onuID', perfil='$vasProfileNovo' WHERE serial = '$serial'";
+        $insere_ont_id = "UPDATE ont SET ontID='$onuID', perfil='$vasProfileNovo',service_port_internet='',service_port_telefone='',service_port_iptv='' WHERE serial = '$serial'";
         $executa_insere_ont_id = mysqli_query($conectar,$insere_ont_id);
       ##### IPTV SERVICE PORT ######
         if($vasProfileNovo == "VAS_IPTV" || $vasProfileNovo== "VAS_Internet-VoIP-IPTV" || $vasProfileNovo == "VAS_Internet-IPTV") ####SERVICE 
@@ -161,7 +161,7 @@ if (!mysqli_connect_errno())
             $executa_insere_service_iptv = mysqli_query($conectar,$insere_service_iptv);
             
             ### BTV ###
-            $btv_olt = insere_btv_iptv("$ip_olt","$servicePortIptvID");
+            $btv_olt = insere_btv_iptv("$ip","$servicePortIptvID");
 
             if($btv_olt != 'valido' )
             {
