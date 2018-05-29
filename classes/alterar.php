@@ -161,8 +161,8 @@ if (!mysqli_connect_errno())
             $executa_insere_service_iptv = mysqli_query($conectar,$insere_service_iptv);
             
             ### BTV ###
-            $btv_olt = insere_btv_iptv("$ip","$servicePortIptvID");
-
+            $btv_olt = insere_btv_iptv($ip,"$servicePortIptvID");
+            var_dump($btv_olt);
             if($btv_olt != 'valido' )
             {
               $_SESSION['menssagem'] = "Houve erro no BTV: $btv_olt";
@@ -230,9 +230,7 @@ if (!mysqli_connect_errno())
 
             $tira_ponto_virgula = explode(";",$servicePortTelefone);
             $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
-            print_r($check_sucesso);echo "<br><br>";
             $remove_desc = explode("ENDESC=",$check_sucesso[1]);
-            print_r($remove_desc);
             $errorCode = trim($remove_desc[0]);
             if($errorCode != "0") //se der erro na service port telefone
             {
@@ -262,7 +260,7 @@ if (!mysqli_connect_errno())
               $pega_id = explode("	",$pegar_servicePortTel_ID[2]);//posicao 4 será sempre o ONTID
               
               $servicePortTelefoneID= $pega_id[0] - 1; 
-              echo "AEAE $servicePortTelefoneID";
+              
               $insere_service_telefone = "UPDATE ont SET service_port_telefone='$servicePortTelefoneID',tel_user=$telNumber,tel_number=$telNumber,tel_password=$telPass
                WHERE serial = '$serial'";
               $executa_insere_service_telefone = mysqli_query($conectar,$insere_service_telefone);
@@ -310,7 +308,7 @@ if (!mysqli_connect_errno())
           
           $insere_service_internet = "UPDATE ont SET service_port_internet='$servicePortInternetID' WHERE serial = '$serial'";
           $executa_insere_service_internet = mysqli_query($conectar,$insere_service_internet);
-          echo $servicePortInternetID;
+          
             $_SESSION['menssagem'] = "Plano Alterado!";
             header('Location: ../ont_classes/ont_change.php');  
             mysqli_close($conectar_radius);
