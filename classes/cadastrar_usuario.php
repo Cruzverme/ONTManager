@@ -115,9 +115,9 @@
               $userID = $dados['usuario_id']; //pega o usuario_id
 
               $sql_cadastrar_permissao = "INSERT INTO usuario_permissao (cadastrar_onu, deletar_onu, modificar_onu,
-                  desativar_ativar_onu, cadastrar_cto, cadastrar_olt, cadastrar_velocidade, cadastrar_equipamento, usuario)
+                  desativar_ativar_onu, cadastrar_cto, cadastrar_olt, cadastrar_velocidade, cadastrar_usuario, cadastrar_equipamento, usuario)
                   VALUES ($permitir_cadastrar_ONU,$permitir_removerONU,$permitir_alterarONU,$permitir_desabilitarHabilitar,
-                  $permitir_cadastrarCTO,$permitir_cadastrarOLT,$permitir_cadastrarVelocidade,$permitir_cadastrarEquipamento,$userID)";
+                  $permitir_cadastrarCTO,$permitir_cadastrarOLT,$permitir_cadastrarVelocidade, $cadastrarUsuarios, $permitir_cadastrarEquipamento,$userID)";
 
               $permissoes = mysqli_query($conectar,$sql_cadastrar_permissao);
               

@@ -117,11 +117,19 @@ echo '   </head>
                       </li>
                     ';                    
                   }
-                  if($_SESSION["cadastrar_equipamento"] == 1)
+                  if($_SESSION["cadastrar_usuario"] == 1)
                   {
                     echo '
                       <li>
                         <a href="../users/usuario_new.php"><i class="fa fa-users fa-fw"></i> Cadastrar Usuario</a>
+                      </li>
+                    ';                    
+                  }
+                  if($_SESSION["cadastrar_equipamento"] == 1)
+                  {
+                    echo '
+                      <li>
+                        <a href="../equipamento/cadastro_equipamento.php"><i class="fa fa-users fa-fw"></i> Cadastrar Equipamento</a>
                       </li>
                     ';                    
                   }
