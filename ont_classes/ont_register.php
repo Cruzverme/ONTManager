@@ -54,7 +54,7 @@ include_once "../classes/html_inicio.php";
                     
                     <div class="form-group">
                         <label>Pon MAC</label>                                                
-                        <input class="form-control" placeholder="MAC PON" name="serial" type="text" required>
+                        <input class="form-control" placeholder="MAC PON" name="serial" type="text" minlength=16 maxlength=16 required>
                     </div>
                     <div class="camposPacotes" style="display:visible" >                                   
                       <div class="form-group" >

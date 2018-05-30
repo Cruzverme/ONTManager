@@ -266,9 +266,9 @@ if (!mysqli_connect_errno())
 
                 $tira_ponto_virgula = explode(";",$servicePortTelefone);
                 $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
-                print_r($check_sucesso);echo "<br><br>";
+                //print_r($check_sucesso);echo "<br><br>";
                 $remove_desc = explode("ENDESC=",$check_sucesso[1]);
-                print_r($remove_desc);
+                //print_r($remove_desc);
                 $errorCode = trim($remove_desc[0]);
                 if($errorCode != "0") //se der erro na service port telefone
                 {
@@ -346,12 +346,12 @@ if (!mysqli_connect_errno())
               $insere_service_internet = "UPDATE ont SET service_port_internet='$servicePortInternetID' WHERE serial = '$serial'";
               $executa_insere_service_internet = mysqli_query($conectar,$insere_service_internet);
               
-               $_SESSION['menssagem'] = "Selecione a Porta de Atendimento!";
-               $caixa_atendimento = $_GET['caixa_atendimento_select'] = $cto;
-               header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_select=$caixa_atendimento&serial=$serial");
-               mysqli_close($conectar_radius);
-               mysqli_close($conectar);
-               exit;
+              $_SESSION['menssagem'] = "Selecione a Porta de Atendimento!";
+              $caixa_atendimento = $_GET['caixa_atendimento_select'] = $cto;
+              header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_select=$caixa_atendimento&serial=$serial");
+              mysqli_close($conectar_radius);
+              mysqli_close($conectar);
+              exit;
             }//fim service port internet
           }
         }else{
