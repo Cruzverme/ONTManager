@@ -11,7 +11,7 @@
                         $usuario = $_POST["usuario"];
                         $senha = md5($_POST["password"]);
 
-                        $sql_verifica_login = ("SELECT usuario_id, usuario, nome, nivel_user FROM usuarios WHERE usuario = '$usuario' " );
+                        $sql_verifica_login = ("SELECT usuario_id, usuario, nome FROM usuarios WHERE usuario = '$usuario' " );
                         $sql_verifica_password = ("SELECT usuario,senha FROM usuarios WHERE usuario = '$usuario' AND senha = '$senha'" );
 
                         $checar_login = mysqli_query($conectar,$sql_verifica_login);
@@ -33,7 +33,20 @@
                             // TUDO OK! Agora, passa os dados para a sessão e redireciona o usuário
                             $_SESSION["id_usuario"]= $dados["usuario_id"];
                             $_SESSION["nome_usuario"] = $dados["nome"];
-                            $_SESSION['nivel_usuario'] = $dados["nivel_user"];
+
+                            $sql_select_permissoes = "SELECT cadastrar_onu, deletar_onu, modificar_onu, desativar_ativar_onu, 
+                                cadastrar_cto, cadastrar_olt, cadastrar_velocidade, cadastrar_equipamento FROM usuario_permissao WHERE usuario=$_SESSION[id_usuario]";
+                            $execute_sql_select_permissoes = mysqli_query($conectar,$sql_select_permissoes);
+                            $permissoes = @mysqli_fetch_array($execute_sql_select_permissoes); //@ qualquer mensagem de erro sera ignorada
+
+                            $_SESSION["cadastrar_onu"] = $permissoes['cadastrar_onu'];
+                            $_SESSION["deletar_onu"] = $permissoes['deletar_onu'];
+                            $_SESSION["modificar_onu"] = $permissoes['modificar_onu'];
+                            $_SESSION["desativar_ativar_onu"] = $permissoes['desativar_ativar_onu'];
+                            $_SESSION["cadastrar_cto"] = $permissoes['cadastrar_cto'];
+                            $_SESSION["cadastrar_olt"] = $permissoes['cadastrar_olt'];
+                            $_SESSION["cadastrar_velocidade"] = $permissoes['cadastrar_velocidade'];
+                            $_SESSION["cadastrar_equipamento"] = $permissoes['cadastrar_equipamento'];
                             header('Location: ../ont_classes/ont_register.php');
                             mysqli_close($conectar);
                             exit;

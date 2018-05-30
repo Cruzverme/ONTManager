@@ -16,6 +16,14 @@ $('input[name="optionsRadios"]').change(function () {
     }
 });
 
+$('input[name="nivel"]').change(function () {
+    if ($('input[name="nivel"]:checked').val() === "1" ) {
+        $('.camposPermissao').hide();
+    } else {
+        $('.camposPermissao').show();
+    }
+});
+
 $("tr.porta").on('click',function() {
     var porta_selecionada;
     var serial;

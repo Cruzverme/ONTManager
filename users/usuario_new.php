@@ -33,6 +33,24 @@
                   <div class="form-group">
                     <input name="nivel" value=1 type="checkbox"> Permissão de Administrador<br/>
                   </div>
+                  
+                  <div class="camposPermissao" style="display:visible" >                                   
+                    <div class="form-group">
+                      <fieldset>
+                        <legend>Permissões Personalizadas</legend>
+                        <input name="personalizada1" value=1 type="checkbox"> Cadastrar ONT<br/>
+                        <input name="personalizada2" value=2 type="checkbox"> Modificar ONT<br/>
+                        <input name="personalizada3" value=3 type="checkbox"> Deletar ONT<br/>
+                        <input name="personalizada4" value=4 type="checkbox"> Cadastrar CTO<br/>
+                        <input name="personalizada5" value=5 type="checkbox"> Desabilitar e Habilitar ONT<br/>
+                        <input name="personalizada6" value=6 type="checkbox"> Cadastrar Equipamento<br/>
+                        <input name="personalizada7" value=7 type="checkbox"> Cadastrar OLT<br/>
+                        <input name="personalizada8" value=8 type="checkbox"> Cadastrar Velocidade<br/>
+                        <input name="personalizada9" value=9 type="checkbox"> Cadastrar Usuários<br/>
+                      </fieldset>
+                    </div>
+                  </div>
+                  
                   <button class="btn btn-lg btn-success btn-block">Cadastrar</button>
                 </form>
               </div>
