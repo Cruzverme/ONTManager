@@ -1,7 +1,8 @@
 <?php 
 
-  session_start(); 
-
+//if (!isset($_SESSION)) {}
+  session_start();
+  
   if($_SESSION["cadastrar_onu"] == 1)
   {
     header('Location: ../ont_classes/ont_register.php');
@@ -21,6 +22,9 @@
     header('Location: ../users/usuario_new.php');
   }elseif ($_SESSION["cadastrar_equipamento"] == 1) {
     header('Location: ../equipamento/cadastro_equipamento.php');
+  }else{
+    session_destroy();
+    header('Location: ../index.php');
   }
   
 ?>

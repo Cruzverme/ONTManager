@@ -1,4 +1,16 @@
-<?php include_once "../classes/html_inicio.php";?>
+<?php 
+  include_once "../classes/html_inicio.php";
+
+  if($_SESSION["deletar_onu"] == 0) {
+    echo '
+    <script language= "JavaScript">
+      alert("Sem Permissão de Acesso!");
+      location.href="../classes/redirecionador_pagina.php";
+    </script>
+    ';
+  }
+  
+?>
   
   <?php 
     include "../db/db_config_mysql.php";

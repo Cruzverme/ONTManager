@@ -1,6 +1,16 @@
-<?php include "../classes/html_inicio.php"; ?>
+<?php 
+    include "../classes/html_inicio.php"; 
+    include "../db/db_config_mysql.php"; 
 
-<?php include "../db/db_config_mysql.php"; ?>
+    if($_SESSION["cadastrar_cto"] == 0) {
+      echo '
+      <script language= "JavaScript">
+        alert("Sem Permissão de Acesso!");
+        location.href="../classes/redirecionador_pagina.php";    
+      </script>
+      ';
+    }
+?>
 
 <div id="page-wrapper">
 

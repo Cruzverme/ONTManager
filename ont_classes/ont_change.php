@@ -1,7 +1,15 @@
-<?php include_once "../classes/html_inicio.php";?>
-
+<?php
+  include_once "../classes/html_inicio.php";
+  if($_SESSION["modificar_onu"] == 0) {
+    echo '
+    <script language= "JavaScript">
+      alert("Sem Permissão de Acesso!");
+      location.href="../classes/redirecionador_pagina.php";
+    </script>
+    ';
+  }
+?>
         <div id="page-wrapper">
-
             <div class="container">
                 <div class="row">
                     <div class="col-md-4 col-md-offset-4">

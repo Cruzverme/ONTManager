@@ -22,7 +22,7 @@ echo '   </head>
     
     <body>               
     <div id="wrapper">
-      
+    
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
@@ -97,7 +97,7 @@ echo '   </head>
                   {
                     echo '
                       <li>
-                        <a href="../cto_classes/cto_create.php"><i class="fa fa-columns fa-fw"></i> Cadastrar CTO</a>
+                        <a href="../cto_classes/cto_create.php"><i class="fa fa-sitemap fa-fw"></i> Cadastrar CTO</a>
                       </li>
                     ';                    
                   }
@@ -105,7 +105,7 @@ echo '   </head>
                   {
                     echo '
                       <li>
-                        <a href="../cto_classes/pon_create.php"><i class="fa fa-road fa-fw"></i> Cadastro de OLT </a>
+                        <a href="../cto_classes/pon_create.php"><i class="fa fa-columns fa-fw"></i> Cadastro de OLT </a>
                       </li>
                     ';                    
                   }
@@ -129,7 +129,7 @@ echo '   </head>
                   {
                     echo '
                       <li>
-                        <a href="../equipamento/cadastro_equipamento.php"><i class="fa fa-users fa-fw"></i> Cadastrar Equipamento</a>
+                        <a href="../equipamento/cadastro_equipamento.php"><i class="fa fa-server fa-fw"></i> Cadastrar Equipamento</a>
                       </li>
                     ';                    
                   }

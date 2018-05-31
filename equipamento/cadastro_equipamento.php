@@ -1,6 +1,15 @@
 <?php
-      // Verificador de sessão 
-      include "../classes/html_inicio.php"; 
+  
+  include "../classes/html_inicio.php"; 
+  
+  if($_SESSION["cadastrar_equipamento"] == 0) {
+    echo '
+    <script language= "JavaScript">
+      alert("Sem Permissão de Acesso!");
+      location.href="../classes/redirecionador_pagina.php";    
+    </script>
+    ';
+  }
 ?>
   
     <div id="page-wrapper">
@@ -9,7 +18,7 @@
           <div class="col-md-4 col-md-offset-4">
             <div class="login-panel panel panel-default">
               <div class="panel-heading">
-                  <h3 class="panel-title">Cadastrar Usuario</h3>
+                  <h3 class="panel-title">Cadastrar Equipamento</h3>
               </div>
               <div class="panel-body">
                 <form role="form" action="../classes/cadastrar_equipamento.php" method="post">

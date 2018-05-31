@@ -1,12 +1,17 @@
-<!DOCTYPE html>
-<html lang="pt">
-
-
   <?php
       // Verificador de sessão 
-      include "../classes/html_inicio.php"; 
+    include "../classes/html_inicio.php"; 
+    
+    if($_SESSION["cadastrar_usuario"] == 0) {
+      echo '
+      <script language= "JavaScript">
+        alert("Sem Permissão de Acesso!");
+        location.href="../classes/redirecionador_pagina.php";    
+      </script>
+      ';
+    }
 
-      //session_start(); ?>
+  ?>
   
     <div id="page-wrapper">
       <div class="container">

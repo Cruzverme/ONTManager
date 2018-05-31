@@ -1,4 +1,16 @@
-<?php include_once "../classes/html_inicio.php";?>
+<?php 
+  include_once "../classes/html_inicio.php";
+
+  if($_SESSION["modificar_onu"] == 0) 
+  {
+    echo '
+    <script language= "JavaScript">
+      alert("Sem Permissão de Acesso!");
+      location.href="../classes/redirecionador_pagina.php";
+    </script>
+    ';
+  }
+?>
   
   <?php 
     include "../db/db_config_mysql.php";
@@ -13,11 +25,21 @@
       $numeroTel = $ont['tel_number'];
       $passwordTel = $ont['tel_password'];
       $profile = $ont['perfil'];
+      
+    }
+    if(empty($pacote))
+    {
+      mysqli_close($conectar);
+      echo '
+        <script language= "JavaScript">
+          alert("Não Há Equipamento!");
+          location.href="ont_change.php";
+        </script>
+        ';
     }
 
   ?>
   <div id="page-wrapper">
-
     <div class="container">
       <div class="row">
         <div class="col-md-4 col-md-offset-4">

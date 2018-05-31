@@ -1,5 +1,17 @@
-<?php include_once "../classes/html_inicio.php";?>
+<?php 
   
+  include_once "../classes/html_inicio.php";
+  
+  if($_SESSION["desativar_ativar_onu"] == 0) 
+  {
+    echo '
+    <script language= "JavaScript">
+      alert("Sem Permissão de Acesso!");
+      location.href="../classes/redirecionador_pagina.php";
+    </script>
+    ';
+  }
+?>
   <?php 
     include "../db/db_config_mysql.php";
     $contrato = $_POST['contrato'];?>
@@ -34,16 +46,19 @@
                       }                      
                     ?>
                   </select>
-                  <input name="status" type='hidden' value=<?php echo $status; ?> />
+                  <input name="status" type='hidden' value=<?php if(!empty($status))echo $status; ?> />
                   <input name="contrato" type='hidden' value=<?php echo $contrato; ?> />
                 </div>
                 
                 <?php 
-                if($status == 1 ) 
+                if(!empty($status))
                 {
-                  echo  '<button class="btn btn-lg btn-success btn-block">Ativar</button>';
-                }else{
-                  echo  '<button class="btn btn-lg btn-success btn-block">Desativar</button>';
+                  if($status == 1) 
+                  {
+                    echo  '<button class="btn btn-lg btn-success btn-block">Ativar</button>';
+                  }else{
+                    echo  '<button class="btn btn-lg btn-success btn-block">Desativar</button>';
+                  }
                 }
                 ?>
               </form>
