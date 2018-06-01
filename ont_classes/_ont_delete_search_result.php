@@ -44,10 +44,21 @@
                         $pacote = $ont['pacote'];
                       }
                       
+                      if(empty($pacote))
+                      {
+                        mysqli_close($conectar);
+                        echo '
+                          <script language= "JavaScript">
+                            alert("Não Há Equipamento!");
+                            location.href="ont_delete.php";
+                          </script>
+                          ';
+                      }
                     ?>
                   </select>
                 </div>
-                <button class="btn btn-lg btn-success btn-block">Deletar</button>
+                <?php if(!empty($pacote)) echo'<button class="btn btn-lg btn-success btn-block">Deletar</button>'; ?>
+                
               </form>
             </div>
           </div>
