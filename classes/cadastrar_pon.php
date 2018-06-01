@@ -3,15 +3,18 @@
 //iniciando sessao para enviar as msgs
   session_start();
 
+  $nomeDispositivo = filter_input(INPUT_POST,'nomeDev');
   $frame = filter_input(INPUT_POST, 'frame');
   $slot = filter_input(INPUT_POST, 'slot');
   $porta = filter_input(INPUT_POST,'porta');
+  $ipOLT = filter_input(INPUT_POST,'ipOLT');
 
-  if($frame || $frame == 0 && $slot && $porta  )
+  if($frame || $frame == 0 && $slot && $porta && $ipOLT )
   {
     if(!mysqli_connect_errno())
     {
-      $sql_insere_pon = ("INSERT INTO pon(frame,slot,porta) VALUES('$frame','$slot',$porta)");
+      $sql_insere_pon = ("INSERT INTO pon(deviceName,frame,slot,porta,deviceName,olt_ip) 
+        VALUES('$nomeDispositivo','$frame','$slot',$porta,'$ipOLT')");
       $checar_insert = mysqli_query($conectar,$sql_insere_pon);
 
       if($checar_insert)

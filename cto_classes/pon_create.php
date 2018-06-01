@@ -24,7 +24,7 @@
                     <form role="form" action="../classes/cadastrar_pon.php" method="post">
                       <div class="form-group">
                         <label>Nome</label> 
-                        <input class="form-control" placeholder="Nome do Dispositivo" name="frame" type="text" autofocus required>
+                        <input class="form-control" placeholder="Nome do Dispositivo" name="nomeDev" type="text" autofocus required>
                       </div>
                       <div class="form-group">
                         <label>IP da OLT</label>
