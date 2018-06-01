@@ -95,7 +95,7 @@
                     ?>
                   </select>
                 </div>
-                
+               <div class="camposPacotes" style="display:visible" > 
                 <div class="form-group">
                   <label>Pacote</label>
                   <select class="form-control" name="pacote">
@@ -110,6 +110,7 @@
                     ?>
                   </select>
                 </div>
+               </div>
                 <div class='pull-left'>Velocidade Atual: <?php echo $pacote; ?> </div><br>
 
                 <?php 
