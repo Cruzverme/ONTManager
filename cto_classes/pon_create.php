@@ -27,6 +27,10 @@
                         <input class="form-control" placeholder="Nome do Dispositivo" name="frame" type="text" autofocus required>
                       </div>
                       <div class="form-group">
+                        <label>IP da OLT</label>
+                        <input class="form-control" placeholder="IP da OLT" name="ipOLT" type="text" autofocus required>
+                      </div>
+                      <div class="form-group">
                         <label>Frame</label> 
                         <input class="form-control" placeholder="FRAME" name="frame" type="number" min=0 autofocus required>
                       </div>
