@@ -48,46 +48,55 @@
             //echo "<br>DEV: $infoDev | ONTID: $infoONTID | FN: $frame | SN: $slot | PN: $pon <br>";
 
             $deletar_2000 = deletar_onu_2000($infoDev,$frame,$slot,$pon,$infoONTID,$ip,$servicePortIptv);
-
-            $tira_ponto_virgula = explode(";",$deletar_2000);
-            $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
-            $remove_desc = explode("ENDESC=",$check_sucesso[1]);
-            $errorCode = trim($remove_desc[0]);
-            if($errorCode != "0")
+            if($deletar_2000 != 0)
             {
-              $_SESSION['menssagem'] = "Houve erro ao inserir no u2000 SQL: $errorCode";
+              $_SESSION['menssagem'] = "Houve erro ao inserir ao restaurar a ONT! CODE: $deletar_2000";
               header('Location: ../ont_classes/ont_delete.php');
               mysqli_close($conectar_radius);
               mysqli_close($conectar);
               exit;
             }else
             {
-              $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
-
-              $deletar_onu = mysqli_query($conectar,$sql_apagar_onu);
-              if($deletar_onu)
+              $tira_ponto_virgula = explode(";",$deletar_2000);
+              $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
+              $remove_desc = explode("ENDESC=",$check_sucesso[1]);
+              $errorCode = trim($remove_desc[0]);
+              if($errorCode != "0")
               {
-                if ( $total = mysqli_affected_rows($conectar))   // retorna quantas rows foram afetadas           
-                {
-                    $_SESSION['menssagem'] = "$total ONU Removida!";
-                    header('Location: ../ont_classes/ont_delete.php');
-                    mysqli_close($conectar);
-                    exit;
-                }else{
-                    $_SESSION['menssagem'] = "ONU Não Removida!";
-                    header('Location: ../ont_classes/ont_delete.php');
-                    mysqli_close($conectar);
-                    exit;
-                }
-                ########FIM TL1########
-              }else{
-                $erro = mysqli_error($conectar);
-                $_SESSION['menssagem'] = "Houve erro ao deletar SQL: $erro";
+                $_SESSION['menssagem'] = "Houve erro ao inserir no u2000 SQL: $errorCode";
                 header('Location: ../ont_classes/ont_delete.php');
+                mysqli_close($conectar_radius);
                 mysqli_close($conectar);
                 exit;
-              }
-            }//FIM TL1ELSE
+              }else
+              {
+                $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
+
+                $deletar_onu = mysqli_query($conectar,$sql_apagar_onu);
+                if($deletar_onu)
+                {
+                  if ( $total = mysqli_affected_rows($conectar))   // retorna quantas rows foram afetadas           
+                  {
+                      $_SESSION['menssagem'] = "$total ONU Removida!";
+                      header('Location: ../ont_classes/ont_delete.php');
+                      mysqli_close($conectar);
+                      exit;
+                  }else{
+                      $_SESSION['menssagem'] = "ONU Não Removida!";
+                      header('Location: ../ont_classes/ont_delete.php');
+                      mysqli_close($conectar);
+                      exit;
+                  }
+                  ########FIM TL1########
+                }else{
+                  $erro = mysqli_error($conectar);
+                  $_SESSION['menssagem'] = "Houve erro ao deletar SQL: $erro";
+                  header('Location: ../ont_classes/ont_delete.php');
+                  mysqli_close($conectar);
+                  exit;
+                }
+              }//FIM TL1ELSE
+            }
           }else{
             $erro = mysqli_error($conectar);
             $_SESSION['menssagem'] = "Houve erro ao deletar SQL Radius: $erro";

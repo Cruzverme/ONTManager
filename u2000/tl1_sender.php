@@ -99,27 +99,39 @@
     if(!$fp) 
     {
       return "ERROR: $errno - $errstr<br />\n";
-    }else{     
-      if($servPortIPTV != NULL)
-      {
-        deleta_btv_iptv($ip,$servPortIPTV);
-      }
-      
+    }else
+    {
+      // $tl1_reset = reset_fabric_ont($dev,$frame,$slot,$pon,$ontID);
+      // $tira_ponto_virgula = explode(";",$tl1_reset);
+      // $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
+      // $remove_desc = explode("ENDESC=",$check_sucesso[1]);
+      // $errorCode = trim($remove_desc[0]);
+      // if($errorCode != "0")
+      // {
+      //   return $errorCode;
+      // }else
+      // {     
+        if($servPortIPTV != NULL)
+        {
+          deleta_btv_iptv($ip,$servPortIPTV);
+        }
+        
 
-      $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
-      
-      $comando_deletar = "DEL-ONT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon,ONTID=$ontID,DELCONFIG=TRUE:1::;";
+        $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
+        
+        $comando_deletar = "DEL-ONT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon,ONTID=$ontID,DELCONFIG=TRUE:1::;";
 
-      fwrite($fp,$login_command);
-      fwrite($fp,$comando_deletar);
+        fwrite($fp,$login_command);
+        fwrite($fp,$comando_deletar);
 
-      //$retornoTL1="";
-      stream_set_timeout($fp,5);
-      while($c = fgetc($fp)!==false)
-      {
-        $retornoTL1 = fread($fp,2024);
-        return $retornoTL1;
-      }
+        //$retornoTL1="";
+        stream_set_timeout($fp,5);
+        while($c = fgetc($fp)!==false)
+        {
+          $retornoTL1 = fread($fp,2024);
+          return $retornoTL1;
+        }
+      //}
     }
     fclose($fp);
   }
@@ -354,64 +366,66 @@
     } 
   }
 
-  function alterar_ont($dev,$frame,$slot,$pon,$ontID,$vasProfile,$serial)
+  function reset_fabric_ont($dev,$frame,$slot,$pon,$ontID)
   {
-     include "telnet_config.php";
-     $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
+    include "telnet_config.php";
+    $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
 
-     if(!$fp) 
-     {
-       echo "ERROR: $errno - $errstr<br />\n";
-     }else{
-       switch($vasProfile){
+    if(!$fp) 
+    {
+      echo "ERROR: $errno - $errstr<br />\n";
+    }else{
+      $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
+    
+      $comando_reset = "RST-ONT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon,ONTID=$ontID:CTAG::;";
 
-         case "VAS_Internet":
-           if($vasProfile == "" )
-           {
-              cadastrar_ont($dev,$frame,$slot,$pon,$contrato,$splitter,$splitterPort,$serial,$equipment,$vasProfile);
-           }
-         break;
-         case "VAS_Internet-VoIP":
-           if($vasProfile == "" )
-           {
-              cadastrar_ont($dev,$frame,$slot,$pon,$contrato,$splitter,$splitterPort,$serial,$equipment,$vasProfile);
-           }
-         break;
-         case "VAS_IPTV":
-           if($vasProfile == "VAS_Internet" || $vasProfile == "VAS_Internet-IPTV" || $vasProfile == "VAS_Internet-VoIP-IPTV")
-           {
-              
-           }
-           $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
-           $comando = "MOD-ONT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon,ONTID=$ontID:1::VAPROFILE=VAS_IPTV";
-           fwrite($fp,$login_command);
-           fwrite($fp,$comando_ativa);
+      fwrite($fp,$login_command);
+      fwrite($fp,$comando_reset);
 
-           stream_set_timeout($fp,5);
-           while($c = fgetc($fp)!==false)
-           {
-           $retornoTL1 = fread($fp,2024);
-           return $retornoTL1;
-           }
-           fclose($fp);
+      stream_set_timeout($fp,5);
+      while($c = fgetc($fp)!==false)
+      {
+        $retornoTL1 = fread($fp,2024);
+        return $retornoTL1;
+      }
+      fclose($fp);
+    }
+  }
 
-         break;
-         case "VAS_Internet-IPTV":
-           if($vasProfile == "" )
-           {
-            
-           }
-         break;
-         case "VAS_Internet-VoIP-IPTV":
-           if($vasProfile == "" )
-           {
-            
-           }
-         break;
-         default:
-           return "DEU RUIM!";
-       }
-     }
-   }
+  function modificar_pon_ont($dev,$frame,$slot,$pon,$ontID,$serial)
+  {
+    include "telnet_config.php";
+    $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
 
+    if(!$fp) 
+    {
+      echo "ERROR: $errno - $errstr<br />\n";
+    }else{
+
+      $tl1_reset = reset_fabric_ont($dev,$frame,$slot,$pon,$ontID);
+      $tira_ponto_virgula = explode(";",$tl1_reset);
+      $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
+      $remove_desc = explode("ENDESC=",$check_sucesso[1]);
+      $errorCode = trim($remove_desc[0]);
+      if($errorCode != "0")
+      {
+        return $errorCode;
+      }else{
+        $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
+        
+        $comando_troca_ont = "REPLACE-ONT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon,ONTID=$ontID:1::SERIALNUM=$serial,DCUPDATE=TRUE,NEEDPOLL=TRUE;";
+          
+        fwrite($fp,$login_command);
+        fwrite($fp,$comando_troca_ont);
+
+        stream_set_timeout($fp,5);
+        while($c = fgetc($fp)!==false)
+        {
+          $retornoTL1 = fread($fp,2024);
+          return $retornoTL1;
+        }
+      }
+      fclose($fp);
+    }
+  }
 ?>

@@ -85,6 +85,14 @@ echo '   </head>
                       </li>
                     ';                    
                   }
+                  if($_SESSION["alterar_macONT"] == 1)
+                  {
+                    echo '
+                      <li>
+                        <a href="../ont_classes/alterar_mac_ont.php"><i class="fa fa-exchange fa-fw"></i> Alterar Mac ONT</a>
+                      </li>
+                    ';                    
+                  }
                   if($_SESSION["desativar_ativar_onu"] == 1)
                   {
                     echo '
