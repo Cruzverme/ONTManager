@@ -52,6 +52,7 @@
                         <input name="personalizada7" value=7 type="checkbox"> Cadastrar OLT<br/>
                         <input name="personalizada8" value=8 type="checkbox"> Cadastrar Velocidade<br/>
                         <input name="personalizada9" value=9 type="checkbox"> Cadastrar Usuários<br/>
+                        <input name="personalizada10" value=10 type="checkbox"> Alterar Mac de ONT<br/>
                       </fieldset>
                     </div>
                   </div>

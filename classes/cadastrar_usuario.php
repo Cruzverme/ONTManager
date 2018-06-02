@@ -23,6 +23,7 @@
         $cadastrarOLT = $_POST["personalizada7"] ?? 0;
         $cadastrarVelocidade = $_POST["personalizada8"] ?? 0;
         $cadastrarUsuarios = $_POST["personalizada9"] ?? 0;
+        $alterarMacONT = $_POST["personalizado10"] ?? 0;
         //fim variaveis de permissao
         
         //permissoes personalizadas
@@ -89,6 +90,14 @@
         }else{
           $permitir_cadastrarVelocidade=0;
         }
+
+        if($alterarMacONT == 1 || $nivel_usuario == 1 )
+        {
+          $permitir_alterar_MAC=1;
+        }else{
+          $permitir_alterar_MAC=0;
+        }
+
         // FIM PERMISSOES PERSONALIZADAS
 
         $sql_usuario_repetido = ("SELECT usuario FROM usuarios WHERE usuario = '$usuario'");
@@ -114,10 +123,12 @@
               $dados = @mysqli_fetch_array($getUserID); 
               $userID = $dados['usuario_id']; //pega o usuario_id
 
-              $sql_cadastrar_permissao = "INSERT INTO usuario_permissao (cadastrar_onu, deletar_onu, modificar_onu,
-                  desativar_ativar_onu, cadastrar_cto, cadastrar_olt, cadastrar_velocidade, cadastrar_usuario, cadastrar_equipamento, usuario)
-                  VALUES ($permitir_cadastrar_ONU,$permitir_removerONU,$permitir_alterarONU,$permitir_desabilitarHabilitar,
-                  $permitir_cadastrarCTO,$permitir_cadastrarOLT,$permitir_cadastrarVelocidade, $cadastrarUsuarios, $permitir_cadastrarEquipamento,$userID)";
+              $sql_cadastrar_permissao = "INSERT INTO usuario_permissao (usuario, cadastrar_onu, deletar_onu, modificar_onu,
+                  desativar_ativar_onu, cadastrar_cto, cadastrar_olt, cadastrar_velocidade, cadastrar_usuario, cadastrar_equipamento,
+                  alterar_mac_ont)
+                  VALUES ($userID,$permitir_cadastrar_ONU,$permitir_removerONU,$permitir_alterarONU,$permitir_desabilitarHabilitar,
+                  $permitir_cadastrarCTO,$permitir_cadastrarOLT,$permitir_cadastrarVelocidade, $cadastrarUsuarios, $permitir_cadastrarEquipamento,
+                  $permitir_alterar_MAC)";
 
               $permissoes = mysqli_query($conectar,$sql_cadastrar_permissao);
               
