@@ -36,7 +36,7 @@
 
                             $sql_select_permissoes = "SELECT cadastrar_onu, deletar_onu, modificar_onu, desativar_ativar_onu, 
                                 cadastrar_cto, cadastrar_olt, cadastrar_velocidade, cadastrar_usuario, cadastrar_equipamento,
-                                alterar_mac_ont 
+                                alterar_mac_ont, consulta_ont
                                 FROM usuario_permissao WHERE usuario=$_SESSION[id_usuario]";
                             $execute_sql_select_permissoes = mysqli_query($conectar,$sql_select_permissoes);
                             $permissoes = @mysqli_fetch_array($execute_sql_select_permissoes); //@ qualquer mensagem de erro sera ignorada
@@ -51,6 +51,7 @@
                             $_SESSION["cadastrar_usuario"] = $permissoes['cadastrar_usuario'];
                             $_SESSION["cadastrar_equipamento"] = $permissoes['cadastrar_equipamento'];
                             $_SESSION["alterar_macONT"] = $permissoes['alterar_mac_ont'];
+                            $_SESSION["consulta_onts"] = $permissoes['consulta_ont'];
                             header('Location: redirecionador_pagina.php');
                             mysqli_close($conectar);
                             exit;

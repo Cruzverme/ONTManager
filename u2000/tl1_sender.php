@@ -428,4 +428,88 @@
       fclose($fp);
     }
   }
+
+  function get_status_ont($dev,$frame,$slot,$pon,$ontID)
+  {
+    include "telnet_config.php";
+    $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
+
+    if(!$fp) 
+    {
+      echo "ERROR: $errno - $errstr<br />\n";
+    }else
+    {
+      $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
+      
+      $comando = "LST-ONTRUNINFO::DEV=$dev,FN=$frame,SN=$slot,PN=$pon,ONTID=$ontID:1::;";
+
+      fwrite($fp,$login_command);
+      fwrite($fp,$comando);
+
+      stream_set_timeout($fp,5);
+      while($c = fgetc($fp)!==false)
+      {
+        $retornoTL1 = fread($fp,2024);
+        return $retornoTL1;
+      }
+      fclose($fp);
+    } 
+  }
+
+  function get_status_sip($dev,$frame,$slot,$pon,$ontID)
+  {
+    
+    include "telnet_config.php";
+    $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
+
+    if(!$fp) 
+    {
+      echo "ERROR: $errno - $errstr<br />\n";
+    }else
+    {
+      $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
+      
+      $comando = "LST-ONTPOTSSTATE::DEV=$dev,FN=$frame,SN=$slot,PN=$pon,ONTID=$ontID:1::;";
+
+      fwrite($fp,$login_command);
+      fwrite($fp,$comando);
+
+      stream_set_timeout($fp,5);
+      while($c = fgetc($fp)!==false)
+      {
+        $retornoTL1 = fread($fp,2024);
+        return $retornoTL1;
+      }
+      fclose($fp);
+    }
+  }
+
+  function get_signal_ont($dev,$frame,$slot,$pon,$ontID)
+  {
+    
+    include "telnet_config.php";
+    $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
+
+    if(!$fp) 
+    {
+      echo "ERROR: $errno - $errstr<br />\n";
+    }else
+    {
+      $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
+      
+      $comando = "LST-ONTDDMDETAIL::DEV=$dev,FN=$frame,SN=$slot,PN=$pon,ONTID=$ontID:CTAG::SHOWOPTION=OPTICSRXPOWERbyOLT;";
+
+      fwrite($fp,$login_command);
+      fwrite($fp,$comando);
+
+      stream_set_timeout($fp,5);
+      while($c = fgetc($fp)!==false)
+      {
+        $retornoTL1 = fread($fp,2024);
+        return $retornoTL1;
+      }
+      fclose($fp);
+    }
+  }
+
 ?>

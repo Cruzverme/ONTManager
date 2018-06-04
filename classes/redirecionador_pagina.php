@@ -24,6 +24,8 @@
     header('Location: ../users/usuario_new.php');
   }elseif ($_SESSION["cadastrar_equipamento"] == 1) {
     header('Location: ../equipamento/cadastro_equipamento.php');
+  }elseif ($_SESSION["consulta_onts"] == 1) {
+    header('Location: ../consultas/get_status.php');
   }else{
     session_destroy();
     header('Location: ../index.php');

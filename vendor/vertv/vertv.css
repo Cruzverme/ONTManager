@@ -49,6 +49,21 @@ form fieldset{
 	background-color: #ff9700;
 }
 
+.list-group-consultas a{
+	color: #000;
+	text-decoration: none;
+}
+
+#consulta_ont_positivo{
+	background-color: yellowgreen;
+}
+#consulta_ont_neutro{
+	background-color: yellow;
+}
+#consulta_ont_negativo{
+	background-color: red;
+}
+
 a{
 	color: #ff9700
 }
@@ -322,3 +337,4 @@ table.dataTable thead .sorting:after{
 .form-control::placeholder {
 	color:#333;
 }
+

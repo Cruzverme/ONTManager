@@ -53,6 +53,7 @@
                         <input name="personalizada8" value=8 type="checkbox"> Cadastrar Velocidade<br/>
                         <input name="personalizada9" value=9 type="checkbox"> Cadastrar Usuários<br/>
                         <input name="personalizada10" value=10 type="checkbox"> Alterar Mac de ONT<br/>
+                        <input name="personalizado11" value=11 type="checkbox"> Consulta de ONU <br/>
                       </fieldset>
                     </div>
                   </div>

@@ -141,6 +141,14 @@ echo '   </head>
                       </li>
                     ';                    
                   }
+                  if($_SESSION["consulta_onts"] == 1)
+                  {
+                    echo'  
+                      <li>
+                        <a href="../consultas/get_status.php"><i class="fa fa-info fa-fw"></i> Get Status</a>
+                      </li>
+                    ';
+                  }
           echo'   </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
