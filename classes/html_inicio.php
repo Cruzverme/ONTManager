@@ -145,7 +145,15 @@ echo '   </head>
                   {
                     echo'  
                       <li>
-                        <a href="../consultas/get_status.php"><i class="fa fa-info fa-fw"></i> Get Status</a>
+                        <a href="../consultas/get_status.php"><i class="fa fa-info fa-fw"></i> Consulta de ONT</a>
+                      </li>
+                    ';
+                  }
+                  if($_SESSION["consulta_ctos"] == 1)
+                  {
+                    echo'  
+                      <li>
+                        <a href="../consultas/get_info_cto.php"><i class="fa fa-info fa-fw"></i> Consulta de CTO</a>
                       </li>
                     ';
                   }

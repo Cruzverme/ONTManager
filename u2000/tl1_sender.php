@@ -55,7 +55,7 @@
       {
        $retornoTL1 = fread($fp,2024);
        return $retornoTL1;
-      }  
+      }
       fclose($fp);
     }
   }

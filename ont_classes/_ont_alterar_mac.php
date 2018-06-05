@@ -40,9 +40,9 @@
                       while ($ont = mysqli_fetch_array($executa_query, MYSQLI_BOTH))
                       {
                         echo "<option value=$ont[serial]>$ont[serial]</option>";
-                        $pacote = $ont['pacote'];
+                        $serial = $ont['serial'];
                       }
-                      if(empty($pacote))
+                      if(empty($serial))
                       {
                         mysqli_close($conectar);
                         echo '

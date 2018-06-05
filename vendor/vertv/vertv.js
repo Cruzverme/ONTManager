@@ -24,6 +24,18 @@ $('input[name="nivel"]').change(function () {
     }
 });
 
+$('input[name="optionsRadiosConsulta"]').change(function () {
+    if ($('input[name="optionsRadiosConsulta"]:checked').val() === "cto" ) {
+        $('.campoPon').hide();
+        $('.campoCto').show();
+    } else {
+        $('.campoPon').show();
+        $('.campoCto').hide();
+    }
+});
+
+
+
 $("tr.porta").on('click',function() {
     var porta_selecionada;
     var serial;
