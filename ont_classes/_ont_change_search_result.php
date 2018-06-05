@@ -102,16 +102,23 @@
                     <?php
                       $sql_lista_velocidades = "SELECT nome,nomenclatura_velocidade FROM planos";
                       $executa_query = mysqli_query($conectar,$sql_lista_velocidades);
+
                       while ($listaPlanos = mysqli_fetch_array($executa_query, MYSQLI_BOTH)) 
                       {  
-                        echo "<option value='$listaPlanos[nomenclatura_velocidade]'>$listaPlanos[nome]</option>"; 
+                        if($pacote == $listaPlanos['nomenclatura_velocidade'])
+                        {
+                          $selecionado = "selected";
+                        }else{
+                          $selecionado = "";
+                        }
+                        echo "<option value='$listaPlanos[nomenclatura_velocidade]' $selecionado>$listaPlanos[nome]</option>"; 
                       }
                       mysqli_free_result($executa_query);                                                
                     ?>
                   </select>
                 </div>
                </div>
-                <div class='pull-left'>Velocidade Atual: <?php echo $pacote; ?> </div><br>
+                <!-- <div class='pull-left'>Velocidade Atual: <?php echo $pacote; ?> </div><br> -->
 
                 <?php 
                   if( $profile == "VAS_Internet-VoIP-IPTV" || $profile == "VAS_Internet-VoIP"){

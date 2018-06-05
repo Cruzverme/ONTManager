@@ -26,6 +26,8 @@
     header('Location: ../equipamento/cadastro_equipamento.php');
   }elseif ($_SESSION["consulta_onts"] == 1) {
     header('Location: ../consultas/get_status.php');
+  }elseif ($_SESSION["consulta_ctos"] == 1) {
+    header('Location: ../consultas/get_info_cto.php');
   }else{
     session_destroy();
     header('Location: ../index.php');

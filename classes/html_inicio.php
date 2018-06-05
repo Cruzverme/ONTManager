@@ -153,7 +153,7 @@ echo '   </head>
                   {
                     echo'  
                       <li>
-                        <a href="../consultas/get_info_cto.php"><i class="fa fa-info fa-fw"></i> Consulta de CTO</a>
+                        <a href="../consultas/get_info_cto.php"><i class="fa fa-info fa-fw"></i> Consulta de CTO e OLT</a>
                       </li>
                     ';
                   }

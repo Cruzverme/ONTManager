@@ -21,7 +21,7 @@
         <div class="col-md-11 col-md-offset-0">
           <div class="login-panel panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title">Consulta de PON e CTO</h3>
+              <h3 class="panel-title">Consulta de OLT e CTO</h3>
             </div>
             <div class="panel-body">
             <form method="post">
@@ -30,6 +30,10 @@
                 <div class="radio">
                   <label>
                     <?php 
+                    if(empty($_POST['optionsRadiosConsulta']))
+                    {
+                      $_POST['optionsRadiosConsulta'] = null;
+                    }
                     if($_POST['optionsRadiosConsulta'] == 'cto') 
                     {
                       echo "<input type='radio' name='optionsRadiosConsulta' id='ctoRadio' value='cto' checked>CTO";
@@ -44,9 +48,9 @@
                   <?php 
                     if($_POST['optionsRadiosConsulta'] == 'pon') 
                     {
-                      echo  '<input type="radio" name="optionsRadiosConsulta" id="ponRadio" value="pon" checked>PON';
+                      echo  "<input type='radio' name='optionsRadiosConsulta' id='ponRadio' value='pon' checked>OLT";
                     }else{
-                      echo  '<input type="radio" name="optionsRadiosConsulta" id="ponRadio" value="pon">PON';
+                      echo  "<input type='radio' name='optionsRadiosConsulta' id='ponRadio' value='pon'>OLT";
                     }
                   ?>   
                   </label>
