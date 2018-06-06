@@ -28,6 +28,10 @@
     header('Location: ../consultas/get_status.php');
   }elseif ($_SESSION["consulta_ctos"] == 1) {
     header('Location: ../consultas/get_info_cto.php');
+  }elseif ($_SESSION["remover_cto"] == 1) {
+    header('Location: ../cto_classes/remover_cto.php');
+  }elseif ($_SESSION["remover_olt"] == 1) {
+    header('Location: ../cto_classes/remover_olt.php');
   }else{
     session_destroy();
     header('Location: ../index.php');

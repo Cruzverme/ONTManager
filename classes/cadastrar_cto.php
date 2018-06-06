@@ -23,7 +23,7 @@
 
          if($checar_insert)
          { 
-             echo  $_SESSION['menssagem'] = "Caixa Registrada!";
+             echo  $_SESSION['menssagem'] = "Caixa de Atendimento Registrada!";
              header('Location: ../cto_classes/cto_create.php');
              mysqli_close($conectar);
              exit;

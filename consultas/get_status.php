@@ -21,7 +21,7 @@
         <div class="col-md-11 col-md-offset-0">
           <div class="login-panel panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title">Mudança de ONT</h3>
+              <h3 class="panel-title">Consulta de Informações de ONT</h3>
             </div>
             <div class="panel-body">
   

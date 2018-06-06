@@ -19,12 +19,12 @@
 
       if($checar_insert)
       { 
-        echo  $_SESSION['menssagem'] = "PON Registrada!";
+        echo  $_SESSION['menssagem'] = "OLT Registrada!";
         header('Location: ../cto_classes/pon_create.php');
         mysqli_close($conectar);
         exit;
       }else{
-        echo  $_SESSION['menssagem'] = "PON Nao Registrada!";
+        echo  $_SESSION['menssagem'] = "OLT Nao Registrada!";
         header('Location: ../cto_classes/pon_create.php');
         mysqli_close($conectar);
         exit;

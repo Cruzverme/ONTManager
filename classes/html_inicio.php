@@ -69,7 +69,7 @@ echo '   </head>
                       </li>
                     ';                    
                   }
-                  if($_SESSION["deletar_onu"] == 1)
+                  if($_SESSION["modificar_onu"] == 1)
                   {
                     echo '
                       <li>
@@ -77,7 +77,7 @@ echo '   </head>
                       </li>
                     ';                    
                   }
-                  if($_SESSION["modificar_onu"] == 1)
+                  if($_SESSION["deletar_onu"] == 1)
                   {
                     echo '
                       <li>
@@ -109,6 +109,14 @@ echo '   </head>
                       </li>
                     ';                    
                   }
+                  if($_SESSION["remover_cto"] == 1)
+                  {
+                    echo'  
+                      <li>
+                        <a href="../cto_classes/remover_cto.php"><i class="fa fa-ban fa-fw"></i> Remover CTO</a>
+                      </li>
+                    ';
+                  }
                   if($_SESSION["cadastrar_olt"] == 1)
                   {
                     echo '
@@ -116,6 +124,14 @@ echo '   </head>
                         <a href="../cto_classes/pon_create.php"><i class="fa fa-columns fa-fw"></i> Cadastro de OLT </a>
                       </li>
                     ';                    
+                  }
+                  if($_SESSION["remover_olt"] == 1)
+                  {
+                    echo'  
+                      <li>
+                        <a href="../cto_classes/remover_olt.php"><i class="fa fa-ban fa-fw"></i> Remover OLT</a>
+                      </li>
+                    ';
                   }
                   if($_SESSION["cadastrar_velocidade"] == 1)
                   {

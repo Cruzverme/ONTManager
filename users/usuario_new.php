@@ -55,6 +55,8 @@
                         <input name="personalizada10" value=10 type="checkbox"> Alterar Mac de ONT<br/>
                         <input name="personalizado11" value=11 type="checkbox"> Consulta de ONU <br/>
                         <input name="personalizado12" value=11 type="checkbox"> Consulta de CTO <br/>
+                        <input name="personalizado12" value=11 type="checkbox"> Remover de CTO <br/>
+                        <input name="personalizado12" value=11 type="checkbox"> Remover de OLT <br/>
                       </fieldset>
                     </div>
                   </div>

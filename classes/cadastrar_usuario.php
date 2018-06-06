@@ -26,6 +26,8 @@
         $alterarMacONT = $_POST["personalizado10"] ?? 0;
         $consulta_onu = $_POST["personalizado11"] ?? 0;
         $consulta_cto = $_POST["personalizado12"] ?? 0;
+        $remover_cto = $_POST["personalizado13"] ?? 0;
+        $remover_olt = $_POST["personalizado14"] ?? 0;
         //fim variaveis de permissao
         
         //permissoes personalizadas
@@ -111,6 +113,18 @@
         }else{
           $permitir_consulta_cto=0;
         }
+        if($remover_cto == 1 || $nivel_usuario == 1 )
+        {
+          $permitir_consulta_cto=1;
+        }else{
+          $permitir_consulta_cto=0;
+        }
+        if($remover_olt == 1 || $nivel_usuario == 1 )
+        {
+          $permitir_consulta_cto=1;
+        }else{
+          $permitir_consulta_cto=0;
+        }
         
 
         // FIM PERMISSOES PERSONALIZADAS
@@ -140,10 +154,10 @@
 
               $sql_cadastrar_permissao = "INSERT INTO usuario_permissao (usuario, cadastrar_onu, deletar_onu, modificar_onu,
                   desativar_ativar_onu, cadastrar_cto, cadastrar_olt, cadastrar_velocidade, cadastrar_usuario, cadastrar_equipamento,
-                  alterar_mac_ont, consulta_ont, consulta_cto)
+                  alterar_mac_ont, consulta_ont, consulta_cto, remover_cto, remover_olt)
                   VALUES ($userID,$permitir_cadastrar_ONU,$permitir_removerONU,$permitir_alterarONU,$permitir_desabilitarHabilitar,
                   $permitir_cadastrarCTO,$permitir_cadastrarOLT,$permitir_cadastrarVelocidade, $cadastrarUsuarios, $permitir_cadastrarEquipamento,
-                  $permitir_alterar_MAC,$permitir_consulta_onu,$permitir_consulta_onu)";
+                  $permitir_alterar_MAC,$permitir_consulta_onu,$permitir_consulta_onu, $permitir_removerCTO, $permitir_removerOLT)";
 
               $permissoes = mysqli_query($conectar,$sql_cadastrar_permissao);
               
