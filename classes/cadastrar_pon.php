@@ -9,17 +9,22 @@
   $porta = filter_input(INPUT_POST,'porta');
   $ipOLT = filter_input(INPUT_POST,'ipOLT');
 
-  if($frame || $frame == 0 && $slot && $porta && $ipOLT )
+  if($frame || $frame == 0 && $slot || $slot == 0 && $porta && $ipOLT )
   {
     if(!mysqli_connect_errno())
     {
-      $sql_insere_pon = ("INSERT INTO pon(deviceName,frame,slot,porta,deviceName,olt_ip) 
+      $sql_insere_pon = ("INSERT INTO pon(deviceName,frame,slot,porta,olt_ip) 
         VALUES('$nomeDispositivo','$frame','$slot',$porta,'$ipOLT')");
       $checar_insert = mysqli_query($conectar,$sql_insere_pon);
 
       if($checar_insert)
       { 
         echo  $_SESSION['menssagem'] = "PON Registrada!";
+        header('Location: ../cto_classes/pon_create.php');
+        mysqli_close($conectar);
+        exit;
+      }else{
+        echo  $_SESSION['menssagem'] = "PON Nao Registrada!";
         header('Location: ../cto_classes/pon_create.php');
         mysqli_close($conectar);
         exit;
@@ -31,7 +36,6 @@
       exit;
     }
   }else{
-
     echo $_SESSION['menssagem'] = "Campos Faltando!";
     header('Location: ../cto_classes/pon_create.php');
     mysqli_close($conectar);

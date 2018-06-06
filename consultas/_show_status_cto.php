@@ -13,7 +13,7 @@
     ';
   }
 
-  $caixa_atendimento = filter_input(INPUT_POST,'cto');
+  $caixa_atendimento = filter_input(INPUT_POST,'ctoSelect');
   $deviceName = filter_input(INPUT_POST,'pon');
   $radioType = filter_input(INPUT_POST,'optionsRadiosConsulta');
 

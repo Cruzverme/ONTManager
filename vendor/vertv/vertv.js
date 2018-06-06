@@ -23,18 +23,14 @@ $('input[name="nivel"]').change(function () {
         $('.camposPermissao').show();
     }
 });
-
 $('input[name="optionsRadiosConsulta"]').change(function () {
-    if ($('input[name="optionsRadiosConsulta"]:checked').val() === "cto" ) {
-        $('.campoPon').hide();
+    if ($('input[name="optionsRadiosConsulta"]:checked').val() === "cto" )
+    {
         $('.campoCto').show();
     } else {
-        $('.campoPon').show();
         $('.campoCto').hide();
     }
 });
-
-
 
 $("tr.porta").on('click',function() {
     var porta_selecionada;

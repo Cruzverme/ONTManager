@@ -121,33 +121,25 @@
                 <!-- <div class='pull-left'>Velocidade Atual: <?php echo $pacote; ?> </div><br> -->
 
                 <?php 
-                  if( $profile == "VAS_Internet-VoIP-IPTV" || $profile == "VAS_Internet-VoIP"){
+                   if( $profile == "VAS_Internet-VoIP-IPTV" || $profile == "VAS_Internet-VoIP"){
+                    $visivel = "style=display:visible";
+                  }else{
+                    $visivel = "style=display:none";
+                  }
+                    
                     echo "
+                    <div class='camposTelefone' $visivel>
                     <div class='form-group'>
                       <label>Telefone</label>
-                      <input class='form-control' placeholder='Telefone' name='numeroTel' type='text' value='$numeroTel' autofocus>
+                      <input class='form-control' placeholder='Telefone' name='numeroTelNovo' type='text' value='$numeroTel' autofocus>
                     </div> 
                     <div class='form-group'>
                       <label>Senha do Telefone</label>
-                      <input class='form-control' placeholder='Senha do Telefone' name='passwordTel' type='text' value='$passwordTel' autofocus>
+                      <input class='form-control' placeholder='Senha do Telefone' name='passwordTelNovo' type='text' value='$passwordTel' autofocus>
+                    </div>
                     </div>
                     ";
-                  }  
-                
-                  if($profile != 'VAS_Internet-VoIP-IPTV' || $profile != 'VAS_Internet-VoIP')
-                  {
-                    echo "
-                    <div class='camposTelefone' style='display:none'>
-                      <div class='form-group'>
-                        <label>Telefone</label>
-                        <input class='form-control' placeholder='Telefone Novo' name='numeroTelNovo' type='text' autofocus>
-                      </div> 
-                      <div class='form-group'>
-                        <label>Senha do Telefone</label>
-                        <input class='form-control' placeholder='Senha do Telefone Novo' name='passwordTelNovo' type='text' autofocus>
-                      </div>
-                    </div>";
-                  }
+                  //}  
                 ?>
 
                 <button class="btn btn-lg btn-success btn-block">Alterar</button>

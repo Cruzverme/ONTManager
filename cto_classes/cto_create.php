@@ -25,7 +25,7 @@
                     <form role="form" action="../classes/cadastrar_cto.php" method="post">
                             <div class="form-group">
                                 <label>Nome CTO</label> 
-                                <input class="form-control" placeholder="CTO" name="cto" type="text" autofocus required>
+                                <input class="form-control" placeholder="CTO" name="cto" type="text" pattern="[a-zA-Z0-9._%]+" title="Sem Caracteres Especiais ou utilização de espaço" autofocus required>
                             </div>
                             <div class="form-group">
                               <label>PON</label> 
@@ -33,7 +33,7 @@
                                 <?php 
                                   $sql_consulta_serial = "SELECT pon_id,frame,slot,porta FROM pon";
                                   $executa_query = mysqli_query($conectar,$sql_consulta_serial);
-                                  while ($ont = mysqli_fetch_array($executa_query, MYSQLI_BOTH)) 
+                                  while ($ont = mysqli_fetch_array($executa_query, MYSQLI_BOTH))
                                   {
                                     for($porta = 0;$porta < $ont['porta'];$porta++)
                                     {

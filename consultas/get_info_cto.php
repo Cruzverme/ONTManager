@@ -30,16 +30,18 @@
                 <div class="radio">
                   <label>
                     <?php 
-                    if(empty($_POST['optionsRadiosConsulta']))
-                    {
-                      $_POST['optionsRadiosConsulta'] = null;
-                    }
-                    if($_POST['optionsRadiosConsulta'] == 'cto') 
-                    {
-                      echo "<input type='radio' name='optionsRadiosConsulta' id='ctoRadio' value='cto' checked>CTO";
-                    }else{
-                      echo "<input type='radio' name='optionsRadiosConsulta' id='ctoRadio' value='cto'>CTO";
-                    } ?>  
+                      if(empty($_POST['optionsRadiosConsulta']))
+                      {
+                        $_POST['optionsRadiosConsulta'] = null;
+                      }
+
+                      if($_POST['optionsRadiosConsulta'] == 'cto' || $_POST['optionsRadiosConsulta'] == null) 
+                      {
+                        echo "<input type='radio' name='optionsRadiosConsulta' id='ctoRadio' value='cto' checked>CTO";
+                      }else{
+                        echo "<input type='radio' name='optionsRadiosConsulta' id='ctoRadio' value='cto'>CTO";
+                      } 
+                    ?>  
 
                   </label>
                 </div>
@@ -57,47 +59,44 @@
                 </div>
               </div> <!-- fim form group radio -->
               
-              <!-- <div class="campoPon" style="display:none">
-                <div class="form-group">
-                    <span class="input-group-btn">
-                      <button class="btn btn-secondary" type="submit">Busca aeaer</button>
-                    </span>
-                </div>
-              </div> -->
-              
-              <div class="campoCto" style="display=none;">                    
+              <?php 
+                if($_POST['optionsRadiosConsulta'] == "cto" || $_POST['optionsRadiosConsulta'] == null)
+                {
+                  $visivel = "style=display:visible;";
+                }else{
+                  $visivel = "style=display:none;";
+                }
+              ?>
+              <div class="campoCto" <?php echo $visivel ?>>
                 <div class=form-group>
-                  <?php 
-                    if($_POST['optionsRadiosConsulta'] != 'pon')
-                    {
-                      echo "
-                        <label>CTO</label>
-                        <select class=form-control name=cto>";
+                  <label>CTO</label>
 
+                  <select class=form-control name=ctoSelect>
+                  <?php
                       $sql_caixa_atendimento = "SELECT DISTINCT caixa_atendimento FROM ctos";
                       $executa_sql_caixa_atendimento = mysqli_query($conectar,$sql_caixa_atendimento);
                       
                       while ($caixa_atendimento = mysqli_fetch_array($executa_sql_caixa_atendimento, MYSQLI_BOTH)) 
                       {
-                        if($_POST['cto'] == $caixa_atendimento['caixa_atendimento'])
+                        if($_POST['ctoSelect'] == $caixa_atendimento['caixa_atendimento'])
                         {
                           $selecionado = "selected";
                         }else{
                           $selecionado = "";
-                        }
-                        
+                        }   
                         echo "<option name='cto' value=$caixa_atendimento[caixa_atendimento] $selecionado>$caixa_atendimento[caixa_atendimento]</option>";
                       }
-                    }
-                    echo "</select>";
+                    // }
                   ?>
+                  </select>
+                  
                 </div>
               </div>
               <div class="form-group">
-                    <span class="input-group-btn">
-                      <button class="btn btn-secondary" type="submit">Buscar</button>
-                    </span>
-                  </div>
+                <span class="input-group-btn">
+                  <button class="btn btn-secondary" type="submit">Buscar</button>
+                </span>
+              </div>
           </form>
           <?php include "_show_status_cto.php"?>
           </div><!-- fim panel -->

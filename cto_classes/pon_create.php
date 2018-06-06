@@ -24,11 +24,11 @@
                     <form role="form" action="../classes/cadastrar_pon.php" method="post">
                       <div class="form-group">
                         <label>Nome</label> 
-                        <input class="form-control" placeholder="Nome do Dispositivo" name="nomeDev" type="text" autofocus required>
+                        <input class="form-control" placeholder="Nome do Dispositivo" name="nomeDev" type="text" pattern="[a-zA-Z0-9._%.-%]+" title="Sem Caracteres Especiais ou utilização de espaço" autofocus required>
                       </div>
                       <div class="form-group">
                         <label>IP da OLT</label>
-                        <input class="form-control" placeholder="IP da OLT" name="ipOLT" type="text" autofocus required>
+                        <input class="form-control" placeholder="IP da OLT" name="ipOLT" type="text" pattern="[0-9]+.[0-9]+.[0-9]+.[0-9]+" title="Digite o IP no formato: Ex. 10.10.10.2" autofocus required>
                       </div>
                       <div class="form-group">
                         <label>Frame</label> 
@@ -40,7 +40,7 @@
                       </div>
                       <div class="form-group">
                         <label>Quantidade de Portas</label>
-                        <input class="form-control" placeholder="Quantidade de Portas" name="porta" min=0 type="number" autofocus required>
+                        <input class="form-control" placeholder="Quantidade de Portas" name="porta" min=1 type="number" autofocus required>
                       </div>
                       <button class="btn btn-lg btn-success btn-block">Cadastrar</button>
                     </form>
