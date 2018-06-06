@@ -8,9 +8,13 @@ session_start();
 if (!mysqli_connect_errno())
 {
   if( isset($_SESSION["id_usuario"]) && isset($_POST["contrato"]) && isset($_POST["serial"]) && isset($_POST["caixa_atendimento_select"])
-    && isset($_POST["pacote"]) )
+    && isset($_POST["pacote"]) && isset($_POST["porta_atendimento"]) && isset($_POST["frame"]) && isset($_POST["slot"]) &&
+     isset($_POST["pon"]) && isset($_POST["deviceName"])  )
   {
-    list($pon_id,$cto) = explode("-",$_POST["caixa_atendimento_select"]);
+    $cto = $_POST["caixa_atendimento_select"];
+    $frame = $_POST["frame"];
+    $slot = $_POST["slot"];
+    $pon = $_POST["pon"];
     $usuario = $_SESSION["id_usuario"];
     $contrato = $_POST["contrato"];
     $serial = strtoupper($_POST["serial"]);
@@ -19,7 +23,8 @@ if (!mysqli_connect_errno())
     $telNumber = $_POST["numeroTel"];
     $telPass = $_POST["passwordTel"];
     $vasProfile = $_POST["optionsRadios"];
-    $porta_atendimento = '5';
+    $porta_atendimento = $_POST["porta_atendimento"];
+    $deviceName = $_POST["deviceName"];
     $ip_olt = NULL;
 
      if(empty($telNumber) && empty($telPass) )
@@ -52,8 +57,8 @@ if (!mysqli_connect_errno())
       $pacote = NULL;
      }
       
-      $sql_registra_onu = ("INSERT INTO ont (contrato, serial, cto, tel_number, tel_user, tel_password, perfil, pacote, usuario_id,equipamento) 
-                              VALUES ('$contrato','$serial','$cto','$telNumber','$telNumber','$telPass','$vasProfile','$pacote','$usuario','$equipment')" );
+      $sql_registra_onu = ("INSERT INTO ont (contrato, serial, cto, tel_number, tel_user, tel_password, perfil, pacote, usuario_id,equipamento,porta) 
+                              VALUES ('$contrato','$serial','$cto','$telNumber','$telNumber','$telPass','$vasProfile','$pacote','$usuario','$equipment','$porta_atendimento')" );
     
       $cadastrar = mysqli_query($conectar,$sql_registra_onu);
       if ($cadastrar )               
@@ -82,24 +87,7 @@ if (!mysqli_connect_errno())
 
           if ($executa_query_qos_profile && $executa_query_password && $executa_query_username && $diminui_limite) 
           {  #####TL1 INICIO#####
-              //SELECIONA O FRAME SLOT e PON PARA ENVIAR VIA TL1
-          $select_frame_slot_pon = "SELECT distinct frame_slot_pon FROM ctos WHERE caixa_atendimento = '$cto'";
-          $executa_select_frame_slot_pon= mysqli_query($conectar,$select_frame_slot_pon);
           
-          //seleciona o nome do disponsitivo no BD
-          $deviceName = null;
-          $select_deviceName = "SELECT deviceName FROM pon WHERE pon_id = $pon_id";
-          $executa_select_deviceName = mysqli_query($conectar,$select_deviceName);
-          while ($pon = mysqli_fetch_array($executa_select_deviceName, MYSQLI_BOTH))
-          {
-            $deviceName = $pon['deviceName'];
-          }
-
-          // seleciona o frame,slot e pon no banco
-          $frame = 0;
-          $slot = 0;
-          $pon = 0;
-
           #### SELECT OLT IP ####
           $sql_pega_olt_ip = "SELECT olt_ip FROM pon WHERE deviceName='$deviceName'";
           $executa_pega_olt_ip = mysqli_query($conectar,$sql_pega_olt_ip);
@@ -108,11 +96,6 @@ if (!mysqli_connect_errno())
             $ip_olt = $ip['olt_ip'];
           }
           
-          while ($fram_slot_pon = mysqli_fetch_array($executa_select_frame_slot_pon, MYSQLI_BOTH))
-          {
-            $frame_slot_pon = $fram_slot_pon['frame_slot_pon'];
-            list($frame,$slot,$pon) = explode("-", $frame_slot_pon);
-          }
           
           ##SO VERIFICAR PORTA DO SPLITTER E ALTERAR O ONME DA VARIAVEL
         //echo "<br>$deviceName,$frame,$slot,$pon,$contrato,$cto,$porta_atendimento,$serial,$equipment,$vasProfile<br><br>";
@@ -227,9 +210,14 @@ if (!mysqli_connect_errno())
                 ### FIM BTV ###
                 if($vasProfile == "VAS_IPTV")
                 {
-                  $_SESSION['menssagem'] = "Selecione a Porta de Atendimento!";
-                  $caixa_atendimento = $_GET['caixa_atendimento_select'] = $cto;
-                  header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_select=$caixa_atendimento&serial=$serial");
+                  $_SESSION['menssagem'] = "Cadastrado";
+                  //Atualizar Porta CTO
+                  $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 1, serial = '$serial'
+                    WHERE caixa_atendimento = '$cto' AND porta_atendimento= '$porta_atendimento'";
+                  $executa_insere_porta = mysqli_query($conectar,$sql_insere_porta);
+                  //Fim Atualizar Porta CTO
+
+                  // header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_select=$caixa_atendimento&serial=$serial");
                   mysqli_close($conectar_radius);
                   mysqli_close($conectar);
                   exit;
@@ -345,10 +333,13 @@ if (!mysqli_connect_errno())
               
               $insere_service_internet = "UPDATE ont SET service_port_internet='$servicePortInternetID' WHERE serial = '$serial'";
               $executa_insere_service_internet = mysqli_query($conectar,$insere_service_internet);
-              
-              $_SESSION['menssagem'] = "Selecione a Porta de Atendimento!";
-              $caixa_atendimento = $_GET['caixa_atendimento_select'] = $cto;
-              header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_select=$caixa_atendimento&serial=$serial");
+              $_SESSION['menssagem'] = "Cadastrado";
+              //Atualizar Porta CTO
+              $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 1, serial = '$serial'
+                WHERE caixa_atendimento = '$cto' AND porta_atendimento= '$porta_atendimento'";
+              $executa_insere_porta = mysqli_query($conectar,$sql_insere_porta);
+              header('Location: ../ont_classes/ont_register.php');
+              // fim Atualizar Porta CTO
               mysqli_close($conectar_radius);
               mysqli_close($conectar);
               exit;

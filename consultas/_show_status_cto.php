@@ -68,8 +68,15 @@
                   <td>$pon</td>
                   <td>$porta_atendimento</td>";
                   if($porta_disponivel == 0)
-                    echo "<td>DISPONÍVEL</td>";
-                  else echo "<td>$serial</td>";
+                  {
+                    if($_SESSION["cadastrar_onu"] == 1)
+                    {
+                      echo "<td><a href='../ont_classes/ont_registering.php?porta_atendimento=$porta_atendimento&frame=$frame&slot=$slot&pon=$pon&cto=$caixa_atendimento&device=$device'>DISPONÍVEL</a></td>";
+                    }else{
+                      echo "<td>DISPONÍVEL</td>";
+                    }
+                  }
+                  else{ echo "<td>$serial</td>";}
             echo"
                   
                 </tr>";
