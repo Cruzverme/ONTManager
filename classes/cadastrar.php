@@ -38,11 +38,10 @@ if (!mysqli_connect_errno())
      
      $sql_verifica_limite_ont = "SELECT serial,contrato FROM ont WHERE  serial = '$serial' LIMIT 1"; //verifica se ja existe o mac
      $executa_verifica_limite_ont = mysqli_query($conectar,$sql_verifica_limite_ont);
-
-     if($executa_verifica_limite_ont > 0) //se o resultado do limite for 1 ele cai aqui
+     var_dump($executa_verifica_limite_ont);
+     if(mysqli_num_rows($executa_verifica_limite_ont) > 0) //se o resultado do limite for 1 ele cai aqui
      {
         $limiteONT = mysqli_fetch_array($executa_verifica_limite_ont, MYSQLI_BOTH);
-
         $_SESSION['menssagem'] = "MAC Já Cadastrado no contrato $limiteONT[contrato]";
         header('Location: ../ont_classes/ont_register.php');
         mysqli_close($conectar_radius);
