@@ -1,5 +1,77 @@
 <?php 
 
+  function tratar_errors($errorCode)
+  {
+    switch($errorCode)
+    {
+      case '2686058498':
+        return "Informação Faltando Faltando";
+        break;
+      case '2686058497':
+        return "Erro de Sintaxe";
+        break;
+      case '2686058500':
+        return "Parametro Incorreto";
+        break;
+      case '2686058531':
+        return "OLT Inexistente";
+        break;
+      case '1610612764':
+        return "Limite de Tempo Esgotado";
+        break;
+      case '2686058552':
+        return "Recurso Inexistente";
+        break;
+      case '2689012370':
+        return "ONT Não Está Online";
+        break;
+      case '2689014724':
+        return "ONT Está Offline";
+        break;
+      case '2689016790':
+        return "Porta PON Inexistente";
+        break;
+      case '2689014716':
+        return "ONT Inexistente no Sistema";
+        break;
+      case '76546031':
+        return "Usuário ou Senha Invalida";
+        break;
+      case '76545967':
+        return "Licença Invalida";
+        break;
+      case '2686058556':
+        return "Usuário Já Logado";
+        break;
+      case '1618280737':
+        return "Limite Máximo de Conexão Excedido";
+        break;
+      case '1610612773':
+        return "Sincronizando, Por Favor Aguarde!";
+        break;
+      case '1616445448':
+        return "Falha ao Realizar Login";
+        break;
+      case '1610612765':
+        return "OLT Offline";
+        break;
+      case '2686058521':
+        return "Usuário Não Logado";
+        break;
+      case '0':
+        return "Sucesso";
+        break;
+      // case 'value':
+      //   return "";
+      //   break;
+      // case 'value':
+      //   return "";
+      //   break;
+      default:
+        return "OCORREU UM ERRO DESCONHECIDO DE CODIGO $errorCode";
+    }
+  }
+
   function logar_tl1()
   {
     include_once "telnet_config.php";

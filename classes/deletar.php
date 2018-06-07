@@ -63,7 +63,8 @@
               $errorCode = trim($remove_desc[0]);
               if($errorCode != "0")
               {
-                $_SESSION['menssagem'] = "Houve erro ao inserir no u2000 SQL: $errorCode";
+                $trato = tratar_errors($errorCode);
+                $_SESSION['menssagem'] = "Houve erro ao inserir no u2000: $trato";
                 header('Location: ../ont_classes/ont_delete.php');
                 mysqli_close($conectar_radius);
                 mysqli_close($conectar);

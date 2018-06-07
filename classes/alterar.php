@@ -50,9 +50,11 @@ if (!mysqli_connect_errno())
     $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
     $remove_desc = explode("ENDESC=",$check_sucesso[1]);
     $errorCode = trim($remove_desc[0]);
-    if($errorCode != "0")
+    if($errorCode != "0") //se der erro ao deletar a ONT
     {
-      $_SESSION['menssagem'] = "Houve erro ao inserir no u2000 SQL: $errorCode";
+      $trato = tratar_errors($errorCode);
+
+      $_SESSION['menssagem'] = "Houve erro ao remover no u2000: $trato";
       header('Location: ../ont_classes/ont_change.php');
       mysqli_close($conectar_radius);
       mysqli_close($conectar);
@@ -88,9 +90,11 @@ if (!mysqli_connect_errno())
       $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
       $remove_desc = explode("ENDESC=",$check_sucesso[1]);
       $errorCode = trim($remove_desc[0]);
-      if($errorCode != "0")
+      if($errorCode != "0") // se der erro ao recadastrar a ONT
       {
-        $_SESSION['menssagem'] = "Houve erro ao inserir no u2000 SQL: $errorCode";
+        $trato = tratar_errors($errorCode);
+
+        $_SESSION['menssagem'] = "Houve erro ao inserir no u2000: $trato";
 
           //se der erro ele irá apagar o registro salvo na tabela local ont
         $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
@@ -124,9 +128,11 @@ if (!mysqli_connect_errno())
           $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
           $remove_desc = explode("ENDESC=",$check_sucesso[1]);
           $errorCode = trim($remove_desc[0]);
-          if($errorCode != "0") //se der erro na service port internet
+          if($errorCode != "0") //se der erro na service port iptv
           {
-            $_SESSION['menssagem'] = "Houve erro Inserir a Service Port de IPTV: $errorCode";
+            $trato = tratar_errors($errorCode);
+
+            $_SESSION['menssagem'] = "Houve erro Inserir a Service Port de IPTV: $trato";
 
             //se der erro ele irá apagar o registro salvo na tabela local ont
             $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
@@ -214,9 +220,11 @@ if (!mysqli_connect_errno())
           $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
           $remove_desc = explode("ENDESC=",$check_sucesso[1]);
           $errorCode = trim($remove_desc[0]);
-          if($errorCode != "0")
+          if($errorCode != "0") // se der erro na ativacao da telefonia
           {
-            $_SESSION['menssagem'] = "Houve erro ao inserir no u2000 SQL: $errorCode";
+            $trato = tratar_errors($errorCode);
+
+            $_SESSION['menssagem'] = "Houve erro ao inserir no u2000: $trato";
             $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
             mysqli_query($conectar,$sql_apagar_onu);
 
@@ -234,7 +242,9 @@ if (!mysqli_connect_errno())
             $errorCode = trim($remove_desc[0]);
             if($errorCode != "0") //se der erro na service port telefone
             {
-              $_SESSION['menssagem'] = "Houve erro Inserir a Service Port Telefonia: $errorCode";
+              $trato = tratar_errors($errorCode);
+
+              $_SESSION['menssagem'] = "Houve erro Inserir a Service Port Telefonia: $trato";
 
               //se der erro ele irá apagar o registro salvo na tabela local ont
                 $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
@@ -278,7 +288,9 @@ if (!mysqli_connect_errno())
         $errorCode = trim($remove_desc[0]);
         if($errorCode != "0") //se der erro na service port internet
         {
-          $_SESSION['menssagem'] = "Houve erro Inserir a Service Port de Internet: $errorCode";
+          $trato = tratar_errors($errorCode);
+
+          $_SESSION['menssagem'] = "Houve erro Inserir a Service Port de Internet: $trato";
 
           //se der erro ele irá apagar o registro salvo na tabela local ont
           $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );

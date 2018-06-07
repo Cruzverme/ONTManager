@@ -91,7 +91,8 @@
               $executa_update_serial = mysqli_query($conectar,$update_serial);//atualiza serial banco local
               $executa_update_serial_cto = mysqli_query($conectar,$update_serial_cto);// atualiza serial da cto no banco local
             }
-            $_SESSION['menssagem'] = "Houve erro ao inserir ao restaurar a ONT! CODE: $tl1_alterar_mac";
+            $trato = tratar_errors($tl1_alterar_mac);
+            $_SESSION['menssagem'] = "Houve erro ao restaurar a ONT!: $trato";
             header('Location: ../ont_classes/alterar_mac_ont.php');
             mysqli_close($conectar_radius);
             mysqli_close($conectar);
@@ -125,7 +126,8 @@
                 $executa_update_serial = mysqli_query($conectar,$update_serial);//atualiza serial banco local
                 $executa_update_serial_cto = mysqli_query($conectar,$update_serial_cto);// atualiza serial da cto no banco local
               }
-              $_SESSION['menssagem'] = "Houve erro ao inserir no u2000 SQL: $errorCode";
+              $trato = tratar_errors($errorCode);
+              $_SESSION['menssagem'] = "Houve erro ao alterar no u2000: $trato";
               header('Location: ../ont_classes/alterar_mac_ont.php');
               mysqli_close($conectar_radius);
               mysqli_close($conectar);
