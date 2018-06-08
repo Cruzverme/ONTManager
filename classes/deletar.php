@@ -78,6 +78,11 @@
                 {
                   if ( $total = mysqli_affected_rows($conectar))   // retorna quantas rows foram afetadas           
                   {
+                      $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
+                        VALUES ('$serial Removido Pelo Usuario de Codigo $usuario','$usuario')";
+                    
+                      $executa_log = mysqli_query($conectar,$sql_insert_log);
+
                       $_SESSION['menssagem'] = "$total ONU Removida!";
                       header('Location: ../ont_classes/ont_delete.php');
                       mysqli_close($conectar);

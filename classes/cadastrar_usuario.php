@@ -2,7 +2,7 @@
   include_once "../db/db_config_mysql.php";
 //iniciando sessao para enviar as msgs
   session_start();
-
+  $usuario_logado = filter_input(INPUT_SESSION,'id_ususario');
   if (!mysqli_connect_errno())
   {
     if( isset($_POST["usuario"]) && isset($_POST["password"]) && isset($_POST["nome_usuario"]) 
@@ -163,6 +163,10 @@
               
               if($permissoes)
               {  
+                $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
+                  VALUES ('Usuario $usuario Cadastrado Pelo Usuario de Codigo $usuario_logado','$usuario_logado')";                    
+                $executa_log = mysqli_query($conectar,$sql_insert_log);
+                
                 $_SESSION['menssagem'] = "Usuario Cadastrado!";
                 header('Location: ../users/usuario_new.php');
                 mysqli_close($conectar);

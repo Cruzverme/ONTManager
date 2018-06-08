@@ -8,6 +8,7 @@
   $slot = filter_input(INPUT_POST, 'slot');
   $porta = filter_input(INPUT_POST,'porta');
   $ipOLT = filter_input(INPUT_POST,'ipOLT');
+  $usuario = filter_input(INPUT_SESSION,'id_ususario');
 
   if($frame || $frame == 0 && $slot || $slot == 0 && $porta && $ipOLT )
   {
@@ -19,6 +20,11 @@
 
       if($checar_insert)
       { 
+
+        $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
+            VALUES ('OLT $nomeDispositivo Cadastrado Pelo Usuario de Codigo $usuario','$usuario')";                    
+        $executa_log = mysqli_query($conectar,$sql_insert_log);
+        
         echo  $_SESSION['menssagem'] = "OLT Registrada!";
         header('Location: ../cto_classes/pon_create.php');
         mysqli_close($conectar);

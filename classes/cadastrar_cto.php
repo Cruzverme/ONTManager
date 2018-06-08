@@ -2,7 +2,8 @@
   include_once "../db/db_config_mysql.php";
 //iniciando sessao para enviar as msgs
   session_start();
-
+  $usuario = filter_input(INPUT_SESSION,'id_ususario');
+  
   if (!mysqli_connect_errno())
   {
     if( isset($_POST["cto"]) && !empty($_POST["cto"]) && isset($_POST["porta"]) && !empty($_POST["porta"])
@@ -22,11 +23,15 @@
          }
 
          if($checar_insert)
-         { 
-             echo  $_SESSION['menssagem'] = "Caixa de Atendimento Registrada!";
-             header('Location: ../cto_classes/cto_create.php');
-             mysqli_close($conectar);
-             exit;
+         {
+            $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
+              VALUES ('Equipamento $modelo Cadastrado Pelo Usuario de Codigo $usuario','$usuario')";
+            $executa_log = mysqli_query($conectar,$sql_insert_log);
+
+            echo  $_SESSION['menssagem'] = "Caixa de Atendimento Registrada!";
+            header('Location: ../cto_classes/cto_create.php');
+            mysqli_close($conectar);
+            exit;
          }else{
            echo $pon;
            $erro = mysqli_error($conectar);

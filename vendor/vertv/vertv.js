@@ -53,3 +53,6 @@ $('.btn-salvar').on('click',function(){
    $('#modal-texto').modal('hide');
 });
 
+ $('tr.usuarios').click(function() {
+     window.location.href = $(this).attr('data-href');
+ });

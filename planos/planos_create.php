@@ -17,7 +17,12 @@
                   <label>Nome da Velocidade</label> 
                   <input class="form-control" placeholder="Nome da Velocidade" 
                     name="nome_velocidade" type="text" autofocus required>
-                </div>    
+                </div>
+                <div class="form-group">
+                  <label>Codigo do Control Plus</label> 
+                  <input class="form-control" placeholder="Codigo do Control Plus" 
+                    name="codigoCplus" type="text" autofocus required>
+                </div>
                 <div class="form-group">
                   <label>Qual Plano</label>
                   <div class="radio">

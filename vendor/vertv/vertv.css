@@ -72,6 +72,12 @@ a:hover{
 	color: #363b41
 }
 
+/* a:hover, tr.hover:not(:first-child) {
+	text-decoration: underline;
+	color: blue;
+	cursor: pointer;
+} */
+
 .btn{
 	color: #000;
 	background-color: #ff9700;
@@ -98,8 +104,6 @@ a:hover{
 	background-color: #f0ad4e;
 	border-color: #ff9700;
 }
-
-
 
 #wrapper{
 	width:100%

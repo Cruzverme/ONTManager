@@ -7,6 +7,7 @@
   $velocidade_download = filter_input(INPUT_POST, 'velocidade_download');
   $velocidade_upload = filter_input(INPUT_POST,'velocidade_upload');
   $tipo_plano = filter_input(INPUT_POST, 'optionTipoVelocidade');
+  $codigo_cplus = filter_input(INPUT_POST, 'codigoCplus');
   
   $nomenclatura = str_replace('??',"$velocidade_download",$tipo_plano);
   
@@ -18,8 +19,8 @@
 
     if (!mysqli_connect_errno())
     {
-      $sql_insert_velocidade = ("INSERT INTO planos(nome,nomenclatura_velocidade,velocidade_download,velocidade_upload) 
-        VALUES('$nome_velocidade','$nomenclatura',$velocidade_download,$velocidade_upload)");
+      $sql_insert_velocidade = ("INSERT INTO planos(nome,nomenclatura_velocidade,velocidade_download,velocidade_upload, referencia_cplus) 
+        VALUES('$nome_velocidade','$nomenclatura',$velocidade_download,$velocidade_upload,$codigo_cplus)");
       $result = mysqli_query($conectar,$sql_insert_velocidade);
 
       if($result)

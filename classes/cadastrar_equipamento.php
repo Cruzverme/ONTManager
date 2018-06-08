@@ -4,6 +4,8 @@
   session_start();
 
   $modelo = filter_input(INPUT_POST, 'modelo');
+  $usuario = filter_input(INPUT_SESSION,'id_ususario');
+
   
   if($modelo)
   {
@@ -14,6 +16,9 @@
 
       if($checar_equipamento)
       { 
+        $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
+            VALUES ('Equipamento $modelo Cadastrado Pelo Usuario de Codigo $usuario','$usuario')";                    
+        $executa_log = mysqli_query($conectar,$sql_insert_log);
         echo  $_SESSION['menssagem'] = "Equipamento Registrado!";
         header('Location: ../equipamento/cadastro_equipamento.php');
         mysqli_close($conectar);

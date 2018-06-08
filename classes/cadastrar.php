@@ -27,6 +27,15 @@ if (!mysqli_connect_errno())
     $deviceName = $_POST["deviceName"];
     $ip_olt = NULL;
 
+     if($pacote == 'none')
+     {
+        $_SESSION['menssagem'] = "Velocidade Não Existe no Cplus";
+        header('Location: ../ont_classes/ont_register.php');
+        mysqli_close($conectar_radius);
+        mysqli_close($conectar);
+        exit;
+     }
+         
      if(empty($telNumber) && empty($telPass) )
      {
         $telNumber = 0;
@@ -71,7 +80,7 @@ if (!mysqli_connect_errno())
       
       $sql_registra_onu = ("INSERT INTO ont (contrato, serial, cto, tel_number, tel_user, tel_password, perfil, pacote, usuario_id,equipamento,porta) 
                               VALUES ('$contrato','$serial','$cto','$telNumber','$telNumber','$telPass','$vasProfile','$pacote','$usuario','$equipment','$porta_atendimento')" );
-    
+
       $cadastrar = mysqli_query($conectar,$sql_registra_onu);
       if ($cadastrar )               
       {
@@ -134,6 +143,10 @@ if (!mysqli_connect_errno())
             $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/13/0/$serial@vertv' ";
             $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
 
+            $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
+              VALUES ('ERRO NO U2000 AO GERAR ONTID $trato',$usuario)";
+            $executa_log = mysqli_query($conectar,$sql_insert_log);
+
             header('Location: ../ont_classes/ont_register.php');
             mysqli_close($conectar_radius);
             mysqli_close($conectar);
@@ -157,7 +170,13 @@ if (!mysqli_connect_errno())
               $errorCode = trim($remove_desc[0]);
               if($errorCode != "0") //se der erro na service port iptv
               {
+                
                 $trato = tratar_errors($errorCode);
+                
+                $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
+                  VALUES ('ERRO NO U2000 AO GERAR SERVICE PORT IPTV $trato',$usuario)";
+                $executa_log = mysqli_query($conectar,$sql_insert_log);
+                
                 $_SESSION['menssagem'] = "Houve erro Inserir a Service Port de IPTV: $trato";
 
                 //se der erro ele irá apagar o registro salvo na tabela local ont
@@ -225,6 +244,10 @@ if (!mysqli_connect_errno())
                 if($vasProfile == "VAS_IPTV")
                 {
                   $_SESSION['menssagem'] = "Cadastrado";
+
+                  $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
+                    VALUES ('$serial Cadastrado com o serviço $vasProfile',$usuario)";
+                  $executa_log = mysqli_query($conectar,$sql_insert_log);
                   //Atualizar Porta CTO
                   $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 1, serial = '$serial'
                     WHERE caixa_atendimento = '$cto' AND porta_atendimento= '$porta_atendimento'";
@@ -350,6 +373,11 @@ if (!mysqli_connect_errno())
               $insere_service_internet = "UPDATE ont SET service_port_internet='$servicePortInternetID' WHERE serial = '$serial'";
               $executa_insere_service_internet = mysqli_query($conectar,$insere_service_internet);
               $_SESSION['menssagem'] = "Cadastrado";
+
+              $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
+                    VALUES ('$serial Cadastrado com o serviço $vasProfile','$usuario')";
+              $executa_log = mysqli_query($conectar,$sql_insert_log);
+
               //Atualizar Porta CTO
               $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 1, serial = '$serial'
                 WHERE caixa_atendimento = '$cto' AND porta_atendimento= '$porta_atendimento'";
@@ -398,14 +426,4 @@ if (!mysqli_connect_errno())
   mysqli_close($conectar);
   exit;
 }
-
-
-/*
-SQL PARA SALVAR NO RADIUS
-INSERT INTO radcheck( username, attribute, op, value) VALUES ( '2500/13/0/485754439C96D58B@vertv', 'User-Name', ':=', '2500/13/0/485754430CEA4E9A@vertv' );
-
-INSERT INTO radcheck( username, attribute, op, value) VALUES ( '2500/13/0/485754439C96D58B@vertv', 'User-Password', ':=', ‘vlan’ );
-
-INSERT INTO radcheck( username, attribute, op, value) VALUES ( '2500/13/0/485754439C96D58B@vertv', 'Huawei-Qos-Profile-Name', ':=', 'CORPF_10M' );
-*/
 ?>

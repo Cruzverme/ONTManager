@@ -13,12 +13,13 @@
     ';
   }
   
-  $porta_selecionado = filter_input(INPUT_GET,'porta_atendimento');
-  $frame = filter_input(INPUT_GET,'frame');
-  $slot = filter_input(INPUT_GET,'slot');
-  $pon = filter_input(INPUT_GET,'pon');
-  $cto = filter_input(INPUT_GET,'cto');
-  $device = filter_input(INPUT_GET,'device');
+  $porta_selecionado = filter_input(INPUT_POST,'porta_atendimento');
+  $frame = filter_input(INPUT_POST,'frame');
+  $slot = filter_input(INPUT_POST,'slot');
+  $pon = filter_input(INPUT_POST,'pon');
+  $cto = filter_input(INPUT_POST,'cto');
+  $device = filter_input(INPUT_POST,'device');
+  $contrato = filter_input(INPUT_POST,'contrato');
   
 ?>
   <div id="page-wrapper">
@@ -72,7 +73,7 @@
                     <div class="form-group">
                         <label>Contrato</label> 
                         <input class="form-control" placeholder="Contrato" 
-                          name="contrato" type="text" autofocus required>
+                          name="contrato" value='<?php echo $contrato;?>'type="text" autofocus required>
                     </div>
                     
                     <div class="form-group">
@@ -85,14 +86,32 @@
                         <label>Pacote</label>
                         <select class="form-control" name="pacote">
                         <?php 
-                          $sql_lista_velocidades = "SELECT nome,nomenclatura_velocidade FROM planos";
+                          $json_file = file_get_contents("http://192.168.80.5/sisspc/demos/get_pacote_ftth_cplus.php?contra=$contrato");
+                          $json_str = json_decode($json_file, true);
+                          $itens = $json_str['telefone'];
+                          $codigoCplus = '';
+                          $verificacao = 0;
+                          
+                          $sql_lista_velocidades = "SELECT nome,nomenclatura_velocidade, referencia_cplus FROM planos";
                           $executa_query = mysqli_query($conectar,$sql_lista_velocidades);
-                          while ($listaPlanos = mysqli_fetch_array($executa_query, MYSQLI_BOTH)) 
+                          while ($listaPlanos = mysqli_fetch_array($executa_query, MYSQLI_BOTH))
                           {
-                            echo "<option value='$listaPlanos[nomenclatura_velocidade]'>$listaPlanos[nome]</option>"; 
+                            foreach ( $itens as $codigoPlano )
+                            {
+                              $codigoCplus = $codigoPlano;
+                              if($codigoCplus == $listaPlanos['referencia_cplus'])
+                              {
+                                echo "<option value='$listaPlanos[nomenclatura_velocidade]'>$listaPlanos[nome]</option>";
+                                $verificacao = 1;
+                              }
+                            }
+                            
                           }
+                          if($verificacao != 1)
+                            echo "<option value='none'>Velocidade Não Cadastrada no Contrato, Favor Verificar no Control Plus</option>";
                           mysqli_free_result($executa_query);                                                
                         ?>
+                        
                         </select>
                       </div>
                     </div> <!-- fim div pacote -->
