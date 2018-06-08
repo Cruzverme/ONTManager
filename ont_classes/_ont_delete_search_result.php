@@ -44,7 +44,7 @@
                         $pacote = $ont['pacote'];
                       }
                       
-                      if(empty($pacote))
+                      if(!empty($pacote))
                       {
                         mysqli_close($conectar);
                         echo '

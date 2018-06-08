@@ -42,7 +42,7 @@
                         echo "<option value=$ont[serial]>$ont[serial]</option>";
                         $serial = $ont['serial'];
                       }
-                      if(empty($serial))
+                      if(!empty($serial))
                       {
                         mysqli_close($conectar);
                         echo '

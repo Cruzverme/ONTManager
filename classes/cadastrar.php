@@ -254,7 +254,7 @@ if (!mysqli_connect_errno())
                   $executa_insere_porta = mysqli_query($conectar,$sql_insere_porta);
                   //Fim Atualizar Porta CTO
 
-                  // header("Location: ../ont_classes/_ont_register_porta_disponivel.php?caixa_atendimento_select=$caixa_atendimento&serial=$serial");
+                  header("Location: ../ont_classes/ont_register.php");
                   mysqli_close($conectar_radius);
                   mysqli_close($conectar);
                   exit;
