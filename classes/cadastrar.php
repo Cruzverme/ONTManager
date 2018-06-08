@@ -27,7 +27,7 @@ if (!mysqli_connect_errno())
     $deviceName = $_POST["deviceName"];
     $ip_olt = NULL;
 
-     if($pacote == 'none')
+     if($pacote == 'none' && $vasProfile != 'VAS_IPTV' )
      {
         $_SESSION['menssagem'] = "Velocidade Não Existe no Cplus";
         header('Location: ../ont_classes/ont_register.php');
