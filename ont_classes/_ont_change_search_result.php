@@ -16,8 +16,8 @@
     include "../db/db_config_mysql.php";
     $contrato = $_POST['contrato'];
     
-    $sql_consulta_perfil = "SELECT pacote,tel_number,tel_password,perfil FROM ont
-    WHERE contrato = $contrato ";
+    $sql_consulta_perfil = "SELECT serial,pacote,tel_number,tel_password,perfil FROM ont
+    WHERE contrato = '$contrato' ";
     $executa_query_perfil = mysqli_query($conectar,$sql_consulta_perfil);
     while ($ont = mysqli_fetch_array($executa_query_perfil, MYSQLI_BOTH)) 
     {
@@ -25,9 +25,10 @@
       $numeroTel = $ont['tel_number'];
       $passwordTel = $ont['tel_password'];
       $profile = $ont['perfil'];
+      $serial = $ont['serial'];
       
     }
-    if(empty($pacote))
+    if(empty($serial))
     {
       mysqli_close($conectar);
       echo '

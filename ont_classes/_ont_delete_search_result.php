@@ -41,10 +41,10 @@
                       while ($ont = mysqli_fetch_array($executa_query, MYSQLI_BOTH)) 
                       {
                         echo "<option value=$ont[serial]>$ont[serial]</option>";
-                        $pacote = $ont['pacote'];
+                        $serial = $ont['serial'];
                       }
                       
-                      if(!empty($pacote))
+                      if(empty($serial))
                       {
                         mysqli_close($conectar);
                         echo '
@@ -57,7 +57,7 @@
                     ?>
                   </select>
                 </div>
-                <?php if(!empty($pacote)) echo'<button class="btn btn-lg btn-success btn-block">Deletar</button>'; ?>
+                <?php if(!empty($serial)) echo'<button class="btn btn-lg btn-success btn-block">Deletar</button>'; ?>
                 
               </form>
             </div>
