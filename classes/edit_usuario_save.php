@@ -5,16 +5,15 @@
 
   if (!mysqli_connect_errno())
   {
-    if( isset($_POST["senha"]) && isset($_POST["nova_senha"]) && isset($_POST["repete_nova_senha"]) 
-      && !empty($_POST["senha"]) && !empty($_POST["nova_senha"]) && !empty($_POST["repete_nova_senha"]) )
+    if( isset($_POST["senha"]) && isset($_POST["nova_senha"]) && !empty($_POST["senha"]) && !empty($_POST["nova_senha"]) )
     {
       $senha = md5($_POST["senha"]);
       $nova_senha = md5($_POST["nova_senha"]);
-      $repete_nova_senha = md5($_POST["repete_nova_senha"]);
+      // $repete_nova_senha = md5($_POST["repete_nova_senha"]);
       $user_id= $_SESSION["id_usuario"];
 
-      if($nova_senha == $repete_nova_senha)
-      {
+      //if($nova_senha == $repete_nova_senha)
+      //{
         $sql_usuario_senha = ("SELECT senha FROM usuarios WHERE senha = '$senha' AND usuario_id = '$user_id'");
         $checar_senha = mysqli_query($conectar,$sql_usuario_senha);
         
@@ -55,12 +54,12 @@
           mysqli_close($conectar);
           exit;
         }
-      }else{
-        $_SESSION['menssagem'] = "Novas Senhas Não São Iguais!";
-        header('Location: ../users/usuario_edit.php');
-        mysqli_close($conectar);
-        exit;
-      }
+      // }else{
+      //   $_SESSION['menssagem'] = "Novas Senhas Não São Iguais!";
+      //   header('Location: ../users/usuario_edit.php');
+      //   mysqli_close($conectar);
+      //   exit;
+      // }
     }else{
       $_SESSION['menssagem'] = "Campos Faltando!";
       header('Location: ../users/usuario_edit.php');

@@ -53,10 +53,11 @@
                         <input name="personalizada8" value=8 type="checkbox"> Cadastrar Velocidade<br/>
                         <input name="personalizada9" value=9 type="checkbox"> Cadastrar Usuários<br/>
                         <input name="personalizada10" value=10 type="checkbox"> Alterar Mac de ONT<br/>
-                        <input name="personalizado11" value=11 type="checkbox"> Consulta de ONU <br/>
-                        <input name="personalizado12" value=11 type="checkbox"> Consulta de CTO <br/>
-                        <input name="personalizado12" value=11 type="checkbox"> Remover de CTO <br/>
-                        <input name="personalizado12" value=11 type="checkbox"> Remover de OLT <br/>
+                        <input name="personalizada11" value=11 type="checkbox"> Consulta de ONU <br/>
+                        <input name="personalizada12" value=12 type="checkbox"> Consulta de CTO <br/>
+                        <input name="personalizada13" value=13 type="checkbox"> Remover de CTO <br/>
+                        <input name="personalizada14" value=14 type="checkbox"> Remover de OLT <br/>
+                        <input name="personalizada15" value=15 type="checkbox"> Alterar e Listar Usuário <br/>
                       </fieldset>
                     </div>
                   </div>

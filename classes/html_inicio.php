@@ -6,7 +6,7 @@ echo '
 ';
     
   // Verificador de sessão 
-  include "../classes/verifica_sessao.php"; 
+  include "../classes/verifica_sessao.php";
 
   #capturar mensagem
   if(isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem']))
@@ -146,6 +146,14 @@ echo '   </head>
                     echo '
                       <li>
                         <a href="../users/usuario_new.php"><i class="fa fa-users fa-fw"></i> Cadastrar Usuario</a>
+                      </li>
+                    ';                    
+                  }
+                  if($_SESSION["alterar_usuario"] == 1)
+                  {
+                    echo '
+                      <li>
+                        <a href="../users/alteracao_usuario.php"><i class="fa fa-users fa-fw"></i> Listar e Alterar Usuario</a>
                       </li>
                     ';                    
                   }

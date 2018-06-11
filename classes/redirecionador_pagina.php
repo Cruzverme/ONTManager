@@ -22,6 +22,8 @@
     header('Location: ../planos/planos_create.php');
   }elseif ($_SESSION["cadastrar_usuario"] == 1) {
     header('Location: ../users/usuario_new.php');
+  }elseif ($_SESSION["alterar_usuario"] == 1) {
+    header('Location: ../users/alteracao_usuario.php');
   }elseif ($_SESSION["cadastrar_equipamento"] == 1) {
     header('Location: ../equipamento/cadastro_equipamento.php');
   }elseif ($_SESSION["consulta_onts"] == 1) {

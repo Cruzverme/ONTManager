@@ -2,7 +2,7 @@
   include_once "../db/db_config_mysql.php";
 //iniciando sessao para enviar as msgs
   session_start();
-  $usuario_logado = filter_input(INPUT_SESSION,'id_ususario');
+  $usuario_logado =  $_SESSION["id_usuario"];
   if (!mysqli_connect_errno())
   {
     if( isset($_POST["usuario"]) && isset($_POST["password"]) && isset($_POST["nome_usuario"]) 
@@ -23,11 +23,12 @@
         $cadastrarOLT = $_POST["personalizada7"] ?? 0;
         $cadastrarVelocidade = $_POST["personalizada8"] ?? 0;
         $cadastrarUsuarios = $_POST["personalizada9"] ?? 0;
-        $alterarMacONT = $_POST["personalizado10"] ?? 0;
-        $consulta_onu = $_POST["personalizado11"] ?? 0;
-        $consulta_cto = $_POST["personalizado12"] ?? 0;
-        $remover_cto = $_POST["personalizado13"] ?? 0;
-        $remover_olt = $_POST["personalizado14"] ?? 0;
+        $alterarMacONT = $_POST["personalizada10"] ?? 0;
+        $consulta_onu = $_POST["personalizada11"] ?? 0;
+        $consulta_cto = $_POST["personalizada12"] ?? 0;
+        $remover_cto = $_POST["personalizada13"] ?? 0;
+        $remover_olt = $_POST["personalizada14"] ?? 0;
+        $alterar_usuario = $_POST["personalizada15"] ?? 0;
         //fim variaveis de permissao
         
         //permissoes personalizadas
@@ -95,35 +96,41 @@
           $permitir_cadastrarVelocidade=0;
         }
 
-        if($alterarMacONT == 1 || $nivel_usuario == 1 )
+        if($alterarMacONT == 10 || $nivel_usuario == 1 )
         {
           $permitir_alterar_MAC=1;
         }else{
           $permitir_alterar_MAC=0;
         }
-        if($consulta_onu == 1 || $nivel_usuario == 1 )
+        if($consulta_onu == 11 || $nivel_usuario == 1 )
         {
           $permitir_consulta_onu=1;
         }else{
           $permitir_consulta_onu=0;
         }
-        if($consulta_cto == 1 || $nivel_usuario == 1 )
+        if($consulta_cto == 12 || $nivel_usuario == 1 )
         {
           $permitir_consulta_cto=1;
         }else{
           $permitir_consulta_cto=0;
         }
-        if($remover_cto == 1 || $nivel_usuario == 1 )
+        if($remover_cto == 13 || $nivel_usuario == 1 )
         {
-          $permitir_consulta_cto=1;
+          $permitir_removerCTO=1;
         }else{
-          $permitir_consulta_cto=0;
+          $permitir_removerCTO=0;
         }
-        if($remover_olt == 1 || $nivel_usuario == 1 )
+        if($remover_olt == 14 || $nivel_usuario == 1 )
         {
-          $permitir_consulta_cto=1;
+          $permitir_removerOLT=1;
         }else{
-          $permitir_consulta_cto=0;
+          $permitir_removerOLT=0;
+        }
+        if($alterar_usuario == 15 || $nivel_usuario == 1)
+        {
+          $permitir_listar_usuario = 1;
+        }else{
+          $permitir_listar_usuario = 0;
         }
         
 
@@ -154,10 +161,12 @@
 
               $sql_cadastrar_permissao = "INSERT INTO usuario_permissao (usuario, cadastrar_onu, deletar_onu, modificar_onu,
                   desativar_ativar_onu, cadastrar_cto, cadastrar_olt, cadastrar_velocidade, cadastrar_usuario, cadastrar_equipamento,
-                  alterar_mac_ont, consulta_ont, consulta_cto, remover_cto, remover_olt)
+                  alterar_mac_ont, consulta_ont, consulta_cto, remover_cto, remover_olt,
+                  alterar_usuario)
                   VALUES ($userID,$permitir_cadastrar_ONU,$permitir_removerONU,$permitir_alterarONU,$permitir_desabilitarHabilitar,
-                  $permitir_cadastrarCTO,$permitir_cadastrarOLT,$permitir_cadastrarVelocidade, $cadastrarUsuarios, $permitir_cadastrarEquipamento,
-                  $permitir_alterar_MAC,$permitir_consulta_onu,$permitir_consulta_onu, $permitir_removerCTO, $permitir_removerOLT)";
+                  $permitir_cadastrarCTO,$permitir_cadastrarOLT,$permitir_cadastrarVelocidade, $permitir_cadastrarUsuarios, $permitir_cadastrarEquipamento,
+                  $permitir_alterar_MAC,$permitir_consulta_onu,$permitir_consulta_onu, $permitir_removerCTO, $permitir_removerOLT,
+                  $permitir_listar_usuario)";
 
               $permissoes = mysqli_query($conectar,$sql_cadastrar_permissao);
               
@@ -173,6 +182,11 @@
                 exit;
               }else{
                 $erro = mysqli_error($conectar);
+
+                $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
+                  VALUES ('Usuario $usuario Alterado Sem Permissões Pelo Usuario de Codigo $usuario_logado' erro: $erro,'$usuario_logado')";                    
+                $executa_log = mysqli_query($conectar,$sql_insert_log);
+
                 $_SESSION['menssagem'] = "Usuario Cadastrado, porem sem permissão! $erro";  
                 header('Location: ../users/usuario_new.php');
                 mysqli_close($conectar);

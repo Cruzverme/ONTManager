@@ -56,3 +56,19 @@ $('.btn-salvar').on('click',function(){
  $('tr.usuarios').click(function() {
      window.location.href = $(this).attr('data-href');
  });
+
+//VALIDAR SEHA
+var password = document.getElementById("senha")
+  , confirm_password = document.getElementById("confirma_senha");
+
+function validatePassword(){
+  if(password.value != confirm_password.value) {
+    confirm_password.setCustomValidity("Senhas Não Conferem");
+  } else {
+    confirm_password.setCustomValidity('');
+  }
+}
+
+password.onchange = validatePassword;
+confirm_password.onkeyup = validatePassword;
+//FIM VALIDAR
