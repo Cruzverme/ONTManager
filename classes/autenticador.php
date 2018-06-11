@@ -34,6 +34,12 @@
                             $_SESSION["id_usuario"]= $dados["usuario_id"];
                             $_SESSION["nome_usuario"] = $dados["nome"];
 
+                            $nome = $_SESSION['nome_usuario'];
+                            $usuario_id = $_SESSION["id_usuario"];
+                            $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
+                                VALUES ('Usuário $nome Entrou no Sistema!','$usuario_id')";
+                            $executa_log = mysqli_query($conectar,$sql_insert_log);
+
                             $sql_select_permissoes = "SELECT cadastrar_onu, deletar_onu, modificar_onu, desativar_ativar_onu, 
                                 cadastrar_cto, cadastrar_olt, cadastrar_velocidade, cadastrar_usuario, cadastrar_equipamento,
                                 alterar_mac_ont, consulta_ont, consulta_cto, remover_cto, remover_olt, alterar_usuario
