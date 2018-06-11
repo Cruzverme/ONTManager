@@ -73,7 +73,7 @@
                     <div class="form-group">
                         <label>Contrato</label> 
                         <input class="form-control" placeholder="Contrato" 
-                          name="contrato" value='<?php echo $contrato;?>'type="text" autofocus required>
+                          name="contrato" value='<?php echo $contrato;?>'type="text" autofocus readonly>
                     </div>
                     
                     <div class="form-group">

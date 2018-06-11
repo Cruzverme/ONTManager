@@ -24,7 +24,7 @@ if (!mysqli_connect_errno())
         $telPass = 0;
      }
 
-    $select_ont_info = "SELECT onu.ontID,onu.cto,onu.perfil,onu.service_port_iptv,onu.service_port_internet,onu.equipamento,ct.frame_slot_pon,ct.pon_id_fk,p.deviceName,p.olt_ip FROM ont onu 
+    $select_ont_info = "SELECT onu.ontID,onu.cto,onu.porta, onu.perfil,onu.service_port_iptv,onu.service_port_internet,onu.equipamento,ct.frame_slot_pon,ct.pon_id_fk,p.deviceName,p.olt_ip FROM ont onu 
       INNER JOIN ctos ct ON ct.serial='$serial' AND ct.caixa_atendimento= onu.cto 
       INNER JOIN pon p ON p.pon_id = ct.pon_id_fk 
       WHERE onu.serial='$serial' AND onu.contrato='$contrato'";
@@ -41,10 +41,11 @@ if (!mysqli_connect_errno())
       $servicePortIptv = $onu_info['service_port_iptv'];
       $servicePortNet = $onu_info['service_port_internet'];
       $cto = $onu_info['cto'];
+      $porta_atendimento = $onu_info['porta'];
       $equipment = $onu_info['equipamento'];
       $vasProfile = $onu_info['perfil'];
     }
-  ############## INICIO DELETAR ##################
+    ############## INICIO DELETAR ##################
     $deletar_2000 = deletar_onu_2000($device,$frame,$slot,$pon,$infoONTID,$ip,$servicePortIptv);
     $tira_ponto_virgula = explode(";",$deletar_2000);
     $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
@@ -53,6 +54,14 @@ if (!mysqli_connect_errno())
     if($errorCode != "0") //se der erro ao deletar a ONT
     {
       $trato = tratar_errors($errorCode);
+
+      $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
+          VALUES (ERRO NO U2000 AO DELETAR A ONTID $trato 
+          informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+          Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+          MAC: $serial, Novo Perfil: $vasProfileNovo, Internet: $pacote, Telefone: $telNumber,
+          Senha Telefone: $telPass',$usuario)";
+      $executa_log = mysqli_query($conectar,$sql_insert_log);
 
       $_SESSION['menssagem'] = "Houve erro ao remover no u2000: $trato";
       header('Location: ../ont_classes/ont_change.php');
@@ -76,7 +85,6 @@ if (!mysqli_connect_errno())
         $executa_query_password= mysqli_query($conectar_radius,$insere_ont_radius_password);
         $executa_query_qos_profile= mysqli_query($conectar_radius,$insere_ont_radius_qos_profile);
       }else{
-
         $atualiza_qos_radius = "UPDATE radreply SET value='$pacote' WHERE username='2500/13/0/$serial@vertv' 
            AND attribute='Huawei-Qos-Profile-Name' ";
         $executa_query= mysqli_query($conectar_radius,$atualiza_qos_radius);
@@ -93,6 +101,14 @@ if (!mysqli_connect_errno())
       if($errorCode != "0") // se der erro ao recadastrar a ONT
       {
         $trato = tratar_errors($errorCode);
+
+        $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
+          VALUES (ERRO NO U2000 AO ALTERAR A ONTID $trato 
+          informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+          Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+          MAC: $serial, Novo Perfil: $vasProfileNovo, Internet: $pacote, Telefone: $telNumber,
+          Senha Telefone: $telPass',$usuario)";
+        $executa_log = mysqli_query($conectar,$sql_insert_log);
 
         $_SESSION['menssagem'] = "Houve erro ao inserir no u2000: $trato";
 
@@ -132,6 +148,14 @@ if (!mysqli_connect_errno())
           {
             $trato = tratar_errors($errorCode);
 
+            $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
+              VALUES ('ERRO NO U2000 AO GERAR SERVICE PORT IPTV $trato 
+              informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+              Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+              MAC: $serial, Novo Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
+              Senha Telefone: $telPass',$usuario)";
+            $executa_log = mysqli_query($conectar,$sql_insert_log);
+  
             $_SESSION['menssagem'] = "Houve erro Inserir a Service Port de IPTV: $trato";
 
             //se der erro ele irá apagar o registro salvo na tabela local ont
@@ -188,7 +212,15 @@ if (!mysqli_connect_errno())
               }
               
               deletar_onu_2000($device,$frame,$slot,$pon,$onuID);
-                
+              
+              $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
+                    VALUES ('Ocorreu um erro ao criar novamente o btv!
+                    informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+                    Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+                    MAC: $serial, Novo Perfil: $vasProfileNovo, Internet: $pacote, Telefone: $telNumber,
+                    Senha Telefone: $telPass','$usuario')";
+              $executa_log = mysqli_query($conectar,$sql_insert_log);
+
               header('Location: ../ont_classes/ont_change.php');
               mysqli_close($conectar_radius);
               mysqli_close($conectar);
@@ -199,6 +231,15 @@ if (!mysqli_connect_errno())
             if($vasProfileNovo == "VAS_IPTV")
             {
               $_SESSION['menssagem'] = "Plano Alterado!";
+
+              $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
+                VALUES ('$serial Alterado com o serviço $vasProfile 
+                informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+                Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial, Novo Perfil: $vasProfileNovo, Internet: $pacote, Telefone: $telNumber,
+                Senha Telefone: $telPass',$usuario)";
+              $executa_log = mysqli_query($conectar,$sql_insert_log);
+
               header('Location: ../ont_classes/ont_change.php');
               mysqli_close($conectar_radius);
               mysqli_close($conectar);
@@ -228,6 +269,14 @@ if (!mysqli_connect_errno())
             $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
             mysqli_query($conectar,$sql_apagar_onu);
 
+            $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
+              VALUES ('Erro ao ativar Serviço de Telefonia $trato 
+              informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+              Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+              MAC: $serial, Novo Perfil: $vasProfileNovo, Internet: $pacote, Telefone: $telNumber,
+              Senha Telefone: $telPass','$usuario')";
+            $executa_log = mysqli_query($conectar,$sql_insert_log);
+
             header('Location: ../ont_classes/ont_change.php');
             mysqli_close($conectar_radius);
             mysqli_close($conectar);
@@ -246,19 +295,27 @@ if (!mysqli_connect_errno())
 
               $_SESSION['menssagem'] = "Houve erro Inserir a Service Port Telefonia: $trato";
 
-              //se der erro ele irá apagar o registro salvo na tabela local ont
-                $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
-                mysqli_query($conectar,$sql_apagar_onu);
+                //se der erro ele irá apagar o registro salvo na tabela local ont
+              $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
+              mysqli_query($conectar,$sql_apagar_onu);
 
-                $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/13/0/$serial@vertv' 
-                  AND attribute='Huawei-Qos-Profile-Name' ";
-                $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
+              $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/13/0/$serial@vertv' 
+                AND attribute='Huawei-Qos-Profile-Name' ";
+              $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
 
-                $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/13/0/$serial@vertv' ";
-                $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
+              $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/13/0/$serial@vertv' ";
+              $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
+            
+              deletar_onu_2000($device,$frame,$slot,$pon,$onuID);
               
-                deletar_onu_2000($device,$frame,$slot,$pon,$onuID);
-              
+              $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
+                VALUES ('Erro ao Alterar o ServicePort de Telefone $trato' 
+                informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+                Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial, Novo Perfil: $vasProfileNovo, Internet: $pacote, Telefone: $telNumber,
+                Senha Telefone: $telPass,'$usuario')";
+              $executa_log = mysqli_query($conectar,$sql_insert_log);
+
               header('Location: ../ont_classes/ont_change.php');
               mysqli_close($conectar_radius);
               mysqli_close($conectar);
@@ -271,6 +328,14 @@ if (!mysqli_connect_errno())
               
               $servicePortTelefoneID= $pega_id[0] - 1; 
               
+              $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
+                VALUES ('ServicePort Telefone Alterado 
+                informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+                Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial, Novo Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
+                Senha Telefone: $telPass','$usuario')";
+              $executa_log = mysqli_query($conectar,$sql_insert_log);
+
               $insere_service_telefone = "UPDATE ont SET service_port_telefone='$servicePortTelefoneID',tel_user=$telNumber,tel_number=$telNumber,tel_password=$telPass
                WHERE serial = '$serial'";
               $executa_insere_service_telefone = mysqli_query($conectar,$insere_service_telefone);
@@ -304,12 +369,19 @@ if (!mysqli_connect_errno())
           $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
           
           deletar_onu_2000($device,$frame,$slot,$pon,$onuID);
+
+          $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
+            VALUES ('Erro ao Alterar a ServicePort de Internet $trato
+            informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+            Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+            MAC: $serial, Novo Perfil: $vasProfileNovo, Internet: $pacote, Telefone: $telNumber,
+            Senha Telefone: $telPass','$usuario')";
+          $executa_log = mysqli_query($conectar,$sql_insert_log);
           
           header('Location: ../ont_classes/ont_change.php');
           mysqli_close($conectar_radius);
           mysqli_close($conectar);
           exit;
-
         }else{
           $remove_barras_para_pegar_id = explode("--------------",$tira_ponto_virgula[1]);
           $pegar_servicePorta_ID = explode("\r\n",$remove_barras_para_pegar_id[1]);
@@ -322,48 +394,22 @@ if (!mysqli_connect_errno())
           $executa_insere_service_internet = mysqli_query($conectar,$insere_service_internet);
           
             $_SESSION['menssagem'] = "Plano Alterado!";
+
+            $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
+              VALUES ('$serial Alterado com o serviço $vasProfile 
+              informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+              Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+              MAC: $serial, Novo Perfil: $vasProfileNovo, Internet: $pacote, Telefone: $telNumber,
+              Senha Telefone: $telPass','$usuario')";
+            $executa_log = mysqli_query($conectar,$sql_insert_log);
             header('Location: ../ont_classes/ont_change.php');  
             mysqli_close($conectar_radius);
             mysqli_close($conectar);
             exit;
         }//fim service port internet
       }
-
-
     }
     ################# FIM DELETAR ######################
-    // $sql_muda_plano_onu = ("UPDATE ont SET pacote = '$pacote' WHERE contrato = '$contrato' AND serial = '$serial'" );
-
-    // $novo_pacote = mysqli_query($conectar,$sql_muda_plano_onu);
-    // if ( $novo_pacote )
-    // {
-    //   $atualiza_qos_radius = "UPDATE radreply SET value='$pacote' WHERE username='2500/13/0/$serial@vertv' 
-    //       AND attribute='Huawei-Qos-Profile-Name' ";
-    //   $executa_query= mysqli_query($conectar_radius,$atualiza_qos_radius);
-      
-      // if ($executa_query) 
-      // {
-      //   $_SESSION['menssagem'] = "Velocidade Alterada!";
-      //   header('Location: ../ont_classes/ont_change.php');
-      //   mysqli_close($conectar_radius);
-      //   mysqli_close($conectar);
-      //   exit;  
-      // }else{
-      //   $erro = mysqli_error($conectar_radius);
-      //   $_SESSION['menssagem'] = "Ocorreu um erro ao alterar no radius SQL: $erro";
-      //   header('Location: ../ont_classes/ont_change.php');
-      //   mysqli_close($conectar_radius);
-      //   mysqli_close($conectar);
-      //   exit;
-      // }
-    // }else{
-    //   $erro = mysqli_error($conectar);
-    //   $_SESSION['menssagem'] = "Velocidade Não Alterada! SQL: $erro";
-    //   header('Location: ../ont_classes/ont_change.php');
-    //   mysqli_close($conectar_radius);
-    //   mysqli_close($conectar);
-    //   exit;
-    // }
   }else{
     $_SESSION['menssagem'] = "Campos Faltando!";
     header('Location: ../ont_classes/ont_change.php');

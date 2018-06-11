@@ -8,6 +8,7 @@
   $velocidade_upload = filter_input(INPUT_POST,'velocidade_upload');
   $tipo_plano = filter_input(INPUT_POST, 'optionTipoVelocidade');
   $codigo_cplus = filter_input(INPUT_POST, 'codigoCplus');
+  $usuario = filter_input(INPUT_SESSION,'id_ususario');
   
   $nomenclatura = str_replace('??',"$velocidade_download",$tipo_plano);
   
@@ -24,7 +25,11 @@
       $result = mysqli_query($conectar,$sql_insert_velocidade);
 
       if($result)
-      { 
+      {
+        $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
+          VALUES ('Velocidade Criada pelo Usuario de Codigo $usuario','$usuario')";
+        $executa_log = mysqli_query($conectar,$sql_insert_log);
+
         $_SESSION['menssagem'] = "Velocidade Registrada!";
         header('Location: ../planos/planos_create.php');
         mysqli_free_result($result);
