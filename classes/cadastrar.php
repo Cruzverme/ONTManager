@@ -29,7 +29,7 @@ if (!mysqli_connect_errno())
 
      if($pacote == 'none' && $vasProfile != 'VAS_IPTV' )
      {
-        $_SESSION['menssagem'] = "Velocidade Não Existe no Cplus";
+        echo $_SESSION['menssagem'] = "Velocidade Não Existe no Cplus";
         header('Location: ../ont_classes/ont_register.php');
         mysqli_close($conectar_radius);
         mysqli_close($conectar);
@@ -51,7 +51,7 @@ if (!mysqli_connect_errno())
      if(mysqli_num_rows($executa_verifica_limite_ont) > 0) //se o resultado do limite for 1 ele cai aqui
      {
         $limiteONT = mysqli_fetch_array($executa_verifica_limite_ont, MYSQLI_BOTH);
-        $_SESSION['menssagem'] = "MAC Já Cadastrado no contrato $limiteONT[contrato]";
+        echo $_SESSION['menssagem'] = "MAC Já Cadastrado no contrato $limiteONT[contrato]";
         header('Location: ../ont_classes/ont_register.php');
         mysqli_close($conectar_radius);
         mysqli_close($conectar);
@@ -66,7 +66,7 @@ if (!mysqli_connect_errno())
      $limite_registro = "";
      if ($limite_registro < 1 AND $limite_registro != null) 
      {
-       $_SESSION['menssagem'] = "Favor, entrar em contato com o TI, para solicitar aumento de registro de equipamentos";
+       echo $_SESSION['menssagem'] = "Favor, entrar em contato com o TI, para solicitar aumento de registro de equipamentos";
        header('Location: ../ont_classes/ont_register.php');
        mysqli_close($conectar_radius);
        mysqli_close($conectar);
@@ -130,7 +130,7 @@ if (!mysqli_connect_errno())
           if($errorCode != "0")
           {
             $trato = tratar_errors($errorCode);
-            $_SESSION['menssagem'] = "Houve erro ao inserir no u2000: $trato";
+            echo $_SESSION['menssagem'] = "Houve erro ao inserir no u2000: $trato";
 
               //se der erro ele irá apagar o registro salvo na tabela local ont
             $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
@@ -185,7 +185,7 @@ if (!mysqli_connect_errno())
                   Senha Telefone: $telPass',$usuario)";
                 $executa_log = mysqli_query($conectar,$sql_insert_log);
                 
-                $_SESSION['menssagem'] = "Houve erro Inserir a Service Port de IPTV: $trato";
+                echo $_SESSION['menssagem'] = "Houve erro Inserir a Service Port de IPTV: $trato";
 
                 //se der erro ele irá apagar o registro salvo na tabela local ont
                 $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
@@ -224,7 +224,7 @@ if (!mysqli_connect_errno())
 
                 if($btv_olt != 'valido' )
                 {
-                  $_SESSION['menssagem'] = "Houve erro no BTV: $btv_olt";
+                  echo $_SESSION['menssagem'] = "Houve erro no BTV: $btv_olt";
 
                   //se der erro ele irá apagar o registro salvo na tabela local ont
                   $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
@@ -258,7 +258,7 @@ if (!mysqli_connect_errno())
                 ### FIM BTV ###
                 if($vasProfile == "VAS_IPTV")
                 {
-                  $_SESSION['menssagem'] = "Cadastrado";
+                  echo $_SESSION['menssagem'] = "Cadastrado";
 
                   $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
                     VALUES ('$serial Cadastrado com o serviço $vasProfile 
@@ -297,7 +297,7 @@ if (!mysqli_connect_errno())
               {
                 $trato = tratar_errors($errorCode);
 
-                $_SESSION['menssagem'] = "Houve erro ao inserir no u2000: $trato";
+                echo $_SESSION['menssagem'] = "Houve erro ao inserir no u2000: $trato";
                 $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
                 mysqli_query($conectar,$sql_apagar_onu);
 
@@ -326,7 +326,7 @@ if (!mysqli_connect_errno())
                 if($errorCode != "0") //se der erro na service port telefone
                 {
                   $trato = tratar_errors($errorCode);
-                  $_SESSION['menssagem'] = "Houve erro Inserir a Service Port Telefonia: $trato";
+                  echo $_SESSION['menssagem'] = "Houve erro Inserir a Service Port Telefonia: $trato";
     
                   //se der erro ele irá apagar o registro salvo na tabela local ont
                   $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
@@ -386,7 +386,7 @@ if (!mysqli_connect_errno())
             if($errorCode != "0") //se der erro na service port internet
             {
               $trato = tratar_errors($errorCode);
-              $_SESSION['menssagem'] = "Houve erro Inserir a Service Port de Internet: $trato";
+              echo $_SESSION['menssagem'] = "Houve erro Inserir a Service Port de Internet: $trato";
 
               //se der erro ele irá apagar o registro salvo na tabela local ont
               $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
@@ -423,7 +423,7 @@ if (!mysqli_connect_errno())
               
               $insere_service_internet = "UPDATE ont SET service_port_internet='$servicePortInternetID' WHERE serial = '$serial'";
               $executa_insere_service_internet = mysqli_query($conectar,$insere_service_internet);
-              $_SESSION['menssagem'] = "Cadastrado";
+              echo $_SESSION['menssagem'] = "Cadastrado";
 
               $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
                 VALUES ('$serial Cadastrado com o serviço $vasProfile 
@@ -446,7 +446,7 @@ if (!mysqli_connect_errno())
           }
         }else{
           $erro = mysqli_error($conectar_radius);
-          $_SESSION['menssagem'] = "Houve erro ao inserir no Radius SQL: $erro";
+          echo $_SESSION['menssagem'] = "Houve erro ao inserir no Radius SQL: $erro";
 
             //se der erro ele irá apagar o registro salvo na tabela local ont
           $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
@@ -459,7 +459,7 @@ if (!mysqli_connect_errno())
         }
       }else{
         $erro = mysqli_error($conectar);
-        $_SESSION['menssagem'] = "Houve erro na execuão da query SQL: $erro";
+        echo $_SESSION['menssagem'] = "Houve erro na execuão da query SQL: $erro";
         header('Location: ../ont_classes/ont_register.php');
         mysqli_close($conectar_radius);
         mysqli_close($conectar);
@@ -468,14 +468,14 @@ if (!mysqli_connect_errno())
    }
    else
    {
-       $_SESSION['menssagem'] = "Campos Faltando!";
+       echo $_SESSION['menssagem'] = "Campos Faltando!";
        header('Location: ../ont_classes/ont_register.php');
        mysqli_close($conectar_radius);
        mysqli_close($conectar);
        exit;
    }
 }else{
-  $_SESSION['menssagem'] = "Não Consegui Contato com Servidor!";
+  echo $_SESSION['menssagem'] = "Não Consegui Contato com Servidor!";
   header('Location: ../ont_classes/ont_register.php');
   mysqli_close($conectar_radius);
   mysqli_close($conectar);

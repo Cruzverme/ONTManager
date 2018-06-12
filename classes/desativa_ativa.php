@@ -44,13 +44,13 @@
           if($errorCode != "0")
           {
             $trato = tratar_errors($errorCode);
-            $_SESSION['menssagem'] = "Houve erro ao inserir no u2000: $trato";
+            echo $_SESSION['menssagem'] = "Houve erro ao inserir no u2000: $trato";
             header('Location: ../ont_classes/ont_disable.php');
             mysqli_close($conectar_radius);
             mysqli_close($conectar);
             exit;
           }else{
-            $_SESSION['menssagem'] = "Cliente Ativado!";
+            echo $_SESSION['menssagem'] = "Cliente Ativado!";
             header('Location: ../ont_classes/ont_disable.php');
             mysqli_free_result($result);
             mysqli_close($conectar);
@@ -58,7 +58,7 @@
           }
         }else{
           $erro = mysqli_error($conectar);
-          $_SESSION['menssagem'] = "Cliente Não Ativado! SQL: $erro";
+          echo $_SESSION['menssagem'] = "Cliente Não Ativado! SQL: $erro";
           header('Location: ../ont_classes/ont_disable.php');
           mysqli_close($conectar);
           exit;
@@ -93,13 +93,13 @@
           if($errorCode != "0")
           {
             $trato = tratar_errors($errorCode);
-            $_SESSION['menssagem'] = "Houve erro ao inserir no u2000: $trato";
+            echo $_SESSION['menssagem'] = "Houve erro ao inserir no u2000: $trato";
             header('Location: ../ont_classes/ont_disable.php');
             mysqli_close($conectar_radius);
             mysqli_close($conectar);
             exit;
           }else{
-            $_SESSION['menssagem'] = "Cliente Desativado!";
+            echo $_SESSION['menssagem'] = "Cliente Desativado!";
             header('Location: ../ont_classes/ont_disable.php');
             mysqli_free_result($result);
             mysqli_close($conectar);
@@ -107,20 +107,20 @@
           }
         }else{
           $erro = mysqli_error($conectar);
-          $_SESSION['menssagem'] = "Cliente Não Desativado! SQL: $erro";
+          echo $_SESSION['menssagem'] = "Cliente Não Desativado! SQL: $erro";
           header('Location: ../ont_classes/ont_disable.php');
           mysqli_close($conectar);
           exit;
         }
       }
     }else{
-      $_SESSION['menssagem'] = "Não Consegui Contato com Servidor!";
+      echo $_SESSION['menssagem'] = "Não Consegui Contato com Servidor!";
       header('Location: ../index.php');
       mysqli_close($conectar);
       exit;
     }
   }else{
-    $_SESSION['menssagem'] = "Campos Faltando!";
+    echo $_SESSION['menssagem'] = "Campos Faltando!";
     header('Location: ../ont_classes/ont_disable.php');
     mysqli_close($conectar);
     exit;

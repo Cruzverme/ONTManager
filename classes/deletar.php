@@ -50,7 +50,7 @@
             $deletar_2000 = deletar_onu_2000($infoDev,$frame,$slot,$pon,$infoONTID,$ip,$servicePortIptv);
             if($deletar_2000 != 0)
             {
-              $_SESSION['menssagem'] = "Houve erro ao inserir ao restaurar a ONT! CODE: $deletar_2000";
+              echo $_SESSION['menssagem'] = "Houve erro ao inserir ao restaurar a ONT! CODE: $deletar_2000";
               header('Location: ../ont_classes/ont_delete.php');
               mysqli_close($conectar_radius);
               mysqli_close($conectar);
@@ -64,7 +64,7 @@
               if($errorCode != "0")
               {
                 $trato = tratar_errors($errorCode);
-                $_SESSION['menssagem'] = "Houve erro ao inserir no u2000: $trato";
+                echo $_SESSION['menssagem'] = "Houve erro ao inserir no u2000: $trato";
                 header('Location: ../ont_classes/ont_delete.php');
                 mysqli_close($conectar_radius);
                 mysqli_close($conectar);
@@ -83,12 +83,12 @@
                     
                       $executa_log = mysqli_query($conectar,$sql_insert_log);
 
-                      $_SESSION['menssagem'] = "$total ONU Removida!";
+                      echo $_SESSION['menssagem'] = "$total ONU Removida!";
                       header('Location: ../ont_classes/ont_delete.php');
                       mysqli_close($conectar);
                       exit;
                   }else{
-                      $_SESSION['menssagem'] = "ONU Não Removida!";
+                      echo $_SESSION['menssagem'] = "ONU Não Removida!";
                       header('Location: ../ont_classes/ont_delete.php');
                       mysqli_close($conectar);
                       exit;
@@ -96,7 +96,7 @@
                   ########FIM TL1########
                 }else{
                   $erro = mysqli_error($conectar);
-                  $_SESSION['menssagem'] = "Houve erro ao deletar SQL: $erro";
+                  echo $_SESSION['menssagem'] = "Houve erro ao deletar SQL: $erro";
                   header('Location: ../ont_classes/ont_delete.php');
                   mysqli_close($conectar);
                   exit;
@@ -105,14 +105,14 @@
             }
           }else{
             $erro = mysqli_error($conectar);
-            $_SESSION['menssagem'] = "Houve erro ao deletar SQL Radius: $erro";
+            echo $_SESSION['menssagem'] = "Houve erro ao deletar SQL Radius: $erro";
             header('Location: ../ont_classes/ont_delete.php');
             mysqli_close($conectar);
             exit;
           }
        }else{
          $erro = mysqli_error($conectar);
-         $_SESSION['menssagem'] = "Houve erro ao deletar SQL: $erro";
+         echo $_SESSION['menssagem'] = "Houve erro ao deletar SQL: $erro";
          header('Location: ../ont_classes/ont_delete.php');
          mysqli_close($conectar);
          exit;
@@ -120,14 +120,14 @@
     }
     else
     {
-      $_SESSION['menssagem'] = "Campos Faltando!";
+      echo $_SESSION['menssagem'] = "Campos Faltando!";
       header('Location: ../ont_classes/ont_delete.php');
       mysqli_close($conectar);
       exit;
     }
   }else{
     $erro = mysqli_error($conectar);
-    $_SESSION['menssagem'] = "Não Consegui Contato com Servidor! $erro";
+    echo $_SESSION['menssagem'] = "Não Consegui Contato com Servidor! $erro";
     header('Location: ../ont_classes/ont_delete.php');
     mysqli_close($conectar);
     exit;

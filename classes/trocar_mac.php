@@ -92,7 +92,7 @@
               $executa_update_serial_cto = mysqli_query($conectar,$update_serial_cto);// atualiza serial da cto no banco local
             }
             $trato = tratar_errors($tl1_alterar_mac);
-            $_SESSION['menssagem'] = "Houve erro ao restaurar a ONT!: $trato";
+            echo $_SESSION['menssagem'] = "Houve erro ao restaurar a ONT!: $trato";
             header('Location: ../ont_classes/alterar_mac_ont.php');
             mysqli_close($conectar_radius);
             mysqli_close($conectar);
@@ -127,13 +127,13 @@
                 $executa_update_serial_cto = mysqli_query($conectar,$update_serial_cto);// atualiza serial da cto no banco local
               }
               $trato = tratar_errors($errorCode);
-              $_SESSION['menssagem'] = "Houve erro ao alterar no u2000: $trato";
+              echo $_SESSION['menssagem'] = "Houve erro ao alterar no u2000: $trato";
               header('Location: ../ont_classes/alterar_mac_ont.php');
               mysqli_close($conectar_radius);
               mysqli_close($conectar);
               exit;
             }else{
-              $_SESSION['menssagem'] = "MAC Alterado";
+              echo $_SESSION['menssagem'] = "MAC Alterado";
               header('Location: ../ont_classes/alterar_mac_ont.php');
               mysqli_close($conectar);
               exit;
@@ -141,7 +141,7 @@
           }
         }else{
           $erro = mysqli_error($conectar);
-          $_SESSION['menssagem'] = "Ocorreu Erro no Radius! SQL: $erro";
+          echo $_SESSION['menssagem'] = "Ocorreu Erro no Radius! SQL: $erro";
           if($servicePortInter != null) // VOLTA PARA O SERIAL ANTERIOR SE DER RUIM
           {
             $atualiza_qos_radius = "UPDATE radreply SET username='2500/13/0/$serial@vertv' WHERE username='2500/13/0/$novoSerial@vertv' 
@@ -170,19 +170,19 @@
         }
       }else{
         $erro = mysqli_error($conectar);
-        $_SESSION['menssagem'] = "Não encontrei informações! SQL: $erro";
+        echo $_SESSION['menssagem'] = "Não encontrei informações! SQL: $erro";
         header('Location: ../ont_classes/alterar_mac_ont.php');
         mysqli_close($conectar);
         exit;
       }
     }else{
-      $_SESSION['menssagem'] = "Não Consegui Contato com Servidor!";
+      echo $_SESSION['menssagem'] = "Não Consegui Contato com Servidor!";
       header('Location: ../index.php');
       mysqli_close($conectar);
       exit;
     }
   }else{
-    $_SESSION['menssagem'] = "Campos Faltando!";
+    echo $_SESSION['menssagem'] = "Campos Faltando!";
     header('Location: ../ont_classes/alterar_mac_ont.php');
     mysqli_close($conectar);
     exit;

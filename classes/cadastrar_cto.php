@@ -35,7 +35,7 @@
          }else{
            echo $pon;
            $erro = mysqli_error($conectar);
-           $_SESSION['menssagem'] = "CTO Não Cadastrada! SQL: $erro";
+           echo $_SESSION['menssagem'] = "CTO Não Cadastrada! SQL: $erro";
            header('Location: ../cto_classes/cto_create.php');
            mysqli_close('$conectar');
            exit;

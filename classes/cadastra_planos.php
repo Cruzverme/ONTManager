@@ -30,26 +30,26 @@
           VALUES ('Velocidade Criada pelo Usuario de Codigo $usuario','$usuario')";
         $executa_log = mysqli_query($conectar,$sql_insert_log);
 
-        $_SESSION['menssagem'] = "Velocidade Registrada!";
+        echo $_SESSION['menssagem'] = "Velocidade Registrada!";
         header('Location: ../planos/planos_create.php');
         mysqli_free_result($result);
         mysqli_close($conectar);
         exit;
       }else{
         $erro = mysqli_error($conectar);
-        $_SESSION['menssagem'] = "Velocidade Não Salva! SQL: $erro";
+        echo $_SESSION['menssagem'] = "Velocidade Não Salva! SQL: $erro";
         header('Location: ../planos/planos_create.php');
         mysqli_close($conectar);
         exit;
       }
     }else{
-      $_SESSION['menssagem'] = "Não Consegui Contato com Servidor!";
+      echo $_SESSION['menssagem'] = "Não Consegui Contato com Servidor!";
       header('Location: ../index.php');
       mysqli_close($conectar);
       exit;
     }
   }else{
-    $_SESSION['menssagem'] = "Campos Faltando!";
+    echo $_SESSION['menssagem'] = "Campos Faltando!";
     header('Location: ../planos/planos_create.php');
     mysqli_close($conectar);
     exit;

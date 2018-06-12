@@ -9,11 +9,10 @@
     {
       $senha = md5($_POST["senha"]);
       $nova_senha = md5($_POST["nova_senha"]);
-      // $repete_nova_senha = md5($_POST["repete_nova_senha"]);
+      
       $user_id= $_SESSION["id_usuario"];
 
-      //if($nova_senha == $repete_nova_senha)
-      //{
+      
         $sql_usuario_senha = ("SELECT senha FROM usuarios WHERE senha = '$senha' AND usuario_id = '$user_id'");
         $checar_senha = mysqli_query($conectar,$sql_usuario_senha);
         
@@ -24,7 +23,7 @@
           if ($senha_row = mysqli_num_rows($checar_repetido) != 0) 
           {
             $erro = mysqli_error($conectar);
-            $_SESSION['menssagem'] = "Senha Incorreta! $erro";  
+            echo $_SESSION['menssagem'] = "Senha Incorreta! $erro"; 
             header('Location: ../users/usuario_edit.php');
             mysqli_close($conectar);
             exit;
@@ -35,13 +34,13 @@
             $cadastrar = mysqli_query($conectar,$sql_registra_usuario);
             if($cadastrar)
             {
-              $_SESSION['menssagem'] = "Senha Alterada!";
+              echo $_SESSION['menssagem'] = "Senha Alterada!";
               header('Location: ../index.php');
               mysqli_close($conectar);
               exit;
             }else{
               $erro = mysqli_error($conectar);
-              $_SESSION['menssagem'] = "Senha Não Alterada! $erro";  
+              echo $_SESSION['menssagem'] = "Senha Não Alterada! $erro";  
               header('Location: ../users/usuario_edit.php');
               mysqli_close($conectar);
               exit;
@@ -49,25 +48,19 @@
           }
         }else{
           $erro = mysqli_error($conectar);
-          $_SESSION['menssagem'] = "Senha Atual Não Confere! $erro";  
+          echo $_SESSION['menssagem'] = "Senha Atual Não Confere! $erro";  
           header('Location: ../users/usuario_edit.php');
           mysqli_close($conectar);
           exit;
         }
-      // }else{
-      //   $_SESSION['menssagem'] = "Novas Senhas Não São Iguais!";
-      //   header('Location: ../users/usuario_edit.php');
-      //   mysqli_close($conectar);
-      //   exit;
-      // }
     }else{
-      $_SESSION['menssagem'] = "Campos Faltando!";
+      echo $_SESSION['menssagem'] = "Campos Faltando!";
       header('Location: ../users/usuario_edit.php');
       mysqli_close($conectar);
       exit;
     }    
   }else{
-    $_SESSION['menssagem'] = "Não Consegui Contato com Servidor!";
+    echo $_SESSION['menssagem'] = "Não Consegui Contato com Servidor!";
     header('Location: ../users/usuario_edit.php');
     mysqli_close($conectar);
     exit;

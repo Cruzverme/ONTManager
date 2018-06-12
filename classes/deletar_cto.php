@@ -33,7 +33,7 @@
     }  
   }else{
     $erro = mysqli_error($conectar);
-    $_SESSION['menssagem'] = "CTO Inexistente! $erro";
+    echo $_SESSION['menssagem'] = "CTO Inexistente! $erro";
     header('Location: ../cto_classes/remover_cto.php');
     mysqli_close($conectar);
     exit;

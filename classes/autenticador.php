@@ -19,12 +19,12 @@
 
                         if (mysqli_num_rows($checar_login) == 0)
                         {
-                            $_SESSION['menssagem'] = "Usuario inexistente!";
+                            echo $_SESSION['menssagem'] = "Usuario inexistente!";
                             header('Location: ../index.php');
                             mysqli_close($conectar);
                             exit;
                         }elseif (mysqli_num_rows($checar_password) == 0) {
-                            $_SESSION['menssagem'] = "Senha Incorreta!";
+                            echo $_SESSION['menssagem'] = "Senha Incorreta!";
                             header('Location: ../index.php');
                             mysqli_close($conectar);
                             exit;
@@ -69,13 +69,13 @@
                 }
                 else
                 {
-                    $_SESSION['menssagem'] = "Campo Faltando!";
+                    echo $_SESSION['menssagem'] = "Campo Faltando!";
                     header('Location: ../index.php');
                     mysqli_close($conectar);
                     exit;
                 }
         }else{
-            $_SESSION['menssagem'] = "Nao consegui entrar no servidor";
+            echo $_SESSION['menssagem'] = "Nao consegui entrar no servidor";
             header('Location: ../index.php');
             mysqli_close($conectar);
             exit;
