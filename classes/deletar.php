@@ -50,7 +50,7 @@
             $deletar_2000 = deletar_onu_2000($infoDev,$frame,$slot,$pon,$infoONTID,$ip,$servicePortIptv);
             if($deletar_2000 != 0)
             {
-              echo $_SESSION['menssagem'] = "Houve erro ao inserir ao restaurar a ONT! CODE: $deletar_2000";
+              echo $_SESSION['menssagem'] = "Houve erro ao inserir ao restaurar a ONT! CODE: $deletar_2000";              
               header('Location: ../ont_classes/ont_delete.php');
               mysqli_close($conectar_radius);
               mysqli_close($conectar);
@@ -64,7 +64,7 @@
               if($errorCode != "0")
               {
                 $trato = tratar_errors($errorCode);
-                echo $_SESSION['menssagem'] = "Houve erro ao inserir no u2000: $trato";
+                echo $_SESSION['menssagem'] = "Houve erro ao remover no u2000: $trato";
                 header('Location: ../ont_classes/ont_delete.php');
                 mysqli_close($conectar_radius);
                 mysqli_close($conectar);
@@ -96,7 +96,7 @@
                   ########FIM TL1########
                 }else{
                   $erro = mysqli_error($conectar);
-                  echo $_SESSION['menssagem'] = "Houve erro ao deletar SQL: $erro";
+                  echo $_SESSION['menssagem'] = "Houve erro ao deletar o equipamento SQL: $erro";
                   header('Location: ../ont_classes/ont_delete.php');
                   mysqli_close($conectar);
                   exit;

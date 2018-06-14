@@ -44,7 +44,7 @@
             WHERE username='2500/13/0/$serial@vertv' AND attribute='User-Name'";
 
           $atualiza_radius_password = "UPDATE radcheck SET username='2500/13/0/$novoSerial@vertv' 
-          WHERE username='2500/13/0/$serial@vertv' AND attribute='User-Password'";
+            WHERE username='2500/13/0/$serial@vertv' AND attribute='User-Password'";
           
           $update_serial = "UPDATE ont SET serial='$novoSerial' WHERE serial='$serial'";
 
@@ -67,7 +67,8 @@
           && $executa_update_serial && $executa_update_serial_cto)
         {
           $tl1_alterar_mac = modificar_pon_ont($infoDev,$frame,$slot,$pon,$infoONTID,strtoupper($novoSerial));
-          if($tl1_alterar_mac != 0 )//verificar se resetou a padrao de fabrica
+          
+          if($tl1_alterar_mac != 0 && $tl1_alterar_mac != 2689014724)//verificar se resetou a padrao de fabrica
           {
             if($servicePortInter != null ) // VOLTA PARA O SERIAL ANTERIOR SE DER RUIM
             {
@@ -99,10 +100,12 @@
             exit;
           }else{
             $tira_ponto_virgula = explode(";",$tl1_alterar_mac);
+            print_r(trim($tira_ponto_virgula[0]));
             $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
+            print_r($check_sucesso);
             $remove_desc = explode("ENDESC=",$check_sucesso[1]);
             $errorCode = trim($remove_desc[0]);
-            if($errorCode != "0")
+            if($errorCode != "0" && trim($tira_ponto_virgula[0]) != 2689014724)
             {
               if($servicePortInter != null ) // VOLTA PARA O SERIAL ANTERIOR SE DER RUIM
               {
@@ -117,7 +120,7 @@
                 
                 $update_serial = "UPDATE ont SET serial='$serial' WHERE serial = '$novoSerial'";
 
-                $update_serial_cto = "UPDATE ctos SET serial='$serial' WHERE serial='$novoSerial' "; 
+                $update_serial_cto = "UPDATE ctos SET serial='$serial' WHERE serial='$novoSerial' ";
 
                 $executa_query_radius_username= mysqli_query($conectar_radius,$atualiza_radius_username);//atualiza radiu username
                 $executa_query_radius_password= mysqli_query($conectar_radius,$atualiza_radius_password);//atualiza radius password
@@ -128,12 +131,16 @@
               }
               $trato = tratar_errors($errorCode);
               echo $_SESSION['menssagem'] = "Houve erro ao alterar no u2000: $trato";
+              echo $errorCode;
               header('Location: ../ont_classes/alterar_mac_ont.php');
               mysqli_close($conectar_radius);
               mysqli_close($conectar);
               exit;
             }else{
-              echo $_SESSION['menssagem'] = "MAC Alterado";
+              if($tl1_alterar_mac == 2689014724)
+                echo $_SESSION['menssagem'] = "MAC Alterado, porém configurações de fabrica resetadas";
+              else
+                echo $_SESSION['menssagem'] = "MAC Alterado";
               header('Location: ../ont_classes/alterar_mac_ont.php');
               mysqli_close($conectar);
               exit;

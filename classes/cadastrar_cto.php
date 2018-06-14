@@ -29,20 +29,20 @@
             $executa_log = mysqli_query($conectar,$sql_insert_log);
 
             echo  $_SESSION['menssagem'] = "Caixa de Atendimento Registrada!";
-            header('Location: ../cto_classes/cto_create.php');
+            header('Location: ../cto_classes/show_ctos.php');
             mysqli_close($conectar);
             exit;
          }else{
            echo $pon;
            $erro = mysqli_error($conectar);
            echo $_SESSION['menssagem'] = "CTO Não Cadastrada! SQL: $erro";
-           header('Location: ../cto_classes/cto_create.php');
+           header('Location: ../cto_classes/show_ctos.php');
            mysqli_close('$conectar');
            exit;
          }
     }else{
       echo $_SESSION['menssagem'] = "Campos Faltando!";
-      header('Location: ../cto_classes/cto_create.php');
+      header('Location: ../cto_classes/show_ctos.php');
       mysqli_close($conectar);
       exit;
     }

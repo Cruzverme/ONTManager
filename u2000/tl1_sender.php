@@ -34,6 +34,9 @@
       case '2689014716':
         return "ONT Inexistente no Sistema";
         break;
+      case '1615331086':
+        return "ONU Inexistente no Sistema";
+        break;
       case '76546031':
         return "Usuário ou Senha Invalida";
         break;
@@ -479,7 +482,7 @@
       $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
       $remove_desc = explode("ENDESC=",$check_sucesso[1]);
       $errorCode = trim($remove_desc[0]);
-      if($errorCode != "0")
+      if($errorCode != "0" && $errorCode != 2689014724)
       {
         return $errorCode;
       }else{

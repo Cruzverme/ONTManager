@@ -40,7 +40,12 @@
                       </div>
                       <div class="form-group">
                         <label>Quantidade de Portas</label>
-                        <input class="form-control" placeholder="Quantidade de Portas" name="porta" min=1 type="number" autofocus required>
+                        <select class="form-control" name="porta" required>
+                          <option>4</option>
+                          <option>8</option>
+                          <option>16</option>
+                        </select>
+                        <!-- <input class="form-control" placeholder="Quantidade de Portas" name="porta" min=1 type="number" autofocus required> -->
                       </div>
                       <button class="btn btn-lg btn-success btn-block">Cadastrar</button>
                     </form>

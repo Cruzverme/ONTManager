@@ -89,7 +89,7 @@ echo '   </head>
                   {
                     echo '
                       <li>
-                        <a href="../ont_classes/alterar_mac_ont.php"><i class="fa fa-exchange fa-fw"></i> Alterar Mac ONT</a>
+                        <a href="../ont_classes/alterar_mac_ont.php"><i class="fa fa-exchange fa-fw"></i> Trocar ONT</a>
                       </li>
                     ';                    
                   }
@@ -105,7 +105,7 @@ echo '   </head>
                   {
                     echo '
                       <li>
-                        <a href="../cto_classes/cto_create.php"><i class="fa fa-sitemap fa-fw"></i> Cadastrar CTO</a>
+                        <a href="../cto_classes/show_ctos.php"><i class="fa fa-sitemap fa-fw"></i> Cadastrar CTO</a>
                       </li>
                     ';                    
                   }
