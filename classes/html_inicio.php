@@ -121,7 +121,7 @@ echo '   </head>
                   {
                     echo '
                       <li>
-                        <a href="../cto_classes/pon_create.php"><i class="fa fa-columns fa-fw"></i> Cadastro de OLT </a>
+                        <a href="../cto_classes/pon_create.php"><i class="fa fa-columns fa-fw"></i> Cadastro de Slot da OLT </a>
                       </li>
                     ';                    
                   }

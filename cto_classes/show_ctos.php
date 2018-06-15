@@ -24,7 +24,7 @@
               <div class="panel-body">
                 <form role="form" action="cto_create.php" method="post">
                   <div class="form-group">
-                      <label>Modelo</label>
+                      <label>Selecione a OLT</label>
                       <select class="form-control" name="olt">
                         <?php 
                           $sql_consulta_olt = "SELECT deviceName,pon_id FROM pon";

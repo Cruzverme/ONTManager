@@ -165,7 +165,7 @@
                       
                     </div>
                 </fieldset>
-                <button class="btn btn-lg btn-success btn-block">Avançar</button>
+                <button class="btn btn-lg btn-success btn-block">Cadastrar</button>
               </form>
             </div>
           </div>
