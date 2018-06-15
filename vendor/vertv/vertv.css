@@ -72,11 +72,11 @@ a:hover{
 	color: #363b41
 }
 
-/* a:hover, tr.hover:not(:first-child) {
+.table-user.table tr.usuarios:hover{
+	background-color: #ff9700;
 	text-decoration: underline;
-	color: blue;
-	cursor: pointer;
-} */
+	cursor: pointer; 
+} 
 
 .btn{
 	color: #000;

@@ -29,7 +29,7 @@
                 <div class='row'>
                   <div class='col-lg-16'>
                     <div class='table-responsive'>
-                      <table class='table'>
+                      <table class='table-user table'>
                         <thead>
                           <tr>
                             <th>NOME</th>
