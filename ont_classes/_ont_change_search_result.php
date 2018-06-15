@@ -1,5 +1,6 @@
 <?php 
   include_once "../classes/html_inicio.php";
+  include_once "../classes/funcoes.php";
 
   if($_SESSION["modificar_onu"] == 0) 
   {
@@ -15,7 +16,18 @@
   <?php 
     include "../db/db_config_mysql.php";
     $contrato = $_POST['contrato'];
-    
+  
+    if(checar_contrato($contrato) == null)
+    {
+      mysqli_close($conectar);
+      echo '
+        <script language= "JavaScript">
+          alert("Contrato Inexistente ou Cancelado");
+          location.href="../ont_classes/ont_change.php";
+        </script>
+      ';
+    }
+
     $sql_consulta_perfil = "SELECT serial,pacote,tel_number,tel_password,perfil FROM ont
     WHERE contrato = '$contrato' ";
     $executa_query_perfil = mysqli_query($conectar,$sql_consulta_perfil);
@@ -101,19 +113,29 @@
                   <label>Pacote</label>
                   <select class="form-control" name="pacote">
                     <?php
-                      $sql_lista_velocidades = "SELECT nome,nomenclatura_velocidade FROM planos";
+                      $json_file = file_get_contents("http://192.168.80.5/sisspc/demos/get_pacote_ftth_cplus.php?contra=$contrato");
+                      $json_str = json_decode($json_file, true);
+                      $itens = $json_str['velocidade'];
+                      $codigoCplus = '';
+                      $verificacao = 0;
+                      
+                      $sql_lista_velocidades = "SELECT nome,nomenclatura_velocidade, referencia_cplus FROM planos";
                       $executa_query = mysqli_query($conectar,$sql_lista_velocidades);
 
                       while ($listaPlanos = mysqli_fetch_array($executa_query, MYSQLI_BOTH)) 
                       {  
-                        if($pacote == $listaPlanos['nomenclatura_velocidade'])
+                        foreach ( $itens as $codigoPlano )
                         {
-                          $selecionado = "selected";
-                        }else{
-                          $selecionado = "";
+                          $codigoCplus = $codigoPlano;
+                          if($codigoCplus == $listaPlanos['referencia_cplus'])
+                          {
+                            echo "<option value='$listaPlanos[nomenclatura_velocidade]'>$listaPlanos[nome]</option>";
+                            $verificacao = 1;
+                          }
                         }
-                        echo "<option value='$listaPlanos[nomenclatura_velocidade]' $selecionado>$listaPlanos[nome]</option>"; 
                       }
+                      if($verificacao != 1)
+                        echo "<option value='none'>Velocidade Não Cadastrada no Contrato, Favor Verificar no Control Plus</option>";
                       mysqli_free_result($executa_query);                                                
                     ?>
                   </select>

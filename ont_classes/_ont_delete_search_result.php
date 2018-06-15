@@ -1,5 +1,6 @@
 <?php 
   include_once "../classes/html_inicio.php";
+  include_once "../classes/funcoes.php";
 
   if($_SESSION["deletar_onu"] == 0) {
     echo '
@@ -14,7 +15,18 @@
   
   <?php 
     include "../db/db_config_mysql.php";
-    $contrato = $_POST['contrato'];?>
+    $contrato = $_POST['contrato'];
+    
+    if(checar_contrato($contrato) == null)
+    {
+      echo '
+        <script language= "JavaScript">
+          alert("Contrato Inexistente ou Cancelado");
+          location.href="../ont_classes/ont_delete.php";
+        </script>
+      ';
+    }
+    ?>
   <div id="page-wrapper">
 
     <div class="container">

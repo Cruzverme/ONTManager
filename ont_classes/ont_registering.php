@@ -3,7 +3,8 @@
   
   include_once "../classes/html_inicio.php";
   include_once "../db/db_config_mysql.php";
-  
+  include_once "../classes/funcoes.php";
+
   if($_SESSION["cadastrar_onu"] == 0) {
     echo '
     <script language= "JavaScript">
@@ -19,7 +20,18 @@
   $pon = filter_input(INPUT_POST,'pon');
   $cto = filter_input(INPUT_POST,'cto');
   $device = filter_input(INPUT_POST,'device');
-  $contrato = filter_input(INPUT_POST,'contrato');
+  $contrato = filter_input(INPUT_POST,'contrato'); 
+
+  if(checar_contrato($contrato) == null)
+  {
+    mysqli_close('$conectar');
+    echo '
+      <script language= "JavaScript">
+        alert("Contrato Inexistente ou Cancelado");
+        location.href="../ont_classes/ont_register.php";
+      </script>
+    ';
+  }
   
 ?>
   <div id="page-wrapper">
@@ -88,7 +100,7 @@
                         <?php 
                           $json_file = file_get_contents("http://192.168.80.5/sisspc/demos/get_pacote_ftth_cplus.php?contra=$contrato");
                           $json_str = json_decode($json_file, true);
-                          $itens = $json_str['telefone'];
+                          $itens = $json_str['velocidade'];
                           $codigoCplus = '';
                           $verificacao = 0;
                           

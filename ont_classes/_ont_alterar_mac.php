@@ -1,6 +1,7 @@
 <?php 
   
   include_once "../classes/html_inicio.php";
+  include_once "../classes/funcoes.php";
   
   if($_SESSION["alterar_macONT"] == 0) 
   {
@@ -14,7 +15,20 @@
 ?>
   <?php 
     include "../db/db_config_mysql.php";
-    $contrato = $_POST['contrato'];?>
+    $contrato = $_POST['contrato'];
+    
+    if(checar_contrato($contrato) == null)
+    {
+      mysqli_close($conectar);
+      echo '
+        <script language= "JavaScript">
+          alert("Contrato Inexistente ou Cancelado");
+          location.href="../ont_classes/alterar_mac_ont.php";
+        </script>
+      ';
+    }
+
+    ?>
   <div id="page-wrapper">
 
     <div class="container">

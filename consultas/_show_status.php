@@ -2,6 +2,7 @@
 
   include_once "../db/db_config_mysql.php";
   include_once "../u2000/tl1_sender.php";
+  include_once "../classes/funcoes.php";
 
   if($_SESSION["consulta_onts"] == 0) 
   {
@@ -14,8 +15,20 @@
   }
 
   $contrato = filter_input(INPUT_POST,'contrato');
+
   if($contrato)
   {
+    if(checar_contrato($contrato) == null)
+    {
+      mysqli_close($conectar);
+      echo '
+        <script language= "JavaScript">
+          alert("Contrato Inexistente ou Cancelado");
+          location.href="../consultas/get_status.php";
+        </script>
+      ';
+    }
+
     $sql_ont_info = "SELECT serial FROM ont WHERE contrato=$contrato";
     $execute_olt_info = mysqli_query($conectar,$sql_ont_info);
     $onu_info = mysqli_fetch_array($execute_olt_info, MYSQLI_BOTH);
