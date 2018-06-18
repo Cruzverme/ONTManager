@@ -43,7 +43,7 @@
               <div class=form-group>
                 <label>CTO</label>
               
-                <select class="form-control selectpicker" name=ctoSelect data-show-subtext="true" data-live-search="true">
+                <select class="form-control selectpicker" name=ctoSelect data-show-subtext="true" data-size=5 data-live-search="true">
                 <?php
                     $sql_caixa_atendimento = "SELECT DISTINCT caixa_atendimento FROM ctos";
                     $executa_sql_caixa_atendimento = mysqli_query($conectar,$sql_caixa_atendimento);
