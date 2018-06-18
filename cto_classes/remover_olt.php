@@ -25,7 +25,7 @@
           <form role="form" action="../classes/deletar_olt.php" method="post">
             <div class="form-group">
               <label>OLT</label> 
-              <select class="form-control" name="pon">
+              <select class="form-control selectpicker" name="pon" data-live-search="true">
                 <?php 
                   $sql_consulta_olt = "SELECT DISTINCT deviceName FROM pon";
                   $executa_query = mysqli_query($conectar,$sql_consulta_olt);

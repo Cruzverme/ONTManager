@@ -9,8 +9,13 @@
     <meta name="description" content="">
     <meta name="author" content="">
     
+    <!-- Bootstrap SELECT CSS -->
+    <link href="../vendor/bootstrap/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
+    
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    
 
     <!-- MetisMenu CSS -->
     <!-- <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">-->

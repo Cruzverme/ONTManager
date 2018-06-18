@@ -1,6 +1,6 @@
 <?php 
     
-  include "../classes/html_inicio.php"; 
+  include "../classes/html_inicio.php";
   include_once "../db/db_config_mysql.php";
   
   if($_SESSION["consulta_ctos"] == 0) 
@@ -15,6 +15,21 @@
 
 ?>
 
+<script type="text/javascript">
+  $().ready(function() {
+    $("#course").autocomplete("autoComplete.php", {
+        width: 260,
+        matchContains: true,
+        //mustMatch: true,
+        //minChars: 0,
+        //multiple: true,
+        //highlight: false,
+        //multipleSeparator: ",",
+        selectFirst: false
+    });
+  });
+</script>
+
 <div id="page-wrapper">
     <div class="container">
       <div class="row">
@@ -27,26 +42,26 @@
             <form method="post">
               <div class=form-group>
                 <label>CTO</label>
-
-                <select class=form-control name=ctoSelect>
+              
+                <select class="form-control selectpicker" name=ctoSelect data-show-subtext="true" data-live-search="true">
                 <?php
                     $sql_caixa_atendimento = "SELECT DISTINCT caixa_atendimento FROM ctos";
                     $executa_sql_caixa_atendimento = mysqli_query($conectar,$sql_caixa_atendimento);
                     
-                    while ($caixa_atendimento = mysqli_fetch_array($executa_sql_caixa_atendimento, MYSQLI_BOTH)) 
+                    while ($caixa_atendimento = mysqli_fetch_array($executa_sql_caixa_atendimento, MYSQLI_BOTH))
                     {
                       if($_POST['ctoSelect'] == $caixa_atendimento['caixa_atendimento'])
                       {
                         $selecionado = "selected";
                       }else{
                         $selecionado = "";
-                      }   
+                      }
                       echo "<option name='cto' value=$caixa_atendimento[caixa_atendimento] $selecionado>$caixa_atendimento[caixa_atendimento]</option>";
                     }
                 ?>
                 </select>
                 <span class="input-group-btn">
-                  <button class="btn btn-secondary" type="submit">Buscar</button>
+                  <button class="btn btn-secondary form-control" type="submit">Buscar</button>
                 </span>
               </div>
               

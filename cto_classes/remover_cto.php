@@ -25,7 +25,7 @@
           <form role="form" action="../classes/deletar_cto.php" method="post">
             <div class="form-group">
               <label>PON</label> 
-              <select class="form-control" name="cto">
+              <select class="selectpicker form-control" name="cto" data-show-subtext="true" data-live-search="true">
                 <?php 
                   $sql_consulta_cto = "SELECT DISTINCT caixa_atendimento FROM ctos";
                   $executa_query = mysqli_query($conectar,$sql_consulta_cto);

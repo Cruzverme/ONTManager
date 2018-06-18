@@ -71,7 +71,7 @@
                 <div class=form-group>
                   <label>CTO</label>
 
-                  <select class=form-control name=ctoSelect>
+                  <select class="form-control selectpicker" name=ctoSelect data-live-search="true">
                   <?php
                       $sql_caixa_atendimento = "SELECT DISTINCT caixa_atendimento FROM ctos";
                       $executa_sql_caixa_atendimento = mysqli_query($conectar,$sql_caixa_atendimento);
@@ -93,9 +93,9 @@
                 </div>
               </div>
               <div class="form-group">
-                <span class="input-group-btn">
-                  <button class="btn btn-secondary" type="submit">Buscar</button>
-                </span>
+                <!-- <span> class="input-group-btn"> -->
+                  <button class="btn btn-secondary form-control" type="submit">Buscar</button>
+                <!-- </span> -->
               </div>
           </form>
           <?php include "_show_status_cto.php"?>
