@@ -93,7 +93,7 @@
         {
           $permitir_cadastrarUsuarios=1;
         }else{
-          $permitir_cadastrarVelocidade=0;
+          $permitir_cadastrarUsuarios=0;
         }
 
         if($alterarMacONT == 10 || $nivel_usuario == 1 )
@@ -172,14 +172,14 @@
               
               if($permissoes)
               {  
-                $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
-                  VALUES ('Usuario $usuario Cadastrado Pelo Usuario de Codigo $usuario_logado','$usuario_logado')";                    
+                $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
+                  VALUES ('Usuario $usuario Cadastrado Pelo Usuario de Codigo $usuario_logado','$usuario_logado')";
                 $executa_log = mysqli_query($conectar,$sql_insert_log);
                 
                 echo $_SESSION['menssagem'] = "Usuario Cadastrado!";
-                header('Location: ../users/usuario_new.php');
+                //header('Location: ../users/usuario_new.php');
                 mysqli_close($conectar);
-                exit;
+                //exit;
               }else{
                 $erro = mysqli_error($conectar);
 
@@ -188,9 +188,9 @@
                 $executa_log = mysqli_query($conectar,$sql_insert_log);
 
                 echo $_SESSION['menssagem'] = "Usuario Cadastrado, porem sem permissão! $erro";  
-                header('Location: ../users/usuario_new.php');
+                //header('Location: ../users/usuario_new.php');
                 mysqli_close($conectar);
-                exit;
+                //exit;
               }
             }else{
               $erro = mysqli_error($conectar);
