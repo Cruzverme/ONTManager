@@ -93,7 +93,7 @@
         {
           $permitir_cadastrarUsuarios=1;
         }else{
-          $permitir_cadastrarVelocidade=0;
+          $permitir_cadastrarUsuarios=0;
         }
 
         if($alterarMacONT == 10 || $nivel_usuario == 1 )
@@ -165,15 +165,15 @@
                   alterar_usuario)
                   VALUES ($userID,$permitir_cadastrar_ONU,$permitir_removerONU,$permitir_alterarONU,$permitir_desabilitarHabilitar,
                   $permitir_cadastrarCTO,$permitir_cadastrarOLT,$permitir_cadastrarVelocidade, $permitir_cadastrarUsuarios, $permitir_cadastrarEquipamento,
-                  $permitir_alterar_MAC,$permitir_consulta_onu,$permitir_consulta_onu, $permitir_removerCTO, $permitir_removerOLT,
+                  $permitir_alterar_MAC,$permitir_consulta_onu,$permitir_consulta_cto, $permitir_removerCTO, $permitir_removerOLT,
                   $permitir_listar_usuario)";
 
               $permissoes = mysqli_query($conectar,$sql_cadastrar_permissao);
               
               if($permissoes)
               {  
-                $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
-                  VALUES ('Usuario $usuario Cadastrado Pelo Usuario de Codigo $usuario_logado','$usuario_logado')";                    
+                $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
+                  VALUES ('Usuario $usuario Cadastrado Pelo Usuario de Codigo $usuario_logado','$usuario_logado')";
                 $executa_log = mysqli_query($conectar,$sql_insert_log);
                 
                 echo $_SESSION['menssagem'] = "Usuario Cadastrado!";

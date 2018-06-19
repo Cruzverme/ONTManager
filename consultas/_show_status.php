@@ -187,6 +187,8 @@
                         case 'REMOTE-FAULT':
                           echo "<td>O algum erro na autenticação.</td>";
                           break;
+                        default:
+                          echo "<td>$filtra_resultados_sip[10]</td>";
                       }
                     }else{
                       echo "<td>NAO HA TELEFONE </td>";

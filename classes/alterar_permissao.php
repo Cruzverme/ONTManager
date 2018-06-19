@@ -180,7 +180,7 @@
             cadastrar_olt = $permitir_cadastrarOLT, cadastrar_velocidade = $permitir_cadastrarVelocidade, 
             cadastrar_usuario = $permitir_cadastrarUsuarios, cadastrar_equipamento = $permitir_cadastrarEquipamento,
             alterar_mac_ont = $permitir_alterar_MAC, consulta_ont = $permitir_consulta_onu, 
-            consulta_cto = $permitir_consulta_onu, remover_cto = $permitir_removerCTO, remover_olt = $permitir_removerOLT,
+            consulta_cto = $permitir_consulta_cto, remover_cto = $permitir_removerCTO, remover_olt = $permitir_removerOLT,
             alterar_usuario = $permitir_listar_usuario
             WHERE usuario = $userID ";
 
