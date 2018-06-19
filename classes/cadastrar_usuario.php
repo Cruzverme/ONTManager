@@ -165,7 +165,7 @@
                   alterar_usuario)
                   VALUES ($userID,$permitir_cadastrar_ONU,$permitir_removerONU,$permitir_alterarONU,$permitir_desabilitarHabilitar,
                   $permitir_cadastrarCTO,$permitir_cadastrarOLT,$permitir_cadastrarVelocidade, $permitir_cadastrarUsuarios, $permitir_cadastrarEquipamento,
-                  $permitir_alterar_MAC,$permitir_consulta_onu,$permitir_consulta_onu, $permitir_removerCTO, $permitir_removerOLT,
+                  $permitir_alterar_MAC,$permitir_consulta_onu,$permitir_consulta_cto, $permitir_removerCTO, $permitir_removerOLT,
                   $permitir_listar_usuario)";
 
               $permissoes = mysqli_query($conectar,$sql_cadastrar_permissao);
