@@ -73,13 +73,13 @@ if (!mysqli_connect_errno())
       if($vasProfileNovo != "VAS_IPTV" && $servicePortNet == NULL)
       {
         $insere_ont_radius_username = "INSERT INTO radcheck( username, attribute, op, value) 
-            VALUES ( '2500/13/0/$serial@vertv', 'User-Name', ':=', '2500/13/0/$serial@vertv' )";
+            VALUES ( '2500/$frame/$pon/$serial@vertv', 'User-Name', ':=', '2500/$frame/$pon/$serial@vertv' )";
 
         $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value) 
-                VALUES ( '2500/13/0/$serial@vertv', 'User-Password', ':=', 'vlan' )";
+                VALUES ( '2500/$frame/$pon/$serial@vertv', 'User-Password', ':=', 'vlan' )";
 
         $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
-                VALUES ( '2500/13/0/$serial@vertv', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";
+                VALUES ( '2500/$frame/$pon/$serial@vertv', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";
 
         $executa_query_username= mysqli_query($conectar_radius,$insere_ont_radius_username);
         $executa_query_password= mysqli_query($conectar_radius,$insere_ont_radius_password);
@@ -116,11 +116,11 @@ if (!mysqli_connect_errno())
         $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
         mysqli_query($conectar,$sql_apagar_onu);
 
-        $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/13/0/$serial@vertv' 
+        $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$frame/0/$serial@vertv' 
           AND attribute='Huawei-Qos-Profile-Name' ";
         $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
 
-        $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/13/0/$serial@vertv' ";
+        $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$frame/0/$serial@vertv' ";
         $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
 
         header('Location: ../ont_classes/ont_change.php');
@@ -164,11 +164,11 @@ if (!mysqli_connect_errno())
             
             if($vasProfileNovo != "VAS_IPTV")//se for apenas iptv nao apagara o radius, pois nao existe
             {
-              $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/13/0/$serial@vertv' 
+              $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$frame/$slot/$serial@vertv' 
                 AND attribute='Huawei-Qos-Profile-Name' ";
               $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
 
-              $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/13/0/$serial@vertv' ";
+              $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$frame/$slot/$serial@vertv' ";
               $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
             }
             
@@ -203,11 +203,11 @@ if (!mysqli_connect_errno())
               
               if($vasProfileNovo != "VAS_IPTV")//se for apenas iptv nao apagara o radius, pois nao existe
               {
-                $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/13/0/$serial@vertv' 
+                $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$frame/$slot/$serial@vertv' 
                   AND attribute='Huawei-Qos-Profile-Name' ";
                 $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
 
-                $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/13/0/$serial@vertv' ";
+                $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$frame/$slot/$serial@vertv' ";
                 $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
               }
               
@@ -299,11 +299,11 @@ if (!mysqli_connect_errno())
               $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
               mysqli_query($conectar,$sql_apagar_onu);
 
-              $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/13/0/$serial@vertv' 
+              $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$frame/$slot/$serial@vertv' 
                 AND attribute='Huawei-Qos-Profile-Name' ";
               $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
 
-              $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/13/0/$serial@vertv' ";
+              $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$frame/$slot/$serial@vertv' ";
               $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
             
               deletar_onu_2000($device,$frame,$slot,$pon,$onuID);
@@ -361,11 +361,11 @@ if (!mysqli_connect_errno())
           $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
           mysqli_query($conectar,$sql_apagar_onu);
 
-          $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/13/0/$serial@vertv' 
+          $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$frame/$slot/$serial@vertv' 
             AND attribute='Huawei-Qos-Profile-Name' ";
           $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
 
-          $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/13/0/$serial@vertv' ";
+          $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$frame/$slot/$serial@vertv' ";
           $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
           
           deletar_onu_2000($device,$frame,$slot,$pon,$onuID);
@@ -427,7 +427,7 @@ if (!mysqli_connect_errno())
 
 /*
 SQL PARA SALVAR NO RADIUS
-INSERT INTO radcheck( username, attribute, op, value) VALUES ( '2500/13/0/485754439C96D58B@vertv', 'User-Name', ':=', '2500/13/0/485754430CEA4E9A@vertv' );
+INSERT INTO radcheck( username, attribute, op, value) VALUES ( '2500/$frame/$slot/485754439C96D58B@vertv', 'User-Name', ':=', '2500/13/0/485754430CEA4E9A@vertv' );
 
 INSERT INTO radcheck( username, attribute, op, value) VALUES ( '2500/13/0/485754439C96D58B@vertv', 'User-Password', ':=', ‘vlan’ );
 

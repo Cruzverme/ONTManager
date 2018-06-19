@@ -87,13 +87,13 @@ if (!mysqli_connect_errno())
         if($vasProfile != "VAS_IPTV")
         {
            $insere_ont_radius_username = "INSERT INTO radcheck( username, attribute, op, value) 
-               VALUES ( '2500/13/0/$serial@vertv', 'User-Name', ':=', '2500/13/0/$serial@vertv' )";
+               VALUES ( '2500/$frame/$pon/$serial@vertv', 'User-Name', ':=', '2500/$frame/$pon/$serial@vertv' )";
 
            $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value) 
-                   VALUES ( '2500/13/0/$serial@vertv', 'User-Password', ':=', 'vlan' )";
+                   VALUES ( '2500/$frame/$pon/$serial@vertv', 'User-Password', ':=', 'vlan' )";
 
            $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
-                   VALUES ( '2500/13/0/$serial@vertv', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";
+                   VALUES ( '2500/$frame/$pon/$serial@vertv', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";
 
            $executa_query_username= mysqli_query($conectar_radius,$insere_ont_radius_username);
            $executa_query_password= mysqli_query($conectar_radius,$insere_ont_radius_password);
