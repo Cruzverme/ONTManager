@@ -13,7 +13,7 @@
     
     $olt = filter_input(INPUT_POST,'olt');
 
-    $sql_nome = "SELECT deviceName FROM pon WHERE pon_id = $olt";
+    $sql_nome = "SELECT deviceName, frame, slot FROM pon WHERE pon_id = $olt";
 
     $executa_nome = mysqli_query($conectar,$sql_nome);
     $nomeDispositivo = mysqli_fetch_array($executa_nome,MYSQLI_BOTH);
@@ -39,9 +39,11 @@
                               <label>PON</label> 
                               <select class="form-control" name="pon">
                                 <?php 
-                                   $sql_check = "SELECT * FROM ctos WHERE pon_id_fk = $olt";
+                                //    $sql_check = 'SELECT DISTINCT caixa_atendimento,frame_slot_pon FROM ctos 
+                                //     WHERE pon_id_fk = $olt AND frame_slot_pon = "$frame-$slot-$pon"';
+                                   $sql_check = "SELECT DISTINCT * FROM ctos WHERE pon_id_fk = $olt";
                                    $executa_check = mysqli_query($conectar,$sql_check);
-                                   if(mysqli_num_rows($executa_check) > 0)
+                                   if(mysqli_num_rows($executa_check) > 0) //checa se ja existe CTO cadastrada na pon
                                    {
                                       $sql_consulta_serial = "SELECT DISTINCT olt.frame,olt.slot,olt.porta FROM pon olt 
                                         INNER JOIN ctos cto ON cto.pon_id_fk = $olt
@@ -51,19 +53,23 @@
 
                                       $executa_query = mysqli_query($conectar,$sql_consulta_serial) or die(mysqli_error($conectar));
 
-                                      $sql_get_fsp = "SELECT DISTINCT caixa_atendimento,frame_slot_pon FROM `ctos` WHERE pon_id_fk = $olt";
+                                      $sql_get_fsp = "SELECT DISTINCT caixa_atendimento,frame_slot_pon FROM `ctos` 
+                                        WHERE pon_id_fk = $olt" ;
                                       $executa_get_fsp = mysqli_query($conectar,$sql_get_fsp);
 
                                       while ($porta_pon_cadastrada = mysqli_fetch_array($executa_get_fsp,MYSQLI_BOTH))
                                       {
                                         array_push($array_ctos,$porta_pon_cadastrada['frame_slot_pon']);
                                       }
+                                      $conta = array_count_values($array_ctos);
                                       while ($ont = mysqli_fetch_array($executa_query, MYSQLI_BOTH))
                                       {
                                         for($porta = 0;$porta < $ont['porta'];$porta++)
                                         {
-                                            if(!in_array("$ont[frame]-$ont[slot]-$porta",$array_ctos))
-                                                echo "<option value=$olt-$ont[frame]-$ont[slot]-$porta> Slot: $ont[slot]  Porta: $porta </option>";
+                                            if($conta["$ont[frame]-$ont[slot]-$porta"] < 2)
+                                                echo "<option value=$olt-$ont[frame]-$ont[slot]-$porta>  Slot: $ont[slot]  Porta: $porta </option>";
+
+                                            
                                         }
                                       }
                                     }else{
