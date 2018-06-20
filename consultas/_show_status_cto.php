@@ -37,6 +37,7 @@
                       <th>PON</th>
                       <th>Porta Atendimento</th>
                       <th>MAC do Equipamento</th>
+                      <th>Contrato</th>
                     </tr>
                   </thead>
                   <tbody>";
@@ -71,12 +72,27 @@
                   {
                     if($_SESSION["cadastrar_onu"] == 1)
                     {
-                      echo "<td><a href='../ont_classes/ont_registering.php?porta_atendimento=$porta_atendimento&frame=$frame&slot=$slot&pon=$pon&cto=$caixa_atendimento&device=$device'>DISPONÍVEL</a></td>";
+                      echo "
+                        <td><a href='../ont_classes/ont_registering.php?porta_atendimento=$porta_atendimento&frame=$frame&slot=$slot&pon=$pon&cto=$caixa_atendimento&device=$device'>DISPONÍVEL</a></td>
+                        <td>----------------</td>
+                      ";
                     }else{
-                      echo "<td>DISPONÍVEL</td>";
+                      echo "
+                        <td>DISPONÍVEL</td>
+                        <td>----------------</td>
+                      ";
                     }
                   }
-                  else{ echo "<td>$serial</td>";}
+                  else{ 
+                    $contrato_select = "SELECT contrato FROM ont WHERE serial = '$serial'";
+                    $execute_contrato = mysqli_query($conectar,$contrato_select);
+                    $contrato = mysqli_fetch_array($execute_contrato, MYSQLI_BOTH);
+                    
+                    echo "
+                      <td>$serial</td>
+                      <td>$contrato[contrato]</td>
+                    ";
+                  }
             echo"
                   
                 </tr>";

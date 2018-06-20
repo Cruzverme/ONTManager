@@ -19,6 +19,7 @@
                 <th>PON</th>
                 <th>Porta Atendimento</th>
                 <th>MAC do Equipamento</th>
+                <th>Contrato</th>
               </tr>
             </thead>
             <tbody>";
@@ -27,7 +28,7 @@
 
     $select_ont_infos = "SELECT ct.frame_slot_pon,ct.porta_atendimento,ct.porta_atendimento_disponivel,
     ct.serial,p.deviceName,p.olt_ip FROM ctos ct
-      INNER JOIN pon p ON p.pon_id = ct.pon_id_fk 
+      INNER JOIN pon p ON p.pon_id = ct.pon_id_fk
       WHERE ct.caixa_atendimento = '$caixa_atendimento' ";
 
     $execute_ont_infos = mysqli_query($conectar,$select_ont_infos);
@@ -53,14 +54,30 @@
             {
               if($_SESSION["cadastrar_onu"] == 1)
               {
-                echo "<td><a href='../ont_classes/_pesquisa_contrato_register.php?porta_atendimento=$porta_atendimento&frame=$frame&slot=$slot&pon=$pon&cto=$caixa_atendimento&device=$device'>DISPONÍVEL</a></td>";
+                echo "
+                  <td><a href='../ont_classes/_pesquisa_contrato_register.php?porta_atendimento=$porta_atendimento&frame=$frame&slot=$slot&pon=$pon&cto=$caixa_atendimento&device=$device'>DISPONÍVEL</a></td>
+                  <td>----------------</td>
+                ";
+                
               }else{
-                echo "<td>DISPONÍVEL</td>";
+                echo "
+                  <td>DISPONÍVEL</td>
+                  <td>----------------</td>
+                ";
+                
               }
             }
-            else{ echo "<td>$serial</td>";}
+            else{ 
+              $contrato_select = "SELECT contrato FROM ont WHERE serial = '$serial'";
+              $execute_contrato = mysqli_query($conectar,$contrato_select);
+              $contrato = mysqli_fetch_array($execute_contrato, MYSQLI_BOTH);
+
+              echo "
+                <td>$serial</td>
+                <td>$contrato[contrato]</td>
+              ";
+            }
       echo"
-            
           </tr>";
     }
     echo "</tbody>

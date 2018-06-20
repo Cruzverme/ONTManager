@@ -116,8 +116,7 @@
                                 echo "<option value='$listaPlanos[nomenclatura_velocidade]'>$listaPlanos[nome]</option>";
                                 $verificacao = 1;
                               }
-                            }
-                            
+                            } 
                           }
                           if($verificacao != 1)
                             echo "<option value='none'>Velocidade Não Cadastrada no Contrato, Favor Verificar no Control Plus</option>";
