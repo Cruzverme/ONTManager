@@ -118,8 +118,7 @@
                     <th>TX</th>
                     <th>RX By OLT</th>
                     <th>SIP STATUS</th>
-                    <th>SIP SERVICE STATUS</th>
-                    
+                    <th>SIP SERVICE STATUS</th>  
                   </tr>
                 </thead>
                 <tbody>";
