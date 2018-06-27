@@ -85,7 +85,7 @@ if (!mysqli_connect_errno())
         $executa_query_password= mysqli_query($conectar_radius,$insere_ont_radius_password);
         $executa_query_qos_profile= mysqli_query($conectar_radius,$insere_ont_radius_qos_profile);
       }else{
-        $atualiza_qos_radius = "UPDATE radreply SET value='$pacote' WHERE username='2500/13/0/$serial@vertv' 
+        $atualiza_qos_radius = "UPDATE radreply SET value='$pacote' WHERE username='2500/$slot/$pon/$serial@vertv' 
            AND attribute='Huawei-Qos-Profile-Name' ";
         $executa_query= mysqli_query($conectar_radius,$atualiza_qos_radius);
         $update_velocidade = "UPDATE ont SET pacote='$pacote' WHERE serial = '$serial'";
