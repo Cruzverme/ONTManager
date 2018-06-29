@@ -66,7 +66,7 @@
                                       {
                                         for($porta = 0;$porta < $ont['porta'];$porta++)
                                         {
-                                            if($conta["$ont[frame]-$ont[slot]-$porta"] < 2)
+                                            if($conta["$ont[frame]-$ont[slot]-$porta"] < 16)
                                                 echo "<option value=$olt-$ont[frame]-$ont[slot]-$porta>  Slot: $ont[slot]  Porta: $porta </option>";
 
                                             
