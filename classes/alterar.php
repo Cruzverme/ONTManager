@@ -2,6 +2,7 @@
 include_once "../db/db_config_mysql.php";
 include_once "../db/db_config_radius.php";
 include_once "../u2000/tl1_sender.php";
+include_once "funcoes.php";
 // Inicia sessões 
 session_start();
 
@@ -57,7 +58,7 @@ if (!mysqli_connect_errno())
 
       $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
           VALUES (ERRO NO U2000 AO DELETAR A ONTID $trato 
-          informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+          informações relatadas: OLT: $device, PON: $pon, Frame: $frame,
           Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
           MAC: $serial, Novo Perfil: $vasProfileNovo, Internet: $pacote, Telefone: $telNumber,
           Senha Telefone: $telPass',$usuario)";
@@ -104,7 +105,7 @@ if (!mysqli_connect_errno())
 
         $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
           VALUES (ERRO NO U2000 AO ALTERAR A ONTID $trato 
-          informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+          informações relatadas: OLT: $device, PON: $pon, Frame: $frame,
           Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
           MAC: $serial, Novo Perfil: $vasProfileNovo, Internet: $pacote, Telefone: $telNumber,
           Senha Telefone: $telPass',$usuario)";
@@ -150,7 +151,7 @@ if (!mysqli_connect_errno())
 
             $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
               VALUES ('ERRO NO U2000 AO GERAR SERVICE PORT IPTV $trato 
-              informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+              informações relatadas: OLT: $device, PON: $pon, Frame: $frame,
               Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
               MAC: $serial, Novo Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
               Senha Telefone: $telPass',$usuario)";
@@ -215,7 +216,7 @@ if (!mysqli_connect_errno())
               
               $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
                     VALUES ('Ocorreu um erro ao criar novamente o btv!
-                    informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+                    informações relatadas: OLT: $device, PON: $pon, Frame: $frame,
                     Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
                     MAC: $serial, Novo Perfil: $vasProfileNovo, Internet: $pacote, Telefone: $telNumber,
                     Senha Telefone: $telPass','$usuario')";
@@ -234,7 +235,7 @@ if (!mysqli_connect_errno())
 
               $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
                 VALUES ('$serial Alterado com o serviço $vasProfile 
-                informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+                informações relatadas: OLT: $device, PON: $pon, Frame: $frame,
                 Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
                 MAC: $serial, Novo Perfil: $vasProfileNovo, Internet: $pacote, Telefone: $telNumber,
                 Senha Telefone: $telPass',$usuario)";
@@ -271,7 +272,7 @@ if (!mysqli_connect_errno())
 
             $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
               VALUES ('Erro ao ativar Serviço de Telefonia $trato 
-              informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+              informações relatadas: OLT: $device, PON: $pon, Frame: $frame,
               Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
               MAC: $serial, Novo Perfil: $vasProfileNovo, Internet: $pacote, Telefone: $telNumber,
               Senha Telefone: $telPass','$usuario')";
@@ -310,7 +311,7 @@ if (!mysqli_connect_errno())
               
               $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
                 VALUES ('Erro ao Alterar o ServicePort de Telefone $trato' 
-                informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+                informações relatadas: OLT: $device, PON: $pon, Frame: $frame,
                 Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
                 MAC: $serial, Novo Perfil: $vasProfileNovo, Internet: $pacote, Telefone: $telNumber,
                 Senha Telefone: $telPass,'$usuario')";
@@ -330,7 +331,7 @@ if (!mysqli_connect_errno())
               
               $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
                 VALUES ('ServicePort Telefone Alterado 
-                informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+                informações relatadas: OLT: $device, PON: $pon, Frame: $frame,
                 Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
                 MAC: $serial, Novo Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
                 Senha Telefone: $telPass','$usuario')";
@@ -372,7 +373,7 @@ if (!mysqli_connect_errno())
 
           $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
             VALUES ('Erro ao Alterar a ServicePort de Internet $trato
-            informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+            informações relatadas: OLT: $device, PON: $pon, Frame: $frame,
             Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
             MAC: $serial, Novo Perfil: $vasProfileNovo, Internet: $pacote, Telefone: $telNumber,
             Senha Telefone: $telPass','$usuario')";
@@ -393,11 +394,17 @@ if (!mysqli_connect_errno())
           $insere_service_internet = "UPDATE ont SET service_port_internet='$servicePortInternetID' WHERE serial = '$serial'";
           $executa_insere_service_internet = mysqli_query($conectar,$insere_service_internet);
           
-            echo $_SESSION['menssagem'] = "Plano Alterado!";
-
+          $result_reload = reiniciaONT($device,$frame,$slot,$pon,$onuID);
+          if ($result_reload == 0) 
+          {
+            echo $_SESSION['menssagem'] = "Plano Alterado! E Equipamento Reiniciado";
+          } else {
+            echo $_SESSION['menssagem'] = "Plano Alterado! Aguarde 24h para a nova velocidade";
+          }            
+            
             $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
               VALUES ('$serial Alterado com o serviço $vasProfile 
-              informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+              informações relatadas: OLT: $device, PON: $pon, Frame: $frame,
               Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
               MAC: $serial, Novo Perfil: $vasProfileNovo, Internet: $pacote, Telefone: $telNumber,
               Senha Telefone: $telPass','$usuario')";

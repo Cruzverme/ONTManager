@@ -15,6 +15,12 @@
   }
 
   $contrato = filter_input(INPUT_POST,'contrato');
+  
+  if(array_key_exists('reiniciar',$_POST))
+  {
+    echo "<script>alert('Favor entrar no contrato novamente');</script>";
+  }
+      
 
   if($contrato)
   {
@@ -37,7 +43,7 @@
 
     if($serial != 0)
     {
-      $select_ont_infos = "SELECT onu.ontID,onu.cto,onu.perfil,onu.service_port_iptv,onu.service_port_internet,onu.equipamento,ct.frame_slot_pon,ct.pon_id_fk,p.deviceName,p.olt_ip FROM ont onu 
+      $select_ont_infos = "SELECT onu.ontID,onu.cto,onu.porta,onu.perfil,onu.service_port_iptv,onu.service_port_internet,onu.equipamento,ct.frame_slot_pon,ct.pon_id_fk,p.deviceName,p.olt_ip FROM ont onu 
         INNER JOIN ctos ct ON ct.serial='$serial' AND ct.caixa_atendimento= onu.cto 
         INNER JOIN pon p ON p.pon_id = ct.pon_id_fk 
         WHERE onu.serial='$serial' AND onu.contrato='$contrato'";
@@ -49,12 +55,9 @@
         list($frame,$slot,$pon) = explode('-',$info['frame_slot_pon']);
         $device = $info['deviceName'];
         $vasProfile = $info['perfil'];
+        $cto = $info['cto'];
+        $porta_atendimento = $info['porta'];
       }
-      // $device = "A1_VERTV-01";
-      // $frame = "0";
-      // $slot = "13";
-      // $portaPon = "0";
-      // $ontID=5;
 
       $status = get_status_ont($device,$frame,$slot,$pon,$ontID);
       $status_signal = get_signal_ont($device,$frame,$slot,$pon,$ontID);
@@ -109,9 +112,10 @@
                 <thead>
                   <tr>
                     <th>MAC</th>
-                    <th>FRAME</th>
+                    <th>OLT</th>
                     <th>SLOT</th>
                     <th>PON</th>
+                    <th>CTO-Porta de Atendimento</th>
                     <th>STATUS</th>
                     <th>Ultima Vez Offline</th>
                     <th>RX</th>
@@ -132,9 +136,10 @@
                   echo "<tr id=consulta_ont_negativo>";
                 }
                   echo"  <td>$serial</td>
-                    <td>$filtra_resultados[1]</td>
+                    <td>$device</td>
                     <td>$filtra_resultados[2]</td>
                     <td>$filtra_resultados[3]</td>
+                    <td>$cto-$porta_atendimento</td>
                     <td>$filtra_resultados[7]</td>";
                     
                     if($filtra_resultados[12] != '--')
@@ -197,11 +202,12 @@
                   </tr>
                 </tbody>
               </table>
-              
-              <center><button class='btn btn-secondary' onClick='location.reload();'><i class='fa fa-retweet fa-fw'></i></button></center>
+                <center>
+                  <button class='btn btn-secondary' onClick='location.reload();' name=reload><i class='fa fa-retweet fa-fw'></i> Atualizar Dados</button>
+                </center>
             </div><!-- fim responsive -->
           </div><!-- fim col lg -->
-        </div><!-- fim row body --> ";
+        </div><!-- fim row body --> ";        
       }else{
         $_SESSION['menssagem'] = "Houve erro ao inserir no u2000 SQL: $errorCode";
         header('Location: get_status.php');
