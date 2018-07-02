@@ -14,7 +14,7 @@
         $porta_atendimento = $_POST["porta"];
         $pon = "$frame-$slot-$porta";
         
-
+        $ctos_cadastradas = array();
         for($inicio = 1; $inicio <= $maxCTO; $inicio++)
         {
           $cto = $area."C".$celula.".".$inicio;
@@ -29,23 +29,26 @@
             for($portas = 1; $portas <= $porta_atendimento; $portas++)
             {  
               $sql_insere_caixa = ("INSERT INTO ctos(caixa_atendimento,porta_atendimento,frame_slot_pon,pon_id_fk) VALUES('$cto',$portas,'$pon','$pon_id')");
-              $checar_insert = mysqli_query($conectar,$sql_insere_caixa); 
+              $checar_insert = mysqli_query($conectar,$sql_insere_caixa);
+              $checar_insert = true;
             }
+            array_push($ctos_cadastradas,$cto);
           }
         }
         
+        $ctos_incluidas = implode(" ",$ctos_cadastradas);
+
         if($checar_insert)
         {
             $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
               VALUES ('CTO $cto Cadastrada Pelo Usuario de Codigo $usuario','$usuario')";
             $executa_log = mysqli_query($conectar,$sql_insert_log);
 
-            echo  $_SESSION['menssagem'] = "Caixa de Atendimento Registrada!";
+            echo  $_SESSION['menssagem'] = "Caixa de Atendimento Registrada! CTOs Cadastradas: $ctos_incluidas ";
             header('Location: ../cto_classes/show_ctos.php');
             mysqli_close($conectar);
-           exit;
+            exit;
         }else{
-          
           $erro = mysqli_error($conectar);
           echo $_SESSION['menssagem'] = "CTO Não Cadastrada! SQL: $erro";
           header('Location: ../cto_classes/show_ctos.php');
