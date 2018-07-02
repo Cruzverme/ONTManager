@@ -1,3 +1,22 @@
+<script>
+
+    function calcular() 
+    {
+        var area = Number(document.getElementById("area").value);
+        var celula = Number(document.getElementById("celula").value);
+        var cto = Number(document.getElementById("nCtos").value);
+        var elemResult = document.getElementById("ctoNome");
+
+        if (elemResult.textContent === undefined) {
+            elemResult.value = String(area) + "C" + String(celula) + ".1" + " até " + String(area) + "C" + String(celula) + "." + String(cto);//elemResult.innerText = "O resultado é " + String(area) + "C" + String(celula) + "." + String(cto);
+        }
+        else { // IE
+            elemResult.value = String(area) + "C" + String(celula) + ".1" + " até " + String(area) + "C" + String(celula) + "." + String(cto);//elemResult.innerText = "O resultado é " + String(area) + "C" + String(celula) + "." + String(cto);
+        }
+    }
+
+</script>
+
 <?php 
     include "../classes/html_inicio.php"; 
     include "../db/db_config_mysql.php"; 
@@ -32,9 +51,24 @@
                 <div class="panel-body">
                     <form role="form" action="../classes/cadastrar_cto.php" method="post">
                             <div class="form-group">
-                                <label>Nome CTO</label> 
-                                <input class="form-control" placeholder="CTO" name="cto" type="text" pattern="[a-zA-Z0-9.%]+.[0-9]+" title="O Formato da CTO é AreaCelula.NumeroDaCTO(3C1.10)" autofocus required>
+                                <label>Range de CTO</label> 
+                                <!-- <p id="ctoNome"></p> -->
+                                <input class="form-control" placeholder="CTO" id="ctoNome" name="ctoNome" type="text" pattern="[a-zA-Z0-9.%]+.[0-9]+" title="O Formato da CTO é AreaCelula.NumeroDaCTO(3C1.10)" readonly autofocus>
                             </div>
+
+                            <div class="form-group" style=''>
+                                <label>Area</label>
+                                <input class="" placeholder="Area" id="area" name="area" type="number" pattern="[0-9]" min=0 title="Digite a área" onblur="calcular();" autofocus required>
+                                <label>Célula</label>
+                                <input class="" placeholder="Celula" id="celula" name="celula" type="number" pattern="[0-9]" min=0 title="Digite a " onblur="calcular();" autofocus required>
+                                <label>Quantidade de CTOs</label>
+                                <input class="" placeholder="No. CTOs" id="nCtos" name="nCtos" type="number" pattern="[0-9]" min=1 max=8 title="Digite a quantidade de CTOs que irão ser criadas" onblur="calcular();" autofocus required>
+                            </div>
+
+                            <!-- <div class="form-group" style=''>
+                                <label>Quantidade de Portas</label>
+                                <input class="form-control" placeholder="CTO" name="cto" type="number" pattern="[0-9]" title="Digite a quantidade de CTOs que irão ser criadas" autofocus required>
+                            </div> -->
                             <div class="form-group">
                               <label>PON</label> 
                               <select class="form-control" name="pon">
@@ -68,8 +102,6 @@
                                         {
                                             if($conta["$ont[frame]-$ont[slot]-$porta"] < 16)
                                                 echo "<option value=$olt-$ont[frame]-$ont[slot]-$porta>  Slot: $ont[slot]  Porta: $porta </option>";
-
-                                            
                                         }
                                       }
                                     }else{
@@ -92,7 +124,7 @@
                               </select>
                             </div>
                             <div class="form-group">
-                                <label>Porta</label>                                                
+                                <label>Quantidade de Portas de Atendimento</label>                                                
                                 <select class="form-control" name="porta">
                                     echo "<option value=8>8</option>";
                                 </select>
