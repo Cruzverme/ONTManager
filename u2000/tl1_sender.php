@@ -7,6 +7,9 @@
       case '2686058498':
         return "Informação Faltando";
         break;
+      case '1615331079':
+        return "Contrato já existe no u2000";
+        break;
       case '2686058497':
         return "Erro de Sintaxe";
         break;

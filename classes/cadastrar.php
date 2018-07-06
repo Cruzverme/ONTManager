@@ -57,13 +57,12 @@ if (!mysqli_connect_errno())
         mysqli_close($conectar);
         exit;
      }
+     $limite_registro = "";
      while ($limite = mysqli_fetch_array($sql_limite_result, MYSQLI_BOTH)) 
      {
        $limite_registro = $limite['limite_equipamentos'];
      }
-
-     $sql_verifica_limite = "SELECT limite_equipamentos FROM ont WHERE contrato='$contrato'";
-     $limite_registro = "";
+     
      if ($limite_registro < 1 AND $limite_registro != null) 
      {
        echo $_SESSION['menssagem'] = "Favor, entrar em contato com o TI, para solicitar aumento de registro de equipamentos";
