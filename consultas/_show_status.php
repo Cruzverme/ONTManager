@@ -24,7 +24,7 @@
 
   if($mac)
   {
-    $get_contrato = "SELECT contrato FROM ont WHERE serial = $mac ";
+    $get_contrato = "SELECT contrato FROM ont WHERE serial = '$mac' ";
     $executa_contrato = mysqli_query($conectar,$get_contrato);
 
     $contrato = mysqli_fetch_array($executa_contrato)[0];
