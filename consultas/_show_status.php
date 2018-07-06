@@ -15,10 +15,19 @@
   }
 
   $contrato = filter_input(INPUT_POST,'contrato');
-  
+  $mac = filter_input(INPUT_POST,'mac');
+
   if(array_key_exists('reiniciar',$_POST))
   {
     echo "<script>alert('Favor entrar no contrato novamente');</script>";
+  }
+
+  if($mac)
+  {
+    $get_contrato = "SELECT contrato FROM ont WHERE serial = $mac ";
+    $executa_contrato = mysqli_query($conectar,$get_contrato);
+
+    $contrato = mysqli_fetch_array($executa_contrato)[0];
   }
       
 
@@ -111,6 +120,7 @@
               <table class='table'>
                 <thead>
                   <tr>
+                    <th>CONTRATO</th>
                     <th>MAC</th>
                     <th>OLT</th>
                     <th>SLOT</th>
@@ -126,16 +136,15 @@
                   </tr>
                 </thead>
                 <tbody>";
-                if($filtra_resultados_signal[7] <= "-200")
+                if("-2400" <= $filtra_resultados_signal[7] )
                 {
                   echo "<tr id=consulta_ont_positivo>";
-                }elseif($filtra_resultados_signal[7] <= "-240")
-                {
-                  echo "<tr id=consulta_ont_neutro>";
                 }else{
                   echo "<tr id=consulta_ont_negativo>";
                 }
-                  echo"  <td>$serial</td>
+                  echo"
+                    <td>$contrato</td>
+                    <td>$serial</td>
                     <td>$device</td>
                     <td>$filtra_resultados[2]</td>
                     <td>$filtra_resultados[3]</td>

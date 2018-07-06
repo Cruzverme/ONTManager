@@ -35,6 +35,15 @@
                     <button class="btn btn-secondary" type="submit">Buscar</button>
                   </span>
                 </div>
+
+                <div class="input-group">
+                  <label>Digite o MAC</label>
+                  <input id="mac" placeholder="Insira o MAC do equipamento" class="form-control" type="text" name="mac">
+                  <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="submit">Buscar</button>
+                  </span>
+                </div>
+                
               </div>
             </form>
              <?php include "_show_status.php"?>
