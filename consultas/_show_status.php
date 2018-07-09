@@ -68,6 +68,18 @@
         $porta_atendimento = $info['porta'];
       }
 
+      $device = "A1_VERTV-01";
+  $frame = "0";
+  $slot = "13";
+  $pon = "0";
+  $contrato = "123";
+  $cto = "1C2.3";
+  $porta_atendimento = "3";
+  $serial = "48575443909B298B";
+  $equipment = "HGW839M";
+  $vasProfile = "VAS_Internet";
+  $ontID=2;
+
       $status = get_status_ont($device,$frame,$slot,$pon,$ontID);
       $status_signal = get_signal_ont($device,$frame,$slot,$pon,$ontID);
       $wan = verificar_wan($device,$frame,$slot,$pon,$ontID);
@@ -92,7 +104,7 @@
       $remove_desc_wan = explode("ENDESC=",$check_sucesso_wan[1]);
       $errorCode_wan = trim($remove_desc_wan[0]);
       //FIm WANs
-
+      
       if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV")
       {
         $status_sip = get_status_sip($device,$frame,$slot,$pon,$ontID);
@@ -117,15 +129,19 @@
 
         $remove_barra_wan = explode("----------------------------------------------------------------------------------------------",$remove_desc_wan[1]);
 
+        
         $filtra_enter = explode(PHP_EOL,$remove_barra[1]);
         
         $filtra_enter_signal = explode(PHP_EOL,$remove_barra_signal[1]);
 
         $filtra_enter_wan = explode(PHP_EOL,$remove_barra_wan[1]);
         
-        $filtra_resultados = preg_split('/\s+/', $filtra_enter[2]);//explode('',$filtra_enter[2]);
         
-        $filtra_resultados_signal = preg_split('/\s+/', $filtra_enter_signal[2]);//explode('',$filtra_enter[2]);
+        $filtra_resultados = preg_split('/\s+/', $filtra_enter[2]);
+        
+        $filtra_resultados_signal = preg_split('/\s+/', $filtra_enter_signal[2]);
+
+        
 
         echo "
         <div class='row'>
@@ -226,6 +242,8 @@
                 </tbody>
               </table>";
               // TRATAMENTO DE WAN
+              
+              echo " <center><h3 class='h4'>INFORMAÇÕES ADICIONAIS</h3></center>";
               for($inicio = 2; $inicio < (count($filtra_enter_wan) - 1);$inicio++)
               {
                 $filtra_resultados_wan = preg_split('/\s+/', $filtra_enter_wan[$inicio]);
@@ -235,7 +253,6 @@
                     <thead>
                       <tr>
                         <th>TIPO WAN</th>
-                        <th>STATUS IPV4</th>
                         <th>IPV4</th>
                         <th>WAN MASK</th>
                         <th>WAN GATEWAY</th>
@@ -244,21 +261,64 @@
                     <tbody>
                       <tr>
                         <td>$filtra_resultados_wan[5]</td>
-                        <td>CONECTADO</td>
                         <td>$filtra_resultados_wan[6]</td>
                         <td>$filtra_resultados_wan[7]</td>
                         <td>$filtra_resultados_wan[9]</td>
                       </tr>
                     </tbody>
-                  </table> ";
+                  </table> 
+                  ";
               }        
               // FIM TRATAMENTO WAN     
-              echo " <center>
+              echo "
+              <table class=table>
+              <thead>
+                <tr>
+                  <th>Porta 1</th>
+                  <th>Porta 2</th>
+                  <th>Porta 3</th>
+                  <th>Porta 4</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>";
+                foreach(range(1,4) as $porta)
+                {
+                  //PORTA ETH
+                  $status_porta_eth = verificar_portas_ont($device,$frame,$slot,$pon,$ontID,$porta);
+                  $tira_ponto_virgula_status_porta = explode(";",$status_porta_eth);
+                  $check_sucesso_status_porta = explode("EN=",$tira_ponto_virgula_status_porta[1]);
+                  $remove_desc_status_porta = explode("ENDESC=",$check_sucesso_status_porta[1]);
+                  $errorCode_status_porta = trim($remove_desc_status_porta[0]);
+
+                  $remove_barra_status_porta = explode("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",$remove_desc_status_porta[1]);
+                  $filtra_enter_status_porta = explode(PHP_EOL,$remove_barra_status_porta[1]);
+                  $filtra_resultados_status_porta = preg_split('/\s+/', $filtra_enter_status_porta[2]);
+                  //FIM PORTA ETH
+                  if($filtra_resultados_status_porta[8] == "Active")
+                  {
+                    echo "<td style='background:green'>CONECTADA</td>";
+                  }elseif($filtra_resultados_status_porta[8])
+                  {
+                    echo "<td style='background:red'>NÃO CONECTADA</td>";
+                  }else
+                  {
+                    echo "<td style='background:red'>$filtra_resultados_status_porta[8]</td>";
+                  }
+                  
+                }              
+              echo"  </tr>
+              </tbody>
+              </table>
+              
+              ";
+
+              echo "<center>
                   <button class='btn btn-secondary' onClick='location.reload();' name=reload><i class='fa fa-retweet fa-fw'></i> Atualizar Dados</button>
                 </center>
             </div><!-- fim responsive -->
           </div><!-- fim col lg -->
-        </div><!-- fim row body --> ";        
+        </div><!-- fim row body --> ";
       }else{
         $_SESSION['menssagem'] = "Houve erro ao inserir no u2000 SQL: $errorCode";
         header('Location: get_status.php');

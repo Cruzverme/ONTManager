@@ -653,7 +653,7 @@
     }else
     {
       $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
-      $comando = "LST-ONTPORTDETAIL::DEV=A1_VERTV-01,FN=0,SN=13,PN=0,ONTID=2,ONTPORTTYPE=ETH,ONTPORTID=4:1::;";
+      $comando = "LST-ONTPORTDETAIL::DEV=$deviceName,FN=$frame,SN=$slot,PN=$pon,ONTID=$ontID,ONTPORTTYPE=ETH,ONTPORTID=$numero_porta:1::;";
 
       fwrite($fp,$login_command);
       fwrite($fp,$comando);
