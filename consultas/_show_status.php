@@ -70,6 +70,8 @@
 
       $status = get_status_ont($device,$frame,$slot,$pon,$ontID);
       $status_signal = get_signal_ont($device,$frame,$slot,$pon,$ontID);
+      $wan = verificar_wan($device,$frame,$slot,$pon,$ontID);
+      
       //ONT
       $tira_ponto_virgula = explode(";",$status);
       $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
@@ -83,6 +85,14 @@
       $errorCode_signal = trim($remove_desc_signal[0]);
       $errorCode_sip = "0";
       //SIGNAL
+
+      // WANs
+      $tira_ponto_virgula_wan = explode(";",$wan);
+      $check_sucesso_wan = explode("EN=",$tira_ponto_virgula_wan[1]);
+      $remove_desc_wan = explode("ENDESC=",$check_sucesso_wan[1]);
+      $errorCode_wan = trim($remove_desc_wan[0]);
+      //FIm WANs
+
       if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV")
       {
         $status_sip = get_status_sip($device,$frame,$slot,$pon,$ontID);
@@ -98,21 +108,25 @@
         // FIM SIP
       }
 
-      if($errorCode == "0" || $errorCode_sip == "0" || $errorCode_signal == "0")
+      if($errorCode == "0" || $errorCode_sip == "0" || $errorCode_signal == "0" || $errorCode_wan == "0")
       {
         
         $remove_barra = explode("-------------------------------------------------------------------------------------------------------------------",$remove_desc[1]);
         
         $remove_barra_signal = explode("-----------------------------------------------------------------------------------------",$remove_desc_signal[1]);
 
+        $remove_barra_wan = explode("----------------------------------------------------------------------------------------------",$remove_desc_wan[1]);
+
         $filtra_enter = explode(PHP_EOL,$remove_barra[1]);
         
         $filtra_enter_signal = explode(PHP_EOL,$remove_barra_signal[1]);
+
+        $filtra_enter_wan = explode(PHP_EOL,$remove_barra_wan[1]);
         
         $filtra_resultados = preg_split('/\s+/', $filtra_enter[2]);//explode('',$filtra_enter[2]);
         
         $filtra_resultados_signal = preg_split('/\s+/', $filtra_enter_signal[2]);//explode('',$filtra_enter[2]);
-        
+
         echo "
         <div class='row'>
           <div class='col-lg-16'>
@@ -210,8 +224,36 @@
                 echo "
                   </tr>
                 </tbody>
-              </table>
-                <center>
+              </table>";
+              // TRATAMENTO DE WAN
+              for($inicio = 2; $inicio < (count($filtra_enter_wan) - 1);$inicio++)
+              {
+                $filtra_resultados_wan = preg_split('/\s+/', $filtra_enter_wan[$inicio]);
+
+                echo " 
+                  <table class='table'>
+                    <thead>
+                      <tr>
+                        <th>TIPO WAN</th>
+                        <th>STATUS IPV4</th>
+                        <th>IPV4</th>
+                        <th>WAN MASK</th>
+                        <th>WAN GATEWAY</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>$filtra_resultados_wan[5]</td>
+                        <td>CONECTADO</td>
+                        <td>$filtra_resultados_wan[6]</td>
+                        <td>$filtra_resultados_wan[7]</td>
+                        <td>$filtra_resultados_wan[9]</td>
+                      </tr>
+                    </tbody>
+                  </table> ";
+              }        
+              // FIM TRATAMENTO WAN     
+              echo " <center>
                   <button class='btn btn-secondary' onClick='location.reload();' name=reload><i class='fa fa-retweet fa-fw'></i> Atualizar Dados</button>
                 </center>
             </div><!-- fim responsive -->
