@@ -68,18 +68,6 @@
         $porta_atendimento = $info['porta'];
       }
 
-      $device = "A1_VERTV-01";
-      $frame = "0";
-      $slot = "13";
-      $pon = "0";
-      $contrato = "123";
-      $cto = "1C2.3";
-      $porta_atendimento = "3";
-      $serial = "48575443909B298B";
-      $equipment = "HGW839M";
-      $vasProfile = "VAS_Internet";
-      $ontID=2;
-
       $status = get_status_ont($device,$frame,$slot,$pon,$ontID);
       $status_signal = get_signal_ont($device,$frame,$slot,$pon,$ontID);
       $wan = verificar_wan($device,$frame,$slot,$pon,$ontID);
