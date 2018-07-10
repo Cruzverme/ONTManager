@@ -68,9 +68,22 @@
         $porta_atendimento = $info['porta'];
       }
 
+      $device = "A1_VERTV-01";
+      $frame = "0";
+      $slot = "13";
+      $pon = "0";
+      $contrato = "123";
+      $cto = "1C2.3";
+      $porta_atendimento = "3";
+      $serial = "48575443909B298B";
+      $equipment = "HGW839M";
+      $vasProfile = "VAS_Internet";
+      $ontID=2;
+
       $status = get_status_ont($device,$frame,$slot,$pon,$ontID);
       $status_signal = get_signal_ont($device,$frame,$slot,$pon,$ontID);
       $wan = verificar_wan($device,$frame,$slot,$pon,$ontID);
+      $status_service_port = verificar_service_port($device,$frame,$slot,$pon,$ontID);
       
       //ONT
       $tira_ponto_virgula = explode(";",$status);
@@ -92,6 +105,14 @@
       $remove_desc_wan = explode("ENDESC=",$check_sucesso_wan[1]);
       $errorCode_wan = trim($remove_desc_wan[0]);
       //FIm WANs
+
+      //SERVICE PORT
+      $status_service_port = verificar_service_port($device,$frame,$slot,$pon,$ontID);
+      $tira_ponto_virgula_service_port = explode(";",$status_service_port);
+      $check_sucesso_service_port = explode("EN=",$tira_ponto_virgula_service_port[1]);
+      $remove_desc_service_port = explode("ENDESC=",$check_sucesso_service_port[1]);
+      $errorCode_service_port = trim($remove_desc_service_port[0]);
+      //FIM SERVICE PORT
       
       if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV")
       {
@@ -117,18 +138,19 @@
 
         $remove_barra_wan = explode("----------------------------------------------------------------------------------------------",$remove_desc_wan[1]);
 
+        $remove_barra_service_port = explode("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------",$remove_desc_service_port[1]);
         
         $filtra_enter = explode(PHP_EOL,$remove_barra[1]);
         
         $filtra_enter_signal = explode(PHP_EOL,$remove_barra_signal[1]);
 
         $filtra_enter_wan = explode(PHP_EOL,$remove_barra_wan[1]);
-        
-        
+                
         $filtra_resultados = preg_split('/\s+/', $filtra_enter[2]);
         
         $filtra_resultados_signal = preg_split('/\s+/', $filtra_enter_signal[2]);
 
+        $filtra_enter_service_port = explode(PHP_EOL,$remove_barra_service_port[1]);
         
 
         echo "
@@ -249,7 +271,7 @@
                     <tbody>
                       <tr>
                         <td>$filtra_resultados_wan[5]</td>
-                        <td>$filtra_resultados_wan[6]</td>
+                        <td><a target=_blank href=https://$filtra_resultados_wan[6]:80>$filtra_resultados_wan[6]</a></td>
                         <td>$filtra_resultados_wan[7]</td>
                         <td>$filtra_resultados_wan[9]</td>
                       </tr>
@@ -258,8 +280,32 @@
                   ";
               }        
               // FIM TRATAMENTO WAN     
+              //TRATAMENTO DE SERVICE PORT
+        echo "
+            <table class=table>
+              <legend>Service Ports</legend>
+              <thead>
+                <tr>
+                  <th>Service Ports</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>";
+                for($inicio = 2; $inicio < (count($filtra_enter_service_port) - 1);$inicio++)
+                {
+                  $filtra_resultados_service_port = preg_split('/\s+/', $filtra_enter_service_port[$inicio]);
+                  echo "<td>$filtra_resultados_service_port[10]</td>";
+                }
+        echo"  </tr>
+              </tbody>
+            </table>
+                
+                ";//FIM TRATAMENTO DE SERVICE PORT
+
+              //TRATAMENTO PORTA STATUS
               echo "
               <table class=table>
+              <legend>Status de Porta</legend>
               <thead>
                 <tr>
                   <th>Porta 1</th>
@@ -270,7 +316,7 @@
               </thead>
               <tbody>
                 <tr>";
-                foreach(range(1,4) as $porta)
+                foreach(range(1,4) as $porta) //itera o numero de portas, caso chegue alguma ONT com numero acima de 4 portas tera que rever
                 {
                   //PORTA ETH
                   $status_porta_eth = verificar_portas_ont($device,$frame,$slot,$pon,$ontID,$porta);
@@ -299,7 +345,7 @@
               </tbody>
               </table>
               
-              ";
+              ";//FIM TRATAMENTO DE STATUS PORTA
 
               echo "<center>
                   <button class='btn btn-secondary' onClick='location.reload();' name=reload><i class='fa fa-retweet fa-fw'></i> Atualizar Dados</button>
