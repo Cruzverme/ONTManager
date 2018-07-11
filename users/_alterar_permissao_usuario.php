@@ -18,7 +18,7 @@
   $select_info_user = "SELECT usuario_id, nome,senha, cadastrar_onu, deletar_onu, modificar_onu,
           desativar_ativar_onu, cadastrar_cto, cadastrar_olt, cadastrar_velocidade, cadastrar_equipamento,
           cadastrar_usuario, alterar_mac_ont, consulta_ont, consulta_cto, remover_cto, remover_olt, 
-          alterar_usuario
+          alterar_usuario, relatorio_sinal
       FROM usuarios usuario
       INNER JOIN usuario_permissao permissao ON permissao.usuario = usuario.usuario_id
       WHERE usuario.usuario = '$usuario'";
@@ -43,6 +43,7 @@
   $deletarCTO = $user_detail['remover_cto'];
   $deletarOLT = $user_detail['remover_olt'];
   $alterar_usuario = $user_detail['alterar_usuario'];
+  $consulta_relatorio_sinal = $user_detail['relatorio_sinal'];
 
 ?>
 
@@ -91,6 +92,7 @@
                       <input name="personalizada13" value=13 type="checkbox" <?php if($deletarCTO == 1)echo "checked"; ?>> Remover de CTO <br/>
                       <input name="personalizada14" value=14 type="checkbox" <?php if($deletarOLT == 1)echo "checked"; ?>> Remover de OLT <br/>
                       <input name="personalizada15" value=15 type="checkbox" <?php if($alterar_usuario == 1)echo "checked"; ?>> Alterar e Listar Usuário <br/>
+                      <input name="personalizada16" value=16 type="checkbox" <?php if($consulta_relatorio_sinal == 1)echo "checked"; ?>> Consultar Relatório de Sinal <br/>
                     </div>
               </fieldset>
               <div class="form-group">

@@ -58,6 +58,7 @@
                         <input name="personalizada13" value=13 type="checkbox"> Remover de CTO <br/>
                         <input name="personalizada14" value=14 type="checkbox"> Remover de OLT <br/>
                         <input name="personalizada15" value=15 type="checkbox"> Alterar e Listar Usuário <br/>
+                        <input name="personalizada16" value=16 type="checkbox"> Consultar Relatório de Sinal <br/>
                       </fieldset>
                     </div>
                   </div>

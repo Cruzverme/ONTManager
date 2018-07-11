@@ -53,6 +53,7 @@
       $remover_cto = filter_input(INPUT_POST,"personalizada13") ?? 0;
       $remover_olt = filter_input(INPUT_POST,"personalizada14") ?? 0;
       $alterar_usuario = filter_input(INPUT_POST,"personalizada15") ?? 0;
+      $consulta_relatorio_sinal = filter_input(INPUT_POST,"personalizada16") ?? 0;
       //fim variaveis de permissao
         
       ########## permissoes personalizadas ########
@@ -156,6 +157,12 @@
       }else{
         $permitir_listar_usuario = 0;
       }
+      if($consulta_relatorio_sinal == 16)
+      {
+        $permitir_relatorio_sinal = 1;
+      }else{
+        $permitir_relatorio_sinal = 0;
+      }
     
       #######  FIM PERMISSOES PERSONALIZADAS ########
 
@@ -181,7 +188,7 @@
             cadastrar_usuario = $permitir_cadastrarUsuarios, cadastrar_equipamento = $permitir_cadastrarEquipamento,
             alterar_mac_ont = $permitir_alterar_MAC, consulta_ont = $permitir_consulta_onu, 
             consulta_cto = $permitir_consulta_cto, remover_cto = $permitir_removerCTO, remover_olt = $permitir_removerOLT,
-            alterar_usuario = $permitir_listar_usuario
+            alterar_usuario = $permitir_listar_usuario, relatorio_sinal = $permitir_relatorio_sinal
             WHERE usuario = $userID ";
 
         $permissoes = mysqli_query($conectar,$sql_cadastrar_permissao);

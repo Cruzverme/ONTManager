@@ -30,6 +30,8 @@
     header('Location: ../consultas/get_status.php');
   }elseif ($_SESSION["consulta_ctos"] == 1) {
     header('Location: ../consultas/get_info_cto.php');
+  }elseif($_SESSION["consulta_relatorio_sinal"] == 1){
+    header('Location: ../consultas/relatorio_sinal_ruim.php');
   }elseif ($_SESSION["remover_cto"] == 1) {
     header('Location: ../cto_classes/remover_cto.php');
   }elseif ($_SESSION["remover_olt"] == 1) {

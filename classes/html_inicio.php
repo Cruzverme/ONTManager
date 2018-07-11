@@ -181,6 +181,14 @@ echo '   </head>
                       </li>
                     ';
                   }
+                  if($_SESSION["consulta_relatorio_sinal"] == 1)
+                  {
+                    echo'  
+                      <li>
+                        <a href="../consultas/relatorio_sinal_ruim.php"><i class="fa fa-bug fa-fw"></i> Relatório de Sinais </a>
+                      </li>
+                    ';
+                  }
           echo'   </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
