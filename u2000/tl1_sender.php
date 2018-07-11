@@ -107,7 +107,7 @@
     }
   }
 
-  function cadastrar_ont($dev,$frame,$slot,$pon,$contrato,$splitter,$splitterPort,$serial,$equipment,$vasProfile)
+  function cadastrar_ont($dev,$frame,$slot,$pon,$contrato,$alias,$splitter,$splitterPort,$serial,$equipment,$vasProfile)
   {
     include "telnet_config.php";
     $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
@@ -123,7 +123,7 @@
       //                        SERIALNUM=48575443909B298B,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=HGW839M,
       //                        MAINSOFTVERSION=V3R016C10S130,VAPROFILE=VAS_Internet-VoIP-IPTV,BUILDTOPO=TRUE; \n\r\n";
 
-      $comando_cadastra_ont = "ADD-ONT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:1::NAME=$contrato,ALIAS=$contrato,LINEPROF=line-profile_11,SRVPROF=srv-profile_10,SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V3R016C10S130,VAPROFILE=$vasProfile,BUILDTOPO=TRUE;";
+      $comando_cadastra_ont = "ADD-ONT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:1::NAME=$contrato,ALIAS=$alias,LINEPROF=line-profile_11,SRVPROF=srv-profile_10,SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V3R016C10S130,VAPROFILE=$vasProfile,BUILDTOPO=TRUE;";
 
       fwrite($fp,$login_command);
       fwrite($fp,$comando_cadastra_ont);

@@ -17,6 +17,7 @@ if (!mysqli_connect_errno())
     $pon = $_POST["pon"];
     $usuario = $_SESSION["id_usuario"];
     $contrato = $_POST["contrato"];
+    $nome = $_POST["nome"];
     $serial = strtoupper($_POST["serial"]);
     $equipment = $_POST['equipamentos'];
     $pacote = $_POST["pacote"];
@@ -26,7 +27,7 @@ if (!mysqli_connect_errno())
     $porta_atendimento = $_POST["porta_atendimento"];
     $deviceName = $_POST["deviceName"];
     $ip_olt = NULL;
-
+    $nomeCompleto = str_replace(" ","_",$nome);
      if($pacote == 'none' && $vasProfile != 'VAS_IPTV' )
      {
         echo $_SESSION['menssagem'] = "Velocidade Não Existe no Cplus";
@@ -77,7 +78,7 @@ if (!mysqli_connect_errno())
       $pacote = NULL;
      }
       
-      $sql_registra_onu = ("INSERT INTO ont (contrato, serial, cto, tel_number, tel_user, tel_password, perfil, pacote, usuario_id,equipamento,porta) 
+      $sql_registra_onu = ("INSERT INTO ont (contrato, serial, cto, tel_number, tel_user, tel_password, perfil, pacote, usuario_id,equipamento,porta)
                               VALUES ('$contrato','$serial','$cto','$telNumber','$telNumber','$telPass','$vasProfile','$pacote','$usuario','$equipment','$porta_atendimento')" );
 
       $cadastrar = mysqli_query($conectar,$sql_registra_onu);
@@ -120,7 +121,7 @@ if (!mysqli_connect_errno())
           ##SO VERIFICAR PORTA DO SPLITTER E ALTERAR O ONME DA VARIAVEL
         //echo "<br>$deviceName,$frame,$slot,$pon,$contrato,$cto,$porta_atendimento,$serial,$equipment,$vasProfile<br><br>";
           $ontID = cadastrar_ont($deviceName,$frame,$slot,$pon,
-           $contrato,$cto,$porta_atendimento,$serial,$equipment,$vasProfile);
+           $contrato,$nomeCompleto,$cto,$porta_atendimento,$serial,$equipment,$vasProfile);
           $onuID = NULL; //zera ONUID para evitar problema de cash.
           $tira_ponto_virgula = explode(";",$ontID);
           $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);

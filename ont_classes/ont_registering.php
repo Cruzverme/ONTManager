@@ -32,6 +32,11 @@
       </script>
     ';
   }
+
+  $json_file = file_get_contents("http://192.168.80.5/sisspc/demos/get_pacote_ftth_cplus.php?contra=$contrato");
+  $json_str = json_decode($json_file, true);
+  $itens = $json_str['velocidade'];
+  $nome = $json_str['nome'];
   
 ?>
   <div id="page-wrapper">
@@ -87,6 +92,12 @@
                         <input class="form-control" placeholder="Contrato" 
                           name="contrato" value='<?php echo $contrato;?>'type="text" autofocus readonly>
                     </div>
+
+                    <div class="form-group">
+                        <label>Nome do Assinante</label> 
+                        <input class="form-control" placeholder="Contrato" 
+                          name="nome" value='<?php echo $nome[0];?>'type="text" autofocus readonly>
+                    </div>
                     
                     <div class="form-group">
                         <label>Pon MAC</label>                                                
@@ -98,9 +109,6 @@
                         <label>Pacote</label>
                         <select class="form-control" name="pacote">
                         <?php 
-                          $json_file = file_get_contents("http://192.168.80.5/sisspc/demos/get_pacote_ftth_cplus.php?contra=$contrato");
-                          $json_str = json_decode($json_file, true);
-                          $itens = $json_str['velocidade'];
                           $codigoCplus = '';
                           $verificacao = 0;
                           
