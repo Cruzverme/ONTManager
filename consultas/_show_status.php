@@ -336,11 +336,17 @@
               ";//FIM TRATAMENTO DE STATUS PORTA
 
               echo "<center>
-                  <button class='btn btn-secondary' onClick='location.reload();' name=reload><i class='fa fa-retweet fa-fw'></i> Atualizar Dados</button>
+                  <button class='btn btn-secondary' onClick='location.reload();' name=reload><i class='fa fa-retweet fa-fw'></i> Atualizar Dados</button>";
+                 ?> 
+                 <button class='btn btn-secondary' onClick="return acordaONT('<?php echo $device ?>','<?php echo $frame ?>','<?php echo $slot ?>','<?php echo $pon ?>',
+                  '<?php echo $ontID ?>','reset')"><i class='fa fa-spinner fa-fw'></i>REINICIAR</button>
+                  <button class='btn btn-secondary' onClick="return acordaONT('<?php echo $device ?>','<?php echo $frame ?>','<?php echo $slot ?>','<?php echo $pon ?>',
+                  '<?php echo $ontID ?>','fabric')"><i class='fa fa-cogs fa-fw'></i>PADRÃO DE FÁBRICA</button>
                 </center>
             </div><!-- fim responsive -->
           </div><!-- fim col lg -->
-        </div><!-- fim row body --> ";
+        </div><!-- fim row body -->
+ <?php       
       }else{
         $_SESSION['menssagem'] = "Houve erro ao inserir no u2000 SQL: $errorCode";
         header('Location: get_status.php');

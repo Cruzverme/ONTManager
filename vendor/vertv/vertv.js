@@ -56,19 +56,62 @@ $('.btn-salvar').on('click',function(){
  $('tr.usuarios').click(function() {
      window.location.href = $(this).attr('data-href');
  });
+ 
+  function acordaONT(device,frame,slot,pon,ontID,acao) 
+  { 
+    var devName = device;
+    var frame = frame;
+    var slot = slot;
+    var pon = pon;
+    var ontID = ontID;
+    var tipoDeAcao = acao;
+    
+    bootbox.confirm({
+      message: "Deseja realizar esta operação ?",
+      buttons: {
+        confirm: {
+          label: '<i class="fa fa-check"></i> SIM',
+          className: 'btn-success'
+        },
+        cancel: {
+          label: '<i class="fa fa-times"></i> NAO',
+          className: 'btn-danger'
+        }
+      },callback: function(escolhaDoUsuario){
+        if(escolhaDoUsuario)
+        {
+          $.post("../consultas/_helper_show_status.php",{dev: devName,frame: frame,slot: slot,pon: pon,ont: ontID,acao: tipoDeAcao} ,function(msg_retorno){
+            bootbox.alert({
+              message: msg_retorno,
+              backdrop: true,
+              size: 'small'
+            });
+          });
+        }else{
+          bootbox.alert({
+            message: 'OPERAÇÃO CANCELADA PELO USUÁRIO',
+            backdrop: true,
+            size: 'small'
+          });
+        }
+      }
+    });
+  }
+
 
 //VALIDAR SEHA
-var password = document.getElementById("senha")
-  , confirm_password = document.getElementById("confirma_senha");
+if(document.getElementById("senha") != null || document.getElementById("confirma_senha") != null )
+{
+  var password = document.getElementById("senha"), confirm_password = document.getElementById("confirma_senha");
+  password.onchange = validatePassword(password);
+  confirm_password.onkeyup = validatePassword;
 
-function validatePassword(){
-  if(password.value != confirm_password.value) {
-    confirm_password.setCustomValidity("Senhas Não Conferem");
-  } else {
-    confirm_password.setCustomValidity('');
-  }
+  function validatePassword(){
+    if(password.value != confirm_password.value) {
+      confirm_password.setCustomValidity("Senhas Não Conferem");
+    } else {
+      confirm_password.setCustomValidity('');
+    }
+  } 
 }
-
-password.onchange = validatePassword;
-confirm_password.onkeyup = validatePassword;
 //FIM VALIDAR

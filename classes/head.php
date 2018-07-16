@@ -9,24 +9,22 @@
     <meta name="description" content="">
     <meta name="author" content="">
     
-    <!-- Bootstrap SELECT CSS -->
-    <link href="../vendor/bootstrap/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
-    
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-    
-
-    <!-- MetisMenu CSS -->
-    <!-- <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">-->
-
-    <!-- Custom CSS -->
-    <!-- <link href="../dist/css/sb-admin-2.css" rel="stylesheet"> -->
+    <!-- Bootstrap SELECT CSS -->
+    <link href="../vendor/bootstrap/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!-- VERTV CSS -->
     <link href="../vendor/vertv/vertv.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <!-- <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">-->
+
+    <!-- Custom CSS -->
+    <!-- <link href="../dist/css/sb-admin-2.css" rel="stylesheet"> -->
   ';
 ?>

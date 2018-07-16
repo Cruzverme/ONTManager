@@ -1,10 +1,6 @@
-<?php
-
-echo '
 <!DOCTYPE html>
 <html lang="pt">
-';
-    
+<?php    
   // Verificador de sessão 
   include "../classes/verifica_sessao.php";
 

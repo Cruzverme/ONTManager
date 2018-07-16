@@ -1,6 +1,5 @@
 <?php
 echo '
-        </div>
     </div>
 
 
@@ -8,6 +7,9 @@ echo '
         <!-- jQuery -->
         <script src="../vendor/jquery/jquery.min.js"></script>
 
+        <!-- BootBox -->
+        <script src="../vendor/vertv/bootbox.min.js"></script>
+        
         <!-- Bootstrap Core JavaScript -->
         <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
         
@@ -24,10 +26,6 @@ echo '
         <script src="../vendor/vertv/vertv.js"></script>
 
     </body>
-
-    </div>
-
-
 </html>
 ';
 

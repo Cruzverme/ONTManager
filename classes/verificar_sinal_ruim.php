@@ -34,7 +34,7 @@
     $remove_barra_sip = explode("-----------------------------------------------------------------------------------------",$remove_desc_sip[1]);
     $filtra_enter_sip = explode(PHP_EOL,$remove_barra_sip[1]);
     $filtra_resultados_sip = preg_split('/\s+/', $filtra_enter_sip[2]);//explode('',$filtra_enter[2]);
-    $tira_sinal_menos = explode('-',$sinal);
+    
     if( -2500 <= $filtra_resultados_sip[7] && -3000 <= $filtra_resultados_sip[13] && $filtra_resultados_sip[7] != "--"  ) // Se for mais proximo de 0 e for maior que -25 ele esta ok
     {
       //echo "SINAL $filtra_resultados_sip[7] ABAIXO DE - 2505  com  ByOLT $filtra_resultados_sip[13] <br>";
