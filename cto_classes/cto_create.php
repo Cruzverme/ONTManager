@@ -117,8 +117,6 @@
                                                 echo "<option value=$olt-$ont[frame]-$ont[slot]-$porta> Slot: $ont[slot]  Porta: $porta </option>";
                                         }
                                       }
-
-
                                     }
                                 ?>
                               </select>
@@ -128,6 +126,9 @@
                                 <select class="form-control" name="porta">
                                     echo "<option value=8>8</option>";
                                 </select>
+                            </div>
+                            <div class="form-group">
+                              disponibilizar: <input type='checkbox' name='cto_disponivel' value=1/>
                             </div>                                                    
                         <button class="btn btn-lg btn-success btn-block">Cadastrar</button>
                     </form>
