@@ -6,6 +6,10 @@
   $area = filter_input(INPUT_POST,'area');
   $celula = filter_input(INPUT_POST,'celula');
   $maxCTO = filter_input(INPUT_POST,'nCtos');
+  $disponibilizar = filter_input(INPUT_POST,'cto_disponivel');
+
+  if($disponibilizar != 1) $disponibilizar = 0; 
+
   if (!mysqli_connect_errno())
   {
     if( isset($_POST["porta"]) && !empty($_POST["porta"]) && isset($_POST["pon"]) )
@@ -28,7 +32,7 @@
           {
             for($portas = 1; $portas <= $porta_atendimento; $portas++)
             {  
-              $sql_insere_caixa = ("INSERT INTO ctos(caixa_atendimento,porta_atendimento,frame_slot_pon,pon_id_fk) VALUES('$cto',$portas,'$pon','$pon_id')");
+              $sql_insere_caixa = ("INSERT INTO ctos(caixa_atendimento,porta_atendimento,frame_slot_pon,disponivel,pon_id_fk) VALUES('$cto',$portas,'$pon','$disponibilizar','$pon_id')");
               $checar_insert = mysqli_query($conectar,$sql_insere_caixa);
               $checar_insert = true;
             }
@@ -36,7 +40,7 @@
           }
         }
         
-        $ctos_incluidas = implode(" ",$ctos_cadastradas);
+        $ctos_incluidas = implode(" ",$ctos_cadastradas); //somente para mostrar na msg de retorno as CTOs cadastradas
 
         if($checar_insert)
         {
