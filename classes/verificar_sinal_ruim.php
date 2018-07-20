@@ -1,9 +1,8 @@
 <?php 
 
-  include_once "../db/db_config_mysql.php";
-  include_once "../u2000/tl1_sender.php";
-  include_once "funcoes.php";
-
+  include_once "/var/www/html/ontManager/db/db_config_mysql.php";
+  include_once "/var/www/html/ontManager/u2000/tl1_sender.php";
+  include_once "/var/www/html/ontManager/classes/funcoes.php";
 
   $lista_onts = array();
   $array_key_lista_onts = array('contrato','cto','deviceName','ontID','');
@@ -14,8 +13,8 @@
   INNER JOIN pon p ON p.pon_id = ct.pon_id_fk ";
 
   $execute_ont_infos = mysqli_query($conectar,$select_ont_infos);
-  mysqli_query($conectar,'DELETE FROM sinais_diarios');
- 
+  $executa_deleta = mysqli_query($conectar,'DELETE FROM sinais_diarios');
+  
   while($info = mysqli_fetch_array($execute_ont_infos, MYSQLI_BOTH))
   {
     $contrato = $info['contrato'];
