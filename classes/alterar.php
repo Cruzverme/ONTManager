@@ -19,6 +19,14 @@ if (!mysqli_connect_errno())
     $vasProfileNovo = $_POST["optionsRadios"];
     $porta_atendimento = null;
 
+    //pega o Alias do assinante
+    $json_file = file_get_contents("http://192.168.80.5/sisspc/demos/get_pacote_ftth_cplus.php?contra=$contrato");
+    $json_str = json_decode($json_file, true);
+    $itens = $json_str['velocidade'];
+    $nome = $json_str['nome'];
+    $nomeCompleto = str_replace(" ","_",$nome[0]);
+    //fim alias
+
     if(empty($telNumber) && empty($telPass) )
      {
         $telNumber = 0;
@@ -93,7 +101,7 @@ if (!mysqli_connect_errno())
         $executa_update_velocidade = mysqli_query($conectar,$update_velocidade);
       }
       
-      $ontID = cadastrar_ont($device,$frame,$slot,$pon,$contrato,$cto,$porta_atendimento,$serial,$equipment,$vasProfileNovo);
+      $ontID = cadastrar_ont($device,$frame,$slot,$pon,$contrato,$nomeCompleto,$cto,$porta_atendimento,$serial,$equipment,$vasProfileNovo);
       $onuID = NULL; //zera ONUID para evitar problema de cash.
       $tira_ponto_virgula = explode(";",$ontID);
       $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
@@ -394,13 +402,7 @@ if (!mysqli_connect_errno())
           $insere_service_internet = "UPDATE ont SET service_port_internet='$servicePortInternetID' WHERE serial = '$serial'";
           $executa_insere_service_internet = mysqli_query($conectar,$insere_service_internet);
           
-          $result_reload = reiniciaONT($device,$frame,$slot,$pon,$onuID);
-          if ($result_reload == 0) 
-          {
-            echo $_SESSION['menssagem'] = "Plano Alterado! E Equipamento Reiniciado";
-          } else {
-            echo $_SESSION['menssagem'] = "Plano Alterado! Aguarde 24h para a nova velocidade";
-          }            
+          echo $_SESSION['menssagem'] = "Plano Alterado! Em caso de alteração de Velocidade: Consulte o Equipamento e Reinicie Para efetivar a mudança";          
             
             $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
               VALUES ('$serial Alterado com o serviço $vasProfile 
