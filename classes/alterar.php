@@ -81,6 +81,15 @@ if (!mysqli_connect_errno())
     {
       if($vasProfileNovo != "VAS_IPTV" && $servicePortNet == NULL)
       {
+         $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial@vertv'
+           AND attribute='Huawei-Qos-Profile-Name' ";
+         $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
+
+         $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/$pon/$serial@vertv' ";
+         $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
+
+        
+
         $insere_ont_radius_username = "INSERT INTO radcheck( username, attribute, op, value) 
             VALUES ( '2500/$slot/$pon/$serial@vertv', 'User-Name', ':=', '2500/$slot/$pon/$serial@vertv' )";
 
