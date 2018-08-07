@@ -125,11 +125,11 @@ if (!mysqli_connect_errno())
         $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
         mysqli_query($conectar,$sql_apagar_onu);
 
-        $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/0/$serial@vertv' 
+        $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial@vertv' 
           AND attribute='Huawei-Qos-Profile-Name' ";
         $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
 
-        $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/0/$serial@vertv' ";
+        $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/$pon/$serial@vertv' ";
         $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
 
         header('Location: ../ont_classes/ont_change.php');
@@ -173,11 +173,11 @@ if (!mysqli_connect_errno())
             
             if($vasProfileNovo != "VAS_IPTV")//se for apenas iptv nao apagara o radius, pois nao existe
             {
-              $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$slot/$serial@vertv' 
+              $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial@vertv' 
                 AND attribute='Huawei-Qos-Profile-Name' ";
               $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
 
-              $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/$slot/$serial@vertv' ";
+              $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/$pon/$serial@vertv' ";
               $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
             }
             
@@ -212,11 +212,11 @@ if (!mysqli_connect_errno())
               
               if($vasProfileNovo != "VAS_IPTV")//se for apenas iptv nao apagara o radius, pois nao existe
               {
-                $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$slot/$serial@vertv' 
+                $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial@vertv' 
                   AND attribute='Huawei-Qos-Profile-Name' ";
                 $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
 
-                $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/$slot/$serial@vertv' ";
+                $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/$pon/$serial@vertv' ";
                 $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
               }
               
@@ -277,7 +277,6 @@ if (!mysqli_connect_errno())
             echo $_SESSION['menssagem'] = "Houve erro ao inserir no u2000: $trato";
             $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
             mysqli_query($conectar,$sql_apagar_onu);
-
             $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
               VALUES ('Erro ao ativar Serviço de Telefonia $trato 
               informações relatadas: OLT: $device, PON: $pon, Frame: $frame,
@@ -308,11 +307,11 @@ if (!mysqli_connect_errno())
               $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
               mysqli_query($conectar,$sql_apagar_onu);
 
-              $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$slot/$serial@vertv' 
+              $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial@vertv' 
                 AND attribute='Huawei-Qos-Profile-Name' ";
               $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
 
-              $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/$slot/$serial@vertv' ";
+              $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/$pon/$serial@vertv' ";
               $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
             
               deletar_onu_2000($device,$frame,$slot,$pon,$onuID);
@@ -370,11 +369,11 @@ if (!mysqli_connect_errno())
           $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
           mysqli_query($conectar,$sql_apagar_onu);
 
-          $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$slot/$serial@vertv' 
+          $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial@vertv' 
             AND attribute='Huawei-Qos-Profile-Name' ";
           $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
 
-          $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/$slot/$serial@vertv' ";
+          $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/$pon/$serial@vertv' ";
           $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
           
           deletar_onu_2000($device,$frame,$slot,$pon,$onuID);
