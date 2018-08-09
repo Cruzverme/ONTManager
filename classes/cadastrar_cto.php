@@ -7,7 +7,6 @@
   $celula = filter_input(INPUT_POST,'celula');
   $maxCTO = filter_input(INPUT_POST,'nCtos');
   $disponibilizar = filter_input(INPUT_POST,'cto_disponivel');
-
   if($disponibilizar != 1) $disponibilizar = 0; 
 
   if (!mysqli_connect_errno())
@@ -32,7 +31,7 @@
           {
             for($portas = 1; $portas <= $porta_atendimento; $portas++)
             {  
-              $sql_insere_caixa = ("INSERT INTO ctos(caixa_atendimento,porta_atendimento,frame_slot_pon,disponivel,pon_id_fk) VALUES('$cto',$portas,'$pon','$disponibilizar','$pon_id')");
+              $sql_insere_caixa = ("INSERT INTO ctos(caixa_atendimento,porta_atendimento,frame_slot_pon,disponivel,pon_id_fk) VALUES('$cto',$portas,'$pon',$disponibilizar,'$pon_id')");
               $checar_insert = mysqli_query($conectar,$sql_insere_caixa);
               $checar_insert = true;
             }
@@ -45,7 +44,7 @@
         if($checar_insert)
         {
             $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
-              VALUES ('CTO $cto Cadastrada Pelo Usuario de Codigo $usuario','$usuario')";
+              VALUES ('CTO $cto_incluidas Cadastrada Pelo Usuario de Codigo $usuario','$usuario')";
             $executa_log = mysqli_query($conectar,$sql_insert_log);
 
             echo  $_SESSION['menssagem'] = "Caixa de Atendimento Registrada! CTOs Cadastradas: $ctos_incluidas ";
