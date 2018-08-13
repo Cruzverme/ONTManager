@@ -153,6 +153,7 @@
                     <th>OLT</th>
                     <th>SLOT</th>
                     <th>PON</th>
+                    <th>ONT ID</th>
                     <th>CTO-Porta de Atendimento</th>
                     <th>STATUS</th>
                     <th>Ultima Vez Offline</th>
@@ -176,6 +177,7 @@
                     <td>$device</td>
                     <td>$filtra_resultados[2]</td>
                     <td>$filtra_resultados[3]</td>
+                    <td>$ontID</td>
                     <td>$cto-$porta_atendimento</td>
                     <td>$filtra_resultados[7]</td>";
                     
