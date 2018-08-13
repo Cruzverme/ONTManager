@@ -13,7 +13,7 @@
     ';
   }
 
-  $select_sinais = "SELECT contrato,cto,porta_atendimento,sinal,sinalByOLT,sinalTX,data_registro FROM sinais_diarios";
+  $select_sinais = "SELECT contrato,cto,porta_atendimento,sinal,sinalByOLT,sinalTX,data_registro FROM sinais_diarios order by sinal DESC";
   $executa_select = mysqli_query($conectar,$select_sinais);
 
 ?>
