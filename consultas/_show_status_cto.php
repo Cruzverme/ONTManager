@@ -17,11 +17,18 @@
   $deviceName = filter_input(INPUT_POST,'pon');
   $radioType = filter_input(INPUT_POST,'optionsRadiosConsulta');
 
-  if($caixa_atendimento || $deviceName)
+  $area = filter_input(INPUT_POST,'area');
+  $celulaInicial = filter_input(INPUT_POST,'celulaInicial');
+  $celulaFinal = filter_input(INPUT_POST,'celulaFinal');
+
+  if($caixa_atendimento || $deviceName || $area || $celulaInicial || $celulaFinal)
   {
     if($radioType == 'cto')
     {
       $deviceName = NULL;
+      $celulaFinal = NULL;
+      $celulaInicial = NULL;
+      $area = NULL;
       
       echo "  
           <div class='row'>
@@ -107,6 +114,10 @@
     }elseif($radioType == 'pon')
     {
       $caixa_atendimento == NULL;
+      $celulaFinal = NULL;
+      $celulaInicial = NULL;
+      $area = NULL;
+      
 
       echo "  
           <div class='row'>
@@ -151,6 +162,65 @@
             </div>  
           </div>
       ";
+    }elseif($radioType == 'disponibilizaCTO'){
+      $caixa_atendimento == NULL;
+      $deviceName = NULL;
+
+      echo "  
+          <div class='row'>
+            <div class='col-lg-10'>
+              <!--<form method='post' action='altera_dispo.php' target='_blank'>-->
+                <div class='table-responsive form-group'>
+                  <table class='table'>
+                    <thead>
+                      <tr>
+                        <th colspan=5>Celulas Ativadas na Área $area</th>
+                      </tr>
+                    </thead>
+                    <tbody>";
+                      $contador = 0;
+                      for($celula = $celulaInicial; $celula <= $celulaFinal; $celula++)
+                      {
+                        $cto = $area."C".$celula;
+                        $sql_olt_atendimento = "SELECT DISTINCT caixa_atendimento,disponivel
+                          FROM ctos WHERE caixa_atendimento LIKE '$cto.%'
+                          ORDER BY caixa_atendimento,porta_atendimento ASC LIMIT 1";
+                        $executa_sql_olt_atendimento = mysqli_query($conectar,$sql_olt_atendimento);
+                        
+                        while ($celulas = mysqli_fetch_array($executa_sql_olt_atendimento, MYSQLI_BOTH))
+                        {
+                          $celula_sem_cto = explode('.',$celulas['caixa_atendimento']);
+                          $valor_disponibilidade = $celulas['disponivel'] == 1? "checked": '';
+
+                          if($contador == 0)
+                            echo "<tr>";
+                          
+                            if($contador < 5) 
+                          {
+                            echo "
+                                  <td>
+                                    <input type='checkbox' class='cto_check' name='cto_ativa' value='$celula_sem_cto[0]-$celulas[disponivel]'  $valor_disponibilidade/> $celula_sem_cto[0]
+                                  </td>
+                                  ";
+                            $contador++;
+                          }
+                          else{
+                            echo "</tr> <br>";
+                            $contador = 0;
+                          }
+                        }
+                      }
+      echo "        </tbody>
+                  </table>
+                </div> <!-- FIM RESPONSIVETABLE -->
+                
+                <div class=form-group>
+                  <input type=submit class='checkArrayBox btn btn-secondary form-control' name='senderCto' onClick='return mudar_status_cto()' value=MODIFICAR />
+                </div>
+              <!-- </form> -->
+            </div> <!-- FIM COL -->
+          </div> <!-- FIM ROW -->
+    ";
     }
   }else{
     echo "";

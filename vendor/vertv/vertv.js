@@ -32,6 +32,25 @@ $('input[name="optionsRadiosConsulta"]').change(function () {
     }
 });
 
+$('input[name="optionsRadiosConsulta"]').change(function () {
+  if ($('input[name="optionsRadiosConsulta"]:checked').val() === "pon" )
+  {
+      $('.camposOLT').show();
+  } else {
+      $('.camposOLT').hide();
+  }
+});
+
+
+$('input[name="optionsRadiosConsulta"]').change(function () {
+  if ($('input[name="optionsRadiosConsulta"]:checked').val() === "disponibilizaCTO" )
+  {
+      $('.campoCtoDisponibiliza').show();
+  } else {
+      $('.campoCtoDisponibiliza').hide();
+  }
+});
+
 $("tr.porta").on('click',function() {
     var porta_selecionada;
     var serial;
@@ -56,7 +75,53 @@ $('.btn-salvar').on('click',function(){
  $('tr.usuarios').click(function() {
      window.location.href = $(this).attr('data-href');
  });
- 
+
+
+  function mudar_status_cto() {
+    bootbox.confirm({
+      title: "Atenção",
+      message: "Deseja Alterar Essas Celulas?",
+      buttons: {
+                confirm: {
+                  label: '<i class="fa fa-check"></i> SIM',
+                  className: 'btn-success'
+                },
+                cancel: {
+                  label: '<i class="fa fa-times"></i> NAO',
+                  className: 'btn-danger'
+                }
+              },callback: function(escolhaDoUsuario){
+                if(escolhaDoUsuario)
+                {
+                  var cto_dis = $(".cto_check:checked").serialize();
+                  //console.log(cto_dis);
+                  var cto_unchecked = [];
+
+                  $(".cto_check").each(function(){
+                    if($(this).find($(this)).not(":checked"))
+                    {
+                      cto_unchecked.push($(this).val())
+                    }
+                  });
+                  //console.log(cto_unchecked);
+                  $.post("../consultas/altera_dispo.php",{cto_disponibilidade: cto_dis, unchecked: cto_unchecked} ,function(msg_retorno){
+                    bootbox.alert({
+                        title: "Status das Células",
+                        message: msg_retorno,
+                        callback: function(){
+                          location.reload();
+                        }
+                    });
+                  });
+                }else{
+
+                }
+              }
+    });  
+  }
+
+
+
   function acordaONT(device,frame,slot,pon,ontID,acao) 
   { 
     var devName = device;

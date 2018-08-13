@@ -45,18 +45,25 @@
               
                 <select class="form-control selectpicker" name=ctoSelect data-show-subtext="true" data-size=5 data-live-search="true">
                 <?php
-                    $sql_caixa_atendimento = "SELECT DISTINCT caixa_atendimento FROM ctos";
+                    $sql_caixa_atendimento = "SELECT DISTINCT caixa_atendimento, disponivel FROM ctos";
                     $executa_sql_caixa_atendimento = mysqli_query($conectar,$sql_caixa_atendimento);
                     
                     while ($caixa_atendimento = mysqli_fetch_array($executa_sql_caixa_atendimento, MYSQLI_BOTH))
                     {
+                      if($caixa_atendimento['disponivel'] == 0)
+                      {
+                        $disponivel = "disabled";
+                      }else{
+                        $disponivel = "";
+                      }
+
                       if($_POST['ctoSelect'] == $caixa_atendimento['caixa_atendimento'])
                       {
                         $selecionado = "selected";
                       }else{
                         $selecionado = "";
                       }
-                      echo "<option name='cto' value=$caixa_atendimento[caixa_atendimento] $selecionado>$caixa_atendimento[caixa_atendimento]</option>";
+                      echo "<option name='cto' value=$caixa_atendimento[caixa_atendimento] $selecionado $disponivel>$caixa_atendimento[caixa_atendimento]</option>";
                     }
                 ?>
                 </select>

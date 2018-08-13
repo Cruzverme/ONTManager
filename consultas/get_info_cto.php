@@ -57,17 +57,47 @@
                   ?>   
                   </label>
                 </div>
+
+                <div class="radio">
+                  <label>
+                  <?php
+                    if($_POST['optionsRadiosConsulta'] == 'disponibilizaCTO')
+                    {
+                      echo  "<input type='radio' name='optionsRadiosConsulta' id='disponibilizaCTORadio' value='disponibilizaCTO' checked>Habilitar CTO";
+                    }else{
+                      echo  "<input type='radio' name='optionsRadiosConsulta' id='disponibilizaCTORadio' value='disponibilizaCTO'>Habilitar CTO";
+                    }
+                  ?>
+                  </label>
+                </div>
               </div> <!-- fim form group radio -->
               
               <?php 
+              //visbilidade de CTOs
                 if($_POST['optionsRadiosConsulta'] == "cto" || $_POST['optionsRadiosConsulta'] == null)
                 {
                   $visivel = "style=display:visible;";
                 }else{
                   $visivel = "style=display:none;";
                 }
+              //visibilidade do botao de pon
+                if($_POST['optionsRadiosConsulta'] == "pon")
+                {
+                  $visivelOLT = "style=display:visible;";
+                }else{
+                  $visivelOLT = "style=display:none;";
+                }
+
+               //visualizacao do seleect para disponibilizar CTOs
+                if($_POST['optionsRadiosConsulta'] == "disponibilizaCTO")
+                {
+                  $visivelDisponibilizar = "style=display:visible;";
+                }else{
+                  $visivelDisponibilizar = "style=display:none;";
+                }  
               ?>
-              <div class="campoCto" <?php echo $visivel ?>>
+<!-- COMEÇA BOTOES -->
+              <div class="campoCto" <?php echo $visivel; ?>>
                 <div class=form-group>
                   <label>CTO</label>
 
@@ -84,19 +114,52 @@
                         }else{
                           $selecionado = "";
                         }   
+
                         echo "<option name='cto' value=$caixa_atendimento[caixa_atendimento] $selecionado>$caixa_atendimento[caixa_atendimento]</option>";
                       }
-                    // }
                   ?>
                   </select>
+
                   
                 </div>
+                <div class="form-group">
+                    <span class=input-group-btn> 
+                      <button class="btn btn-secondary form-control" type="submit">Buscar CTO</button>
+                    </span> 
+                  </div>
+                
               </div>
-              <div class="form-group">
-                <!-- <span> class="input-group-btn"> -->
-                  <button class="btn btn-secondary form-control" type="submit">Buscar</button>
-                <!-- </span> -->
+
+              <!-- BOTAO DE OLT MOSTRAR-->
+              <div class="camposOLT" <?php echo $visivelOLT; ?>>
+                <div class="form-group">
+                  <span class="input-group-btn">
+                    <button class="btn btn-secondary form-control" type="submit">Mostrar</button>
+                  </span>
+                </div>
               </div>
+
+              <!-- SELECT DA OLT PARA DISPONIBLIZAR PORTAS-->
+              <div class="campoCtoDisponibiliza" <?php echo $visivelDisponibilizar; ?>>
+                <label>Habilitar Celula</label>
+
+                  <label>Area</label>
+                    <input class="" placeholder="Area" id="area" name="area" type="number" pattern="[0-9]" min=0 title="Digite a área" autofocus >
+                  <label>Célula Inicial</label>
+                    <input class="" placeholder="Celula" id="celula" name="celulaInicial" type="number" pattern="[0-9]" min=0 title="Digite a " autofocus >
+                  <label>Célula Final</label>
+                    <input class="" placeholder="Celula" id="celula" name="celulaFinal" type="number" pattern="[0-9]" min=0 title="Digite a " autofocus >
+
+                <div class="form-group">
+                  <span class="input-group-btn">
+                    <button class="btn btn-secondary form-control" type="submit">Habilitar</button>
+                  </span>
+                </div>
+
+              </div>
+
+
+<!-- fim COMEÇA BOTOES -->
           </form>
           <?php include "_show_status_cto.php"?>
           </div><!-- fim panel -->
