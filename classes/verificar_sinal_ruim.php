@@ -2,7 +2,7 @@
 
   include_once "/var/www/html/ontManager/db/db_config_mysql.php";
   include_once "/var/www/html/ontManager/u2000/tl1_sender.php";
-  include_once "/var/www/html/ontManager/classes/funcoes.php";
+ # include_once "/var/www/html/ontManager/classes/funcoes.php";
 
   $lista_onts = array();
   $array_key_lista_onts = array('contrato','cto','deviceName','ontID','');
@@ -40,12 +40,15 @@
     }else
     {
       if($filtra_resultados_sip[7] == '--' )
-      {  $filtra_resultados_sip[7] = 0;}
+      {  $filtra_resultados_sip[7] = 'Sem Sinal';}
+      if($filtra_resultados_sip[13] == '--')
+      { $filtra_resultados_sip[13] = 'Sem Sinal';}
+      if($filtra_resultados_sip[8] == '--')
+      { $filtra_resultados_sip[8] = 'Sem Sinal'; }
 
       $insere_relatorio = " INSERT INTO `sinais_diarios`(`contrato`, `sinal`, `cto`, `porta_atendimento`, `sinalByOLT`, `sinalTX`) VALUES ('$contrato','$filtra_resultados_sip[7]','$cto','$porta_atendimento','$filtra_resultados_sip[13]','$filtra_resultados_sip[8]')";
       $execute_select_relatorio = mysqli_query($conectar,$insere_relatorio);
-      
-      echo "VERMELHO $filtra_resultados_sip[7] VAI EXPLODIR  OLT: $filtra_resultados_sip[13] <br>";
+      echo "$errorCode_sip  VERMELHO RX $filtra_resultados_sip[7] TX $filtra_resultados_sip[8] VAI EXPLODIR  OLT: $filtra_resultados_sip[13] <br>";
     }
 
   }
