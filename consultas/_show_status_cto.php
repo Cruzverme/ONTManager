@@ -182,11 +182,10 @@
                       for($celula = $celulaInicial; $celula <= $celulaFinal; $celula++)
                       {
                         $cto = $area."C".$celula;
-                        $sql_olt_atendimento = "SELECT DISTINCT caixa_atendimento,disponivel
+                        $sql_olt_atendimento = "SELECT caixa_atendimento,disponivel
                           FROM ctos WHERE caixa_atendimento LIKE '$cto.%'
                           ORDER BY caixa_atendimento,porta_atendimento ASC LIMIT 1";
                         $executa_sql_olt_atendimento = mysqli_query($conectar,$sql_olt_atendimento);
-                        
                         while ($celulas = mysqli_fetch_array($executa_sql_olt_atendimento, MYSQLI_BOTH))
                         {
                           $celula_sem_cto = explode('.',$celulas['caixa_atendimento']);
