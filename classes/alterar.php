@@ -103,10 +103,10 @@ if (!mysqli_connect_errno())
         echo deu_ruim_callback($device,$frame,$slot,$pon,$contrato,$nomeCompleto,$cto,$porta_atendimento,$serial,$equipment,$vasProfileOld,
           $telNumber,$telPass,$pacote);
 
-        // //header('Location: ../ont_classes/ont_change.php');
+         header('Location: ../ont_classes/ont_change.php');
          mysqli_close($conectar_radius);
          mysqli_close($conectar);
-        // exit;  
+         exit;  
       }else{ //Se Ele Cadastrar a ONT
         $remove_barras_para_pegar_id = explode("---------------------------",$tira_ponto_virgula[1]);
         $filtra_espaco = explode("\r\n",$remove_barras_para_pegar_id[1]);
@@ -166,10 +166,10 @@ if (!mysqli_connect_errno())
           $errorCode = trim($remove_desc[0]);
           if($errorCode != "0"){ //se der erro ao pegar service port
             echo $_SESSION['menssagem'] = "Houve erro Inserir a Service Port de Internet: $errorCode $trato";
-            //header('Location: ../ont_classes/ont_change.php');
+            header('Location: ../ont_classes/ont_change.php');
             mysqli_close($conectar_radius);
             mysqli_close($conectar);
-            //exit;
+            exit;
           }else{ // se nao der erro
             
             $remove_barras_para_pegar_id = explode("--------------",$tira_ponto_virgula[1]);
@@ -188,10 +188,10 @@ if (!mysqli_connect_errno())
             if($vasProfile == "VAS_Internet")
             {
               $_SESSION['menssagem'] = "Plano Alterado! Em caso de alteração de Velocidade: Consulte o Equipamento e Reinicie Para efetivar a mudança";
-              //header('Location: ../ont_classes/ont_change.php');
+              header('Location: ../ont_classes/ont_change.php');
               mysqli_close($conectar_radius);
               mysqli_close($conectar);
-              //exit;
+              exit;
               
             }
             
@@ -246,10 +246,10 @@ if (!mysqli_connect_errno())
                 if($vasProfile == "VAS_Internet-VoIP")
                 {
                   $_SESSION['menssagem'] = "Plano Alterado! Em caso de alteração de Velocidade: Consulte o Equipamento e Reinicie Para efetivar a mudança";    
-                  //header('Location: ../ont_classes/ont_change.php');
+                  header('Location: ../ont_classes/ont_change.php');
                   mysqli_close($conectar_radius);
                   mysqli_close($conectar);
-                  //exit;
+                  exit;
                 }
 
               }
@@ -295,10 +295,10 @@ if (!mysqli_connect_errno())
 
               echo "NAO Registra BTV";
               
-              //header('Location: ../ont_classes/ont_change.php');
+              header('Location: ../ont_classes/ont_change.php');
               mysqli_close($conectar_radius);
               mysqli_close($conectar);
-              //exit;
+              exit;
             }else{
               
               $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) VALUES ('Service Port - $servicePortIptvID - Adicionado na BTV da OLT de $ip',$usuario)";
@@ -306,10 +306,10 @@ if (!mysqli_connect_errno())
               
               //se der tudo ok ira aparecer a msg!
               $_SESSION['menssagem'] = "Plano Alterado! Em caso de alteração de Velocidade: Consulte o Equipamento e Reinicie Para efetivar a mudança";
-              //header('Location: ../ont_classes/ont_change.php');
+              header('Location: ../ont_classes/ont_change.php');
               mysqli_close($conectar_radius);
               mysqli_close($conectar);
-              //exit;
+              exit;
             }
           }
         }
