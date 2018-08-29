@@ -61,6 +61,9 @@
       case '1610612765':
         return "OLT Offline";
         break;
+      case '2689021114':
+        return "A ONT Esta Iniciando, Aguarde!";
+        break;
       case '2686058521':
         return "Usuário Não Logado";
         break;
@@ -297,12 +300,11 @@
     include 'ssh_config.php';
     //include '/vendor/autoload.php';
     //set_include_path(get_include_path() . PATH_SEPARATOR . 'phpseclib');
-    include('ssh2/Net/SSH2.php');
     
-    include('ssh2/File/ANSI.php');
+    include_once('ssh2/Net/SSH2.php');
+    include_once('ssh2/File/ANSI.php');
     
     $ssh = new Net_SSH2($ip_olt);
-    
     if (!$ssh->login($username, $psk)) {
       return exit("$username,SENHA $psk,IP:$ip_olt Login Failed");
     }
@@ -319,21 +321,24 @@
     $ssh->write("$comando_insere_btv");
     $ssh->write("\n"); //CONFIRMA a insersão do btv
     $ssh->write("multicast-vlan 2502\n");
-    $ssh->write($comando_insere_multicastVlan);
+    $ssh->write("$comando_insere_multicastVlan");
     $ssh->write("btv\n");
     $ssh->write("display current-configuration\n");
-    $ssh->setTimeout(1);
+    $ssh->setTimeout(3);
     $ansi->appendString($ssh->read());
     
     $retorno =  $ansi->getScreen(); // outputs HTML
-
+   # print_r($retorno);
     ######## FILTRA O RESULTADO PARA MOSTRAR SE FOI OU NAO ######## 
-
     $explo = explode(PHP_EOL, $retorno);
     $filtraNulos = array_filter($explo, 'strlen');
     $array_result = array_values($filtraNulos);
-
-    if(trim($array_result[13]) == "igmp user add service-port $servicePortIPTV no-auth") // se o retorno na posicao 13 for Command:, ele cai no Else
+    print_r($array_result);
+   # echo $array_result[19];
+    $parametroDeFalha = 'Failure';
+  #  echo $array_result[22];echo "<br>";
+  #  echo trim($array_result[22]);
+    if (preg_match('/'.$parametroDeFalha.'/', trim($array_result[19]))) // se o retorno na posicao 13 for Command:, ele cai no Else
     {
       return "invalido";
     }else{ //se a posicao 13 for o comando do igmp user
@@ -374,13 +379,12 @@
     $ansi->appendString($ssh->read());
     
     $retorno =  $ansi->getScreen(); // outputs HTML
-  
+   // echo $retorno;  
     ######## FILTRA O RESULTADO PARA MOSTRAR SE FOI OU NAO ######## 
 
     //$explo = explode(PHP_EOL, $retorno);
-    // $filtraNulos = array_filter($explo, 'strlen');
-    // $array_result = array_values($filtraNulos);
-
+    //$filtraNulos = array_filter($explo, 'strlen');
+    //$array_result = array_values($filtraNulos);
     // if(trim($array_result[13]) == "igmp user add service-port $servicePortIPTV no-auth") // se o retorno na posicao 13 for Command:, ele cai no Else
     // {
     //   return "invalido";
