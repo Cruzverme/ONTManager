@@ -38,3 +38,11 @@
 
         </div>
 <?php include_once "../classes/html_fim.php";   ?>
+
+<?php// if($_SESSION['nome_usuario'] != 'Charles Pereira') {#|| $_SESSION['nome_usuario'] != 'Administrador') {?>
+<!--<script>
+    bootbox.alert('pagina em manutenção, volte mais tarde ou entre em contato com o TI',function() {
+        location.href="../classes/redirecionador_pagina.php";
+    });
+</script>-->
+<?php //}?>
