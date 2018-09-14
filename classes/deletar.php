@@ -12,6 +12,7 @@
       $usuario = $_SESSION["id_usuario"];
       $contrato = $_POST["contrato"];
       $serial = $_POST["serial"];
+      $mac = filter_input(INPUT_POST,'mac');
 
       // disponibiliza a porta para seleção
        $sql_disponibiliza_porta = "UPDATE ctos SET porta_atendimento_disponivel = 0 WHERE serial = '$serial'";
@@ -19,12 +20,18 @@
 
       if ($executa_query)
       {
-          $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/13/0/$serial@vertv' 
+          $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username like '%$serial@vertv%' 
             AND attribute='Huawei-Qos-Profile-Name' ";
           $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
 
-          $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/13/0/$serial@vertv' ";
+          $deletar_onu_radius_ip_fixo_banda = "DELETE FROM radreply WHERE username like '%$serial@vertv%'";
+          $executa_query_radius_ip_fixo_banda = mysqli_query($conectar_radius,$deletar_onu_radius_ip_fixo_banda);
+
+          $deletar_onu_radius = " DELETE FROM radcheck WHERE username like '%$serial@vertv%' ";
           $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
+
+          $deletar_onu_radius_ip_fixo = "DELETE FROM radcheck WHERE username like '%$serial@vertv%'";
+          $executa_query_radius_ip_fixo = mysqli_query($conectar_radius,$deletar_onu_radius_ip_fixo);
 
           if ($executa_query && $deletar_onu_radius) 
           {
@@ -72,12 +79,17 @@
               }else
               {
                 $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
-
                 $deletar_onu = mysqli_query($conectar,$sql_apagar_onu);
+
                 if($deletar_onu)
                 {
+                  
                   if ( $total = mysqli_affected_rows($conectar))   // retorna quantas rows foram afetadas           
                   {
+                      $sql_atualizar_disponibilidade_ip = ("UPDATE ips_valido SET utilizado=false WHERE (mac_serial='$serial' 
+                      || mac_serial = '$mac')");
+                      mysqli_query($conectar,$sql_atualizar_disponibilidade_ip);
+
                       $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
                         VALUES ('$serial Removido Pelo Usuario de Codigo $usuario','$usuario')";
                     

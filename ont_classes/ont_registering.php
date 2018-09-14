@@ -1,3 +1,4 @@
+
 <?php
 
   
@@ -110,6 +111,7 @@
                         <select class="form-control" name="pacote">
                         <?php 
                           $codigoCplus = '';
+                          $codigo = '';
                           $verificacao = 0;
                           
                           $sql_lista_velocidades = "SELECT nome,nomenclatura_velocidade, referencia_cplus FROM planos";
@@ -121,20 +123,51 @@
                               $codigoCplus = $codigoPlano;
                               if($codigoCplus == $listaPlanos['referencia_cplus'])
                               {
+                                $codigo = $listaPlanos['referencia_cplus'];
                                 echo "<option value='$listaPlanos[nomenclatura_velocidade]'>$listaPlanos[nome]</option>";
                                 $verificacao = 1;
                               }
-                            } 
+                            }
                           }
                           if($verificacao != 1)
                             echo "<option value='none'>Velocidade Não Cadastrada no Contrato, Favor Verificar no Control Plus</option>";
-                          mysqli_free_result($executa_query);                                                
+                          mysqli_free_result($executa_query);
                         ?>
-                        
                         </select>
                       </div>
                     </div> <!-- fim div pacote -->
+                    
+                    <?php
+                      if($codigo == 330 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335 )
+                      {
+                        echo "
+                        <div class='form-group'>
+                          <input type=checkbox name='modo_bridge' value='mac_externo'> IP Utilizado em Equipamento Externo</checkbox>
+                        </div>
 
+                        <div class='form-group bridge' style='display: none;'>
+                          <label>MAC do Equipamento</label>
+                          <input type=text class=form-control id=mac name=mac />
+                        </div>
+                        
+                        <div class=form-group>
+                          <label>IP</label>";
+                            $lista_ip = "select numero_ip from ips_valido WHERE utilizado = false";
+                            $executa_ip = mysqli_query($conectar,$lista_ip);
+                            echo"<select  class=form-control name=ipFixo>";
+                            while ($listaIP = mysqli_fetch_array($executa_ip, MYSQLI_BOTH))
+                            {
+                              echo"<option>$listaIP[0]</option>";       
+                            }
+                            echo "</select>
+                        </div>";
+
+                      }else{
+                        echo "<input type=hidden name=mac value=NULL>
+                              <input type=hidden name=ipFixo value=NULL>";
+                      }
+                    ?>
+ 
                     <div class="form-group">
                       <label>Equipamento</label>
                       <select class="form-control" name="equipamentos">
@@ -159,7 +192,7 @@
                       ";
                     ?>
                 
-                    <div class="camposTelefone" style="display:none" >                                   
+                    <div class="camposTelefone" style="display:none" >
                       <div class="form-group">
                         <label>Telefone</label>
                         <input class="form-control" placeholder="Telefone" name="numeroTel" type="text" autofocus>
@@ -181,4 +214,5 @@
     </div>
   </div>
   
-<?php include_once "../classes/html_fim.php";   ?>
+<?php
+ include_once "../classes/html_fim.php";   ?>

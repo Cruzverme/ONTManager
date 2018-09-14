@@ -26,22 +26,37 @@ if (!mysqli_connect_errno())
     $vasProfile = $_POST["optionsRadios"];
     $porta_atendimento = $_POST["porta_atendimento"];
     $deviceName = $_POST["deviceName"];
+    
+    $mac = filter_input(INPUT_POST,'mac');
+    $ip_fixo = filter_input(INPUT_POST,'ipFixo');
+    $modo_bridge = filter_input(INPUT_POST,'modo_bridge');
+    
+    if($modo_bridge != 'mac_externo')
+      $mac = $serial;
+    
+    
+    if($ip_fixo != 'NULL' AND $modo_bridge != 'mac_externo')
+      $vasProfile = "$vasProfile-CORP-IP";
+    
+    if($modo_bridge == 'mac_externo')
+      $vasProfile = "$vasProfile-CORP-IP-Bridge";
+
     $ip_olt = NULL;
     $nomeCompleto = str_replace(" ","_",$nome);
-     if($pacote == 'none' && $vasProfile != 'VAS_IPTV' )
-     {
-        echo $_SESSION['menssagem'] = "Velocidade Não Existe no Cplus";
-        header('Location: ../ont_classes/ont_register.php');
-        mysqli_close($conectar_radius);
-        mysqli_close($conectar);
-        exit;
-     }
-         
-     if(empty($telNumber) && empty($telPass) )
-     {
-        $telNumber = 0;
-        $telPass = 0;
-     }
+    if($pacote == 'none' && $vasProfile != 'VAS_IPTV' )
+    {
+      echo $_SESSION['menssagem'] = "Velocidade Não Existe no Cplus";
+      header('Location: ../ont_classes/ont_register.php');
+      mysqli_close($conectar_radius);
+      mysqli_close($conectar);
+      exit;
+    }
+        
+    if(empty($telNumber) && empty($telPass) )
+    {
+      $telNumber = 0;
+      $telPass = 0;
+    }
     
      $sql_verifica_limite = "SELECT limite_equipamentos FROM ont WHERE contrato='$contrato'";
      $sql_limite_result = mysqli_query($conectar,$sql_verifica_limite);
@@ -86,27 +101,60 @@ if (!mysqli_connect_errno())
       {
         if($vasProfile != "VAS_IPTV")
         {
-           $insere_ont_radius_username = "INSERT INTO radcheck( username, attribute, op, value) 
-               VALUES ( '2500/$slot/$pon/$serial@vertv', 'User-Name', ':=', '2500/$slot/$pon/$serial@vertv' )";
+          if($ip_fixo != 'NULL')
+          {
+            $insere_ont_radius_username = "INSERT INTO radcheck( username, attribute, op, value)
+            VALUES ( '2503/$slot/$pon/$serial@vertv-corp-ip', 'User-Name', ':=', '2503/$slot/$pon/$serial@vertv-corp-ip' )";
 
-           $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value) 
-                   VALUES ( '2500/$slot/$pon/$serial@vertv', 'User-Password', ':=', 'vlan' )";
+            $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value)
+            VALUES ( '2503/$slot/$pon/$serial@vertv-corp-ip', 'User-Password', ':=', 'vlan' )";
 
-           $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
-                   VALUES ( '2500/$slot/$pon/$serial@vertv', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";
+            $insere_ont_radius_profile_ip_fixo = "INSERT INTO radreply( username, attribute, op, value)
+            VALUES ( '2503/$slot/$pon/$serial@vertv-corp-ip', 'Framed-IP-Address',':=','$ip_fixo')";
 
-           $executa_query_username= mysqli_query($conectar_radius,$insere_ont_radius_username);
-           $executa_query_password= mysqli_query($conectar_radius,$insere_ont_radius_password);
-           $executa_query_qos_profile= mysqli_query($conectar_radius,$insere_ont_radius_qos_profile);
+            $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
+            VALUES ( '2503/$slot/$pon/$serial@vertv-corp-ip', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";
+
+            if($modo_bridge == 'mac_externo')
+            {
+              $insere_ont_radius_mac = "INSERT INTO radcheck(username,attribute,op,value) 
+                values('2503/$slot/$pon/$serial@vertv-corp-ip','Huawei-User-Mac','=','$mac')";
+
+              $executa_query_ont_radius_mac = mysqli_query($conectar_radius,$insere_ont_radius_mac);
+
+            }
+
+            $executa_query_profile_ip_fixo = mysqli_query($conectar_radius,$insere_ont_radius_profile_ip_fixo);
+
+          }else{
+
+            $insere_ont_radius_username = "INSERT INTO radcheck( username, attribute, op, value)
+                VALUES ( '2500/$slot/$pon/$serial@vertv', 'User-Name', ':=', '2500/$slot/$pon/$serial@vertv' )";
+
+            $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value)
+                VALUES ( '2500/$slot/$pon/$serial@vertv', 'User-Password', ':=', 'vlan' )";
+
+            $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
+                VALUES ( '2500/$slot/$pon/$serial@vertv', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";
+            $executa_query_profile_ip_fixo = true;
+          }
+
+          
+
+          $executa_query_username= mysqli_query($conectar_radius,$insere_ont_radius_username);
+          $executa_query_password= mysqli_query($conectar_radius,$insere_ont_radius_password);
+          $executa_query_qos_profile= mysqli_query($conectar_radius,$insere_ont_radius_qos_profile);
         }else{
           $executa_query_username=true;
           $executa_query_password=true;
           $executa_query_qos_profile=true;
+          $executa_query_profile_ip_fixo=true;
         }
           $sql_atualiza_limite = "UPDATE ont SET limite_equipamentos=0 WHERE contrato = $contrato";
           $diminui_limite = mysqli_query($conectar,$sql_atualiza_limite);
 
-          if ($executa_query_qos_profile && $executa_query_password && $executa_query_username && $diminui_limite) 
+          if ($executa_query_qos_profile && $executa_query_password && $executa_query_username
+           && $executa_query_profile_ip_fixo && $diminui_limite) 
           {  #####TL1 INICIO#####
           
           #### SELECT OLT IP ####
@@ -377,7 +425,7 @@ if (!mysqli_connect_errno())
             } //FIM ATIVA TELEFONIA  
             ########FIM TL1########
             
-            $servicePortInternet = get_service_port_internet($deviceName,$frame,$slot,$pon,$onuID,$contrato);
+            $servicePortInternet = get_service_port_internet($deviceName,$frame,$slot,$pon,$onuID,$contrato,$vasProfile,$modo_bridge);
 
             $tira_ponto_virgula = explode(";",$servicePortInternet);
             $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
@@ -437,6 +485,19 @@ if (!mysqli_connect_errno())
               $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 1, serial = '$serial'
                 WHERE caixa_atendimento = '$cto' AND porta_atendimento= '$porta_atendimento'";
               $executa_insere_porta = mysqli_query($conectar,$sql_insere_porta);
+              
+              
+
+              if(($ip_fixo != "NULL") && ($mac != "NULL"))
+              {
+                $sql_atualiza_ip_fixo = "UPDATE ont SET mac='$mac',ip='$ip_fixo' WHERE serial='$serial'";
+                $executa_atualiza_ip_fixo = mysqli_query($conectar,$sql_atualiza_ip_fixo);
+
+                $sql_atualiza_utilizado_ip = "UPDATE ips_valido SET utilizado=true,utilizado_por='$contrato',mac_serial='$mac'
+                 WHERE numero_ip ='$ip_fixo'";
+                $executa_atualiza_utitlizado_ip = mysqli_query($conectar,$sql_atualiza_utilizado_ip);
+              }
+              
               header('Location: ../ont_classes/ont_register.php');
               // fim Atualizar Porta CTO
               mysqli_close($conectar_radius);

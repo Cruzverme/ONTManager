@@ -47,15 +47,16 @@
                   <label>Pon MAC</label>                                                
                   <select class="form-control" name="serial">
                     <?php 
-                      $sql_consulta_serial = "SELECT serial,pacote FROM ont
+                      $sql_consulta_serial = "SELECT mac,serial,pacote FROM ont
                         WHERE contrato = $contrato ";
                       $executa_query = mysqli_query($conectar,$sql_consulta_serial);
                       while ($ont = mysqli_fetch_array($executa_query, MYSQLI_BOTH)) 
                       {
                         echo "<option value=$ont[serial]>$ont[serial]</option>";
                         $serial = $ont['serial'];
+                        $mac = $ont['mac'];
                       }
-                      
+                      echo "<input type=hidden name=mac value=$mac></input>";
                       if(empty($serial))
                       {
                         mysqli_close($conectar);

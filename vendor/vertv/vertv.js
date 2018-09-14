@@ -51,6 +51,17 @@ $('input[name="optionsRadiosConsulta"]').change(function () {
   }
 });
 
+$('input[name="modo_bridge"]').change(function () {
+  if($('input[name="modo_bridge"]:checked').val() === "mac_externo")
+  {
+    $(".bridge").show();
+  }
+  else
+  {
+    $(".bridge").hide();
+  }
+});
+
 $("tr.porta").on('click',function() {
     var porta_selecionada;
     var serial;
@@ -120,7 +131,11 @@ $('.btn-salvar').on('click',function(){
     });  
   }
 
-
+  $(document).ready(function () { 
+    var $seuCampoMAC = $("#mac");
+    $seuCampoMAC.mask('00:00:00:00:00:00', 
+                      {translation: {0: {pattern:/[a-z0-9]/} }});
+  });
 
   function acordaONT(device,frame,slot,pon,ontID,acao) 
   { 

@@ -10,6 +10,9 @@ echo '
         <!-- BootBox -->
         <script src="../vendor/vertv/bootbox.min.js"></script>
         
+        <!-- Jquery Mask Plugin JavaScript -->
+        <script src="../vendor/jquery/jquery.mask.min.js"></script>
+
         <!-- Bootstrap Core JavaScript -->
         <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
         
@@ -24,7 +27,7 @@ echo '
 
         <!-- Metis Menu Plugin JavaScript -->
         <script src="../vendor/vertv/vertv.js"></script>
-
+        
     </body>
 </html>
 ';

@@ -15,8 +15,9 @@
   
   <?php 
     include "../db/db_config_mysql.php";
+
     $contrato = $_POST['contrato'];
-  
+
     if(checar_contrato($contrato) == null)
     {
       mysqli_close($conectar);
@@ -28,7 +29,13 @@
       ';
     }
 
-    $sql_consulta_perfil = "SELECT serial,pacote,tel_number,tel_password,perfil FROM ont
+    $json_file = file_get_contents("http://192.168.80.5/sisspc/demos/get_pacote_ftth_cplus.php?contra=$contrato");
+    $json_str = json_decode($json_file, true);
+    $itens = $json_str['velocidade'];
+    $codigoCplus = '';
+    $verificacao = 0;
+
+    $sql_consulta_perfil = "SELECT serial,pacote,tel_number,tel_password,perfil,mac,ip FROM ont
     WHERE contrato = '$contrato' ";
     $executa_query_perfil = mysqli_query($conectar,$sql_consulta_perfil);
     while ($ont = mysqli_fetch_array($executa_query_perfil, MYSQLI_BOTH)) 
@@ -38,8 +45,34 @@
       $passwordTel = $ont['tel_password'];
       $profile = $ont['perfil'];
       $serial = $ont['serial'];
-      
+      $mac = $ont['mac'];
+      $ip = $ont['ip'];
     }
+
+    $sql_lista_velocidades = "SELECT nome,nomenclatura_velocidade, referencia_cplus FROM planos";
+    $executa_query = mysqli_query($conectar,$sql_lista_velocidades); //pega os planos cadastrados no banco
+
+    while ($listaPlanos = mysqli_fetch_array($executa_query, MYSQLI_BOTH)) 
+    {  
+      if($pacote == $listaPlanos['nomenclatura_velocidade'])
+      {
+        $planoAtual = $listaPlanos['nome']; 
+      }
+
+      foreach ( $itens as $codigoPlano )
+      {
+        $codigoCplus = $codigoPlano;
+        if($codigoCplus == $listaPlanos['referencia_cplus'])
+        {
+          $codigo = $listaPlanos['referencia_cplus'];
+
+          $planoAtualCplus = $listaPlanos['nomenclatura_velocidade'];
+          $nomePlanoAtualCplus = $listaPlanos['nome'];
+          $verificacao = 1;
+        }
+      }
+    }
+        
     if(empty($serial))
     {
       mysqli_close($conectar);
@@ -89,6 +122,23 @@
                   <input type="radio" name="optionsRadios" id="optionsRadios3" value="VAS_Internet-VoIP-IPTV" <?php if($profile == "VAS_Internet-VoIP-IPTV" ) echo "checked"; ?>>INTERNET | TELEFONE | IPTV
                 </label>
               </div>
+              <?php //codigos do cplus
+                if($codigo == 330 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335 
+                || $profile == "VAS_Internet-CORP-IP" || $profile == "VAS_Internet-CORP-IP-Bridge")
+                { echo '
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="optionsRadios" id="optionsRadios4" value="VAS_Internet-CORP-IP"';if($profile == "VAS_Internet-CORP-IP" ) echo "checked";echo '>INTERNET - IP';
+                echo'    
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="optionsRadios" id="optionsRadios4" value="VAS_Internet-CORP-IP-Bridge"'; if($profile == "VAS_Internet-CORP-IP-Bridge" ) echo "checked"; echo'>INTERNET - IP - Modo Bridge
+                    </label>
+                  </div>';
+                }
+              ?>
             
                 <div class="form-group">
                   <label>Contrato</label> 
@@ -112,39 +162,68 @@
                 <div class="form-group">
                   <label>Pacote</label>
                   <select class="form-control" name="pacote">
-                    <?php
-                      $json_file = file_get_contents("http://192.168.80.5/sisspc/demos/get_pacote_ftth_cplus.php?contra=$contrato");
-                      $json_str = json_decode($json_file, true);
-                      $itens = $json_str['velocidade'];
-                      $codigoCplus = '';
-                      $verificacao = 0;
-                      
-                      $sql_lista_velocidades = "SELECT nome,nomenclatura_velocidade, referencia_cplus FROM planos";
-                      $executa_query = mysqli_query($conectar,$sql_lista_velocidades);
-
-                      while ($listaPlanos = mysqli_fetch_array($executa_query, MYSQLI_BOTH)) 
-                      {  
-                        foreach ( $itens as $codigoPlano )
-                        {
-                          $codigoCplus = $codigoPlano;
-                          if($codigoCplus == $listaPlanos['referencia_cplus'])
-                          {
-                            echo "<option value='$listaPlanos[nomenclatura_velocidade]'>$listaPlanos[nome]</option>";
-                            $verificacao = 1;
-                          }
-                        }
-                      }
+                    <?php                      
                       if($verificacao != 1)
                         echo "<option value='none'>Velocidade Não Cadastrada no Contrato, Favor Verificar no Control Plus</option>";
+                      else
+                        echo "<option value='$planoAtualCplus'>$nomePlanoAtualCplus</option>";
+                      
                       mysqli_free_result($executa_query);                                                
                     ?>
                   </select>
                 </div>
+                <?php echo "<div class='form-group'> Pacote Atual: $planoAtual </div>"; ?>
                </div>
-                <!-- <div class='pull-left'>Velocidade Atual: <?php echo $pacote; ?> </div><br> -->
+                <!-- <div class='pull-left'>Velocidade Atual:  </div><br> -->
+                <?php
+                  if($codigo == 330 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335)
+                  {
+                    if($profile == "VAS_Internet-CORP-IP-Bridge")
+                    {
+                      $marcado = "checked";
+                      $visivel = "style=display:visible;";
+                    }
+                    else
+                    {
+                      $marcado = "";
+                      $visivel = "style=display:none;";
+                    }
+                    
+                    echo "
+                        <div class='form-group'>
+                          <input type=checkbox name='modo_bridge' value='mac_externo' $marcado> IP Utilizado em Equipamento Externo</checkbox>
+                        </div>
+                          
+                        <div class='form-group bridge' $visivel'>
+                          <label>MAC do Equipamento</label>
+                          <input type=text class=form-control id=mac name=mac value=";if($mac != null && $mac != $serial)echo "$mac";echo "/>
+                        </div>
+                        
+                        <div class=form-group>
+                        <label>IP</label>";
+                          $lista_ip = "select numero_ip from ips_valido WHERE utilizado = false";
+                          $executa_ip = mysqli_query($conectar,$lista_ip);
+                          echo"<select  class=form-control name=ipFixo>";
+                          
+                          if($ip != 'NULL')
+                          {
+                            echo"<option>$ip</option>";  
+                          }  
+                          
+                          while ($listaIP = mysqli_fetch_array($executa_ip, MYSQLI_BOTH))
+                          {
+                            echo"<option>$listaIP[0]</option>";
+                          }
+                          echo "</select>
+                      </div>";
+                  }else{
+                    echo "<input type=hidden name=mac value=NULL>
+                          <input type=hidden name=ipFixo value=NULL>";
+                  }
+                ?>
 
                 <?php 
-                   if( $profile == "VAS_Internet-VoIP-IPTV" || $profile == "VAS_Internet-VoIP"){
+                  if( $profile == "VAS_Internet-VoIP-IPTV" || $profile == "VAS_Internet-VoIP"){
                     $visivel = "style=display:visible";
                   }else{
                     $visivel = "style=display:none";
