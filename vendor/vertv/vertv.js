@@ -11,9 +11,7 @@ $('input[name="optionsRadios"]').change(function () {
     if ($('input[name="optionsRadios"]:checked').val() === "VAS_IPTV")
     {
         $('.camposPacotes').hide();
-       // $('.ip_fixo_selector').hide();
     } else {
-      // $('.ip_fixo_selector').show();
         $('.camposPacotes').show();
     }
 });
@@ -25,6 +23,7 @@ $('input[name="nivel"]').change(function () {
         $('.camposPermissao').show();
     }
 });
+
 $('input[name="optionsRadiosConsulta"]').change(function () {
     if ($('input[name="optionsRadiosConsulta"]:checked').val() === "cto" )
     {

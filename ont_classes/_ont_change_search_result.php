@@ -158,7 +158,7 @@
                     ?>
                   </select>
                 </div>
-               <div class="camposPacotes" style="display:visible" > 
+               <div class="camposPacotes" style="display:none" > 
                 <div class="form-group">
                   <label>Pacote</label>
                   <select class="form-control" name="pacote">
