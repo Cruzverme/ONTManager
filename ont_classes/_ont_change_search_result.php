@@ -190,7 +190,7 @@
                     }
                     
                     echo "
-                        <div class='form-group'>
+                        <div class='form-group bridge' $visivel>
                           <input type=checkbox name='modo_bridge' value='mac_externo' $marcado> IP Utilizado em Equipamento Externo</checkbox>
                         </div>
                           

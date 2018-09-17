@@ -62,6 +62,20 @@ $('input[name="modo_bridge"]').change(function () {
   }
 });
 
+
+$('input[name="vasProfile"]').change(function () {
+  if($('input[name="vasProfile"]:checked').val() === "VAS_Internet-CORP-IP")
+  {
+    $("input[name='modo_bridge']").attr('checked',true);
+    $(".bridge").show();
+  }
+  else
+  {
+    $("input[name='modo_bridge']").attr('checked',false);
+    $(".bridge").hide();
+  }
+});
+
 $("tr.porta").on('click',function() {
     var porta_selecionada;
     var serial;
