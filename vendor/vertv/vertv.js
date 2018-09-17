@@ -11,7 +11,9 @@ $('input[name="optionsRadios"]').change(function () {
     if ($('input[name="optionsRadios"]:checked').val() === "VAS_IPTV")
     {
         $('.camposPacotes').hide();
+       // $('.ip_fixo_selector').hide();
     } else {
+      // $('.ip_fixo_selector').show();
         $('.camposPacotes').show();
     }
 });
@@ -63,8 +65,8 @@ $('input[name="modo_bridge"]').change(function () {
 });
 
 
-$('input[name="vasProfile"]').change(function () {
-  if($('input[name="vasProfile"]:checked').val() === "VAS_Internet-CORP-IP")
+$('input[name="optionsRadios"]').change(function () {
+  if($('input[name="optionsRadios"]:checked').val() === "VAS_Internet-CORP-IP-Bridge")
   {
     $("input[name='modo_bridge']").attr('checked',true);
     $(".bridge").show();
@@ -73,6 +75,16 @@ $('input[name="vasProfile"]').change(function () {
   {
     $("input[name='modo_bridge']").attr('checked',false);
     $(".bridge").hide();
+  }
+});
+
+$('input[name="optionsRadios"]').change(function(){
+  if($('input[name="optionsRadios"]:checked').val() === "VAS_Internet-CORP-IP" ||
+      $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-CORP-IP-Bridge" )
+  {
+     $(".ipFixoSelector").show();
+  }else{
+     $(".ipFixoSelector").hide();
   }
 });
 

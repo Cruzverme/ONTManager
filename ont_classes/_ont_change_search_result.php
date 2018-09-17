@@ -182,11 +182,19 @@
                     {
                       $marcado = "checked";
                       $visivel = "style=display:visible;";
+                      $visivelIP = "style=display:visible;";
+                    }
+                    elseif($profile == "VAS_Internet-CORP-IP")
+                    {
+                      $marcado = "";
+                      $visivel = "style=display:none;";
+                      $visivelIP = "style=display:visible;";
                     }
                     else
                     {
                       $marcado = "";
                       $visivel = "style=display:none;";
+                      $visivelIP = "style=display:none;";
                     }
                     
                     echo "
@@ -199,7 +207,7 @@
                           <input type=text class=form-control id=mac name=mac value=";if($mac != null && $mac != $serial)echo "$mac";echo "/>
                         </div>
                         
-                        <div class=form-group>
+                        <div class='form-group ipFixoSelector' $visivelIP>
                         <label>IP</label>";
                           $lista_ip = "select numero_ip from ips_valido WHERE utilizado = false";
                           $executa_ip = mysqli_query($conectar,$lista_ip);
