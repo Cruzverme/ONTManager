@@ -158,7 +158,13 @@
                     ?>
                   </select>
                 </div>
-               <div class="camposPacotes" style="display:none" > 
+              <?php 
+                if($profile != "VAS_IPTV" ) 
+                  $visivelInternet = "style=display:visible;";
+                else
+                  $visivelInternet = "style=display:none;";
+              ?>
+               <div class="camposPacotes" <?php $visivelInternet ?> > 
                 <div class="form-group">
                   <label>Pacote</label>
                   <select class="form-control" name="pacote">
