@@ -58,7 +58,7 @@ if (!mysqli_connect_errno())
       $servicePortTel = $onu_info['service_port_telefone'];
       $cto = $onu_info['cto'];
       $porta_atendimento = $onu_info['porta'];
-      $pacote = $onu_info['pacote'];
+      $pacoteAtual = $onu_info['pacote'];
       $equipment = $onu_info['equipamento'];
       $vasProfileOld = $onu_info['perfil'];
     
@@ -170,7 +170,7 @@ if (!mysqli_connect_errno())
 
         $atualiza_infosONT = "UPDATE ont SET perfil='$vasProfile' WHERE serial = '$serial'";
         $executa_atualiza_infosONT = mysqli_query($conectar,$atualiza_infosONT);
-
+        echo "PERFIL: $vasProfile, $pacote, $pacoteAtual";
       ############ SE INTERNET #################
 
         if($vasProfile == "VAS_Internet" || $vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-IPTV" 
@@ -224,7 +224,9 @@ if (!mysqli_connect_errno())
           $executa_query_username= mysqli_query($conectar_radius,$insere_ont_radius_username);
           $executa_query_password= mysqli_query($conectar_radius,$insere_ont_radius_password);
           $executa_query_qos_profile= mysqli_query($conectar_radius,$insere_ont_radius_qos_profile);
-          
+          var_dump($executa_query_username);
+          var_dump($executa_query_password);
+          var_dump($executa_query_qos_profile);
           ########## FIM INSERE RADIUS ##############
             
           ##### CRIA SERVIEC PORT INTERNET #####
@@ -274,10 +276,10 @@ if (!mysqli_connect_errno())
             if($vasProfile == "VAS_Internet" || $vasProfile == "VAS_Internet-CORP-IP" || $vasProfile == "VAS_Internet-CORP-IP-Bridge")
             {
               $_SESSION['menssagem'] = "Plano Alterado! Em caso de alteração de Velocidade: Consulte o Equipamento e Reinicie Para efetivar a mudança";
-              header('Location: ../ont_classes/ont_change.php');
+              #header('Location: ../ont_classes/ont_change.php');
               mysqli_close($conectar_radius);
               mysqli_close($conectar);
-              exit;
+              #exit;
               
             }
           }
