@@ -173,8 +173,8 @@ if (!mysqli_connect_errno())
         
       ############ SE INTERNET #################
 
-        if($vasProfile == "VAS_Internet" || $vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-IPTV" 
-            || $vasProfile == "VAS_Internet-CORP-IP" || $vasProfile == "VAS_Internet-CORP-IP-Bridge" ) // se somente internet
+        if($vasProfile == "VAS_Internet" || $vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-IPTV"  
+           || $vasProfile == "VAS_Internet-VoIP-IPTV"  || $vasProfile == "VAS_Internet-CORP-IP" || $vasProfile == "VAS_Internet-CORP-IP-Bridge" ) // se somente internet
         {
           ############ INSERE RADIUS ############
           
