@@ -170,7 +170,7 @@ if (!mysqli_connect_errno())
 
         $atualiza_infosONT = "UPDATE ont SET perfil='$vasProfile' WHERE serial = '$serial'";
         $executa_atualiza_infosONT = mysqli_query($conectar,$atualiza_infosONT);
-        echo "PERFIL: $vasProfile, $pacote, $pacoteAtual";
+        
       ############ SE INTERNET #################
 
         if($vasProfile == "VAS_Internet" || $vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-IPTV" 
@@ -224,12 +224,15 @@ if (!mysqli_connect_errno())
           $executa_query_username= mysqli_query($conectar_radius,$insere_ont_radius_username);
           $executa_query_password= mysqli_query($conectar_radius,$insere_ont_radius_password);
           $executa_query_qos_profile= mysqli_query($conectar_radius,$insere_ont_radius_qos_profile);
-          var_dump($executa_query_username);
-          var_dump($executa_query_password);
-          var_dump($executa_query_qos_profile);
           ########## FIM INSERE RADIUS ##############
             
           ##### CRIA SERVIEC PORT INTERNET #####
+
+          if($executa_query_qos_profile)
+          {
+            $atualiza_banda_local = "UPDATE ont SET pacote='$pacote' WHERE serial = '$serial'";
+            $executa_atualiza_banda_local = mysqli_query($conectar,$atualiza_banda_local);
+          }
 
           $servicePortInternet = get_service_port_internet($device,$frame,$slot,$pon,$onuID,$contrato,$vasProfile,$modo_bridge);
           
