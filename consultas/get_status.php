@@ -38,7 +38,7 @@
 
                 <div class="input-group">
                   <label>Digite o MAC</label>
-                  <input id="mac" placeholder="Insira o MAC do equipamento" class="form-control" type="text" name="mac">
+                  <input id="mac_pon" placeholder="Insira o MAC do equipamento" class="form-control" type="text" minlength="16" maxlength="16" name="mac">
                   <span class="input-group-btn">
                     <button class="btn btn-secondary" type="submit">Buscar</button>
                   </span>
