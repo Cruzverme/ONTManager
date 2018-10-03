@@ -13,6 +13,9 @@ echo '
         <!-- Jquery Mask Plugin JavaScript -->
         <script src="../vendor/jquery/jquery.mask.min.js"></script>
 
+        <!-- Datatable JavaScript-->
+        <script src="../vendor/datatables/js/jquery.dataTables.min.js"></script>
+
         <!-- Bootstrap Core JavaScript -->
         <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
         

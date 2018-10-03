@@ -2,14 +2,11 @@
   include "../classes/html_inicio.php"; 
   include_once "../db/db_config_mysql.php";
   set_time_limit(0);
-  //define numero de row por pagina e valor da pagina atual
-  $itens_por_pagina = 20;
-  $pagina = intval($_GET['pagina']);
 
   //Consulta BD
   $sql = "SELECT sin.cto,sin.porta_atendimento,sin.porta_pon,sin.olt,sin.sinal,sin.data_registro 
           FROM todos_sinais sin 
-          ORDER BY sin.porta_pon";
+          ORDER BY sin.olt,sin.porta_pon ASC";
   $executaSQL = mysqli_query($conectar,$sql);
   $numero = mysqli_num_rows($executaSQL);
 
@@ -25,8 +22,7 @@
             </div>
             <div class="panel-body">
               <div class='table-responsive'>
-                <table class='table'>
-
+                <table class='table table-hover display' id='tabelaSinais' data-link='row'>
                   <thead>
                     <tr>
                       <th>DEVICE</th>
@@ -45,7 +41,6 @@
                     
                     while($linha = mysqli_fetch_array($executaSQL,MYSQLI_BOTH))
                     {
-
                       $frameSlotPon = $linha['porta_pon'];
                       $nomeOLT = $linha['olt'];
                       $sinalRX = $linha['sinal'];
@@ -53,23 +48,22 @@
                       if($ponAtual != $frameSlotPon )
                       { 
                         if($ponAtual != "")
-                        {
+                        { 
                           $diferenca = $menor - $maior;
-                          echo "<tr>
-                            <td>$ponAtual</td>
-                            <td>$nomeOLT</td>
-                            <td>$menor</td>
-                            <td>$maior</td>
-                            <td>$diferenca</td>
-                          </tr>";
+                          echo "
+                            <tr data-toggle=modal data-pon=$ponAtual data-target=#listaSinaisModal>
+                              <td>$ponAtual</td>
+                              <td>$nomeOLT</td>
+                              <td>$menor</td>
+                              <td>$maior</td>
+                              <td>$diferenca</td>
+                            </tr>";
                         }
-
                         $maior = $sinalRX;
                         $menor = $sinalRX;
                         $diferenca = "";
                         $ponAtual = $frameSlotPon;
                       }else{
-                      
                         if($sinalRX > $maior)
                         {
                           $maior = $sinalRX;
@@ -78,13 +72,29 @@
                         {
                           $menor = $sinalRX;
                         }
-                      }
-                      
+                      }  
                     }
-                  ?> 
+                  ?>
                   </tbody>
                 </table>
-                 
+
+              
+                <div id="listaSinaisModal" class="modal fade" role="dialog" aria-labelledby="listaSinaisModal" aria-hidden="true" style='height:100%;width:100%;overflow-y:scroll;'>
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                        <h3>Sinais da PON</h3>
+                      </div>
+                      <div id="listaSinaisDetails" class="modal-body"></div>
+                      <div id="listaSinaisItems" class="modal-body"></div>
+                      <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
               </div> <!-- FIM TABLE -->
             </div> <!-- FIM PANEL BODY -->
           </div><!-- login-panel panel panel-default -->

@@ -18,6 +18,9 @@
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+    <!--Datatable CSS-->
+    <link rel="stylesheet" type="text/css" href="../vendor/datatables/css/jquery.dataTables.min.css">
+
     <!-- VERTV CSS -->
     <link href="../vendor/vertv/vertv.css" rel="stylesheet">
 

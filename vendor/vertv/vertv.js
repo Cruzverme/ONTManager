@@ -87,6 +87,28 @@ $('input[name="optionsRadios"]').change(function(){
   }
 });
 
+// INICIO MODAL
+
+$(function(){
+  $('#listaSinaisModal').modal({
+      keyboard: true,
+      show:false,
+  }).on('show.bs.modal', function(){ //subscribe to show method
+        var modalVerb = $(this);
+        var getIdFromRow = $(event.target).closest('tr').data('pon'); //get the id from tr
+        $.post("../consultas/get_sinal_pon.php",{frame_slot_pon: getIdFromRow} ,function(msg_retorno){
+          var msg = msg_retorno;
+          //make your ajax call populate items or what even you need
+          modalVerb.find('#listaSinaisDetails').html($(msg  + ''))
+        });
+  });
+});
+//FIm MODAL
+
+$(function(){
+  $("#tabelaSinais").dataTable();
+})
+
 $("tr.porta").on('click',function() {
     var porta_selecionada;
     var serial;
