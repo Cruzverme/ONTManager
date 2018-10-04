@@ -182,6 +182,7 @@ echo '   </head>
                     echo'  
                       <li>
                         <a href="../consultas/relatorio_sinal_ruim.php"><i class="fa fa-bug fa-fw"></i> Relatório de Sinais </a>
+                        <a href="../consultas/analise_pon.php"><i class="fa fa-bug fa-fw"></i> Relatório de Sinais Por Porta Pon </a>
                       </li>
                     ';
                   }

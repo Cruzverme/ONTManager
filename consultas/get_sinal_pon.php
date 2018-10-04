@@ -9,6 +9,7 @@
           ORDER BY sin.olt,sin.porta_pon ASC";
   
   $executaSQL = mysqli_query($conectar,$sql);
+  list($frame,$slot,$ponPort) = explode('-',$pon);
   echo "
           <script>
             $(document).keyup(function(e) {
@@ -17,21 +18,22 @@
               }
             });
           </script>
-          
-          <div style='' class='table-responsive'>
-            <table class='table'>
-            <thead>
-              <tr>
-                <th>Contrato</th>
-                <th>Nome OLT</th>
-                <th>CTO</th>
-                <th>Frame-Slot-Pon</th>
-                <th>Porta Atendimento</th>
-                <th>Sinal RX</th>
-                <th>Data de Registro</th>
-              </tr>
-            </thead>
-            <tbody>";
+          <form method=post target=_blank action='../pdf/pdfgenerator.php'>  
+            <button type=submit class=btn>Gerar PDF</button>
+            <div style='' class='table-responsive'>
+              <table class='table'>
+              <thead>
+                <tr>
+                  <th>Contrato</th>
+                  <th>Nome OLT</th>
+                  <th>CTO</th>
+                  <th>Slot-Pon</th> 
+                  <th>Porta Atendimento</th>
+                  <th>Sinal RX</th>
+                  <th>Data de Registro</th>
+                </tr>
+              </thead>
+              <tbody>";
     
   while($row = mysqli_fetch_array($executaSQL))
   {
@@ -43,19 +45,20 @@
     $sinal = $row['sinal'];
     $data = $row['data_registro'];
     
-    echo"        
+    echo"
           <tr>    
             <td>$contrato</td>
             <td>$olt</td>
             <td>$cto</td>
-            <td>$porta_pon</td>
+            <td>Slot: $slot Porta: $ponPort</td>
             <td>$porta_atendimento</td>
             <td>$sinal</td>
             <td>$data</td>
           </tr>";
   }
-  echo "
+  echo "<input type=hidden name='frame_slot_pon' value='$porta_pon'></input>
           </tbody>
         </table>
-      </div>";
+      </div>
+    </form>";
 ?>

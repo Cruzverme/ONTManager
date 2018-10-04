@@ -2,7 +2,18 @@
   include "../classes/html_inicio.php"; 
   include_once "../db/db_config_mysql.php";
   set_time_limit(0);
-
+  
+  if($_SESSION["consulta_relatorio_sinal"] == 0) 
+  {
+    echo '
+    <script language= "JavaScript">
+      alert("Sem Permissão de Acesso!");
+      location.href="../classes/redirecionador_pagina.php";
+    </script>
+    ';
+  }
+  
+  
   //Consulta BD
   $sql = "SELECT sin.cto,sin.porta_atendimento,sin.porta_pon,sin.olt,sin.sinal,sin.data_registro 
           FROM todos_sinais sin 
@@ -50,10 +61,11 @@
                         if($ponAtual != "")
                         { 
                           $diferenca = $menor - $maior;
+                          list($frame,$slot,$pon) = explode('-',$ponAtual);
                           echo "
                             <tr data-toggle=modal data-pon=$ponAtual data-target=#listaSinaisModal>
-                              <td>$ponAtual</td>
                               <td>$nomeOLT</td>
+                              <td>Slot: $slot Pon: $pon</td>
                               <td>$menor</td>
                               <td>$maior</td>
                               <td>$diferenca</td>
@@ -94,7 +106,7 @@
                     </div>
                   </div>
                 </div>
-
+                
               </div> <!-- FIM TABLE -->
             </div> <!-- FIM PANEL BODY -->
           </div><!-- login-panel panel panel-default -->
