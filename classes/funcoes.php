@@ -8,11 +8,21 @@
     $json_file = file_get_contents("http://192.168.80.5/sisspc/demos/get_contrato_status_ftth_cplus.php?contra=$contrato");
     $json_str = json_decode($json_file, true);
     
-    $contrato = $json_str['contrato'];
+    $contratoInterno = $json_str['contrato'];
     
-    if(empty($contrato))
+    if(empty($contratoInterno))
     {
-      return null;
+      //caso contrato esteja com ponto cancelado porem [e uma reconexao]
+      $json_file_segunda = file_get_contents("http://192.168.80.5/sisspc/demos/get_contrato_status_ftth_reconexao.php?contra=$contrato");
+      $json_str_segunda = json_decode($json_file_segunda,true);
+
+      $contratoInterno2 = $json_str_segunda['contrato'];
+      if(empty($contratoInterno2))
+      {
+        return $contrato; //null
+      }else{
+        return 'ok';
+      }
     }else{
       return 'ok';
     }

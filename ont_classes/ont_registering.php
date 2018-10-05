@@ -51,7 +51,7 @@
             <div class="panel-body">
               <form role="form" action="../classes/cadastrar.php" method="post">
                 <fieldset>
-                <legend>Informações</legend>
+                <legend>Informações<?php print_r($itens); ?></legend>
                   <p><?php echo "PORTA: $porta_selecionado | OLT: $device | FRAME: $frame | SLOT: $slot | PON: $pon | CTO: $cto";?></p>
                 </fieldset>
                 <fieldset class="radio-planos">
@@ -121,6 +121,7 @@
                             foreach ( $itens as $codigoPlano )
                             {
                               $codigoCplus = $codigoPlano;
+                              
                               if($codigoCplus == $listaPlanos['referencia_cplus'])
                               {
                                 $codigo = $listaPlanos['referencia_cplus'];
