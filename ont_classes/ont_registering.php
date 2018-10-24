@@ -51,7 +51,7 @@
             <div class="panel-body">
               <form role="form" action="../classes/cadastrar.php" method="post">
                 <fieldset>
-                <legend>Informações<?php print_r($itens); ?></legend>
+                <legend>Informações</legend>
                   <p><?php echo "PORTA: $porta_selecionado | OLT: $device | FRAME: $frame | SLOT: $slot | PON: $pon | CTO: $cto";?></p>
                 </fieldset>
                 <fieldset class="radio-planos">
