@@ -134,7 +134,7 @@
       fwrite($fp,$login_command);
       fwrite($fp,$comando_cadastra_ont);
 
-      stream_set_timeout($fp,5);
+      stream_set_timeout($fp,8);
       while($c = fgetc($fp)!==false)
       {
        $retornoTL1 = fread($fp,2024);
@@ -162,7 +162,7 @@
       fwrite($fp,$login_command);
       fwrite($fp,$comando_cadastra_sip);
 
-      stream_set_timeout($fp,5);
+      stream_set_timeout($fp,8);
       while($c = fgetc($fp)!==false)
       {
        $retornoTL1 = fread($fp,2024);
@@ -209,7 +209,7 @@
         fwrite($fp,$comando_deletar);
 
         //$retornoTL1="";
-        stream_set_timeout($fp,5);
+        stream_set_timeout($fp,8);
         while($c = fgetc($fp)!==false)
         {
           $retornoTL1 = fread($fp,2024);
@@ -239,7 +239,7 @@
       fwrite($fp,$login_command);
       fwrite($fp,$comando);
 
-      stream_set_timeout($fp,5);
+      stream_set_timeout($fp,8);
       while($c = fgetc($fp)!==false)
       {
        $retornoTL1 = fread($fp,2024);
@@ -265,7 +265,7 @@
       fwrite($fp,$login_command);
       fwrite($fp,$comando);
 
-      stream_set_timeout($fp,5);
+      stream_set_timeout($fp,8);
       while($c = fgetc($fp)!==false)
       {
        $retornoTL1 = fread($fp,2024);
@@ -291,7 +291,7 @@
       fwrite($fp,$login_command);
       fwrite($fp,$comando);
 
-      stream_set_timeout($fp,5);
+      stream_set_timeout($fp,8);
       while($c = fgetc($fp)!==false)
       {
        $retornoTL1 = fread($fp,2024);
@@ -418,7 +418,7 @@
       fwrite($fp,$login_command);
       fwrite($fp,$comando_desabilita);
 
-      stream_set_timeout($fp,5);
+      stream_set_timeout($fp,8);
       while($c = fgetc($fp)!==false)
       {
        $retornoTL1 = fread($fp,2024);
@@ -444,7 +444,7 @@
       fwrite($fp,$login_command);
       fwrite($fp,$comando_ativa);
 
-      stream_set_timeout($fp,5);
+      stream_set_timeout($fp,8);
       while($c = fgetc($fp)!==false)
       {
        $retornoTL1 = fread($fp,2024);
@@ -470,7 +470,7 @@
       fwrite($fp,$login_command);
       fwrite($fp,$comando_reset);
 
-      stream_set_timeout($fp,5);
+      stream_set_timeout($fp,8);
       while($c = fgetc($fp)!==false)
       {
         $retornoTL1 = fread($fp,2024);
@@ -506,7 +506,7 @@
         fwrite($fp,$login_command);
         fwrite($fp,$comando_troca_ont);
 
-        stream_set_timeout($fp,5);
+        stream_set_timeout($fp,8);
         while($c = fgetc($fp)!==false)
         {
           $retornoTL1 = fread($fp,2024);
@@ -534,7 +534,7 @@
       fwrite($fp,$login_command);
       fwrite($fp,$comando);
 
-      stream_set_timeout($fp,5);
+      stream_set_timeout($fp,8);
       while($c = fgetc($fp)!==false)
       {
         $retornoTL1 = fread($fp,2024);
@@ -562,7 +562,7 @@
       fwrite($fp,$login_command);
       fwrite($fp,$comando);
 
-      stream_set_timeout($fp,5);
+      stream_set_timeout($fp,8);
       while($c = fgetc($fp)!==false)
       {
         $retornoTL1 = fread($fp,2024);
@@ -590,7 +590,7 @@
       fwrite($fp,$login_command);
       fwrite($fp,$comando);
 
-      stream_set_timeout($fp,5);
+      stream_set_timeout($fp,8);
       while($c = fgetc($fp)!==false)
       {
         $retornoTL1 = fread($fp,2024);
@@ -642,7 +642,7 @@
       fwrite($fp,$login_command);
       fwrite($fp,$comando);
 
-      stream_set_timeout($fp,5);
+      stream_set_timeout($fp,8);
       while($c = fgetc($fp)!==false)
       {
         $retornoTL1 = fread($fp,2024);
@@ -668,7 +668,7 @@
       fwrite($fp,$login_command);
       fwrite($fp,$comando);
 
-      stream_set_timeout($fp,5);
+      stream_set_timeout($fp,8);
       while($c = fgetc($fp)!==false)
       {
         $retornoTL1 = fread($fp,2024);
@@ -694,7 +694,7 @@
       fwrite($fp,$login_command);
       fwrite($fp,$comando);
 
-      stream_set_timeout($fp,5);
+      stream_set_timeout($fp,8);
       while($c = fgetc($fp)!==false)
       {
         $retornoTL1 = fread($fp,2024);
