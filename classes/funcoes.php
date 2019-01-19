@@ -104,7 +104,7 @@
           
         ##### CRIA SERVIEC PORT INTERNET #####
         echo "DEVICE: $device, FRAME:  $frame, SLOT: $slot, PON: $pon, ONUID: $onuID, CONTRA: $contrato";
-        $servicePortInternet = get_service_port_internet($device,$frame,$slot,$pon,$onuID,$contrato);
+        $servicePortInternet = get_service_port_internet($device,$frame,$slot,$pon,$onuID,$contrato,$vasProfile,$modo = null);
         var_dump($servicePortInternet);
         $tira_ponto_virgula = explode(";",$servicePortInternet);
         $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
@@ -227,5 +227,16 @@
     }//fim cadastrar
   }// fim deletar
   
+  function get_nome_alias_cplus($contrato)
+  {
+    //pega o Alias do assinante
+    $json_file = file_get_contents("http://192.168.80.5/sisspc/demos/get_pacote_ftth_cplus.php?contra=$contrato");
+    $json_str = json_decode($json_file, true);
+    $itens = $json_str['velocidade'];
+    $nome = $json_str['nome'];
+    $nomeCompleto = str_replace(" ","_",$nome[0]);
+    return $nomeCompleto;
+    //fim alias
+  }
 
 ?>

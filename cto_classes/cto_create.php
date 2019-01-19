@@ -95,7 +95,7 @@
                                       {
                                         array_push($array_ctos,$porta_pon_cadastrada['frame_slot_pon']);
                                       }
-                                      $conta = array_count_values($array_ctos);
+                                      $conta = array_count_values($array_ctos);//conta quantas CTOs tem cadastradas na PON, devido a ter apenas 2 celulas em cada porta PON
                                       while ($ont = mysqli_fetch_array($executa_query, MYSQLI_BOTH))
                                       {
                                         for($porta = 0;$porta < $ont['porta'];$porta++)

@@ -176,8 +176,8 @@
 
   function deletar_onu_2000($dev,$frame,$slot,$pon,$ontID,$ip,$servPortIPTV)
   {
-    include_once "telnet_config.php";
-    include_once "../db/db_config_mysql.php";
+    include "telnet_config.php";
+    include "../db/db_config_mysql.php";
     $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
 
     if(!$fp) 

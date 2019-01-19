@@ -105,6 +105,10 @@ $(function(){
 });
 //FIm MODAL
 
+function sair_da_tela(){
+  window.location.href('./transfer_olt_select.php')
+}
+
 $(function(){
   $("#tabelaSinais").dataTable();
 })
@@ -113,7 +117,7 @@ $("tr.porta").on('click',function() {
     var porta_selecionada;
     var serial;
     var caixa;
-    var tableData = $(this).children("td").map(function()         {
+    var tableData = $(this).children("td").map(function(){
     return $(this).text();
     }).get();
 
@@ -134,7 +138,41 @@ $('.btn-salvar').on('click',function(){
      window.location.href = $(this).attr('data-href');
  });
 
+if($("#cto_transfer_padrao").length){
+  $(document).on('click', '.cto_transfer', function(){
+    var limit = 1;
+    var counter = $('.cto_transfer:checked').length;
+    console.log("LIX");
+    if(counter > limit) {
+      this.checked = false;
+      alert('Só é permitido transferir 1 por vez!');
+    }
+  });
+}
 
+
+  if($("#cto_transfer_desativada").length){
+    $(document).on('click', '.cto_transfer', function(){
+        var limit = 1;
+        var counter = $('.cto_transfer:checked').length;
+        console.log("LIX");
+        if(counter > limit) {
+          this.checked = false;
+          alert('Limite atingido');
+        }
+    });
+  }else{
+    $(document).on('click', '.cto_transfer', function(){
+      var limit = 2;
+      var counter = $('.cto_transfer:checked').length;
+
+      if(counter > limit) {
+        this.checked = false;
+        alert('Limite atingido');
+      }
+    });
+  }
+    
   function mudar_status_cto() {
     bootbox.confirm({
       title: "Atenção",
