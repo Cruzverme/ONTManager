@@ -164,12 +164,12 @@ if (!mysqli_connect_errno())
           {
             $ip_olt = $ip['olt_ip'];
           }
-          
+         
           
           ##SO VERIFICAR PORTA DO SPLITTER E ALTERAR O ONME DA VARIAVEL
         //echo "<br>$deviceName,$frame,$slot,$pon,$contrato,$cto,$porta_atendimento,$serial,$equipment,$vasProfile<br><br>";
           $ontID = cadastrar_ont($deviceName,$frame,$slot,$pon,
-           $contrato,$nomeCompleto,$cto,$porta_atendimento,$serial,$equipment,$vasProfile);
+          $contrato,$nomeCompleto,$cto,$porta_atendimento,$serial,$equipment,$vasProfile);
           $onuID = NULL; //zera ONUID para evitar problema de cash.
           $tira_ponto_virgula = explode(";",$ontID);
           $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
@@ -177,6 +177,10 @@ if (!mysqli_connect_errno())
           $errorCode = trim($remove_desc[0]);
           if($errorCode != "0")
           {
+            #realizado para debugar ###
+              $sql_insert_log_status = "INSERT INTO log_estado (contrato,user_id,estado) VALUES ('$contrato',$usuario,'ONT NAO CADASTRADA COM ID $ontID!!')";
+              $executa_log_estado = mysqli_query($sql_insert_log_status);
+
             $trato = tratar_errors($errorCode);
             echo $_SESSION['menssagem'] = "Houve erro ao inserir no u2000: $trato";
 
@@ -209,6 +213,10 @@ if (!mysqli_connect_errno())
             $pega_id = explode("	",$filtra_espaco[2]);//posicao 4 será sempre o ONTID
             $onuID=trim($pega_id[4]);
             
+              #realizado para debugar ###
+            $sql_insert_log_status = "INSERT INTO log_estado (contrato,user_id,estado) VALUES ('$contrato','$usuario','INSERIDO A ONT COM ID $onuID')";
+            $executa_log_estado = mysqli_query($sql_insert_log_status);
+
             $insere_ont_id = "UPDATE ont SET ontID='$onuID' WHERE serial = '$serial'";
             $executa_insere_ont_id = mysqli_query($conectar,$insere_ont_id);
             ##### IPTV SERVICE PORT ######

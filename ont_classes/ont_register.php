@@ -63,12 +63,18 @@
                       }else{
                         $selecionado = "";
                       }
-                      echo "<option name='cto' value=$caixa_atendimento[caixa_atendimento] $selecionado $disponivel>$caixa_atendimento[caixa_atendimento]</option>";
+                       if($_SESSION['nome_usuario'] != 'Charles Pereira' || $_SESSION['nome_usuario'] != 'Administrador') {
+                         echo "<option name='cto' value=$caixa_atendimento[caixa_atendimento] $selecionado $disponivel>$caixa_atendimento[caixa_atendimento]</option>";
+} else{                     echo "<option>EM MANUTENCAO!, VOLTE LOGO MAIS!</option>";break;}
                     }
                 ?>
                 </select>
                 <span class="input-group-btn">
-                  <button class="btn btn-secondary form-control" type="submit">Buscar</button>
+                 <?php if($_SESSION['nome_usuario'] != 'Charles Pereira' || $_SESSION['nome_usuario'] != 'Administrador') { ?>
+                  <button class="btn btn-secondary form-control" type="submit" >Buscar</button>
+                  <?php } else {?>
+                  <button class="btn btn-secondary form-control" type="submit" disabled>Buscar</button>
+                  <?php } ?>
                 </span>
               </div>
               

@@ -219,7 +219,7 @@ if($("#cto_transfer_padrao").length){
   $(document).ready(function () { 
     var $seuCampoMAC = $("#mac");
     $seuCampoMAC.mask('00:00:00:00:00:00', 
-                      {translation: {0: {pattern:/[a-z0-9]/} }});
+                      {translation: {0: {pattern:/[a-f0-9]/} }});
   });
 
   function acordaONT(device,frame,slot,pon,ontID,acao) 
