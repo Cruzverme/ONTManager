@@ -186,6 +186,14 @@ echo '   </head>
                       </li>
                     ';
                   }
+                  if($_SESSION["transferir_celula"] == 1)
+                  {
+                    echo'  
+                      <li>
+                        <a href="../cto_classes/transfer_olt_select.php"><i class="fa fa-bug fa-fw"></i> Transferir Celula </a>
+                      </li>
+                    ';
+                  }
           echo'   </ul>
                 </div>
                 <!-- /.sidebar-collapse -->

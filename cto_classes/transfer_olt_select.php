@@ -3,11 +3,11 @@
   include "../classes/html_inicio.php"; 
   include "../db/db_config_mysql.php";
   
-  if($_SESSION["cadastrar_cto"] == 0) {
+  if($_SESSION["transferir_celula"] == 0) {
     echo '
     <script language= "JavaScript">
       alert("Sem Permissão de Acesso!");
-      location.href="../classes/redirecionador_pagina.php";
+      location.href="../classes/redirecionador_pagina.php";    
     </script>
     ';
   }
@@ -24,7 +24,7 @@
               <div class="panel-body">
                 <form role="form" action="transfer_pon.php" method="post">
                   <div class="form-group">
-                      <label for="selecionar_slot">Selecione Que Irá Ser Incrementado</label>
+                      <label for="selecionar_slot">Selecione o Slot da PON que irá ser migrada</label>
                       <select id="selecionar_slot" class="form-control" name="olt">
                         <?php 
                           $sql_consulta_olt = "SELECT deviceName,pon_id,slot FROM pon";

@@ -2,14 +2,14 @@
   include "../classes/html_inicio.php"; 
   include "../db/db_config_mysql.php"; 
   
-  // if($_SESSION["remover_cto"] == 0) {
-  //   echo '
-  //   <script language= "JavaScript">
-  //     alert("Sem Permissão de Acesso!");
-  //     location.href="../classes/redirecionador_pagina.php";    
-  //   </script>
-  //   ';
-  // }
+  if($_SESSION["transferir_celula"] == 0) {
+    echo '
+    <script language= "JavaScript">
+      alert("Sem Permissão de Acesso!");
+      location.href="../classes/redirecionador_pagina.php";    
+    </script>
+    ';
+  }
 
   $olt = filter_input(INPUT_POST,"olt");
   $nomeDispositivo = filter_input(INPUT_POST,"dispositivo");
