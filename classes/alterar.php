@@ -431,9 +431,13 @@ if (!mysqli_connect_errno())
             $executa_insere_service_iptv = mysqli_query($conectar,$insere_service_iptv);
             
             ### BTV ###
-            $btv_olt = insere_btv_iptv($ip,"$servicePortIptvID");
-            
-            if($btv_olt != 'valido' )
+            $btv_olt = insere_btv_iptv($device,$frame,$slot,$pon,$onuID);
+            $tira_ponto_virgula = explode(";",$btv_olt);
+            $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
+            $remove_desc = explode("ENDESC=",$check_sucesso[1]);
+            $errorCode = trim($remove_desc[0]);
+
+            if($errorCode != "0") //se der erro na btv iptv
             {
               $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) VALUES ('Erro ao Inserir o BTV - Service Port: $servicePortIptvID',$usuario)";
               mysqli_query($conectar,$sql_insert_log);

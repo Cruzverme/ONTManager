@@ -276,11 +276,16 @@ if (!mysqli_connect_errno())
                 $executa_insere_service_iptv = mysqli_query($conectar,$insere_service_iptv);
                 
                 ### BTV ###
-                $btv_olt = insere_btv_iptv("$ip_olt","$servicePortIptvID");
+                $btv_olt = insere_btv_iptv($deviceName,$frame,$slot,$pon,$onuID);
+                $tira_ponto_virgula = explode(";",$btv_olt);
+                $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
+                $remove_desc = explode("ENDESC=",$check_sucesso[1]);
+                $errorCode = trim($remove_desc[0]);
 
-                if($btv_olt != 'valido' )
+                if($errorCode != "0") //se der erro na btv iptv
                 {
-                  echo $_SESSION['menssagem'] = "Houve erro no BTV: $btv_olt";
+                  $trato = tratar_errors($errorCode);
+                  echo $_SESSION['menssagem'] = "Houve erro no BTV: $trato";
 
                   //se der erro ele irá apagar o registro salvo na tabela local ont
                   $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
