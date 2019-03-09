@@ -5,7 +5,10 @@
   $usuario = $_SESSION["id_usuario"];
   $area = filter_input(INPUT_POST,'area');
   $celula = filter_input(INPUT_POST,'celula');
-  $maxCTO = filter_input(INPUT_POST,'nCtos');
+  $tipoCTO = filter_input(INPUT_POST,'tipoCTO');
+  
+  $tipoCTO != "especifica"? $maxCTO = filter_input(INPUT_POST,'nCtos') : $maxCTO = 1;
+  
   $disponibilizar = filter_input(INPUT_POST,'cto_disponivel');
   if($disponibilizar != 1) $disponibilizar = 0; 
 
@@ -20,7 +23,7 @@
         $ctos_cadastradas = array();
         for($inicio = 1; $inicio <= $maxCTO; $inicio++)
         {
-          $cto = $area."C".$celula.".".$inicio;
+          $tipoCTO != "especifica"? $cto = $area."C".$celula.".".$inicio : $cto = filter_input(INPUT_POST,'cto') ;
           
           //VERIFICA SE CTO JA EXISTE
           $verificar_cto_existente = "SELECT DISTINCT caixa_atendimento FROM ctos WHERE caixa_atendimento='$cto'";

@@ -22,7 +22,7 @@
                   <h3 class="panel-title">Cadastro de CTO</h3>
               </div>
               <div class="panel-body">
-                <form role="form" action="cto_create.php" method="post">
+                <form role="form" action="tipo_cto.php" method="post">
                   <div class="form-group">
                       <label>Selecione a OLT</label>
                       <select class="form-control" name="olt">
