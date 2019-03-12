@@ -24,6 +24,7 @@
         for($inicio = 1; $inicio <= $maxCTO; $inicio++)
         {
           $tipoCTO != "especifica"? $cto = $area."C".$celula.".".$inicio : $cto = filter_input(INPUT_POST,'cto') ;
+          $tipoCTO == "associada"? $cto = $cto."B" : null ;
           
           //VERIFICA SE CTO JA EXISTE
           $verificar_cto_existente = "SELECT DISTINCT caixa_atendimento FROM ctos WHERE caixa_atendimento='$cto'";

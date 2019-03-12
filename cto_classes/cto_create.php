@@ -6,12 +6,24 @@
         var celula = Number(document.getElementById("celula").value);
         var cto = Number(document.getElementById("nCtos").value);
         var elemResult = document.getElementById("ctoNome");
+        var tipoCTO = document.getElementsByName("tipoCTO")[0].value;
 
         if (elemResult.textContent === undefined) {
-            elemResult.value = String(area) + "C" + String(celula) + ".1" + " até " + String(area) + "C" + String(celula) + "." + String(cto);//elemResult.innerText = "O resultado é " + String(area) + "C" + String(celula) + "." + String(cto);
+            if(tipoCTO === "associada")
+            {
+                elemResult.value = String(area) + "C" + String(celula) + ".1B" + " até " + String(area) + "C" + String(celula) + "." + String(cto) + "B";
+            }else{
+                elemResult.value = String(area) + "C" + String(celula) + ".1" + " até " + String(area) + "C" + String(celula) + "." + String(cto);//elemResult.innerText = "O resultado é " + String(area) + "C" + String(celula) + "." + String(cto);
+            }
         }
-        else { // IE
-            elemResult.value = String(area) + "C" + String(celula) + ".1" + " até " + String(area) + "C" + String(celula) + "." + String(cto);//elemResult.innerText = "O resultado é " + String(area) + "C" + String(celula) + "." + String(cto);
+        else { // IE 
+            if(tipoCTO === "associada")
+            {
+                elemResult.value = String(area) + "C" + String(celula) + ".1B" + " até " + String(area) + "C" + String(celula) + "." + String(cto) + "B";
+            }
+            else{
+                elemResult.value = String(area) + "C" + String(celula) + ".1" + " até " + String(area) + "C" + String(celula) + "." + String(cto);//elemResult.innerText = "O resultado é " + String(area) + "C" + String(celula) + "." + String(cto);
+            }
         }
     }
 
@@ -51,15 +63,15 @@
                 </div>
                 <div class="panel-body">
                     <form role="form" action="../classes/cadastrar_cto.php" method="post">
-                        <?php 
+                        <?php
                             if($tipoCTO == "range")
-                                include_once "./partials/cto_range.php";
+                                include_once "./partials/_cto_range.php";
                             elseif($tipoCTO == "especifica")
-                                include_once "./partials/cto_especifica.php";
-                            elseif($tipoCTO == "range")
-                                include_once "./partials/cto_expansao.php";
-                            elseif($tipoCTO == "range")
-                                include_once "./partials/cto_range.php";
+                                include_once "./partials/_cto_especifica.php";
+                            elseif($tipoCTO == "expansao")
+                                include_once "./partials/_cto_expansao.php";
+                            elseif($tipoCTO == "associada")
+                                include_once "./partials/_cto_associada.php";
                         ?>
                     </form>
                 </div>
