@@ -11,9 +11,9 @@
 
         $sql_check = "SELECT DISTINCT * FROM ctos WHERE pon_id_fk = $olt";
         $executa_check = mysqli_query($conectar,$sql_check);
-        if(mysqli_num_rows($executa_check) > 0) //checa se ja existe CTO cadastrada na pon
+        if(mysqli_num_rows($executa_check) > 0) //checa se ja existe CTO cadastrada na pon, se existir ele vai tratar limitaçoes
         {
-          $sql_consulta_serial = "SELECT DISTINCT olt.frame,olt.slot,olt.porta FROM pon olt 
+          $sql_consulta_serial = "SELECT DISTINCT olt.frame,olt.slot,olt.porta, cto.tipoCTO FROM pon olt
             INNER JOIN ctos cto ON cto.pon_id_fk = $olt
             WHERE olt.pon_id = $olt";//"SELECT frame,slot,porta FROM pon WHERE pon_id = $olt";
           
@@ -21,8 +21,8 @@
 
           $executa_query = mysqli_query($conectar,$sql_consulta_serial) or die(mysqli_error($conectar));
 
-          $sql_get_fsp = "SELECT DISTINCT caixa_atendimento,frame_slot_pon FROM `ctos` 
-            WHERE pon_id_fk = $olt" ;
+          $sql_get_fsp = "SELECT DISTINCT caixa_atendimento,frame_slot_pon FROM `ctos`
+            WHERE pon_id_fk = $olt ORDER BY frame_slot_pon" ; //SELECT PARA SELECIONAR AS CTOS DAS CELULAS
           $executa_get_fsp = mysqli_query($conectar,$sql_get_fsp);
 
           while ($porta_pon_cadastrada = mysqli_fetch_array($executa_get_fsp,MYSQLI_BOTH))
@@ -34,8 +34,8 @@
           {
             for($porta = 0;$porta < $ont['porta'];$porta++)
             {
-                if($conta["$ont[frame]-$ont[slot]-$porta"] < 16)
-                    echo "<option value=$olt-$ont[frame]-$ont[slot]-$porta>  Slot: $ont[slot]  Porta: $porta </option>";
+              if($conta["$ont[frame]-$ont[slot]-$porta"] < 16)
+                echo "<option value=$olt-$ont[frame]-$ont[slot]-$porta> Slot: $ont[slot]  Porta: $porta </option>";
             }
           }
         }else{

@@ -20,8 +20,7 @@
             if(tipoCTO === "associada")
             {
                 elemResult.value = String(area) + "C" + String(celula) + ".1B" + " até " + String(area) + "C" + String(celula) + "." + String(cto) + "B";
-            }
-            else{
+            }else{
                 elemResult.value = String(area) + "C" + String(celula) + ".1" + " até " + String(area) + "C" + String(celula) + "." + String(cto);//elemResult.innerText = "O resultado é " + String(area) + "C" + String(celula) + "." + String(cto);
             }
         }
@@ -62,7 +61,11 @@
                     <h3 class="panel-title">Cadastro de CTO na OLT <?php echo $nomeDispositivo['deviceName']; ?></h3>
                 </div>
                 <div class="panel-body">
-                    <form role="form" action="../classes/cadastrar_cto.php" method="post">
+                    <form role="form" action=<?php 
+                        if($tipoCTO == 'expansao') echo "../classes/cadastrar_cto_expansao.php";
+                        elseif($tipoCTO == 'personalizada') echo "../classes/cadastrar_cto_personalizada.php";
+                        else echo "../classes/cadastrar_cto.php";
+                    ?> method="post">
                         <?php
                             if($tipoCTO == "range")
                                 include_once "./partials/_cto_range.php";

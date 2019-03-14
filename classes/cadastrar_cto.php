@@ -23,7 +23,7 @@
         $ctos_cadastradas = array();
         for($inicio = 1; $inicio <= $maxCTO; $inicio++)
         {
-          $tipoCTO != "especifica"? $cto = $area."C".$celula.".".$inicio : $cto = filter_input(INPUT_POST,'cto') ;
+          $tipoCTO != "expansao"? $cto = $area."C".$celula.".".$inicio : $cto = filter_input(INPUT_POST,'cto') ;
           $tipoCTO == "associada"? $cto = $cto."B" : null ;
           
           //VERIFICA SE CTO JA EXISTE
@@ -34,8 +34,8 @@
           if( $linhas_retornadas != 1 )
           {
             for($portas = 1; $portas <= $porta_atendimento; $portas++)
-            {  
-              $sql_insere_caixa = ("INSERT INTO ctos(caixa_atendimento,porta_atendimento,frame_slot_pon,disponivel,pon_id_fk) VALUES('$cto',$portas,'$pon',$disponibilizar,'$pon_id')");
+            {
+              $sql_insere_caixa = ("INSERT INTO ctos(caixa_atendimento,porta_atendimento,frame_slot_pon,disponivel,pon_id_fk,tipoCTO) VALUES('$cto',$portas,'$pon',$disponibilizar,'$pon_id','$tipoCTO')");
               $checar_insert = mysqli_query($conectar,$sql_insere_caixa);
               $checar_insert = true;
             }
