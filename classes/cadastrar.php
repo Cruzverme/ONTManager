@@ -178,8 +178,8 @@ if (!mysqli_connect_errno())
           if($errorCode != "0")
           {
             #realizado para debugar ###
-              $sql_insert_log_status = "INSERT INTO log_estado (contrato,user_id,estado) VALUES ('$contrato',$usuario,'ONT NAO CADASTRADA COM ID $ontID!!')";
-              $executa_log_estado = mysqli_query($sql_insert_log_status);
+              $sql_insert_log_status = "INSERT INTO log_estado (contrato,user_id,estado) VALUES ('$contrato',$usuario,'ONT NAO CADASTRADA COM ID $ontID!')";
+              $executa_log_estado = mysqli_query($conectar,$sql_insert_log_status);
 
             $trato = tratar_errors($errorCode);
             echo $_SESSION['menssagem'] = "Houve erro ao inserir no u2000: $trato";
@@ -215,7 +215,7 @@ if (!mysqli_connect_errno())
             
               #realizado para debugar ###
             $sql_insert_log_status = "INSERT INTO log_estado (contrato,user_id,estado) VALUES ('$contrato','$usuario','INSERIDO A ONT COM ID $onuID')";
-            $executa_log_estado = mysqli_query($sql_insert_log_status);
+            $executa_log_estado = mysqli_query($conectar,$sql_insert_log_status);
 
             $insere_ont_id = "UPDATE ont SET ontID='$onuID' WHERE serial = '$serial'";
             $executa_insere_ont_id = mysqli_query($conectar,$insere_ont_id);
@@ -257,7 +257,7 @@ if (!mysqli_connect_errno())
                   $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
                 }
                 
-                deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID);
+                deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID,$ip_olt,$servicePortIPTV);
                   
                 header('Location: ../ont_classes/ont_register.php');
                 mysqli_close($conectar_radius);
@@ -301,7 +301,7 @@ if (!mysqli_connect_errno())
                     $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
                   }
                   
-                  deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID);
+                  deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID,$ip_olt,$servicePortIPTV);
                     
                   $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
                     VALUES ('Ocorreu um erro ao criar o btv!
@@ -400,7 +400,7 @@ if (!mysqli_connect_errno())
                   $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/$pon/$serial@vertv' ";
                   $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
                 
-                  deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID);
+                  deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID,$ip_olt,$servicePortIPTV);
 
                   $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
                     VALUES ('Erro ao Registrar o ServicePort de Telefone $trato' 
@@ -460,7 +460,7 @@ if (!mysqli_connect_errno())
               $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/$pon/$serial@vertv' ";
               $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
               
-              deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID);
+              deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID,$ip_olt,$servicePortIPTV);
 
               $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
                 VALUES ('Erro ao Registrar o ServicePort de Internet $trato
