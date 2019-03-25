@@ -60,8 +60,8 @@
 
                   $sql_olt_atendimento = "SELECT DISTINCT substring(caixa_atendimento,1,4) as caixa,disponivel
                     FROM ctos WHERE pon_id_fk = $olt
-                    ORDER BY caixa_atendimento,porta_atendimento";
-                  
+                    ORDER BY caixa;
+                                      
                   $executa_sql_olt_atendimento = mysqli_query($conectar,$sql_olt_atendimento);
                   
                   while ($celulas = mysqli_fetch_array($executa_sql_olt_atendimento, MYSQLI_BOTH))
