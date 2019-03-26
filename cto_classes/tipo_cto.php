@@ -31,7 +31,7 @@
                       <div class="row">
                         <div class="col-md-12">
                           <input type="radio" id="tipoGrupo" name="tipoCTO" value="range" required/> <label for="tipoGrupo">Grupo de CTOs </label>
-                          <input type="radio" id="tipoEspecifico" name="tipoCTO" value="especifica" required disabled /> <label for="tipoEspecifico">CTO Específica </label>
+                          <input type="radio" id="tipoEspecifico" name="tipoCTO" value="especifica" required /> <label for="tipoEspecifico">CTO Específica </label>
                           <input type="radio" id="tipoExpansao" name="tipoCTO" value="expansao" required /> <label for="tipoExpansao">CTO Expansão </label>
                           <input type="radio" id="tipoAssociada" name="tipoCTO" value="associada" required /> <label for="tipoAssociada">CTO Associada </label>
                         </div>

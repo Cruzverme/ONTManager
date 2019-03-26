@@ -1,6 +1,6 @@
 <div class="form-group">
-  <label>Nome CTO</label>
-  <input class="form-control" placeholder="CTO" name="cto" type="text" pattern="[a-zA-Z0-9.%]+" 
+  <label for="ctoName">Nome CTO</label>
+  <input id="ctoName" class="form-control" placeholder="CTO" name="cto" type="text" pattern="[a-zA-Z0-9.%]+" 
   title="Preencha a CTO personalizada" autofocus required>
 </div>
 
@@ -8,12 +8,11 @@
 <label>PON</label> 
   <select class="form-control" name="pon">
     <?php 
-
         $sql_check = "SELECT DISTINCT * FROM ctos WHERE pon_id_fk = $olt";
         $executa_check = mysqli_query($conectar,$sql_check);
         if(mysqli_num_rows($executa_check) > 0) //checa se ja existe CTO cadastrada na pon, se existir ele vai tratar limitaçoes
         {
-          $sql_consulta_serial = "SELECT DISTINCT olt.frame,olt.slot,olt.porta, cto.tipoCTO FROM pon olt
+          $sql_consulta_serial = "SELECT DISTINCT olt.frame,olt.slot,olt.porta FROM pon olt
             INNER JOIN ctos cto ON cto.pon_id_fk = $olt
             WHERE olt.pon_id = $olt";//"SELECT frame,slot,porta FROM pon WHERE pon_id = $olt";
           
@@ -29,6 +28,7 @@
           {
             array_push($array_ctos,$porta_pon_cadastrada['frame_slot_pon']);
           }
+          
           $conta = array_count_values($array_ctos);//conta quantas CTOs tem cadastradas na PON, devido a ter apenas 2 celulas em cada porta PON
           while ($ont = mysqli_fetch_array($executa_query, MYSQLI_BOTH))
           {
@@ -57,15 +57,14 @@
 </div>
 
 <div class="form-group">
-    <label>Quantidade de Portas de Atendimento</label>                                                
-    <select class="form-control" name="porta">
-        echo "<option value=8>8</option>";
-    </select>
+  <label for="quantidadePortasAtendimento">Quantidade de Portas de Atendimento</label>
+  <input id="quantidadePortasAtendimento" class="form-control" placeholder="Quantidade de Portas" name="portasAtendimento" type="number" 
+    title="Somente Números" autofocus required>
 </div>
 <input type="hidden" name="tipoCTO" value=<?php echo $tipoCTO ?>>                           
 
 <div class="form-group">
-  disponibilizar: <input type='checkbox' name='cto_disponivel' value=1 checked disabled/>
+  disponibilizar: <input type='checkbox' name='cto_disponivel' value=1 checked onClick='return false'/>
 </div>                                                    
 <button class="btn btn-lg btn-success btn-block">Cadastrar</button>
 

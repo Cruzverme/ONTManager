@@ -63,7 +63,7 @@
                 <div class="panel-body">
                     <form role="form" action=<?php 
                         if($tipoCTO == 'expansao') echo "../classes/cadastrar_cto_expansao.php";
-                        elseif($tipoCTO == 'personalizada') echo "../classes/cadastrar_cto_personalizada.php";
+                        elseif($tipoCTO == 'especifica') echo "../classes/cadastrar_cto_personalizada.php";
                         else echo "../classes/cadastrar_cto.php";
                     ?> method="post">
                         <?php
