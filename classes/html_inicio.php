@@ -57,114 +57,100 @@ echo '   </head>
             <div class="navbar-default sidebar" role="navigation">
               <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">';
-                  if($_SESSION["cadastrar_onu"] == 1)
+                  if($_SESSION["cadastrar_onu"] == 1 || $_SESSION["cadastrar_cto"] == 1 || $_SESSION["cadastrar_olt"] == 1 ||
+                  $_SESSION["cadastrar_velocidade"] == 1 || $_SESSION["cadastrar_usuario"] == 1 || $_SESSION["cadastrar_equipamento"] == 1)
                   {
                     echo '
                       <li>
-                        <a href="../ont_classes/ont_register.php"><i class="fa fa-cloud-upload fa-fw"></i> Cadastrar ONT</a>
+                        <a class="tituloSubMenu" href="#">Cadastros</a>
+                        <ul class="nav" id="side-menu">';
+                          if($_SESSION["cadastrar_onu"] == 1)
+                            echo '<li>
+                                    <a href="../ont_classes/ont_register.php"><i class="fa fa-cloud-upload fa-fw"></i> Cadastrar ONT</a>
+                                  </li>';
+                          // if($_SESSION["cadastrar_onu_corp"] == 1)
+                          //   echo '<li>
+                          //           <a href="../ont_classes/ont_register_corp.php"><i class="fa fa-cloud-upload fa-fw"></i> Cadastrar CORP</a>
+                          //         </li>';
+                          if($_SESSION["cadastrar_cto"] == 1)
+                            echo '<li>
+                                    <a href="../cto_classes/show_ctos.php"><i class="fa fa-sitemap fa-fw"></i> Cadastrar CTO</a>
+                                  </li>';
+                          if($_SESSION["cadastrar_olt"] == 1)        
+                            echo '<li>
+                                  <a href="../cto_classes/pon_create.php"><i class="fa fa-columns fa-fw"></i> Cadastro de Slot da OLT </a>
+                                </li>';
+                          if($_SESSION["cadastrar_velocidade"] == 1)
+                            echo '<li>
+                                    <a href="../planos/planos_create.php"><i class="fa fa-wifi fa-fw"></i> Cadastrar Nova Velocidade</a>
+                                  </li>';
+                          if($_SESSION["cadastrar_equipamento"] == 1)
+                            echo '<li>
+                                    <a href="../equipamento/cadastro_equipamento.php"><i class="fa fa-server fa-fw"></i> Cadastrar Equipamento</a>
+                                  </li>';
+                          if($_SESSION["cadastrar_usuario"] == 1)
+                            echo '<li>
+                              <a href="../users/usuario_new.php"><i class="fa fa-users fa-fw"></i> Cadastrar Usuario</a>
+                            </li>';
+                  echo  '</ul>
                       </li>
                     ';                    
                   }
-                  if($_SESSION["modificar_onu"] == 1)
+                  if($_SESSION["modificar_onu"] == 1 || $_SESSION["alterar_macONT"] == 1 ||
+                  $_SESSION["desativar_ativar_onu"] == 1 || $_SESSION["alterar_usuario"] == 1)
                   {
                     echo '
                       <li>
-                        <a href="../ont_classes/ont_change.php"><i class="fa fa-wrench fa-fw"></i> Alterar ONT</a>
+                        <a class="tituloSubMenu" href="#">Modificações</a>
+                        <ul class="nav" id="side-menu">';
+                          if($_SESSION["modificar_onu"] == 1)
+                            echo '<li>
+                                    <a href="../ont_classes/ont_change.php"><i class="fa fa-wrench fa-fw"></i> Alterar ONT</a>
+                                  </li>';
+                          if($_SESSION["alterar_macONT"] == 1)        
+                            echo '<li>
+                                    <a href="../ont_classes/alterar_mac_ont.php"><i class="fa fa-exchange fa-fw"></i> Trocar ONT</a>
+                                  </li>';
+                          if($_SESSION["desativar_ativar_onu"] == 1)  
+                            echo '<li>
+                                    <a href="../ont_classes/ont_disable.php"><i class="fa fa-pause-circle fa-fw"></i> Desabilitar e Habilitar Cliente </a>
+                                  </li>';
+                          if($_SESSION["alterar_usuario"] == 1)
+                            echo '<li>
+                                    <a href="../users/alteracao_usuario.php"><i class="fa fa-users fa-fw"></i> Listar e Alterar Usuario</a>
+                                  </li>';
+                  echo' </ul>
                       </li>
-                    ';                    
+                    ';             
                   }
-                  if($_SESSION["deletar_onu"] == 1)
+                  if($_SESSION["deletar_onu"] == 1 || $_SESSION["remover_cto"] == 1 || $_SESSION["remover_olt"] == 1)
                   {
                     echo '
                       <li>
-                        <a href="../ont_classes/ont_delete.php"><i class="fa fa-ban fa-fw"></i> Remover ONT</a>
-                      </li>
-                    ';                    
+                        <a class="tituloSubMenu" href="#">Remoções</a>
+                        <ul class="nav" id="side-menu">';
+                          if($_SESSION["deletar_onu"] == 1)
+                            echo '<li>
+                                    <a href="../ont_classes/ont_delete.php"><i class="fa fa-ban fa-fw"></i> Remover ONT</a>
+                                  </li>';
+                          if($_SESSION["remover_cto"] == 1)
+                            echo '<li>
+                                    <a href="../cto_classes/remover_cto.php"><i class="fa fa-ban fa-fw"></i> Remover CTO</a>
+                                  </li>';
+                          if($_SESSION["remover_olt"] == 1)
+                            echo' <li>
+                                    <a href="../cto_classes/remover_olt.php"><i class="fa fa-ban fa-fw"></i> Remover OLT</a>
+                                  </li>';   
+                  echo' </ul>
+                      </li>';  
                   }
-                  if($_SESSION["alterar_macONT"] == 1)
-                  {
-                    echo '
-                      <li>
-                        <a href="../ont_classes/alterar_mac_ont.php"><i class="fa fa-exchange fa-fw"></i> Trocar ONT</a>
-                      </li>
-                    ';                    
-                  }
-                  if($_SESSION["desativar_ativar_onu"] == 1)
-                  {
-                    echo '
-                      <li>
-                      <a href="../ont_classes/ont_disable.php"><i class="fa fa-pause-circle fa-fw"></i> Desabilitar e Habilitar Cliente </a>
-                      </li>
-                    ';                    
-                  }
-                  if($_SESSION["cadastrar_cto"] == 1)
-                  {
-                    echo '
-                      <li>
-                        <a href="../cto_classes/show_ctos.php"><i class="fa fa-sitemap fa-fw"></i> Cadastrar CTO</a>
-                      </li>
-                    ';                    
-                  }
-                  if($_SESSION["remover_cto"] == 1)
-                  {
-                    echo'  
-                      <li>
-                        <a href="../cto_classes/remover_cto.php"><i class="fa fa-ban fa-fw"></i> Remover CTO</a>
-                      </li>
-                    ';
-                  }
-                  if($_SESSION["cadastrar_olt"] == 1)
-                  {
-                    echo '
-                      <li>
-                        <a href="../cto_classes/pon_create.php"><i class="fa fa-columns fa-fw"></i> Cadastro de Slot da OLT </a>
-                      </li>
-                    ';                    
-                  }
-                  if($_SESSION["remover_olt"] == 1)
-                  {
-                    echo'  
-                      <li>
-                        <a href="../cto_classes/remover_olt.php"><i class="fa fa-ban fa-fw"></i> Remover OLT</a>
-                      </li>
-                    ';
-                  }
-                  if($_SESSION["cadastrar_velocidade"] == 1)
-                  {
-                    echo '
-                      <li>
-                        <a href="../planos/planos_create.php"><i class="fa fa-wifi fa-fw"></i> Cadastrar Nova Velocidade</a>
-                      </li>
-                    ';                    
-                  }
-                  if($_SESSION["cadastrar_usuario"] == 1)
-                  {
-                    echo '
-                      <li>
-                        <a href="../users/usuario_new.php"><i class="fa fa-users fa-fw"></i> Cadastrar Usuario</a>
-                      </li>
-                    ';                    
-                  }
-                  if($_SESSION["alterar_usuario"] == 1)
-                  {
-                    echo '
-                      <li>
-                        <a href="../users/alteracao_usuario.php"><i class="fa fa-users fa-fw"></i> Listar e Alterar Usuario</a>
-                      </li>
-                    ';                    
-                  }
-                  if($_SESSION["cadastrar_equipamento"] == 1)
-                  {
-                    echo '
-                      <li>
-                        <a href="../equipamento/cadastro_equipamento.php"><i class="fa fa-server fa-fw"></i> Cadastrar Equipamento</a>
-                      </li>
-                    ';                    
-                  }
+                  
+
+                  
                   if($_SESSION["consulta_onts"] == 1)
                   {
                     echo'  
-                      <li>
+                      <li class="tituloSubMenu">
                         <a href="../consultas/get_status.php"><i class="fa fa-info fa-fw"></i> Consulta de ONT</a>
                       </li>
                     ';
@@ -172,7 +158,7 @@ echo '   </head>
                   if($_SESSION["consulta_ctos"] == 1)
                   {
                     echo'  
-                      <li>
+                      <li class="tituloSubMenu">
                         <a href="../consultas/get_info_cto.php"><i class="fa fa-info fa-fw"></i> Consulta de CTO e OLT</a>
                       </li>
                     ';
@@ -180,8 +166,10 @@ echo '   </head>
                   if($_SESSION["consulta_relatorio_sinal"] == 1)
                   {
                     echo'  
-                      <li>
+                      <li class="tituloSubMenu">
                         <a href="../consultas/relatorio_sinal_ruim.php"><i class="fa fa-bug fa-fw"></i> Relatório de Sinais </a>
+                      </li>
+                      <li class="tituloSubMenu">
                         <a href="../consultas/analise_pon.php"><i class="fa fa-bug fa-fw"></i> Relatório de Sinais Por Porta Pon </a>
                       </li>
                     ';
@@ -189,7 +177,7 @@ echo '   </head>
                   if($_SESSION["transferir_celula"] == 1)
                   {
                     echo'  
-                      <li>
+                      <li class="tituloSubMenu">
                         <a href="../cto_classes/transfer_olt_select.php"><i class="fa fa-bug fa-fw"></i> Transferir Celula </a>
                       </li>
                     ';
