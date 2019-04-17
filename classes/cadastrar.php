@@ -5,10 +5,13 @@ include_once "../u2000/tl1_sender.php";
 // Inicia sessões 
 session_start();
 
+  // if($_POST["optionsRadios"] == 'VAS_IPTV-VoIP' || $_POST["optionsRadios"] == 'VAS_IPTV')
+  //   $_POST["pacote"] = null;
+
 if (!mysqli_connect_errno())
 {
   if( isset($_SESSION["id_usuario"]) && isset($_POST["contrato"]) && isset($_POST["serial"]) && isset($_POST["caixa_atendimento_select"])
-    && isset($_POST["pacote"]) && isset($_POST["porta_atendimento"]) && isset($_POST["frame"]) && isset($_POST["slot"]) &&
+    && isset($_POST["porta_atendimento"]) && isset($_POST["frame"]) && isset($_POST["slot"]) &&
      isset($_POST["pon"]) && isset($_POST["deviceName"])  )
   {
     $cto = $_POST["caixa_atendimento_select"];
@@ -43,7 +46,7 @@ if (!mysqli_connect_errno())
 
     $ip_olt = NULL;
     $nomeCompleto = str_replace(" ","_",$nome);
-    if($pacote == 'none' && $vasProfile != 'VAS_IPTV' )
+    if($pacote == 'none' && $vasProfile != 'VAS_IPTV' || $vasProfile != 'VAS_IPTV-VoIP' )
     {
       echo $_SESSION['menssagem'] = "Velocidade Não Existe no Cplus";
       header('Location: ../ont_classes/ont_register.php');
@@ -88,7 +91,7 @@ if (!mysqli_connect_errno())
        exit;
      }
 
-     if($vasProfile == "VAS_IPTV")
+     if($vasProfile == "VAS_IPTV" || $vasProfile == "VAS_IPTV-VoIP")
      {
       $pacote = NULL;
      }
@@ -220,7 +223,7 @@ if (!mysqli_connect_errno())
             $insere_ont_id = "UPDATE ont SET ontID='$onuID' WHERE serial = '$serial'";
             $executa_insere_ont_id = mysqli_query($conectar,$insere_ont_id);
             ##### IPTV SERVICE PORT ######
-            if($vasProfile == "VAS_IPTV" || $vasProfile== "VAS_Internet-VoIP-IPTV" || $vasProfile == "VAS_Internet-IPTV") ####SERVICE 
+            if($vasProfile == "VAS_IPTV" || $vasProfile== "VAS_Internet-VoIP-IPTV" || $vasProfile == "VAS_Internet-IPTV" || $vasProfile == 'VAS_IPTV-VoIP') ####SERVICE 
             {
               $servicePortIPTV = get_service_port_iptv($deviceName,$frame,$slot,$pon,$onuID,$contrato);
 
@@ -247,7 +250,7 @@ if (!mysqli_connect_errno())
                 $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
                 mysqli_query($conectar,$sql_apagar_onu);
                 
-                if($vasProfile != "VAS_IPTV")//se for apenas iptv nao apagara o radius, pois nao existe
+                if($vasProfile != "VAS_IPTV" || $vasProfile != 'VAS_IPTV-VoIP')//se for apenas iptv nao apagara o radius, pois nao existe
                 {
                   $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial@vertv' 
                     AND attribute='Huawei-Qos-Profile-Name' ";
@@ -291,7 +294,7 @@ if (!mysqli_connect_errno())
                   $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
                   mysqli_query($conectar,$sql_apagar_onu);
                   
-                  if($vasProfile != "VAS_IPTV")//se for apenas iptv nao apagara o radius, pois nao existe
+                  if($vasProfile != "VAS_IPTV" || $vasProfile != 'VAS_IPTV-VoIP')//se for apenas iptv nao apagara o radius, pois nao existe
                   {
                     $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial@vertv' 
                       AND attribute='Huawei-Qos-Profile-Name' ";
@@ -345,7 +348,7 @@ if (!mysqli_connect_errno())
             }
             
             ###INICIO TELEFONIA TL1###
-            if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV") //ATIVAR TELEFONIA
+            if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV" || $vasProfile == 'VAS_IPTV-VoIP' ) //ATIVAR TELEFONIA
             {
               //echo "\n <br><br> DEV: $deviceName | $frame | $slot | $pon | $onuID | $telNumber | $telPass | $telNumber <br><br> \n";
               $telefone_on = ativa_telefonia($deviceName,$frame,$slot,$pon,$onuID,$telNumber,$telPass,$telNumber);
@@ -434,9 +437,34 @@ if (!mysqli_connect_errno())
                   $executa_insere_service_telefone = mysqli_query($conectar,$insere_service_telefone);
                   
                 }//fim service port telefonia
+                if( $vasProfile == 'VAS_IPTV-VoIP') // se for apenas IPTV e VOIP termina aqui
+                {
+                  echo $_SESSION['menssagem'] = "Cadastrado IPTV e Telefone";
+
+                  $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) 
+                    VALUES ('$serial Cadastrado com o serviço $vasProfile 
+                    informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+                    Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+                    MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
+                    Senha Telefone: $telPass',$usuario)";
+                  $executa_log = mysqli_query($conectar,$sql_insert_log);
+                  
+                  //Atualizar Porta CTO
+                  $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 1, serial = '$serial'
+                    WHERE caixa_atendimento = '$cto' AND porta_atendimento= '$porta_atendimento'";
+                  $executa_insere_porta = mysqli_query($conectar,$sql_insere_porta);
+                  //Fim Atualizar Porta CTO
+
+                  header("Location: ../ont_classes/ont_register.php");
+                  mysqli_close($conectar_radius);
+                  mysqli_close($conectar);
+                  exit;
+                }
               }
             } //FIM ATIVA TELEFONIA  
             ########FIM TL1########
+
+            
             
             $servicePortInternet = get_service_port_internet($deviceName,$frame,$slot,$pon,$onuID,$contrato,$vasProfile,$modo_bridge);
 

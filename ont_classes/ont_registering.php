@@ -80,6 +80,11 @@
                       </div>
                       <div class="radio">
                           <label>
+                              <input type="radio" name="optionsRadios" id="optionsRadios3" value="VAS_IPTV-VoIP"> IPTV | TELEFONE
+                          </label>
+                      </div>
+                      <div class="radio">
+                          <label>
                               <input type="radio" name="optionsRadios" id="optionsRadios3" value="VAS_Internet-VoIP-IPTV">INTERNET | TELEFONE | IPTV
                           </label>
                       </div>
@@ -109,6 +114,7 @@
                         <?php include "../classes/listaPlanos.php" ?>
                         <label>Pacote</label>
                         <select class="form-control" name="pacote">
+                          <option selected disabled>Selecione a Velocidade</option>
                         <?php 
                           $codigoCplus = '';
                           $codigo = '';

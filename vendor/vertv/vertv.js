@@ -1,6 +1,7 @@
 $('input[name="optionsRadios"]').change(function () {
     if ($('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP" || 
-    $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-IPTV" ) {
+    $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-IPTV" ||
+    $('input[name="optionsRadios"]:checked').val() === "VAS_IPTV-VoIP") {
         $('.camposTelefone').show();
     } else {
         $('.camposTelefone').hide();
@@ -8,7 +9,8 @@ $('input[name="optionsRadios"]').change(function () {
 });
 
 $('input[name="optionsRadios"]').change(function () {
-    if ($('input[name="optionsRadios"]:checked').val() === "VAS_IPTV")
+    if ($('input[name="optionsRadios"]:checked').val() === "VAS_IPTV" ||
+        $('input[name="optionsRadios"]:checked').val() === "VAS_IPTV-VoIP" )
     {
         $('.camposPacotes').hide();
     } else {
@@ -84,6 +86,31 @@ $('input[name="optionsRadios"]').change(function(){
      $(".ipFixoSelector").show();
   }else{
      $(".ipFixoSelector").hide();
+  }
+});
+  // if($(this).val() == 1)
+  //   {
+
+  //   }
+  //   else{
+
+  //   }
+$('input[name="status_cto"]').change(function(){
+  var variavel = $(this).val();
+  var por = variavel.split("_");
+  
+  if(por[0] == 1)
+  {
+    console.log(por);
+    $(this).val('0_'+por[1]);
+    $('#linha_status_cto_disponivel_'+por[1]).css({backgroundColor: "red"});
+    alert($(this).val() + ' DESATIVADO');
+  }
+  else{
+    console.log(por);
+    $(this).val('1_'+por[1]);
+    $("#linha_status_cto_disponivel_"+por[1]).css({backgroundColor: "green"});
+    alert($(this).val() + 'ATIVADO');
   }
 });
 

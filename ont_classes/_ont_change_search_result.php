@@ -57,6 +57,8 @@
       if($pacote == $listaPlanos['nomenclatura_velocidade'])
       {
         $planoAtual = $listaPlanos['nome']; 
+      }else{
+        $planoAtual = "Sem Internet Anteriormente!";
       }
 
       foreach ( $itens as $codigoPlano )
@@ -118,6 +120,11 @@
                 </label>
               </div>
               <div class="radio">
+                  <label>
+                      <input type="radio" name="optionsRadios" id="optionsRadios3" value="VAS_IPTV-VoIP" <?php if($profile == "VAS_IPTV-VoIP") echo "checked" ; ?>> IPTV | TELEFONE
+                  </label>
+              </div>
+              <div class="radio">
                 <label>
                   <input type="radio" name="optionsRadios" id="optionsRadios3" value="VAS_Internet-VoIP-IPTV" <?php if($profile == "VAS_Internet-VoIP-IPTV" ) echo "checked"; ?>>INTERNET | TELEFONE | IPTV
                 </label>
@@ -159,12 +166,12 @@
                   </select>
                 </div>
               <?php 
-                if($profile != "VAS_IPTV" ) 
-                  $visivelInternet = "style=display:visible;";
-                else
+                if($profile == "VAS_IPTV" || $profile == "VAS_IPTV-VoIP" ) 
                   $visivelInternet = "style=display:none;";
+                else
+                  $visivelInternet = "style=display:visible;";
               ?>
-               <div class="camposPacotes" <?php $visivelInternet ?> > 
+               <div class="camposPacotes" <?php echo $visivelInternet; ?> > 
                 <div class="form-group">
                   <label>Pacote</label>
                   <select class="form-control" name="pacote">
@@ -177,9 +184,10 @@
                       mysqli_free_result($executa_query);                                                
                     ?>
                   </select>
+                  <?php echo "<div class='form-group'> Pacote Atual: $planoAtual </div>"; ?>                  
                 </div>
-                <?php echo "<div class='form-group'> Pacote Atual: $planoAtual </div>"; ?>
                </div>
+                
                 <!-- <div class='pull-left'>Velocidade Atual:  </div><br> -->
                 <?php
                   if($codigo == 330 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335)
@@ -237,7 +245,7 @@
                 ?>
 
                 <?php 
-                  if( $profile == "VAS_Internet-VoIP-IPTV" || $profile == "VAS_Internet-VoIP"){
+                  if( $profile == "VAS_Internet-VoIP-IPTV" || $profile == "VAS_IPTV-VoIP"){
                     $visivel = "style=display:visible";
                   }else{
                     $visivel = "style=display:none";
