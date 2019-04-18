@@ -1,18 +1,27 @@
 $('input[name="optionsRadios"]').change(function () {
     if ($('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP" || 
-    $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-IPTV" ) {
-        $('.camposTelefone').show();
+    $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-IPTV" ||
+    $('input[name="optionsRadios"]:checked').val() === "VAS_IPTV-VoIP") {
+      $('input[name="numeroTel"]').attr("required", "required");
+      $('input[name="passwordTel"]').attr("required", "required");
+      $('.camposTelefone').show();
     } else {
-        $('.camposTelefone').hide();
+      $('input[name="numeroTel"]').removeAttr("required");
+      $('input[name="passwordTel"]').removeAttr("required");
+      $('.camposTelefone').hide();
     }
+    console.log($("input[name='numeroTel']").attr("required"));
 });
 
 $('input[name="optionsRadios"]').change(function () {
-    if ($('input[name="optionsRadios"]:checked').val() === "VAS_IPTV")
+    if ($('input[name="optionsRadios"]:checked').val() === "VAS_IPTV" ||
+        $('input[name="optionsRadios"]:checked').val() === "VAS_IPTV-VoIP" )
     {
-        $('.camposPacotes').hide();
+      $('select[name="pacote"]').removeAttr("required","required");
+      $('.camposPacotes').hide();
     } else {
-        $('.camposPacotes').show();
+      $('select[name="pacote"]').attr("required","required");
+      $('.camposPacotes').show();
     }
 });
 
@@ -84,6 +93,25 @@ $('input[name="optionsRadios"]').change(function(){
      $(".ipFixoSelector").show();
   }else{
      $(".ipFixoSelector").hide();
+  }
+});
+
+$('input[name="status_cto"]').change(function(){
+  var variavel = $(this).val();
+  var por = variavel.split("_");
+  
+  if(por[0] == 1)
+  {
+    console.log(por);
+    $(this).val('0_'+por[1]);
+    $(".linha_status_cto td").css({backgroundColor: "red"});
+    alert($(this).val() + ' DESATIVADO');
+  }
+  else{
+    console.log(por);
+    $(this).val('1_'+por[1]);
+    $("#linha_status_cto_disponivel_"+por[1]).css({backgroundColor: "green"});
+    alert($(this).val() + 'ATIVADO');
   }
 });
 

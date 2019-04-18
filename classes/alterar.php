@@ -38,7 +38,7 @@ if (!mysqli_connect_errno())
       $telNumber = 0;
       $telPass = 0;
     }
-
+ 
      $select_ont_info = "SELECT onu.ontID,onu.cto,onu.porta,onu.mac,onu.ip,onu.perfil,onu.service_port_iptv,onu.service_port_internet,onu.service_port_telefone,onu.equipamento,onu.pacote,ct.frame_slot_pon,ct.pon_id_fk,p.deviceName,p.olt_ip FROM ont onu 
       INNER JOIN ctos ct ON ct.serial='$serial' AND ct.caixa_atendimento= onu.cto 
       INNER JOIN pon p ON p.pon_id = ct.pon_id_fk 
@@ -289,7 +289,7 @@ if (!mysqli_connect_errno())
         }
         
         ######### SE VOIP #########
-        if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV" || $vasProfile == "VAS_Internet-VoIP-IPTV" )
+        if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV" || $vasProfile == "VAS_Internet-VoIP-IPTV" || $vasProfile == "VAS_IPTV-VoIP" )
         {
           
           ########## ATIVA TL1 ############
@@ -383,7 +383,7 @@ if (!mysqli_connect_errno())
         }
 
         #################### SE FOR IPTV #################################  
-        if($vasProfile == "VAS_IPTV" || $vasProfile == "VAS_Internet-IPTV" || $vasProfile == "VAS_Internet-VoIP-IPTV")
+        if($vasProfile == "VAS_IPTV" || $vasProfile == "VAS_Internet-IPTV" || $vasProfile == "VAS_Internet-VoIP-IPTV" || $vasProfile == "VAS_IPTV-VoIP")
         {
           
           $servicePortIPTV = get_service_port_iptv($device,$frame,$slot,$pon,$onuID,$contrato);
@@ -468,9 +468,9 @@ if (!mysqli_connect_errno())
               $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) VALUES ('Service Port - $servicePortIptvID - Adicionado na BTV da OLT de $ip',$usuario)";
               mysqli_query($conectar,$sql_insert_log);
               
-              if($vasProfile == "VAS_IPTV")
+              if($vasProfile == "VAS_IPTV" || $vasProfile == "VAS_IPTV-VoIP")
               {
-                $_SESSION['menssagem'] = "IpTV Cadastrada!";
+                $_SESSION['menssagem'] = "Plano Alterado!";
                 header('Location: ../ont_classes/ont_change.php');
                 mysqli_close($conectar_radius);
                 mysqli_close($conectar);
