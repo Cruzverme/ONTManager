@@ -113,8 +113,8 @@
                       <div class="form-group" >
                         <?php include "../classes/listaPlanos.php" ?>
                         <label>Pacote</label>
-                        <select class="form-control" name="pacote">
-                          <option selected disabled>Selecione a Velocidade</option>
+                        <select class="form-control" name="pacote" required>
+                          <option value='' selected disabled>Selecione a Velocidade</option>
                         <?php 
                           $codigoCplus = '';
                           $codigo = '';

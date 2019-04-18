@@ -5,13 +5,15 @@ include_once "../u2000/tl1_sender.php";
 // Inicia sessões 
 session_start();
 
-  // if($_POST["optionsRadios"] == 'VAS_IPTV-VoIP' || $_POST["optionsRadios"] == 'VAS_IPTV')
-  //   $_POST["pacote"] = null;
-
 if (!mysqli_connect_errno())
 {
+  $pacote = filter_input(INPUT_POST,'pacote');
+
+  $_POST["optionsRadios"] == "VAS_IPTV-VoIP"? $pacote = "none" : $pacote ;
+  $_POST["optionsRadios"] == "VAS_IPTV"? $pacote = "none" : $pacote ;
+
   if( isset($_SESSION["id_usuario"]) && isset($_POST["contrato"]) && isset($_POST["serial"]) && isset($_POST["caixa_atendimento_select"])
-    && isset($_POST["porta_atendimento"]) && isset($_POST["frame"]) && isset($_POST["slot"]) &&
+    && isset($_POST["porta_atendimento"]) && isset($_POST["frame"]) && isset($_POST["slot"]) && $pacote &&
      isset($_POST["pon"]) && isset($_POST["deviceName"])  )
   {
     $cto = $_POST["caixa_atendimento_select"];
@@ -23,7 +25,6 @@ if (!mysqli_connect_errno())
     $nome = $_POST["nome"];
     $serial = strtoupper($_POST["serial"]);
     $equipment = $_POST['equipamentos'];
-    $pacote = $_POST["pacote"];
     $telNumber = $_POST["numeroTel"];
     $telPass = $_POST["passwordTel"];
     $vasProfile = $_POST["optionsRadios"];
@@ -46,7 +47,8 @@ if (!mysqli_connect_errno())
 
     $ip_olt = NULL;
     $nomeCompleto = str_replace(" ","_",$nome);
-    if($pacote == 'none' && $vasProfile != 'VAS_IPTV' || $vasProfile != 'VAS_IPTV-VoIP' )
+    
+    if(($pacote == '' && $vasProfile != 'VAS_IPTV') || ($pacote == '' && $vasProfile != 'VAS_IPTV-VoIP'))
     {
       echo $_SESSION['menssagem'] = "Velocidade Não Existe no Cplus";
       header('Location: ../ont_classes/ont_register.php');
@@ -66,7 +68,7 @@ if (!mysqli_connect_errno())
      
      $sql_verifica_limite_ont = "SELECT serial,contrato FROM ont WHERE  serial = '$serial' LIMIT 1"; //verifica se ja existe o mac
      $executa_verifica_limite_ont = mysqli_query($conectar,$sql_verifica_limite_ont);
-     var_dump($executa_verifica_limite_ont);
+     //var_dump($executa_verifica_limite_ont);
      if(mysqli_num_rows($executa_verifica_limite_ont) > 0) //se o resultado do limite for 1 ele cai aqui
      {
         $limiteONT = mysqli_fetch_array($executa_verifica_limite_ont, MYSQLI_BOTH);
