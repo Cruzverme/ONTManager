@@ -99,19 +99,46 @@ $('input[name="optionsRadios"]').change(function(){
 $('input[name="status_cto"]').change(function(){
   var variavel = $(this).val();
   var por = variavel.split("_");
-  
-  if(por[0] == 1)
+  var cto 
+  var cto_disponibilidade;
+
+  cto = por[1];
+  cto_disponibilidade = por[0];
+
+  if(cto_disponibilidade == 1)
   {
-    console.log(por);
-    $(this).val('0_'+por[1]);
-    $(".linha_status_cto td").css({backgroundColor: "red"});
-    alert($(this).val() + ' DESATIVADO');
+    cto_disponibilidade = 0;
+    $.post("../classes/gerencia_liberacao_cto.php",{cto_disponibilidade, cto} ,function(msg_retorno){
+      var msg = msg_retorno;
+      
+      if(msg == 1)
+      {
+        $(this).val('0_'+por[1]);
+        alert('CTO Desativada');
+        document.getElementById("linha_status_cto_disponivel_"+por[1]+"").style.backgroundColor = "red";
+        location.reload();
+      }else{
+        document.getElementById("cto_libera_nome_"+por[1]+"").checked = true;
+        alert('Não foi Possível desativar a CTO');
+      }
+    });
   }
   else{
-    console.log(por);
-    $(this).val('1_'+por[1]);
-    $("#linha_status_cto_disponivel_"+por[1]).css({backgroundColor: "green"});
-    alert($(this).val() + 'ATIVADO');
+    cto_disponibilidade = 1;
+    $.post("../classes/gerencia_liberacao_cto.php",{cto_disponibilidade, cto} ,function(msg_retorno){
+      var msg = msg_retorno;
+      
+      if(msg == 1)
+      {
+        $(this).val('1_'+por[1]);
+        alert('CTO Ativada');
+        document.getElementById("linha_status_cto_disponivel_"+por[1]+"").style.backgroundColor = 'green';
+        location.reload();
+      }else{
+        document.getElementById("cto_libera_nome_"+por[1]+"").checked = false;
+        alert('Não foi Possível ativar a CTO');
+      }
+    });
   }
 });
 

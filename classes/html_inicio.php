@@ -162,6 +162,11 @@ echo '   </head>
                         <a href="../consultas/get_info_cto.php"><i class="fa fa-info fa-fw"></i> Consulta de CTO e OLT</a>
                       </li>
                     ';
+                    echo'  
+                      <li class="tituloSubMenu">
+                        <a href="../cto_classes/liberar_cto.php"><i class="fa fa-info fa-fw"></i> Ativar/Desativar CTO Única </a>
+                      </li>
+                    ';
                   }
                   if($_SESSION["consulta_relatorio_sinal"] == 1)
                   {
