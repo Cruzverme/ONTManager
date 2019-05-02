@@ -56,9 +56,10 @@
     {  
       if($pacote == $listaPlanos['nomenclatura_velocidade'])
       {
-        $planoAtual = $listaPlanos['nome']; 
-      }else{
-        $planoAtual = "Sem Internet Anteriormente!";
+        $planoAtual = $listaPlanos['nome'];
+        #break; 
+      #}else{
+      #  $planoAtual = "Sem Internet Anteriormente!";
       }
 
       foreach ( $itens as $codigoPlano )
