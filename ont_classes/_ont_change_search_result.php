@@ -55,15 +55,10 @@
     while ($listaPlanos = mysqli_fetch_array($executa_query, MYSQLI_BOTH)) 
     {  
       if($pacote == $listaPlanos['nomenclatura_velocidade'])
-      {
         $planoAtual = $listaPlanos['nome'];
-      }else{
-        $planoAtual = "Sem Internet Anteriormente!";
-      }
 
       foreach ( $itens as $codigoPlano )
       {
-        $codigoCplus = $codigoPlano;
         if($codigoCplus == $listaPlanos['referencia_cplus'])
         {
           $codigo = $listaPlanos['referencia_cplus'];
