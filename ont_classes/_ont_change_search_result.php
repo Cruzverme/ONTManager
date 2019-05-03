@@ -55,14 +55,16 @@
     while ($listaPlanos = mysqli_fetch_array($executa_query, MYSQLI_BOTH)) 
     {  
       if($pacote == $listaPlanos['nomenclatura_velocidade'])
-        $planoAtual = $listaPlanos['nome'];
+      { 
+         $planoAtual = $listaPlanos['nome'];
+      }
 
       foreach ( $itens as $codigoPlano )
       {
-        if($codigoCplus == $listaPlanos['referencia_cplus'])
+        $codigoCplus = $codigoPlano;
+        if($codigoCplus == $listaPlanos[2])
         {
           $codigo = $listaPlanos['referencia_cplus'];
-
           $planoAtualCplus = $listaPlanos['nomenclatura_velocidade'];
           $nomePlanoAtualCplus = $listaPlanos['nome'];
           $verificacao = 1;
@@ -179,7 +181,7 @@
                       mysqli_free_result($executa_query);                                                
                     ?>
                   </select>
-                  <?php echo "<div class='form-group'> Pacote Atual: $planoAtual </div>"; ?>                  
+                  <?php echo "<div class='form-group'> Pacote Atual: $planoAtual</div>"; ?>                  
                 </div>
                </div>
                 
