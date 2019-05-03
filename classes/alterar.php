@@ -269,7 +269,7 @@ if (!mysqli_connect_errno())
             
             $servicePortInternetID= $pega_id[0] - 1; 
             
-            $insere_service_internet = "UPDATE ont SET service_port_internet='$servicePortInternetID', mac = $mac_novo,ip=$ip_novo 
+            $insere_service_internet = "UPDATE ont SET service_port_internet=$servicePortInternetID, mac = '$mac_novo',ip='$ip_novo' 
               WHERE serial = '$serial'";
             $executa_insere_service_internet = mysqli_query($conectar,$insere_service_internet);
             

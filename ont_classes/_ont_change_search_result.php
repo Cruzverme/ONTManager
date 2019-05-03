@@ -56,7 +56,7 @@
     {  
       if($pacote == $listaPlanos['nomenclatura_velocidade'])
       {
-        $planoAtual = $listaPlanos['nome']; 
+        $planoAtual = $listaPlanos['nome'];
       }else{
         $planoAtual = "Sem Internet Anteriormente!";
       }
