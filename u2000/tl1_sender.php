@@ -110,7 +110,7 @@
     }
   }
 
-  function cadastrar_ont($dev,$frame,$slot,$pon,$contrato,$alias,$splitter,$splitterPort,$serial,$equipment,$vasProfile)
+  function cadastrar_ont($dev,$frame,$slot,$pon,$contrato,$alias,$splitter,$splitterPort,$serial,$equipment,$vasProfile,$tipoNAT=0)
   {
     include "telnet_config.php";
     $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
@@ -128,6 +128,8 @@
 
       if($vasProfile == "VAS_Internet-CORP-IP" || $vasProfile == "VAS_Internet-CORP-IP-Bridge")
         $comando_cadastra_ont = "ADD-ONT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:1::NAME=$contrato,ALIAS=$alias,LINEPROF=line-profile-corp-ip,SRVPROF=srv-profile-corp-ip,SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V3R016C10S130,VAPROFILE=$vasProfile,BUILDTOPO=TRUE;";
+      elseif($tipoNAT == 1)
+        $comando_cadastra_ont = "ADD-ONT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:1::NAME=$contrato,ALIAS=$alias,LINEPROF=line-profile_cgnat,SRVPROF=srv-profile_cgnat,SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V3R016C10S130,VAPROFILE=$vasProfile,BUILDTOPO=TRUE;";
       else
         $comando_cadastra_ont = "ADD-ONT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:1::NAME=$contrato,ALIAS=$alias,LINEPROF=line-profile_11,SRVPROF=srv-profile_10,SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V3R016C10S130,VAPROFILE=$vasProfile,BUILDTOPO=TRUE;"; 
 
@@ -219,7 +221,7 @@
     fclose($fp);
   }
 
-  function get_service_port_internet($dev,$frame,$slot,$pon,$ontID,$contrato,$vasProfile,$modo)
+  function get_service_port_internet($dev,$frame,$slot,$pon,$ontID,$contrato,$vasProfile,$modo, $tipoNAT = 0)
   {
     include "telnet_config.php";
     $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
@@ -232,6 +234,8 @@
     
       if($vasProfile == "VAS_Internet-CORP-IP" || $modo == 'mac_externo')
         $comando = "CRT-SERVICEPORT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:3::VLANID=2503,SVPID=INTERNET-$contrato,ONTID=$ontID,GEMPORTID=6,UV=2503,RETURID=TRUE;";
+      elseif($tipoNAT == 1)
+        $comando = "CRT-SERVICEPORT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:3::VLANID=2504,SVPID=INTERNET-$contrato,ONTID=$ontID,GEMPORTID=6,UV=2504,RETURID=TRUE;";
       else
         $comando = "CRT-SERVICEPORT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:3::VLANID=2500,SVPID=INTERNET-$contrato,ONTID=$ontID,GEMPORTID=6,UV=2500,RETURID=TRUE;";
         
@@ -286,7 +290,7 @@
       $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
     
       $comando = "CRT-SERVICEPORT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:3::VLANID=2501,SVPID=TELEFONE-$contrato,ONTID=$ontID,GEMPORTID=7,UV=2501,RETURID=TRUE;";
-      var_dump($comando);
+
       fwrite($fp,$login_command);
       fwrite($fp,$comando);
 

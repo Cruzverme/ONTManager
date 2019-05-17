@@ -187,6 +187,14 @@ echo '   </head>
                       </li>
                     ';
                   }
+                  if($_SESSION["transferir_cgnat"] == 1)
+                  {
+                    echo'  
+                      <li class="tituloSubMenu">
+                        <a href="../ont_classes/troca_nat.php"><i class="fa fa-bug fa-fw"></i> Migrar para CGNAT </a>
+                      </li>
+                    ';
+                  }
           echo'   </ul>
                 </div>
                 <!-- /.sidebar-collapse -->

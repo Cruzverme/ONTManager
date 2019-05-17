@@ -1,7 +1,9 @@
 $('input[name="optionsRadios"]').change(function () {
     if ($('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP" || 
     $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-IPTV" ||
-    $('input[name="optionsRadios"]:checked').val() === "VAS_IPTV-VoIP") {
+    $('input[name="optionsRadios"]:checked').val() === "VAS_IPTV-VoIP" ||
+    $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-IPTV-CGNAT" ||
+    $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-CGNAT" ) {
       $('input[name="numeroTel"]').attr("required", "required");
       $('input[name="passwordTel"]').attr("required", "required");
       $('.camposTelefone').show();
@@ -318,6 +320,83 @@ if($("#cto_transfer_padrao").length){
     });
   }
 
+
+  function listUserForDnat(olt)
+  {
+    let quantidade = $('#quantidade_clientes').val();
+    let area_id = olt;
+    $body = $("body");
+    
+    $(document).on({
+      ajaxStart: function() { $body.addClass("loading"); },
+    });
+
+    $.post("../classes/lista_clientes_dnat.php",{quantidade, area_id} ,function(msg_retorno){
+      console.log(msg_retorno);
+      var msg = $.parseJSON(msg_retorno);
+      console.log(msg);
+      var i;
+      if(msg.length > 0)
+      {
+        $("#listaClientes").empty();
+        $("#listaClientes").append('<hr/>');
+        for(i=0;i < msg.length;i++)
+        {
+          console.log("TOTAL: " + msg.length + " LISTA: " + msg[i]['serial'] + "<br>");
+          
+          $("#listaClientes").append('<div class="form-control" style="text-align: center;">' + 
+                                        'Contrato:'+ msg[i]['contrato'] + 
+                                        ' Serial:'+ msg[i]['serial'] +
+                                        ' CTO:'+ msg[i]['cto'] 
+                                    +'</div>');
+
+          $("#listaClientes").append('<input type="hidden" name="contrato[]" value='+ 
+                                          msg[i]['contrato']+ '.' +
+                                          msg[i]['serial']+ '.' +
+                                          msg[i]['status']+ '.' +
+                                          msg[i]['cto'] + '.' +
+                                          msg[i]['porta']+ '.' +
+                                          msg[i]['usuario_id']+ '.' +
+                                          msg[i]['tel_number']+ '.' +
+                                          msg[i]['tel_user']+ '.' +
+                                          msg[i]['tel_password']+ '.' +
+                                          msg[i]['perfil']+ '.' +
+                                          msg[i]['pacote']+ '.' +
+                                          msg[i]['limite_equipamentos']+ '.' +
+                                          msg[i]['equipamento']+ '.' +
+                                          msg[i]['ontID']+ '.' +
+                                          msg[i]['service_port_internet']+ '.' +
+                                          msg[i]['service_port_iptv']+ '.' +
+                                          msg[i]['service_port_telefone'] + '.' + 
+                                          msg[i]['deviceName'] + '.' +
+                                          msg[i]['frame_slot_pon'] + '.' +
+                                          msg[i]['ip'] +
+                                      '></input>');
+        }
+        $('.btn-efetua-nat').removeAttr("disabled");
+        $('.btn-cancela-lista').removeAttr("disabled");
+        $('.btn-listar-clientes').attr("disabled", true);
+        $body.removeClass("loading");
+      }else{
+        $("#listaClientes").empty();
+        $("#listaClientes").append('<hr/>');
+        $("#listaClientes").append('<div class="form-control" style="text-align: center;">' +
+                                      'Não encontrado assinantes neste SLOT!' +
+                                  '<div/>'); 
+        $body.removeClass("loading");
+        console.log('Estou Vazio!')
+      }
+    });
+  }
+
+  function ativar_lista()
+  {
+    $('.btn-efetua-nat').attr("disabled", true);
+    $('.btn-cancela-lista').attr("disabled", true);
+    $('.btn-listar-clientes').removeAttr("disabled");
+    $('#quantidade_clientes').val(0);
+    $('#listaClientes').empty()
+  }
 
 //VALIDAR SEHA
 if(document.getElementById("senha") != null || document.getElementById("confirma_senha") != null )

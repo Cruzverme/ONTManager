@@ -38,6 +38,8 @@
     header('Location: ../cto_classes/remover_olt.php');
   }elseif ($_SESSION["transferir_celula"] == 1){
     header('Location: ../cto_classes/transfer_olt_select.php');
+  }elseif ($_SESSION["transferir_cgnat"] == 1){
+    header('Location: ../ont_classes/troca_nat.php');
   }else{
     session_destroy();
     header('Location: ../index.php');
