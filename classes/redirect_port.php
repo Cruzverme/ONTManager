@@ -21,9 +21,7 @@
     $script_start = (float) $sec + (float) $usec;
 
     $contra2 = $_POST['contrato'];
-    $cont = 0;
 
-   while($cont <= 100) {
     foreach($contra2 as $contrato)
     {
       echo "<hr/>";
@@ -501,14 +499,10 @@
       echo "</div>";
     }
 
-    echo "ESTOU NA POSICAO $cont de 100*2 <br>";
       // header('Location: ../ont_classes/troca_nat.php');
       // mysqli_close($conectar_radius);
       // mysqli_close($conectar);
       // exit;
-
-       $cont++;
-    }
 
   // Terminamos o "contador" e exibimos
     list($usec, $sec) = explode(' ', microtime());
