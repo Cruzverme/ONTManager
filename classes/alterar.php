@@ -21,8 +21,11 @@ if (!mysqli_connect_errno())
     $ip_fixo = filter_input(INPUT_POST,'ipFixo');
     $mac = filter_input(INPUT_POST,'mac');
     $porta_atendimento = null;
+    $cgnat_status = $_POST['cgnat_status']; $cgnat_status == null? $cgnat_status = false : $cgnat_status;
+    
+    $cgnat_status == false? $tipoNAT = 0 : $tipoNAT = 1; // se for cgnat o tipo é 0, caso contrario tipo = 1
 
-    if($modo_bridge != 'mac_externo')
+    if($modo_bridge != 'mac_externo' AND $vasProfile == "VAS_Internet-CORP-IP") ## TESTAR ISTO
       $mac = $serial;
 
     //pega o Alias do assinante
@@ -95,7 +98,7 @@ if (!mysqli_connect_errno())
     }else{
       
       ######### Cadastro a OLT Novamente ##############
-      $ontID = cadastrar_ont($device,$frame,$slot,$pon,$contrato,$nomeCompleto,$cto,$porta_atendimento,$serial,$equipment,$vasProfile);
+      $ontID = cadastrar_ont($device,$frame,$slot,$pon,$contrato,$nomeCompleto,$cto,$porta_atendimento,$serial,$equipment,$vasProfile,$tipoNAT);
       $onuID = NULL; //zera ONUID para evitar problema de cash.
       
       $tira_ponto_virgula = explode(";",$ontID);
@@ -148,7 +151,7 @@ if (!mysqli_connect_errno())
         
         #### ATUALIZA IP VALIDO ####
         
-        $sql_atualiza_utilizado_ip = "UPDATE ips_valido SET utilizado=false,utilizado_por='$contrato',mac_serial='$mac_atual'
+        $sql_atualiza_utilizado_ip = "UPDATE ips_valido SET utilizado=false,utilizado_por='$contrato',mac_serial='$mac_novo'
           WHERE numero_ip ='$ip_fixo_atual' && mac_serial = '$mac_atual'";
         $executa_atualiza_utitlizado_ip = mysqli_query($conectar,$sql_atualiza_utilizado_ip);
 
@@ -174,7 +177,9 @@ if (!mysqli_connect_errno())
       ############ SE INTERNET #################
 
         if($vasProfile == "VAS_Internet" || $vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-IPTV"  
-           || $vasProfile == "VAS_Internet-VoIP-IPTV"  || $vasProfile == "VAS_Internet-CORP-IP" || $vasProfile == "VAS_Internet-CORP-IP-Bridge" ) // se somente internet
+           || $vasProfile == "VAS_Internet-VoIP-IPTV"  || $vasProfile == "VAS_Internet-CORP-IP" || $vasProfile == "VAS_Internet-CORP-IP-Bridge" 
+           || $vasProfile == "VAS_Internet-REAL" || $vasProfile == "VAS_Internet-VoIP-REAL" || $vasProfile == "VAS_Internet-IPTV-REAL"  
+           || $vasProfile == "VAS_Internet-VoIP-IPTV-REAL") // se somente internet
         {
           ############ INSERE RADIUS ############
           
@@ -201,6 +206,9 @@ if (!mysqli_connect_errno())
             $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
             VALUES ( '2503/$slot/$pon/$serial@vertv-corp-ip', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";
 
+            $cgnat_sql = "UPDATE ont SET cgnat = false WHERE serial = '$serial'";
+            $executa_cgnat_sql = mysqli_query($conectar,$cgnat_sql);
+
             if($vasProfile == "VAS_Internet-CORP-IP-Bridge")
             {
               $insere_ont_radius_mac = "INSERT INTO radcheck(username,attribute,op,value)
@@ -211,15 +219,35 @@ if (!mysqli_connect_errno())
 
             $executa_query_profile_ip_fixo = mysqli_query($conectar_radius,$insere_ont_radius_profile_ip_fixo);
           }else{
-            $insere_ont_radius_username = "INSERT INTO radcheck( username, attribute, op, value)
+
+            if($cgnat_status != 'ip_real_ativo')
+            {
+              $insere_ont_radius_username = "INSERT INTO radcheck( username, attribute, op, value)
                   VALUES ( '2500/$slot/$pon/$serial@vertv', 'User-Name', ':=', '2500/$slot/$pon/$serial@vertv' )";
 
-            $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value) 
-                  VALUES ( '2500/$slot/$pon/$serial@vertv', 'User-Password', ':=', 'vlan' )";
+              $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value) 
+                    VALUES ( '2500/$slot/$pon/$serial@vertv', 'User-Password', ':=', 'vlan' )";
 
-            $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
-                  VALUES ( '2500/$slot/$pon/$serial@vertv', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";
+              $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
+                    VALUES ( '2500/$slot/$pon/$serial@vertv', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";
 
+              $ativa_cgnat_sql = "UPDATE ont SET cgnat = true WHERE serial = '$serial'";
+              $executa_ativa_cgnat_sql = mysqli_query($conectar,$ativa_cgnat_sql);              
+            }else{
+
+              $insere_ont_radius_username = "INSERT INTO radcheck( username, attribute, op, value)
+                  VALUES ( '2504/$slot/$pon/$serial@vertv-real', 'User-Name', ':=', '2504/$slot/$pon/$serial@vertv-real' )";
+
+              $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value) 
+                    VALUES ( '2504/$slot/$pon/$serial@vertv-real', 'User-Password', ':=', 'vlan' )";
+
+              $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
+                    VALUES ( '2504/$slot/$pon/$serial@vertv-real', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";
+
+              $ativa_cgnat_sql = "UPDATE ont SET cgnat = false WHERE serial = '$serial'";
+              $executa_ativa_cgnat_sql = mysqli_query($conectar,$ativa_cgnat_sql);
+            }
+            
           }
           $executa_query_username= mysqli_query($conectar_radius,$insere_ont_radius_username);
           $executa_query_password= mysqli_query($conectar_radius,$insere_ont_radius_password);
@@ -234,7 +262,7 @@ if (!mysqli_connect_errno())
             $executa_atualiza_banda_local = mysqli_query($conectar,$atualiza_banda_local);
           }
 
-          $servicePortInternet = get_service_port_internet($device,$frame,$slot,$pon,$onuID,$contrato,$vasProfile,$modo_bridge);
+          $servicePortInternet = get_service_port_internet($device,$frame,$slot,$pon,$onuID,$contrato,$vasProfile,$modo_bridge,$tipoNAT);
           
           $tira_ponto_virgula = explode(";",$servicePortInternet);
           $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
@@ -276,20 +304,21 @@ if (!mysqli_connect_errno())
             $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) VALUES ('Service Port Internet Criada $servicePortInternetID',$usuario)";
             mysqli_query($conectar,$sql_insert_log);
             
-            if($vasProfile == "VAS_Internet" || $vasProfile == "VAS_Internet-CORP-IP" || $vasProfile == "VAS_Internet-CORP-IP-Bridge")
+            if($vasProfile == "VAS_Internet" || $vasProfile == "VAS_Internet-CORP-IP" 
+              || $vasProfile == "VAS_Internet-CORP-IP-Bridge" || $vasProfile == "VAS_Internet-REAL" )
             {
-              $_SESSION['menssagem'] = "Plano Alterado! Em caso de alteração de Velocidade: Consulte o Equipamento e Reinicie Para efetivar a mudança";
+              $_SESSION['menssagem'] = "Plano Alterado! Em caso de alteração de Velocidade: OI, $cgnat_status > Consulte o Equipamento e Reinicie Para efetivar a mudança";
               header('Location: ../ont_classes/ont_change.php');
               mysqli_close($conectar_radius);
               mysqli_close($conectar);
               exit;
-              
             }
           }
         }
         
         ######### SE VOIP #########
-        if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV" || $vasProfile == "VAS_Internet-VoIP-IPTV" || $vasProfile == "VAS_IPTV-VoIP" )
+        if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV" || $vasProfile == "VAS_Internet-VoIP-IPTV-REAL" 
+          || $vasProfile == "VAS_IPTV-VoIP" || $vasProfile == "VAS_Internet-VoIP-REAL" )
         {
           
           ########## ATIVA TL1 ############
@@ -369,7 +398,7 @@ if (!mysqli_connect_errno())
                 WHERE serial = '$serial'";
                 $executa_insere_service_telefone = mysqli_query($conectar,$insere_service_telefone);
                 
-                if($vasProfile == "VAS_Internet-VoIP")
+                if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-REAL")
                 {
                   $_SESSION['menssagem'] = "Plano Alterado! Em caso de alteração de Velocidade: Consulte o Equipamento e Reinicie Para efetivar a mudança";    
                   header('Location: ../ont_classes/ont_change.php');
@@ -383,7 +412,8 @@ if (!mysqli_connect_errno())
         }
 
         #################### SE FOR IPTV #################################  
-        if($vasProfile == "VAS_IPTV" || $vasProfile == "VAS_Internet-IPTV" || $vasProfile == "VAS_Internet-VoIP-IPTV" || $vasProfile == "VAS_IPTV-VoIP")
+        if($vasProfile == "VAS_IPTV" || $vasProfile == "VAS_Internet-IPTV" || $vasProfile == "VAS_Internet-VoIP-IPTV" 
+          || $vasProfile == "VAS_IPTV-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV-REAL" || $vasProfile == "VAS_Internet-IPTV-REAL")
         {
           
           $servicePortIPTV = get_service_port_iptv($device,$frame,$slot,$pon,$onuID,$contrato);

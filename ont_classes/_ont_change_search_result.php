@@ -35,7 +35,7 @@
     $codigoCplus = '';
     $verificacao = 0;
 
-    $sql_consulta_perfil = "SELECT serial,pacote,tel_number,tel_password,perfil,mac,ip FROM ont
+    $sql_consulta_perfil = "SELECT serial,pacote,tel_number,tel_password,perfil,cgnat,mac,ip FROM ont
     WHERE contrato = '$contrato' ";
     $executa_query_perfil = mysqli_query($conectar,$sql_consulta_perfil);
     while ($ont = mysqli_fetch_array($executa_query_perfil, MYSQLI_BOTH)) 
@@ -45,6 +45,7 @@
       $passwordTel = $ont['tel_password'];
       $profile = $ont['perfil'];
       $serial = $ont['serial'];
+      $cgnat_status = $ont['cgnat'];
       $mac = $ont['mac'];
       $ip = $ont['ip'];
     }
@@ -94,55 +95,71 @@
             </div>
             <div class="panel-body">
               <form role="form" action="../classes/alterar.php" method="post">
-              <label>Qual Plano</label>
-              <div class="radio">
-                <label>
-                  <input type="radio" name="optionsRadios" id="optionsRadios1" value="VAS_Internet" <?php if($profile == "VAS_Internet" ) echo "checked"; ?>>INTERNET
-                </label>
-              </div>
-              <div class="radio">
-                <label>
-                  <input type="radio" name="optionsRadios" id="optionsRadios2" value="VAS_IPTV"<?php if($profile == "VAS_IPTV" ) echo "checked"; ?>>IPTV
-                </label>
-              </div>
-              
-              <div class="radio">
-                <label>
-                  <input type="radio" name="optionsRadios" id="optionsRadios3" value="VAS_Internet-IPTV" <?php if($profile == "VAS_Internet-IPTV" ) echo "checked"; ?>>INTERNET | IPTV
-                </label>
-              </div>
-              <div class="radio">
-                <label>
-                  <input type="radio" name="optionsRadios" id="optionsRadios3" value="VAS_Internet-VoIP" <?php if($profile == "VAS_Internet-VoIP" ) echo "checked"; ?>>INTERNET | TELEFONE
-                </label>
-              </div>
-              <div class="radio">
+                <?php
+                  $cgnat_status == true? $checkCgnat = '' : $checkCgnat = "checked";
+                  
+                  echo "<input type='hidden' name='profileVas' value=$profile>";
+                  echo "<div>
+                          <input type=checkbox name='cgnat_status' value='ip_real_ativo' id=checkCGNAT $checkCgnat /><label for=checkCGNAT>Ativar Redirecionamento de Porta</label>
+                        </div>";
+
+                  if($cgnat_status == true)
+                  {
+                    $arrayVasProfileCGNAT = ['VAS_Internet','VAS_IPTV','VAS_Internet-IPTV','VAS_Internet-VoIP','VAS_IPTV-VoIP','VAS_Internet-VoIP-IPTV'];
+                  }else{
+                    $arrayVasProfileCGNAT = ['VAS_Internet-REAL','VAS_IPTV','VAS_Internet-IPTV-REAL','VAS_Internet-VoIP-REAL','VAS_IPTV-VoIP','VAS_Internet-VoIP-IPTV-REAL'];
+                  }
+                    
+                ?>
+                <label>Qual Plano</label>              
+                <div class="radio">
                   <label>
-                      <input type="radio" name="optionsRadios" id="optionsRadios3" value="VAS_IPTV-VoIP" <?php if($profile == "VAS_IPTV-VoIP") echo "checked" ; ?>> IPTV | TELEFONE
+                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="<?php echo "$arrayVasProfileCGNAT[0]"; ?>" <?php if($profile == "VAS_Internet" || $profile == "VAS_Internet-REAL" ) echo "checked"; ?>>INTERNET
                   </label>
-              </div>
-              <div class="radio">
-                <label>
-                  <input type="radio" name="optionsRadios" id="optionsRadios3" value="VAS_Internet-VoIP-IPTV" <?php if($profile == "VAS_Internet-VoIP-IPTV" ) echo "checked"; ?>>INTERNET | TELEFONE | IPTV
-                </label>
-              </div>
-              <?php //codigos do cplus
-                if($codigo == 330 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335 
-                || $profile == "VAS_Internet-CORP-IP" || $profile == "VAS_Internet-CORP-IP-Bridge")
-                { echo '
-                  <div class="radio">
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="<?php echo $arrayVasProfileCGNAT[1]; ?>"<?php if($profile == "VAS_IPTV" ) echo "checked"; ?>>IPTV
+                  </label>
+                </div>
+                
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios3" value="<?php echo $arrayVasProfileCGNAT[2]; ?>" <?php if($profile == "VAS_Internet-IPTV" || $profile == "VAS_Internet-IPTV-REAL" ) echo "checked"; ?>>INTERNET | IPTV
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios4" value="<?php echo $arrayVasProfileCGNAT[3]; ?>" <?php if($profile == "VAS_Internet-VoIP" || $profile == "VAS_Internet-VoIP-REAL") echo "checked"; ?>>INTERNET | TELEFONE
+                  </label>
+                </div>
+                <div class="radio">
                     <label>
-                      <input type="radio" name="optionsRadios" id="optionsRadios4" value="VAS_Internet-CORP-IP"';if($profile == "VAS_Internet-CORP-IP" ) echo "checked";echo '>INTERNET - IP';
-                echo'    
+                        <input type="radio" name="optionsRadios" id="optionsRadios5" value="<?php echo $arrayVasProfileCGNAT[4]; ?>" <?php if($profile == "VAS_IPTV-VoIP") echo "checked" ; ?>> IPTV | TELEFONE
                     </label>
-                  </div>
-                  <div class="radio">
-                    <label>
-                      <input type="radio" name="optionsRadios" id="optionsRadios4" value="VAS_Internet-CORP-IP-Bridge"'; if($profile == "VAS_Internet-CORP-IP-Bridge" ) echo "checked"; echo'>INTERNET - IP - Modo Bridge
-                    </label>
-                  </div>';
-                }
-              ?>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios6" value="<?php echo $arrayVasProfileCGNAT[5]; ?>" <?php if($profile == "VAS_Internet-VoIP-IPTV" || $profile == "VAS_Internet-VoIP-IPTV-REAL" ) echo "checked"; ?>>INTERNET | TELEFONE | IPTV
+                  </label>
+                </div>
+                <?php //codigos do cplus
+                  if($codigo == 330 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335 
+                  || $profile == "VAS_Internet-CORP-IP" || $profile == "VAS_Internet-CORP-IP-Bridge")
+                  { echo '
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios7" value="VAS_Internet-CORP-IP"';if($profile == "VAS_Internet-CORP-IP" ) echo "checked";echo '>INTERNET - IP';
+                  echo'    
+                      </label>
+                    </div>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios8" value="VAS_Internet-CORP-IP-Bridge"'; if($profile == "VAS_Internet-CORP-IP-Bridge" ) echo "checked"; echo'>INTERNET - IP - Modo Bridge
+                      </label>
+                    </div>';
+                  }
+                ?>
             
                 <div class="form-group">
                   <label>Contrato</label> 
@@ -242,7 +259,8 @@
                 ?>
 
                 <?php 
-                  if( $profile == "VAS_Internet-VoIP-IPTV" || $profile == "VAS_IPTV-VoIP"){
+                  if( $profile == "VAS_Internet-VoIP-IPTV" || $profile == "VAS_IPTV-VoIP" || $profile == "VAS_Internet-VoIP"
+                    || $profile == "VAS_Internet-VoIP-IPTV-REAL" || $profile == "VAS_Internet-VoIP-REAL" ){
                     $visivel = "style=display:visible";
                   }else{
                     $visivel = "style=display:none";

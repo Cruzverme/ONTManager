@@ -225,7 +225,8 @@ if (!mysqli_connect_errno())
             $insere_ont_id = "UPDATE ont SET ontID='$onuID' WHERE serial = '$serial'";
             $executa_insere_ont_id = mysqli_query($conectar,$insere_ont_id);
             ##### IPTV SERVICE PORT ######
-            if($vasProfile == "VAS_IPTV" || $vasProfile== "VAS_Internet-VoIP-IPTV" || $vasProfile == "VAS_Internet-IPTV" || $vasProfile == 'VAS_IPTV-VoIP') ####SERVICE 
+            if($vasProfile == "VAS_IPTV" || $vasProfile== "VAS_Internet-VoIP-IPTV" || $vasProfile == "VAS_Internet-IPTV" || $vasProfile == 'VAS_IPTV-VoIP'
+              || $vasProfile== "VAS_Internet-VoIP-IPTV-REAL" || $vasProfile == "VAS_Internet-IPTV-REAL") ####SERVICE 
             {
               $servicePortIPTV = get_service_port_iptv($deviceName,$frame,$slot,$pon,$onuID,$contrato);
 
@@ -350,7 +351,8 @@ if (!mysqli_connect_errno())
             }
             
             ###INICIO TELEFONIA TL1###
-            if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV" || $vasProfile == 'VAS_IPTV-VoIP' ) //ATIVAR TELEFONIA
+            if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV" || $vasProfile == 'VAS_IPTV-VoIP' 
+              || $vasProfile == "VAS_Internet-VoIP-REAL" || $vasProfile == "VAS_Internet-VoIP-IPTV-REAL" ) //ATIVAR TELEFONIA
             {
               //echo "\n <br><br> DEV: $deviceName | $frame | $slot | $pon | $onuID | $telNumber | $telPass | $telNumber <br><br> \n";
               $telefone_on = ativa_telefonia($deviceName,$frame,$slot,$pon,$onuID,$telNumber,$telPass,$telNumber);

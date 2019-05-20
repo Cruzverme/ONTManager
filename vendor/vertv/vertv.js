@@ -2,8 +2,8 @@ $('input[name="optionsRadios"]').change(function () {
     if ($('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP" || 
     $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-IPTV" ||
     $('input[name="optionsRadios"]:checked').val() === "VAS_IPTV-VoIP" ||
-    $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-IPTV-CGNAT" ||
-    $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-CGNAT" ) {
+    $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-IPTV-REAL" ||
+    $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-REAL" ) {
       $('input[name="numeroTel"]').attr("required", "required");
       $('input[name="passwordTel"]').attr("required", "required");
       $('.camposTelefone').show();
@@ -25,6 +25,59 @@ $('input[name="optionsRadios"]').change(function () {
       $('select[name="pacote"]').attr("required","required");
       $('.camposPacotes').show();
     }
+});
+
+$('input[name="cgnat_status"]').change(function(){
+  if( $('input[name="cgnat_status"]').val() === 'ip_real_ativo'&&
+      ($('input[name="profileVas"]').val() === "VAS_Internet-REAL" ||
+      $('input[name="profileVas"]').val() === "VAS_Internet-IPTV-REAL" ||
+      $('input[name="profileVas"]').val() === "VAS_Internet-VoIP-REAL" ||
+      $('input[name="profileVas"]').val() === "VAS_Internet-VoIP-IPTV-REAL") ) 
+  {
+    switch ($('input[name="profileVas"]').val()) {
+      case 'VAS_Internet-REAL':
+        $('input[name="profileVas"]').val('VAS_Internet')
+        break;
+      case 'VAS_Internet-IPTV-REAL':
+        $('input[name="profileVas"]').val('VAS_Internet-IPTV')
+        break;
+      case 'VAS_Internet-VoIP-REAL':
+        $('input[name="profileVas"]').val('VAS_Internet-VoIP')
+        break;
+      case 'VAS_Internet-VoIP-IPTV-REAL':
+        $('input[name="profileVas"]').val('VAS_Internet-VoIP-IPTV')
+        break;
+      default:
+        break;
+    }
+    $('#optionsRadios1').val("VAS_Internet")
+    $('#optionsRadios3').val("VAS_Internet-IPTV")
+    $('#optionsRadios4').val("VAS_Internet-VoIP")
+    $('#optionsRadios6').val("VAS_Internet-VoIP-IPTV")
+  }else{
+
+    switch ($('input[name="profileVas"]').val()) {
+      case 'VAS_Internet':
+        $('input[name="profileVas"]').val('VAS_Internet-REAL')
+        break;
+      case 'VAS_Internet-IPTV':
+        $('input[name="profileVas"]').val('VAS_Internet-IPTV-REAL')
+        break;
+      case 'VAS_Internet-VoIP':
+        $('input[name="profileVas"]').val('VAS_Internet-VoIP-REAL')
+        break;
+      case 'VAS_Internet-VoIP-IPTV':
+        $('input[name="profileVas"]').val('VAS_Internet-VoIP-IPTV-REAL')
+        break;
+      default:
+        break;
+    }
+
+    $('#optionsRadios1').val("VAS_Internet-REAL")
+    $('#optionsRadios3').val("VAS_Internet-IPTV-REAL")
+    $('#optionsRadios4').val("VAS_Internet-VoIP-REAL")
+    $('#optionsRadios6').val("VAS_Internet-VoIP-IPTV-REAL")
+  }
 });
 
 $('input[name="nivel"]').change(function () {

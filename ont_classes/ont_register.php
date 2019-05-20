@@ -15,7 +15,7 @@
 
 ?>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
   $().ready(function() {
     $("#course").autocomplete("autoComplete.php", {
         width: 260,
@@ -28,7 +28,7 @@
         selectFirst: false
     });
   });
-</script>
+</script> -->
 
 <div id="page-wrapper">
     <div class="container">
