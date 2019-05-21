@@ -307,7 +307,7 @@ if (!mysqli_connect_errno())
             if($vasProfile == "VAS_Internet" || $vasProfile == "VAS_Internet-CORP-IP" 
               || $vasProfile == "VAS_Internet-CORP-IP-Bridge" || $vasProfile == "VAS_Internet-REAL" )
             {
-              $_SESSION['menssagem'] = "Plano Alterado! Em caso de alteração de Velocidade: OI, $cgnat_status > Consulte o Equipamento e Reinicie Para efetivar a mudança";
+              $_SESSION['menssagem'] = "Plano Alterado! Em caso de alteração de Velocidade: Consulte o Equipamento e Reinicie Para efetivar a mudança";
               header('Location: ../ont_classes/ont_change.php');
               mysqli_close($conectar_radius);
               mysqli_close($conectar);
