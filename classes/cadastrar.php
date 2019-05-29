@@ -176,6 +176,7 @@ if (!mysqli_connect_errno())
           $ontID = cadastrar_ont($deviceName,$frame,$slot,$pon,
           $contrato,$nomeCompleto,$cto,$porta_atendimento,$serial,$equipment,$vasProfile);
           $onuID = NULL; //zera ONUID para evitar problema de cash.
+          sleep(1);
           $tira_ponto_virgula = explode(";",$ontID);
           $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
           $remove_desc = explode("ENDESC=",$check_sucesso[1]);
