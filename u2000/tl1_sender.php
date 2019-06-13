@@ -126,7 +126,7 @@
       //                        SERIALNUM=48575443909B298B,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=HGW839M,
       //                        MAINSOFTVERSION=V3R016C10S130,VAPROFILE=VAS_Internet-VoIP-IPTV,BUILDTOPO=TRUE; \n\r\n";
 
-      if($vasProfile == "VAS_Internet-CORP-IP" || $vasProfile == "VAS_Internet-CORP-IP-Bridge")
+      if($vasProfile == "VAS_Internet-CORP-IP" || $vasProfile == "VAS_Internet-CORP-IP-Bridge" || $vasProfile == "VAS_Internet-IPTV-CORP-IP-Bridge" )
         $comando_cadastra_ont = "ADD-ONT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:1::NAME=$contrato,ALIAS=$alias,LINEPROF=line-profile-corp-ip,SRVPROF=srv-profile-corp-ip,SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V3R016C10S130,VAPROFILE=$vasProfile,BUILDTOPO=TRUE;";
       elseif($tipoNAT == 1)
         $comando_cadastra_ont = "ADD-ONT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:1::NAME=$contrato,ALIAS=$alias,LINEPROF=line-profile_real,SRVPROF=srv-profile_real,SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V3R016C10S130,VAPROFILE=$vasProfile,BUILDTOPO=TRUE;";
@@ -653,5 +653,62 @@
       }
       fclose($fp);
     }
+  }
+
+  function criar_vlan($deviceName,$frame,$slot,$pon,$vlanID,$alias)
+  {
+    include "telnet_config.php";
+    $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
+
+    if(!$fp) 
+    {
+      echo "ERROR: $errno - $errstr<br />\n";
+    }else
+    {
+      $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
+      $add_vlan = "ADD-VLAN::DEV=$deviceName:1::VLANID=$vlanID,VLANALIAS=$alias,VLANTYPE=SMART;";
+      $association_vlan_pon = "ASS-ETHPORTANDVLAN::DEV=$deviceName,FN=$frame,SN=$slot,PN=$pon:1::VLANID=$vlanID;";
+
+      fwrite($fp,$login_command);
+      fwrite($fp,$add_vlan);
+      fwrite($fp,$association_vlan_pon);
+
+      stream_set_timeout($fp,8);
+      while($c = fgetc($fp)!==false)
+      {
+        $retornoTL1 = fread($fp,2024);
+        return $retornoTL1;
+      }
+      fclose($fp);
+    }
+  }
+
+  function deleta_vlan($deviceName,$frame,$slot,$pon,$vlanID)
+  {
+    include "telnet_config.php";
+    $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
+    
+    if(!$fp) 
+    {
+      echo "ERROR: $errno - $errstr<br />\n";
+    }else
+    {
+      $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
+      $dessasociation_pon_vlan = "DASS-ETHPORTANDVLAN::DEV=$deviceName,FN=$frame,SN=$slot,PN=$pon:1::VLANID=$vlanID;";
+      $remove_vlan = "DEL-VLAN::DEV=$deviceName:1::VLANID=$vlanID;";
+
+      fwrite($fp,$login_command);
+      fwrite($fp,$dessasociation_pon_vlan);
+      sleep(2);
+      fwrite($fp,$remove_vlan);
+
+      //$retornoTL1="";
+      stream_set_timeout($fp,8);
+      while($c = fgetc($fp)!==false)
+      {
+        $retornoTL1 = fread($fp,2024);
+        return $retornoTL1;
+      }
+    }  
   }
 ?>

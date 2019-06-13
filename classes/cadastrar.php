@@ -227,7 +227,7 @@ if (!mysqli_connect_errno())
             $executa_insere_ont_id = mysqli_query($conectar,$insere_ont_id);
             ##### IPTV SERVICE PORT ######
             if($vasProfile == "VAS_IPTV" || $vasProfile== "VAS_Internet-VoIP-IPTV" || $vasProfile == "VAS_Internet-IPTV" || $vasProfile == 'VAS_IPTV-VoIP'
-              || $vasProfile== "VAS_Internet-VoIP-IPTV-REAL" || $vasProfile == "VAS_Internet-IPTV-REAL") ####SERVICE 
+              || $vasProfile== "VAS_Internet-VoIP-IPTV-REAL" || $vasProfile == "VAS_Internet-IPTV-REAL" || $vasProfile == "VAS_Internet-IPTV-CORP-IP-Bridge") ####SERVICE 
             {
               $servicePortIPTV = get_service_port_iptv($deviceName,$frame,$slot,$pon,$onuID,$contrato);
 

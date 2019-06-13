@@ -33,7 +33,7 @@
 <div id="page-wrapper">
     <div class="container">
       <div class="row">
-        <div class="col-md-11 col-md-offset-0">
+        <div class="col-md-10 col-md-offset-0">
           <div class="login-panel panel panel-default">
             <div class="panel-heading">
               <h3 class="panel-title">Cadastro de ONT</h3>

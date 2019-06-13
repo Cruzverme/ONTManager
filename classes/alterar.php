@@ -179,11 +179,12 @@ if (!mysqli_connect_errno())
         if($vasProfile == "VAS_Internet" || $vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-IPTV"  
            || $vasProfile == "VAS_Internet-VoIP-IPTV"  || $vasProfile == "VAS_Internet-CORP-IP" || $vasProfile == "VAS_Internet-CORP-IP-Bridge" 
            || $vasProfile == "VAS_Internet-REAL" || $vasProfile == "VAS_Internet-VoIP-REAL" || $vasProfile == "VAS_Internet-IPTV-REAL"  
-           || $vasProfile == "VAS_Internet-VoIP-IPTV-REAL") // se somente internet
+           || $vasProfile == "VAS_Internet-VoIP-IPTV-REAL" || $vasProfile == "VAS_Internet-IPTV-CORP-IP-Bridge") // se somente internet
         {
           ############ INSERE RADIUS ############
           
-          if($vasProfile == "VAS_Internet-CORP-IP" || $vasProfile == "VAS_Internet-CORP-IP-Bridge")
+          if($vasProfile == "VAS_Internet-CORP-IP" || $vasProfile == "VAS_Internet-CORP-IP-Bridge" || 
+              $vasProfile == "VAS_Internet-IPTV-CORP-IP-Bridge")
           {
 
             $atualiza_mac_ip_ont = "UPDATE ont SET mac='$mac_novo',ip='$ip_novo' WHERE serial = '$serial'";
@@ -209,7 +210,7 @@ if (!mysqli_connect_errno())
             $cgnat_sql = "UPDATE ont SET cgnat = false WHERE serial = '$serial'";
             $executa_cgnat_sql = mysqli_query($conectar,$cgnat_sql);
 
-            if($vasProfile == "VAS_Internet-CORP-IP-Bridge")
+            if($vasProfile == "VAS_Internet-CORP-IP-Bridge" || $vasProfile == "VAS_Internet-IPTV-CORP-IP-Bridge")
             {
               $insere_ont_radius_mac = "INSERT INTO radcheck(username,attribute,op,value)
                 values('2503/$slot/$pon/$serial@vertv-corp-ip','Huawei-User-Mac','=','$mac_novo')";
@@ -413,7 +414,8 @@ if (!mysqli_connect_errno())
 
         #################### SE FOR IPTV #################################  
         if($vasProfile == "VAS_IPTV" || $vasProfile == "VAS_Internet-IPTV" || $vasProfile == "VAS_Internet-VoIP-IPTV" 
-          || $vasProfile == "VAS_IPTV-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV-REAL" || $vasProfile == "VAS_Internet-IPTV-REAL")
+          || $vasProfile == "VAS_IPTV-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV-REAL" || $vasProfile == "VAS_Internet-IPTV-REAL"
+          || $vasProfile == "VAS_Internet-IPTV-CORP-IP-Bridge")
         {
           
           $servicePortIPTV = get_service_port_iptv($device,$frame,$slot,$pon,$onuID,$contrato);

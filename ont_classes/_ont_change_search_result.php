@@ -144,8 +144,8 @@
                   </label>
                 </div>
                 <?php //codigos do cplus
-                  if($codigo == 330 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335 
-                  || $profile == "VAS_Internet-CORP-IP" || $profile == "VAS_Internet-CORP-IP-Bridge")
+                  if($codigo == 330 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335  || $codigo == 336
+                  || $profile == "VAS_Internet-CORP-IP" || $profile == "VAS_Internet-CORP-IP-Bridge" || $profile == "VAS_Internet-IPTV-CORP-IP-Bridge")
                   { echo '
                     <div class="radio">
                       <label>
@@ -156,6 +156,12 @@
                     <div class="radio">
                       <label>
                         <input type="radio" name="optionsRadios" id="optionsRadios8" value="VAS_Internet-CORP-IP-Bridge"'; if($profile == "VAS_Internet-CORP-IP-Bridge" ) echo "checked"; echo'>INTERNET - IP - Modo Bridge
+                      </label>
+                    </div>';
+                  echo '
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios9" value="VAS_Internet-IPTV-CORP-IP-Bridge"'; if($profile == "VAS_Internet-IPTV-CORP-IP-Bridge" ) echo "checked"; echo'>INTERNET - IP | IPTV - Modo Bridge
                       </label>
                     </div>';
                   }
@@ -204,9 +210,9 @@
                 
                 <!-- <div class='pull-left'>Velocidade Atual:  </div><br> -->
                 <?php
-                  if($codigo == 330 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335)
+                  if($codigo == 330 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335 || $codigo == 336)
                   {
-                    if($profile == "VAS_Internet-CORP-IP-Bridge")
+                    if($profile == "VAS_Internet-CORP-IP-Bridge" || $profile == "VAS_Internet-IPTV-CORP-IP-Bridge")
                     {
                       $marcado = "checked";
                       $visivel = "style=display:visible;";
