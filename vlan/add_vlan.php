@@ -12,18 +12,6 @@
   }
   
   $olt = filter_input(INPUT_POST,"olt");
-  //list($olt_id, $deviceName) = explode("-",$olt);
-
-  
-
-  #$sql_ctos =  "SELECT DISTINCT caixa_atendimento,frame_slot_pon FROM ctos WHERE pon_id_fk = $olt_id";
-  #$executa_query = mysqli_query($conectar,$sql_ctos);
-
-  // while ($ctos = mysqli_fetch_array($executa_query, MYSQLI_ASSOC))
-  // {
-  //   $caixa = $ctos['caixa_atendimento'];
-  //   $cto = $ctos['frame_slot_pon'];
-  // }
 ?>
   <div id="page-wrapper">
     <!-- <div class="container"> -->

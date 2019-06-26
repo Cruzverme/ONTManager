@@ -453,6 +453,62 @@ if($("#cto_transfer_padrao").length){
     $('#listaClientes').empty()
   }
 
+  function showModalVlan(vlanID){
+    $('#listaCostumerDetails').empty();
+    $('#listaClientesVlanModal').modal({
+        keyboard: true,
+        show:false,
+    }).on('show.bs.modal', function(){ //subscribe to show method
+        
+        var modalVerb = $(this);
+        var vlan = vlanID; // $("#vlan").html();
+        console.log(vlan);
+        $.post("../classes/get_vlan_costumers_list.php",{vlan}, function(msg_retorno){          
+          
+          modalVerb.find('#listaCostumerDetails').html( "<div>"
+                                                          +"<strong>Contrato Clientes</strong>"
+                                                        +"</div> <hr>"
+                                                        +msg_retorno );
+        });
+        vlan = "";
+    });
+  };
+
+  // ASSOCIAÇÃO DE VLAN
+  function vlan_association(vlanID){
+    var vlan = vlanID;
+    window.location.href='../vlan/associar_vlan.php?vlan='+vlan;
+  };
+
+  $('#add_association').on('click', function(){
+    
+    $(".panel_associados").css("visibility","visible");
+
+    var contra = $("#contratoID").val();
+    var contratos = contra.split(',');
+    $("#contratoID").val('');
+    if( contra.trim() !== "")
+    {
+      contratos.forEach(element => {
+        $.post("../classes/get_cplus_name.php",{nContra: element}, function(msg_retorno){
+          if(msg_retorno != "Nome não encontrado!")
+          {  
+            $("#contrato").append('<div type="text" form-control">'+ element +' Nome:'+ msg_retorno +'</div>');
+            $("#contrato").append('<input type=hidden name="contratos[]" value="'+element+'" />');
+          }
+        });
+      });
+    }else{
+      alert("Insira um contrato!");
+    }
+  });
+
+  //DESASSOCIAÇÃO DE VLAN
+  function vlan_dissociation(vlanID){
+    var vlan = vlanID;
+    window.location.href='../vlan/desassociar_vlan.php?vlan='+vlan;
+  }
+  
 //VALIDAR SEHA
 if(document.getElementById("senha") != null || document.getElementById("confirma_senha") != null )
 {

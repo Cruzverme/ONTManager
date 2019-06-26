@@ -667,10 +667,34 @@
     {
       $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
       $add_vlan = "ADD-VLAN::DEV=$deviceName:1::VLANID=$vlanID,VLANALIAS=$alias,VLANTYPE=SMART;";
-      $association_vlan_pon = "ASS-ETHPORTANDVLAN::DEV=$deviceName,FN=$frame,SN=$slot,PN=$pon:1::VLANID=$vlanID;";
 
       fwrite($fp,$login_command);
       fwrite($fp,$add_vlan);
+
+      stream_set_timeout($fp,8);
+      while($c = fgetc($fp)!==false)
+      {
+        $retornoTL1 = fread($fp,2024);
+        return $retornoTL1;
+      }
+      fclose($fp);
+    }
+  }
+
+  function vlan_external_association($deviceName,$vlanID)
+  {
+    include "telnet_config.php";
+    $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
+
+    if(!$fp) 
+    {
+      echo "ERROR: $errno - $errstr<br />\n";
+    }else
+    {
+      $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
+      $association_vlan_pon = "ASS-ETHPORTANDVLAN::DEV=$deviceName,FN=0,SN=18,PN=0:1::VLANID=$vlanID;";
+
+      fwrite($fp,$login_command);
       fwrite($fp,$association_vlan_pon);
 
       stream_set_timeout($fp,8);
