@@ -58,7 +58,7 @@
                 <?php 
                   $contador = 0;
 
-                  $sql_olt_atendimento = "SELECT DISTINCT substring(caixa_atendimento,1,4) as caixa,disponivel
+                  $sql_olt_atendimento = "SELECT DISTINCT substring(caixa_atendimento,1,5) as caixa,disponivel
                     FROM ctos WHERE pon_id_fk = $olt
                     ORDER BY caixa;";
                                       
@@ -66,17 +66,19 @@
                   
                   while ($celulas = mysqli_fetch_array($executa_sql_olt_atendimento, MYSQLI_BOTH))
                   {
+                    
+
+                    $celula_sem_cto = explode('.',$celulas['caixa']);
+                    
                     if(in_array($celulas['caixa'],$ctosNaMesmaPON))
                     {
                       echo "<p class='alert alert-info' role=alert>Celula já presente na PON: $celulas[caixa]</p>";
-                      $idTransfer = "id='cto_transfer_desativada'";
+                      $idTransfer = "cto_transfer_desativada";
                       $valor_disponibilidade = "disabled";
                     }else{
-                      $idTransfer = "id='cto_transfer_padrao'";
+                      $idTransfer = "cto_transfer_padrao";
                       $valor_disponibilidade = "";
                     }
-
-                    $celula_sem_cto = explode('.',$celulas['caixa']);
                     
                     if($contador == 0)
                       echo "<tr>";
@@ -86,8 +88,8 @@
                       echo "
                             <td>
                               <div class='form-check form-check-inline'>
-                                <input type='checkbox' $idTransfer class='form-check-input cto_check cto_transfer' name='cto_ativa[]' value='$celula_sem_cto[0]-$celulas[disponivel]' $valor_disponibilidade/>
-                                <label class='form-check-label' for='$idTransfer'>$celula_sem_cto[0]</label>
+                                <input type='checkbox' id='$celula_sem_cto[0]' class='form-check-input cto_check cto_transfer' name='cto_ativa[]' value='$celula_sem_cto[0]-$celulas[disponivel]' $valor_disponibilidade/>
+                                <label class='form-check-label' for='$celula_sem_cto[0]'>$celula_sem_cto[0]</label>
                               </div>
                             </td>
                             ";
