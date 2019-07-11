@@ -145,6 +145,7 @@
                 </div>
                 <?php //codigos do cplus
                   if($codigo == 330 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335  || $codigo == 336 || $codigo == 349
+                  || $codigo == 350 || $codigo == 351 || $codigo == 352 || $codigo == 353 || $codigo == 354
                   || $profile == "VAS_Internet-CORP-IP" || $profile == "VAS_Internet-CORP-IP-Bridge" || $profile == "VAS_Internet-IPTV-CORP-IP-Bridge")
                   { echo '
                     <div class="radio">
@@ -210,7 +211,8 @@
                 
                 <!-- <div class='pull-left'>Velocidade Atual:  </div><br> -->
                 <?php
-                  if($codigo == 330 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335 || $codigo == 336)
+                  if($codigo == 330 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335 || $codigo == 336 || $codigo == 349
+                  || $codigo == 350 || $codigo == 351 || $codigo == 352 || $codigo == 353 || $codigo == 354)
                   {
                     if($profile == "VAS_Internet-CORP-IP-Bridge" || $profile == "VAS_Internet-IPTV-CORP-IP-Bridge")
                     {
