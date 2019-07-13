@@ -145,8 +145,8 @@
                     </div> <!-- fim div pacote -->
                     
                     <?php
-                      if($codigo == 330 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335 || $codigo == 336 || $codigo = 349
-                      || $codigo == 350 || $codigo == 351 || $codigo == 352 || $codigo == 353 || $codigo == 354 )
+                      if($codigo == 330 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335 || $codigo == 336 || 
+                         $codigo == 349  || $codigo == 350 || $codigo == 351 || $codigo == 352 || $codigo == 353 || $codigo == 354 )
                       {
                         echo "
                         <div class='form-group'>

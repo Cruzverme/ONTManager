@@ -1,5 +1,5 @@
 <?php 
-  set_time_limit(300); // TEMPO PARA EXECUTAR 5MIN
+  set_time_limit(0); // TEMPO PARA EXECUTAR 5MIN
   
   include "../db/db_config_mysql.php";
   include "./funcoes.php";
@@ -66,6 +66,8 @@
       {
         $trato = tratar_errors($errorCode);
         array_push($array_migracao_falha,$r['contrato']);
+        
+        continue;
       }else{
         $retorno = deu_ruim_callback($nomeDispositivo,$frame,$slot,$porta_pon,$r['contrato'],$nomeCompleto,$r['cto'],$r['porta'],$r['serial'],
         $r['equipamento'],$r['perfil'],$r['tel_number'],$r['tel_password'],$r['pacote']);
@@ -82,8 +84,9 @@
     $_SESSION['falha'] = $array_migracao_falha;
     $_SESSION['ctosMigradas'] = $totaldeCTOsMigradas;
     
-    echo('<meta http-equiv="refresh" content="0;URL=../cto_classes/transfer_resumo_migracao.php">');
+    echo "<a href=../cto_classes/transfer_resumo_migracao.php><button type=button>VOLTAR</button></a>";
+    #echo('<meta http-equiv="refresh" content="0;URL=../cto_classes/transfer_resumo_migracao.php">');
     mysqli_close($conectar);
-    exit;
+    #exit;
   }
 ?>
