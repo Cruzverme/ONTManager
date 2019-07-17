@@ -19,7 +19,7 @@
       $contratoInterno2 = $json_str_segunda['contrato'];
       if(empty($contratoInterno2))
       {
-        return $contrato; //null
+        return null; //null
       }else{
         return 'ok';
       }
