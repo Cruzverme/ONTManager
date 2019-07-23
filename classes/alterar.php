@@ -14,6 +14,7 @@ if (!mysqli_connect_errno())
     $contrato = $_POST["contrato"];
     $serial = $_POST["serial"];
     $pacote = $_POST["pacote"];
+    $equipamento = filter_input(INPUT_POST,'equipamentos'); 
     $telNumber = $_POST["numeroTelNovo"];
     $telPass = $_POST["passwordTelNovo"];
     $vasProfile = $_POST["optionsRadios"];
@@ -144,7 +145,7 @@ if (!mysqli_connect_errno())
         $onuID=trim($pega_id[4]);
         
 
-        $insere_ont_id = "UPDATE ont SET ontID='$onuID', perfil='$vasProfile',
+        $insere_ont_id = "UPDATE ont SET ontID='$onuID', perfil='$vasProfile', equipamento='$equipamento',
                             service_port_internet=NULL,service_port_telefone=NULL,
                             service_port_iptv=NULL,mac=NULL,ip=NULL
                           WHERE serial = '$serial'";

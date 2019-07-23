@@ -35,7 +35,7 @@
     $codigoCplus = '';
     $verificacao = 0;
 
-    $sql_consulta_perfil = "SELECT serial,pacote,tel_number,tel_password,perfil,cgnat,mac,ip FROM ont
+    $sql_consulta_perfil = "SELECT serial,pacote,tel_number,tel_password,perfil,cgnat,mac,ip,equipamento FROM ont
     WHERE contrato = '$contrato' ";
     $executa_query_perfil = mysqli_query($conectar,$sql_consulta_perfil);
     while ($ont = mysqli_fetch_array($executa_query_perfil, MYSQLI_BOTH)) 
@@ -48,8 +48,9 @@
       $cgnat_status = $ont['cgnat'];
       $mac = $ont['mac'];
       $ip = $ont['ip'];
+      $equipamento_cliente = $ont['equipamento'];
     }
-
+    
     $sql_lista_velocidades = "SELECT nome,nomenclatura_velocidade, referencia_cplus FROM planos";
     $executa_query = mysqli_query($conectar,$sql_lista_velocidades); //pega os planos cadastrados no banco
 
@@ -265,7 +266,25 @@
                           <input type=hidden name=ipFixo value=NULL>";
                   }
                 ?>
-
+                <!-- model -->
+                <div class="form-group">
+                  <label>Equipamento</label>
+                  <select id="equipamentoID" class="form-control" name="equipamentos">
+                    <?php 
+                      $sql_consulta_equipamentos = "SELECT * FROM equipamentos";
+                      $executa_query_equipamentos = mysqli_query($conectar,$sql_consulta_equipamentos);
+                      while ($equipamentos = mysqli_fetch_array($executa_query_equipamentos, MYSQLI_BOTH)) 
+                      {
+                        echo "<option value=$equipamentos[modelo]"; 
+                          $equipamento_cliente == $equipamentos['modelo']? print " selected" : "" ; 
+                        echo "> $equipamentos[modelo]";
+                        
+                        echo "</option>";
+                      }
+                    ?>
+                  </select>
+                </div>
+            
                 <?php 
                   if( $profile == "VAS_Internet-VoIP-IPTV" || $profile == "VAS_IPTV-VoIP" || $profile == "VAS_Internet-VoIP"
                     || $profile == "VAS_Internet-VoIP-IPTV-REAL" || $profile == "VAS_Internet-VoIP-REAL" ){
