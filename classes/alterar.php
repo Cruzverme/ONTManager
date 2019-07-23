@@ -17,6 +17,8 @@ if (!mysqli_connect_errno())
     $equipamento = filter_input(INPUT_POST,'equipamentos'); 
     $telNumber = $_POST["numeroTelNovo"];
     $telPass = $_POST["passwordTelNovo"];
+    $telNumber2 = $_POST["numeroTelNovo2"];
+    $telPass2 = $_POST["passwordTelNovo2"];
     $vasProfile = $_POST["optionsRadios"];
     $modo_bridge = filter_input(INPUT_POST,'modo_bridge');
     $ip_fixo = filter_input(INPUT_POST,'ipFixo');
@@ -37,11 +39,14 @@ if (!mysqli_connect_errno())
     $nomeCompleto = str_replace(" ","_",$nome[0]);
     //fim alias
 
-    if(empty($telNumber) && empty($telPass) )
+    if(empty($telNumber) && empty($telPass)  )
     {
       $telNumber = 0;
       $telPass = 0;
     }
+
+    empty($telNumber2)? $telNumber2 = 0 : "";
+    empty($telPass2)? $telPass2 = 0 : "";
  
      $select_ont_info = "SELECT onu.ontID,onu.cto,onu.porta,onu.mac,onu.ip,onu.perfil,onu.service_port_iptv,onu.service_port_internet,onu.service_port_telefone,onu.equipamento,onu.pacote,ct.frame_slot_pon,ct.pon_id_fk,p.deviceName,p.olt_ip FROM ont onu 
       INNER JOIN ctos ct ON ct.serial='$serial' AND ct.caixa_atendimento= onu.cto 
@@ -396,7 +401,8 @@ if (!mysqli_connect_errno())
                 $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) VALUES ('Service Port Telefonia Criada: $servicePortTelefoneID',$usuario)";
                 mysqli_query($conectar,$sql_insert_log);
                 
-                $insere_service_telefone = "UPDATE ont SET service_port_telefone='$servicePortTelefoneID',tel_user='$telNumber',tel_number='$telNumber',tel_password='$telPass'
+                $insere_service_telefone = "UPDATE ont SET service_port_telefone='$servicePortTelefoneID',tel_user='$telNumber',tel_number='$telNumber',tel_password='$telPass',
+                tel_user2='$telNumber2' ,tel_number2='$telNumber2',tel_password2='$telPass2'
                 WHERE serial = '$serial'";
                 $executa_insere_service_telefone = mysqli_query($conectar,$insere_service_telefone);
                 

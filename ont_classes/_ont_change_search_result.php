@@ -35,7 +35,7 @@
     $codigoCplus = '';
     $verificacao = 0;
 
-    $sql_consulta_perfil = "SELECT serial,pacote,tel_number,tel_password,perfil,cgnat,mac,ip,equipamento FROM ont
+    $sql_consulta_perfil = "SELECT serial,pacote,tel_number,tel_password,tel_number2,tel_password2,perfil,cgnat,mac,ip,equipamento FROM ont
     WHERE contrato = '$contrato' ";
     $executa_query_perfil = mysqli_query($conectar,$sql_consulta_perfil);
     while ($ont = mysqli_fetch_array($executa_query_perfil, MYSQLI_BOTH)) 
@@ -43,6 +43,8 @@
       $pacote = $ont['pacote'];
       $numeroTel = $ont['tel_number'];
       $passwordTel = $ont['tel_password'];
+      $numeroTel2 = $ont['tel_number2'];
+      $passwordTel2 = $ont['tel_password2'];
       $profile = $ont['perfil'];
       $serial = $ont['serial'];
       $cgnat_status = $ont['cgnat'];
@@ -307,12 +309,12 @@
                         echo "
                         <div id=tel2_user class='form-group'>
                           <label>Telefone</label>
-                          <input class='form-control' placeholder='Segundo Telefone' name='numeroTelNovo2' type='text' autofocus>
+                          <input class='form-control' placeholder='Segundo Telefone' name='numeroTelNovo2' type='text' value='$numeroTel2' autofocus>
                         </div>";
                         echo "
                         <div id=tel2_pass class='form-group'>
                           <label>Senha do Telefone</label>
-                          <input class='form-control' placeholder='Senha do Segundo Telefone' name='passwordTelNovo2' type='text' autofocus>
+                          <input class='form-control' placeholder='Senha do Segundo Telefone' name='passwordTelNovo2' type='text' value='$passwordTel2' autofocus>
                         </div>";
                       }else{
                         echo"  
