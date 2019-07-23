@@ -295,18 +295,37 @@
                     
                     echo "
                     <div class='camposTelefone' $visivel>
-                    <div class='form-group'>
-                      <label>Telefone</label>
-                      <input class='form-control' placeholder='Telefone' name='numeroTelNovo' type='text' value='$numeroTel' autofocus>
-                    </div> 
-                    <div class='form-group'>
-                      <label>Senha do Telefone</label>
-                      <input class='form-control' placeholder='Senha do Telefone' name='passwordTelNovo' type='text' value='$passwordTel' autofocus>
-                    </div>
-                    </div>
-                    ";
+                      <div class='form-group'>
+                        <label>Telefone</label>
+                        <input class='form-control' placeholder='Telefone' name='numeroTelNovo' type='text' value='$numeroTel' autofocus>
+                      </div>
+                      <div class='form-group'>
+                        <label>Senha do Telefone</label>
+                        <input class='form-control' placeholder='Senha do Telefone' name='passwordTelNovo' type='text' value='$passwordTel' autofocus>
+                      </div>";
+                      if($equipamento_cliente == "EG8245H5"){
+                        echo "
+                        <div id=tel2_user class='form-group'>
+                          <label>Telefone</label>
+                          <input class='form-control' placeholder='Segundo Telefone' name='numeroTelNovo2' type='text' autofocus>
+                        </div>";
+                        echo "
+                        <div id=tel2_pass class='form-group'>
+                          <label>Senha do Telefone</label>
+                          <input class='form-control' placeholder='Senha do Segundo Telefone' name='passwordTelNovo2' type='text' autofocus>
+                        </div>";
+                      }else{
+                        echo"  
+                          <div id=tel2_user class='form-group'></div>
+                          <div id=tel2_pass class='form-group'></div>
+                        ";
+                      }
+                    echo "
+                    </div>";
                   //}  
                 ?>
+
+                
 
                 <button class="btn btn-lg btn-success btn-block">Alterar</button>
               </form>

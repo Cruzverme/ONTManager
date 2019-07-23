@@ -80,6 +80,24 @@ $('input[name="cgnat_status"]').change(function(){
   }
 });
 
+$('select[name="equipamentos"]').change(function(){
+  var second_phone_user = $("#tel2_user");
+  var second_phone_pass = $("#tel2_pass");
+  if($('select[name="equipamentos"] option:selected').val() === "EG8245H5" ) {
+    second_phone_user.append(
+                              "<label>Telefone</label>" +
+                              "<input class='form-control' placeholder='Segundo Telefone' name='numeroTelNovo2' type='text' autofocus>"
+                            );
+    second_phone_pass.append(
+                              "<label>Senha do Telefone</label>" +
+                              "<input class='form-control' placeholder='Senha do Segundo Telefone' name='passwordTelNovo2' type='text' autofocus>"
+                            );                           
+  }else{
+    second_phone_user.val() === ""? second_phone_user.empty() : "";
+    second_phone_pass.val() === ""? second_phone_pass.empty() : "";
+  }
+});
+
 $('input[name="nivel"]').change(function () {
     if ($('input[name="nivel"]:checked').val() === "1" ) {
         $('.camposPermissao').hide();
