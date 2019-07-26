@@ -130,7 +130,8 @@ $('input[name="modo_bridge"]').change(function () {
 
 $('input[name="optionsRadios"]').change(function () {
   if($('input[name="optionsRadios"]:checked').val() === "VAS_Internet-CORP-IP-Bridge" ||
-      $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-IPTV-CORP-IP-Bridge")
+      $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-IPTV-CORP-IP-Bridge" ||
+      $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-CORP-IP-Bridge" )
   {
     $("input[name='modo_bridge']").attr('checked',true);
     $(".bridge").show();
@@ -144,8 +145,10 @@ $('input[name="optionsRadios"]').change(function () {
 
 $('input[name="optionsRadios"]').change(function(){
   if($('input[name="optionsRadios"]:checked').val() === "VAS_Internet-CORP-IP" ||
+      $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-CORP-IP" ||
       $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-CORP-IP-Bridge" ||
-      $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-IPTV-CORP-IP-Bridge" )
+      $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-IPTV-CORP-IP-Bridge" ||
+      $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-CORP-IP-Bridge" )
   {
      $(".ipFixoSelector").show();
   }else{

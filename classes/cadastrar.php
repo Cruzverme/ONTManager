@@ -353,7 +353,7 @@ if (!mysqli_connect_errno())
             
             ###INICIO TELEFONIA TL1###
             if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV" || $vasProfile == 'VAS_IPTV-VoIP' 
-              || $vasProfile == "VAS_Internet-VoIP-REAL" || $vasProfile == "VAS_Internet-VoIP-IPTV-REAL" ) //ATIVAR TELEFONIA
+              || $vasProfile == "VAS_Internet-VoIP-REAL" || $vasProfile == "VAS_Internet-VoIP-IPTV-REAL" || $vasProfile == "VAS_Internet-VoIP-CORP-IP" ) //ATIVAR TELEFONIA
             {
               //echo "\n <br><br> DEV: $deviceName | $frame | $slot | $pon | $onuID | $telNumber | $telPass | $telNumber <br><br> \n";
               $telefone_on = ativa_telefonia($deviceName,$frame,$slot,$pon,$onuID,$telNumber,$telPass,$telNumber);
