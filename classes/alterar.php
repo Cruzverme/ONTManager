@@ -14,8 +14,11 @@ if (!mysqli_connect_errno())
     $contrato = $_POST["contrato"];
     $serial = $_POST["serial"];
     $pacote = $_POST["pacote"];
+    $equipamento = filter_input(INPUT_POST,'equipamentos');
     $telNumber = $_POST["numeroTelNovo"];
     $telPass = $_POST["passwordTelNovo"];
+    $telNumber2 = $_POST["numeroTelNovo2"];
+    $telPass2 = $_POST["passwordTelNovo2"];
     $vasProfile = $_POST["optionsRadios"];
     $modo_bridge = filter_input(INPUT_POST,'modo_bridge');
     $ip_fixo = filter_input(INPUT_POST,'ipFixo');
@@ -36,12 +39,22 @@ if (!mysqli_connect_errno())
     $nomeCompleto = str_replace(" ","_",$nome[0]);
     //fim alias
 
-    if(empty($telNumber) && empty($telPass) )
+    if(empty($telNumber) && empty($telPass)  )
     {
       $telNumber = 0;
       $telPass = 0;
     }
- 
+
+    if( empty($telNumber2) && empty($telPass2) ) {
+      $telNumber2 = 0;
+      $telPass2 = 0;
+      echo "TEL TA VAZIO!";
+    }else{
+      $vasArray = explode('-',$vasProfile);
+      if(!in_array('twoVoIP',$vasArray))
+        $vasProfile = str_replace("VoIP","twoVoIP",$vasProfile);
+    }
+    
      $select_ont_info = "SELECT onu.ontID,onu.cto,onu.porta,onu.mac,onu.ip,onu.perfil,onu.service_port_iptv,onu.service_port_internet,onu.service_port_telefone,onu.equipamento,onu.pacote,ct.frame_slot_pon,ct.pon_id_fk,p.deviceName,p.olt_ip FROM ont onu 
       INNER JOIN ctos ct ON ct.serial='$serial' AND ct.caixa_atendimento= onu.cto 
       INNER JOIN pon p ON p.pon_id = ct.pon_id_fk 
@@ -144,7 +157,7 @@ if (!mysqli_connect_errno())
         $onuID=trim($pega_id[4]);
         
 
-        $insere_ont_id = "UPDATE ont SET ontID='$onuID', perfil='$vasProfile',
+        $insere_ont_id = "UPDATE ont SET ontID='$onuID', perfil='$vasProfile', equipamento='$equipamento',
                             service_port_internet=NULL,service_port_telefone=NULL,
                             service_port_iptv=NULL,mac=NULL,ip=NULL
                           WHERE serial = '$serial'";
@@ -179,10 +192,12 @@ if (!mysqli_connect_errno())
         if($vasProfile == "VAS_Internet" || $vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-IPTV"  
            || $vasProfile == "VAS_Internet-VoIP-IPTV"  || $vasProfile == "VAS_Internet-CORP-IP" || $vasProfile == "VAS_Internet-CORP-IP-Bridge" 
            || $vasProfile == "VAS_Internet-REAL" || $vasProfile == "VAS_Internet-VoIP-REAL" || $vasProfile == "VAS_Internet-IPTV-REAL"  
-           || $vasProfile == "VAS_Internet-VoIP-IPTV-REAL" || $vasProfile == "VAS_Internet-IPTV-CORP-IP-Bridge") // se somente internet
+           || $vasProfile == "VAS_Internet-VoIP-IPTV-REAL" || $vasProfile == "VAS_Internet-IPTV-CORP-IP-Bridge" 
+           || $vasProfile == "VAS_Internet-twoVoIP-IPTV" || $vasProfile == "VAS_Internet-twoVoIP-IPTV-REAL" 
+           || $vasProfile == "VAS_Internet-twoVoIP-REAL") // se somente internet
         {
           ############ INSERE RADIUS ############
-          
+
           if($vasProfile == "VAS_Internet-CORP-IP" || $vasProfile == "VAS_Internet-CORP-IP-Bridge" || 
               $vasProfile == "VAS_Internet-IPTV-CORP-IP-Bridge")
           {
@@ -256,7 +271,6 @@ if (!mysqli_connect_errno())
           ########## FIM INSERE RADIUS ##############
             
           ##### CRIA SERVIEC PORT INTERNET #####
-
           if($executa_query_qos_profile)
           {
             $atualiza_banda_local = "UPDATE ont SET pacote='$pacote' WHERE serial = '$serial'";
@@ -290,7 +304,6 @@ if (!mysqli_connect_errno())
             mysqli_close($conectar);
             exit;
           }else{ // se nao der erro
-            
             $remove_barras_para_pegar_id = explode("--------------",$tira_ponto_virgula[1]);
             $pegar_servicePorta_ID = explode("\r\n",$remove_barras_para_pegar_id[1]);
             
@@ -304,7 +317,7 @@ if (!mysqli_connect_errno())
             
             $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) VALUES ('Service Port Internet Criada $servicePortInternetID',$usuario)";
             mysqli_query($conectar,$sql_insert_log);
-            
+
             if($vasProfile == "VAS_Internet" || $vasProfile == "VAS_Internet-CORP-IP" 
               || $vasProfile == "VAS_Internet-CORP-IP-Bridge" || $vasProfile == "VAS_Internet-REAL" )
             {
@@ -319,11 +332,17 @@ if (!mysqli_connect_errno())
         
         ######### SE VOIP #########
         if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV" || $vasProfile == "VAS_Internet-VoIP-IPTV-REAL" 
-          || $vasProfile == "VAS_IPTV-VoIP" || $vasProfile == "VAS_Internet-VoIP-REAL" )
+          || $vasProfile == "VAS_IPTV-VoIP" || $vasProfile == "VAS_Internet-VoIP-REAL" || $vasProfile == "VAS_Internet-twoVoIP" 
+          || $vasProfile == "VAS_Internet-twoVoIP-IPTV" || $vasProfile == "VAS_Internet-twoVoIP-IPTV-REAL" 
+          || $vasProfile == "VAS_IPTV-twoVoIP" || $vasProfile == "VAS_Internet-twoVoIP-REAL" )
         {
           
           ########## ATIVA TL1 ############
-          $telefone_on = ativa_telefonia($device,$frame,$slot,$pon,$onuID,$telNumber,$telPass,$telNumber);
+          if( $telNumber2 == 0 && $telPass2 == 0)
+            $telefone_on = ativa_telefonia($device,$frame,$slot,$pon,$onuID,$telNumber,$telPass,$telNumber);
+          else
+            $telefone_on = ativa_telefonia($device,$frame,$slot,$pon,$onuID,$telNumber,$telPass,$telNumber,$telNumber2,$telPass2,$telNumber2);
+          
           $tira_ponto_virgula = explode(";",$telefone_on);
           $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
           $remove_desc = explode("ENDESC=",$check_sucesso[1]);
@@ -332,7 +351,7 @@ if (!mysqli_connect_errno())
           if($errorCode != "0") // se der erro na ativacao da telefonia
           {
               $trato = tratar_errors($errorCode);
-
+              echo $trato;
               //salva em LOG
               $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
               VALUES (ERRO NO U2000 AO ALTERAR A ONTID $trato 
@@ -345,7 +364,7 @@ if (!mysqli_connect_errno())
                   Senha Telefone: $telPass,$usuario)";
           
               $executa_log = mysqli_query($conectar,$sql_insert_log);
-
+                echo "SOU UM ERRO MAE!!";
               $_SESSION['menssagem'] = "Não foi possível Ativar a Telefonia! $errorCode $trato";
               header('Location: ../ont_classes/ont_change.php');
               mysqli_close($conectar_radius);
@@ -395,10 +414,11 @@ if (!mysqli_connect_errno())
                 $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) VALUES ('Service Port Telefonia Criada: $servicePortTelefoneID',$usuario)";
                 mysqli_query($conectar,$sql_insert_log);
                 
-                $insere_service_telefone = "UPDATE ont SET service_port_telefone='$servicePortTelefoneID',tel_user='$telNumber',tel_number='$telNumber',tel_password='$telPass'
+                $insere_service_telefone = "UPDATE ont SET service_port_telefone='$servicePortTelefoneID',tel_user='$telNumber',tel_number='$telNumber',tel_password='$telPass',
+                tel_user2='$telNumber2' ,tel_number2='$telNumber2',tel_password2='$telPass2'
                 WHERE serial = '$serial'";
                 $executa_insere_service_telefone = mysqli_query($conectar,$insere_service_telefone);
-                
+                echo "eae";
                 if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-REAL")
                 {
                   $_SESSION['menssagem'] = "Plano Alterado! Em caso de alteração de Velocidade: Consulte o Equipamento e Reinicie Para efetivar a mudança";    
@@ -415,7 +435,8 @@ if (!mysqli_connect_errno())
         #################### SE FOR IPTV #################################  
         if($vasProfile == "VAS_IPTV" || $vasProfile == "VAS_Internet-IPTV" || $vasProfile == "VAS_Internet-VoIP-IPTV" 
           || $vasProfile == "VAS_IPTV-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV-REAL" || $vasProfile == "VAS_Internet-IPTV-REAL"
-          || $vasProfile == "VAS_Internet-IPTV-CORP-IP-Bridge")
+          || $vasProfile == "VAS_Internet-IPTV-CORP-IP-Bridge" || $vasProfile == "VAS_Internet-twoVoIP-IPTV" || $vasProfile == "VAS_Internet-twoVoIP-IPTV-REAL" 
+          || $vasProfile == "VAS_IPTV-twoVoIP")
         {
           
           $servicePortIPTV = get_service_port_iptv($device,$frame,$slot,$pon,$onuID,$contrato);
@@ -468,14 +489,14 @@ if (!mysqli_connect_errno())
             $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
             $remove_desc = explode("ENDESC=",$check_sucesso[1]);
             $errorCode = trim($remove_desc[0]);
-
+            
             if($errorCode != "0") //se der erro na btv iptv
             {
               $sql_insert_log = "INSERT INTO log (registro,codigo_usuario) VALUES ('Erro ao Inserir o BTV - Service Port: $servicePortIptvID',$usuario)";
               mysqli_query($conectar,$sql_insert_log);
 
               $trato = tratar_errors($errorCode);
-
+              
               $_SESSION['menssagem'] = "Não foi possível Inserir no BTV a ONT! $errorCode $trato";
       
               //salva em LOG
