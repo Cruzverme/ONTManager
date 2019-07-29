@@ -1,9 +1,14 @@
 $('input[name="optionsRadios"]').change(function () {
     if ($('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP" || 
-    $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-IPTV" ||
-    $('input[name="optionsRadios"]:checked').val() === "VAS_IPTV-VoIP" ||
-    $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-IPTV-REAL" ||
-    $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-REAL" ) {
+        $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-IPTV" ||
+        $('input[name="optionsRadios"]:checked').val() === "VAS_IPTV-VoIP" ||
+        $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-IPTV-REAL" ||
+        $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-REAL" ||
+        $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-twoVoIP" ||
+        $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-twoVoIP-IPTV" ||
+        $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-twoVoIP-REAL" ||
+        $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-twoVoIP-IPTV-REAL")
+    {
       $('input[name="numeroTel"]').attr("required", "required");
       $('input[name="passwordTel"]').attr("required", "required");
       $('.camposTelefone').show();
@@ -17,7 +22,9 @@ $('input[name="optionsRadios"]').change(function () {
 
 $('input[name="optionsRadios"]').change(function () {
     if ($('input[name="optionsRadios"]:checked').val() === "VAS_IPTV" ||
-        $('input[name="optionsRadios"]:checked').val() === "VAS_IPTV-VoIP" )
+        $('input[name="optionsRadios"]:checked').val() === "VAS_IPTV-VoIP" ||
+        $('input[name="optionsRadios"]:checked').val() === "VAS_IPTV-VoIP-REAL" ||
+        $('input[name="optionsRadios"]:checked').val() === "VAS_IPTV-twoVoIP" )
     {
       $('select[name="pacote"]').removeAttr("required","required");
       $('.camposPacotes').hide();
@@ -32,7 +39,9 @@ $('input[name="cgnat_status"]').change(function(){
       ($('input[name="profileVas"]').val() === "VAS_Internet-REAL" ||
       $('input[name="profileVas"]').val() === "VAS_Internet-IPTV-REAL" ||
       $('input[name="profileVas"]').val() === "VAS_Internet-VoIP-REAL" ||
-      $('input[name="profileVas"]').val() === "VAS_Internet-VoIP-IPTV-REAL") ) 
+      $('input[name="profileVas"]').val() === "VAS_Internet-VoIP-IPTV-REAL" ||
+      $('input[name="profileVas"]').val() === "VAS_Internet-twoVoIP-REAL" ||
+      $('input[name="profileVas"]').val() === "VAS_Internet-twoVoIP-IPTV-REAL") ) 
   {
     switch ($('input[name="profileVas"]').val()) {
       case 'VAS_Internet-REAL':
@@ -46,6 +55,12 @@ $('input[name="cgnat_status"]').change(function(){
         break;
       case 'VAS_Internet-VoIP-IPTV-REAL':
         $('input[name="profileVas"]').val('VAS_Internet-VoIP-IPTV')
+        break;
+      case 'VAS_Internet-twoVoIP-REAL':
+        $('input[name="profileVas"]').val('VAS_Internet-twoVoIP')
+        break;
+      case 'VAS_Internet-twoVoIP-IPTV-REAL':
+        $('input[name="profileVas"]').val('VAS_Internet-twoVoIP-IPTV')
         break;
       default:
         break;

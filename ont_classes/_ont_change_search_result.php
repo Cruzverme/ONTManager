@@ -133,17 +133,17 @@
                 </div>
                 <div class="radio">
                   <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios4" value="<?php echo $arrayVasProfileCGNAT[3]; ?>" <?php if($profile == "VAS_Internet-VoIP" || $profile == "VAS_Internet-VoIP-REAL") echo "checked"; ?>>INTERNET | TELEFONE
+                    <input type="radio" name="optionsRadios" id="optionsRadios4" value="<?php echo $arrayVasProfileCGNAT[3]; ?>" <?php if($profile == "VAS_Internet-VoIP" || $profile == "VAS_Internet-VoIP-REAL" || $profile == "VAS_Internet-twoVoIP" || $profile == "VAS_Internet-twoVoIP-REAL") echo "checked"; ?>>INTERNET | TELEFONE
                   </label>
                 </div>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios5" value="<?php echo $arrayVasProfileCGNAT[4]; ?>" <?php if($profile == "VAS_IPTV-VoIP") echo "checked" ; ?>> IPTV | TELEFONE
+                        <input type="radio" name="optionsRadios" id="optionsRadios5" value="<?php echo $arrayVasProfileCGNAT[4]; ?>" <?php if($profile == "VAS_IPTV-VoIP" || $profile == "VAS_IPTV-twoVoIP-REAL" || $profile == "VAS_IPTV-twoVoIP") echo "checked" ; ?>> IPTV | TELEFONE
                     </label>
                 </div>
                 <div class="radio">
                   <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios6" value="<?php echo $arrayVasProfileCGNAT[5]; ?>" <?php if($profile == "VAS_Internet-VoIP-IPTV" || $profile == "VAS_Internet-VoIP-IPTV-REAL" ) echo "checked"; ?>>INTERNET | TELEFONE | IPTV
+                    <input type="radio" name="optionsRadios" id="optionsRadios6" value="<?php echo $arrayVasProfileCGNAT[5]; ?>" <?php if($profile == "VAS_Internet-VoIP-IPTV" || $profile == "VAS_Internet-VoIP-IPTV-REAL" || $profile == "VAS_Internet-twoVoIP-IPTV" || $profile == "VAS_Internet-twoVoIP-IPTV-REAL" ) echo "checked"; ?>>INTERNET | TELEFONE | IPTV
                   </label>
                 </div>
                 <?php //codigos do cplus
@@ -289,7 +289,8 @@
             
                 <?php 
                   if( $profile == "VAS_Internet-VoIP-IPTV" || $profile == "VAS_IPTV-VoIP" || $profile == "VAS_Internet-VoIP"
-                    || $profile == "VAS_Internet-VoIP-IPTV-REAL" || $profile == "VAS_Internet-VoIP-REAL" ){
+                    || $profile == "VAS_Internet-VoIP-IPTV-REAL" || $profile == "VAS_Internet-VoIP-REAL" || $profile == "VAS_Internet-twoVoIP"
+                    || $profile == "VAS_Internet-twoVoIP-IPTV" || $profile == "VAS_Internet-twoVoIP-IPTV-REAL" || $profile == "VAS_Internet-twoVoIP-REAL" ){
                     $visivel = "style=display:visible";
                   }else{
                     $visivel = "style=display:none";
