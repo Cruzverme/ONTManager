@@ -50,9 +50,11 @@ if (!mysqli_connect_errno())
       $telPass2 = 0;
       echo "TEL TA VAZIO!";
     }else{
-      $vasProfile = str_replace("VoIP","twoVoIP",$vasProfile);
+      $vasArray = explode('-',$vasProfile);
+      if(!in_array('twoVoIP',$vasArray))
+        $vasProfile = str_replace("VoIP","twoVoIP",$vasProfile);
     }
-    echo $telNumber2;echo $telPass2;
+    
      $select_ont_info = "SELECT onu.ontID,onu.cto,onu.porta,onu.mac,onu.ip,onu.perfil,onu.service_port_iptv,onu.service_port_internet,onu.service_port_telefone,onu.equipamento,onu.pacote,ct.frame_slot_pon,ct.pon_id_fk,p.deviceName,p.olt_ip FROM ont onu 
       INNER JOIN ctos ct ON ct.serial='$serial' AND ct.caixa_atendimento= onu.cto 
       INNER JOIN pon p ON p.pon_id = ct.pon_id_fk 

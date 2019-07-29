@@ -27,6 +27,8 @@ if (!mysqli_connect_errno())
     $equipment = $_POST['equipamentos'];
     $telNumber = $_POST["numeroTel"];
     $telPass = $_POST["passwordTel"];
+    $telNumber2 = $_POST["numeroTelNovo2"];
+    $telPass2 = $_POST["passwordTelNovo2"];
     $vasProfile = $_POST["optionsRadios"];
     $porta_atendimento = $_POST["porta_atendimento"];
     $deviceName = $_POST["deviceName"];
@@ -61,6 +63,13 @@ if (!mysqli_connect_errno())
     {
       $telNumber = 0;
       $telPass = 0;
+    }
+
+    if( empty($telNumber2) && empty($telPass2) ) {
+      $telNumber2 = 0;
+      $telPass2 = 0;
+    }else{
+      $vasProfile = str_replace("VoIP","twoVoIP",$vasProfile);
     }
     
      $sql_verifica_limite = "SELECT limite_equipamentos FROM ont WHERE contrato='$contrato'";
@@ -98,8 +107,8 @@ if (!mysqli_connect_errno())
       $pacote = NULL;
      }
       
-      $sql_registra_onu = ("INSERT INTO ont (contrato, serial, cto, tel_number, tel_user, tel_password, perfil, pacote, usuario_id,equipamento,porta)
-                              VALUES ('$contrato','$serial','$cto','$telNumber','$telNumber','$telPass','$vasProfile','$pacote','$usuario','$equipment','$porta_atendimento')" );
+      $sql_registra_onu = ("INSERT INTO ont (contrato, serial, cto, tel_number, tel_user, tel_password, tel_number2, tel_user2, tel_password2, perfil, pacote, usuario_id,equipamento,porta)
+                              VALUES ('$contrato','$serial','$cto','$telNumber','$telNumber','$telPass', '$telNumber2','$telNumber2','$telPass2','$vasProfile','$pacote','$usuario','$equipment','$porta_atendimento')" );
 
       $cadastrar = mysqli_query($conectar,$sql_registra_onu);
       if ($cadastrar )               
@@ -227,7 +236,8 @@ if (!mysqli_connect_errno())
             $executa_insere_ont_id = mysqli_query($conectar,$insere_ont_id);
             ##### IPTV SERVICE PORT ######
             if($vasProfile == "VAS_IPTV" || $vasProfile== "VAS_Internet-VoIP-IPTV" || $vasProfile == "VAS_Internet-IPTV" || $vasProfile == 'VAS_IPTV-VoIP'
-              || $vasProfile== "VAS_Internet-VoIP-IPTV-REAL" || $vasProfile == "VAS_Internet-IPTV-REAL" || $vasProfile == "VAS_Internet-IPTV-CORP-IP-Bridge") ####SERVICE 
+              || $vasProfile== "VAS_Internet-VoIP-IPTV-REAL" || $vasProfile == "VAS_Internet-IPTV-REAL" || $vasProfile == "VAS_Internet-IPTV-CORP-IP-Bridge"
+              || $vasProfile == "VAS_Internet-twoVoIP-IPTV" || $vasProfile == "VAS_Internet-twoVoIP-IPTV-REAL") ####SERVICE 
             {
               $servicePortIPTV = get_service_port_iptv($deviceName,$frame,$slot,$pon,$onuID,$contrato);
 
@@ -254,7 +264,7 @@ if (!mysqli_connect_errno())
                 $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
                 mysqli_query($conectar,$sql_apagar_onu);
                 
-                if($vasProfile != "VAS_IPTV" || $vasProfile != 'VAS_IPTV-VoIP')//se for apenas iptv nao apagara o radius, pois nao existe
+                if($vasProfile != "VAS_IPTV")//se for apenas iptv nao apagara o radius, pois nao existe
                 {
                   $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial@vertv' 
                     AND attribute='Huawei-Qos-Profile-Name' ";
@@ -298,7 +308,7 @@ if (!mysqli_connect_errno())
                   $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
                   mysqli_query($conectar,$sql_apagar_onu);
                   
-                  if($vasProfile != "VAS_IPTV" || $vasProfile != 'VAS_IPTV-VoIP')//se for apenas iptv nao apagara o radius, pois nao existe
+                  if($vasProfile != "VAS_IPTV" || $vasProfile != 'VAS_IPTV-VoIP' || $vasProfile != 'VAS_IPTV-twoVoIP')//se for apenas iptv nao apagara o radius, pois nao existe
                   {
                     $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial@vertv' 
                       AND attribute='Huawei-Qos-Profile-Name' ";
@@ -353,11 +363,16 @@ if (!mysqli_connect_errno())
             
             ###INICIO TELEFONIA TL1###
             if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV" || $vasProfile == 'VAS_IPTV-VoIP' 
-              || $vasProfile == "VAS_Internet-VoIP-REAL" || $vasProfile == "VAS_Internet-VoIP-IPTV-REAL" ) //ATIVAR TELEFONIA
+              || $vasProfile == "VAS_Internet-VoIP-REAL" || $vasProfile == "VAS_Internet-VoIP-IPTV-REAL" 
+              || $vasProfile == "VAS_Internet-twoVoIP-IPTV" || $vasProfile == "VAS_Internet-twoVoIP-IPTV-REAL" || $vasProfile == "VAS_Internet-twoVoIP-REAL"
+              || $vasProfile == "VAS_IPTV-twoVoIP" ) //ATIVAR TELEFONIA
             {
               //echo "\n <br><br> DEV: $deviceName | $frame | $slot | $pon | $onuID | $telNumber | $telPass | $telNumber <br><br> \n";
-              $telefone_on = ativa_telefonia($deviceName,$frame,$slot,$pon,$onuID,$telNumber,$telPass,$telNumber);
-
+              if( $telNumber2 == 0 && $telPass2 == 0)
+                $telefone_on = ativa_telefonia($deviceName,$frame,$slot,$pon,$onuID,$telNumber,$telPass,$telNumber);
+              else
+                $telefone_on = ativa_telefonia($deviceName,$frame,$slot,$pon,$onuID,$telNumber,$telPass,$telNumber,$telNumber2,$telPass2,$telNumber2);
+              echo $telefone_on;
               $tira_ponto_virgula = explode(";",$telefone_on);
               $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
               $remove_desc = explode("ENDESC=",$check_sucesso[1]);
@@ -442,7 +457,7 @@ if (!mysqli_connect_errno())
                   $executa_insere_service_telefone = mysqli_query($conectar,$insere_service_telefone);
                   
                 }//fim service port telefonia
-                if( $vasProfile == 'VAS_IPTV-VoIP') // se for apenas IPTV e VOIP termina aqui
+                if( $vasProfile == 'VAS_IPTV-VoIP' || $vasProfile == 'VAS_IPTV-twoVoIP') // se for apenas IPTV e VOIP termina aqui
                 {
                   echo $_SESSION['menssagem'] = "Cadastrado IPTV e Telefone";
 

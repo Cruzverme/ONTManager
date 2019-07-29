@@ -164,6 +164,8 @@
         $comando_cadastra_sip = "CFG-ONTVAINDIV::DEV=$dev,FN=$frame,SN=$slot,PN=$pon,ONTID=$ontID,SIPUSERNAME_1=$userNameSIP,SIPUSERPWD_1=$userPSWSip,SIPNAME_1=$sipNameNumber:1::;";
       }else{
         $comando_cadastra_sip = "CFG-ONTVAINDIV::DEV=$dev,FN=$frame,SN=$slot,PN=$pon,ONTID=$ontID,SIPUSERNAME_1=$userNameSIP,SIPUSERPWD_1=$userPSWSip,SIPNAME_1=$sipNameNumber,SIPUSERNAME_2=$userNameSIP2,SIPUSERPWD_2=$userPSWSip2,SIPNAME_2=$sipNameNumber2:1::;";
+        echo "<br> SOU TEL : $userNameSIP2, $userPSWSip2 <br>";
+        echo $comando_cadastra_sip;
       }
       fwrite($fp,$login_command);
       fwrite($fp,$comando_cadastra_sip);
