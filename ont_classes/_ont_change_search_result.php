@@ -149,7 +149,8 @@
                 <?php //codigos do cplus
                   if($codigo == 330 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335  || $codigo == 336 || $codigo == 349
                   || $codigo == 350 || $codigo == 351 || $codigo == 352 || $codigo == 353 || $codigo == 354
-                  || $profile == "VAS_Internet-CORP-IP" || $profile == "VAS_Internet-CORP-IP-Bridge" || $profile == "VAS_Internet-IPTV-CORP-IP-Bridge")
+                  || $profile == "VAS_Internet-CORP-IP" || $profile == "VAS_Internet-CORP-IP-Bridge" || $profile == "VAS_Internet-IPTV-CORP-IP-Bridge" 
+                  || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge")
                   { echo '
                     <div class="radio">
                       <label>
@@ -166,6 +167,18 @@
                     <div class="radio">
                       <label>
                         <input type="radio" name="optionsRadios" id="optionsRadios9" value="VAS_Internet-IPTV-CORP-IP-Bridge"'; if($profile == "VAS_Internet-IPTV-CORP-IP-Bridge" ) echo "checked"; echo'>INTERNET - IP | IPTV - Modo Bridge
+                      </label>
+                    </div>';
+                  echo '
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios10" value="VAS_Internet-VoIP-IPTV-VoIP-CORP-IP-Bridge"'; if($profile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge" ) echo "checked"; echo'>INTERNET - IP | VoIP | IPTV - Modo Bridge
+                      </label>
+                    </div>';
+                  echo '
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios11" value="VAS_Internet-VoIP-IPTV-CORP-IP"'; if($profile == "VAS_Internet-IPTV-VoIP-CORP-IP" ) echo "checked"; echo'>INTERNET - IP | VoIP | IPTV
                       </label>
                     </div>';
                   }
@@ -217,13 +230,14 @@
                   if($codigo == 330 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335 || $codigo == 336 || $codigo == 349
                   || $codigo == 350 || $codigo == 351 || $codigo == 352 || $codigo == 353 || $codigo == 354)
                   {
-                    if($profile == "VAS_Internet-CORP-IP-Bridge" || $profile == "VAS_Internet-IPTV-CORP-IP-Bridge")
+                    if($profile == "VAS_Internet-CORP-IP-Bridge" || $profile == "VAS_Internet-IPTV-CORP-IP-Bridge" ||
+                      $profile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge")
                     {
                       $marcado = "checked";
                       $visivel = "style=display:visible;";
                       $visivelIP = "style=display:visible;";
                     }
-                    elseif($profile == "VAS_Internet-CORP-IP")
+                    elseif($profile == "VAS_Internet-CORP-IP" || $profile == "VAS_Internet-VoIP-IPTV-CORP-IP")
                     {
                       $marcado = "";
                       $visivel = "style=display:none;";
