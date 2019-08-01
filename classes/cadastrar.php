@@ -237,7 +237,8 @@ if (!mysqli_connect_errno())
             ##### IPTV SERVICE PORT ######
             if($vasProfile == "VAS_IPTV" || $vasProfile== "VAS_Internet-VoIP-IPTV" || $vasProfile == "VAS_Internet-IPTV" || $vasProfile == 'VAS_IPTV-VoIP'
               || $vasProfile== "VAS_Internet-VoIP-IPTV-REAL" || $vasProfile == "VAS_Internet-IPTV-REAL" || $vasProfile == "VAS_Internet-IPTV-CORP-IP-Bridge"
-              || $vasProfile == "VAS_Internet-twoVoIP-IPTV" || $vasProfile == "VAS_Internet-twoVoIP-IPTV-REAL") ####SERVICE 
+              || $vasProfile == "VAS_Internet-twoVoIP-IPTV" || $vasProfile == "VAS_Internet-twoVoIP-IPTV-REAL"
+              || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge") ####SERVICE 
             {
               $servicePortIPTV = get_service_port_iptv($deviceName,$frame,$slot,$pon,$onuID,$contrato);
 
@@ -365,7 +366,7 @@ if (!mysqli_connect_errno())
             if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV" || $vasProfile == 'VAS_IPTV-VoIP' 
               || $vasProfile == "VAS_Internet-VoIP-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-REAL" || $vasProfile == "VAS_Internet-VoIP-IPTV-REAL" 
               || $vasProfile == "VAS_Internet-twoVoIP-IPTV" || $vasProfile == "VAS_Internet-twoVoIP-IPTV-REAL" || $vasProfile == "VAS_Internet-twoVoIP-REAL"
-              || $vasProfile == "VAS_IPTV-twoVoIP" ) //ATIVAR TELEFONIA
+              || $vasProfile == "VAS_IPTV-twoVoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge" ) //ATIVAR TELEFONIA
             {
               //echo "\n <br><br> DEV: $deviceName | $frame | $slot | $pon | $onuID | $telNumber | $telPass | $telNumber <br><br> \n";
               if( $telNumber2 == 0 && $telPass2 == 0)
