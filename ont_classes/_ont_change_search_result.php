@@ -35,7 +35,7 @@
     $codigoCplus = '';
     $verificacao = 0;
 
-    $sql_consulta_perfil = "SELECT serial,pacote,tel_number,tel_password,perfil,cgnat,mac,ip FROM ont
+    $sql_consulta_perfil = "SELECT serial,pacote,tel_number,tel_password,tel_number2,tel_password2,perfil,cgnat,mac,ip,equipamento FROM ont
     WHERE contrato = '$contrato' ";
     $executa_query_perfil = mysqli_query($conectar,$sql_consulta_perfil);
     while ($ont = mysqli_fetch_array($executa_query_perfil, MYSQLI_BOTH)) 
@@ -43,13 +43,16 @@
       $pacote = $ont['pacote'];
       $numeroTel = $ont['tel_number'];
       $passwordTel = $ont['tel_password'];
+      $numeroTel2 = $ont['tel_number2'];
+      $passwordTel2 = $ont['tel_password2'];
       $profile = $ont['perfil'];
       $serial = $ont['serial'];
       $cgnat_status = $ont['cgnat'];
       $mac = $ont['mac'];
       $ip = $ont['ip'];
+      $equipamento_cliente = $ont['equipamento'];
     }
-
+    
     $sql_lista_velocidades = "SELECT nome,nomenclatura_velocidade, referencia_cplus FROM planos";
     $executa_query = mysqli_query($conectar,$sql_lista_velocidades); //pega os planos cadastrados no banco
 
@@ -130,23 +133,24 @@
                 </div>
                 <div class="radio">
                   <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios4" value="<?php echo $arrayVasProfileCGNAT[3]; ?>" <?php if($profile == "VAS_Internet-VoIP" || $profile == "VAS_Internet-VoIP-REAL") echo "checked"; ?>>INTERNET | TELEFONE
+                    <input type="radio" name="optionsRadios" id="optionsRadios4" value="<?php echo $arrayVasProfileCGNAT[3]; ?>" <?php if($profile == "VAS_Internet-VoIP" || $profile == "VAS_Internet-VoIP-REAL" || $profile == "VAS_Internet-twoVoIP" || $profile == "VAS_Internet-twoVoIP-REAL") echo "checked"; ?>>INTERNET | TELEFONE
                   </label>
                 </div>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios5" value="<?php echo $arrayVasProfileCGNAT[4]; ?>" <?php if($profile == "VAS_IPTV-VoIP") echo "checked" ; ?>> IPTV | TELEFONE
+                        <input type="radio" name="optionsRadios" id="optionsRadios5" value="<?php echo $arrayVasProfileCGNAT[4]; ?>" <?php if($profile == "VAS_IPTV-VoIP" || $profile == "VAS_IPTV-twoVoIP-REAL" || $profile == "VAS_IPTV-twoVoIP") echo "checked" ; ?>> IPTV | TELEFONE
                     </label>
                 </div>
                 <div class="radio">
                   <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios6" value="<?php echo $arrayVasProfileCGNAT[5]; ?>" <?php if($profile == "VAS_Internet-VoIP-IPTV" || $profile == "VAS_Internet-VoIP-IPTV-REAL" ) echo "checked"; ?>>INTERNET | TELEFONE | IPTV
+                    <input type="radio" name="optionsRadios" id="optionsRadios6" value="<?php echo $arrayVasProfileCGNAT[5]; ?>" <?php if($profile == "VAS_Internet-VoIP-IPTV" || $profile == "VAS_Internet-VoIP-IPTV-REAL" || $profile == "VAS_Internet-twoVoIP-IPTV" || $profile == "VAS_Internet-twoVoIP-IPTV-REAL" ) echo "checked"; ?>>INTERNET | TELEFONE | IPTV
                   </label>
                 </div>
                 <?php //codigos do cplus
                   if($codigo == 330 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335  || $codigo == 336 || $codigo == 349
                   || $codigo == 350 || $codigo == 351 || $codigo == 352 || $codigo == 353 || $codigo == 354
-                  || $profile == "VAS_Internet-CORP-IP" || $profile == "VAS_Internet-CORP-IP-Bridge" || $profile == "VAS_Internet-IPTV-CORP-IP-Bridge")
+                  || $profile == "VAS_Internet-CORP-IP" || $profile == "VAS_Internet-CORP-IP-Bridge" || $profile == "VAS_Internet-IPTV-CORP-IP-Bridge" 
+                  || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge")
                   { echo '
                     <div class="radio">
                       <label>
@@ -163,6 +167,18 @@
                     <div class="radio">
                       <label>
                         <input type="radio" name="optionsRadios" id="optionsRadios9" value="VAS_Internet-IPTV-CORP-IP-Bridge"'; if($profile == "VAS_Internet-IPTV-CORP-IP-Bridge" ) echo "checked"; echo'>INTERNET - IP | IPTV - Modo Bridge
+                      </label>
+                    </div>';
+                  echo '
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios10" value="VAS_Internet-VoIP-IPTV-VoIP-CORP-IP-Bridge"'; if($profile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge" ) echo "checked"; echo'>INTERNET - IP | VoIP | IPTV - Modo Bridge
+                      </label>
+                    </div>';
+                  echo '
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios11" value="VAS_Internet-VoIP-IPTV-CORP-IP"'; if($profile == "VAS_Internet-IPTV-VoIP-CORP-IP" ) echo "checked"; echo'>INTERNET - IP | VoIP | IPTV
                       </label>
                     </div>';
                   }
@@ -214,13 +230,14 @@
                   if($codigo == 330 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335 || $codigo == 336 || $codigo == 349
                   || $codigo == 350 || $codigo == 351 || $codigo == 352 || $codigo == 353 || $codigo == 354)
                   {
-                    if($profile == "VAS_Internet-CORP-IP-Bridge" || $profile == "VAS_Internet-IPTV-CORP-IP-Bridge")
+                    if($profile == "VAS_Internet-CORP-IP-Bridge" || $profile == "VAS_Internet-IPTV-CORP-IP-Bridge" ||
+                      $profile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge")
                     {
                       $marcado = "checked";
                       $visivel = "style=display:visible;";
                       $visivelIP = "style=display:visible;";
                     }
-                    elseif($profile == "VAS_Internet-CORP-IP")
+                    elseif($profile == "VAS_Internet-CORP-IP" || $profile == "VAS_Internet-VoIP-IPTV-CORP-IP")
                     {
                       $marcado = "";
                       $visivel = "style=display:none;";
@@ -265,10 +282,29 @@
                           <input type=hidden name=ipFixo value=NULL>";
                   }
                 ?>
-
+                <!-- model -->
+                <div class="form-group">
+                  <label>Equipamento</label>
+                  <select id="equipamentoID" class="form-control" name="equipamentos">
+                    <?php 
+                      $sql_consulta_equipamentos = "SELECT * FROM equipamentos";
+                      $executa_query_equipamentos = mysqli_query($conectar,$sql_consulta_equipamentos);
+                      while ($equipamentos = mysqli_fetch_array($executa_query_equipamentos, MYSQLI_BOTH)) 
+                      {
+                        echo "<option value=$equipamentos[modelo]"; 
+                          $equipamento_cliente == $equipamentos['modelo']? print " selected" : "" ; 
+                        echo "> $equipamentos[modelo]";
+                        
+                        echo "</option>";
+                      }
+                    ?>
+                  </select>
+                </div>
+            
                 <?php 
                   if( $profile == "VAS_Internet-VoIP-IPTV" || $profile == "VAS_IPTV-VoIP" || $profile == "VAS_Internet-VoIP"
-                    || $profile == "VAS_Internet-VoIP-IPTV-REAL" || $profile == "VAS_Internet-VoIP-REAL" ){
+                    || $profile == "VAS_Internet-VoIP-IPTV-REAL" || $profile == "VAS_Internet-VoIP-REAL" || $profile == "VAS_Internet-twoVoIP"
+                    || $profile == "VAS_Internet-twoVoIP-IPTV" || $profile == "VAS_Internet-twoVoIP-IPTV-REAL" || $profile == "VAS_Internet-twoVoIP-REAL" ){
                     $visivel = "style=display:visible";
                   }else{
                     $visivel = "style=display:none";
@@ -276,18 +312,37 @@
                     
                     echo "
                     <div class='camposTelefone' $visivel>
-                    <div class='form-group'>
-                      <label>Telefone</label>
-                      <input class='form-control' placeholder='Telefone' name='numeroTelNovo' type='text' value='$numeroTel' autofocus>
-                    </div> 
-                    <div class='form-group'>
-                      <label>Senha do Telefone</label>
-                      <input class='form-control' placeholder='Senha do Telefone' name='passwordTelNovo' type='text' value='$passwordTel' autofocus>
-                    </div>
-                    </div>
-                    ";
+                      <div class='form-group'>
+                        <label>Telefone</label>
+                        <input class='form-control' placeholder='Telefone' name='numeroTelNovo' type='text' value='$numeroTel' autofocus>
+                      </div>
+                      <div class='form-group'>
+                        <label>Senha do Telefone</label>
+                        <input class='form-control' placeholder='Senha do Telefone' name='passwordTelNovo' type='text' value='$passwordTel' autofocus>
+                      </div>";
+                      if($equipamento_cliente == "EG8245H5"){
+                        echo "
+                        <div id=tel2_user class='form-group'>
+                          <label>Telefone</label>
+                          <input class='form-control' placeholder='Segundo Telefone' name='numeroTelNovo2' type='text' value='$numeroTel2' autofocus>
+                        </div>";
+                        echo "
+                        <div id=tel2_pass class='form-group'>
+                          <label>Senha do Telefone</label>
+                          <input class='form-control' placeholder='Senha do Segundo Telefone' name='passwordTelNovo2' type='text' value='$passwordTel2' autofocus>
+                        </div>";
+                      }else{
+                        echo"  
+                          <div id=tel2_user class='form-group'></div>
+                          <div id=tel2_pass class='form-group'></div>
+                        ";
+                      }
+                    echo "
+                    </div>";
                   //}  
                 ?>
+
+                
 
                 <button class="btn btn-lg btn-success btn-block">Alterar</button>
               </form>

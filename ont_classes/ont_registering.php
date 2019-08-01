@@ -211,6 +211,11 @@
                         <input class="form-control" placeholder="Senha do Telefone" name="passwordTel" type="text" autofocus>
                       </div>
                       
+                      <div id=tel2_user class='form-group'>
+                      </div>
+                      
+                      <div id=tel2_pass class='form-group'>
+                      </div>                      
                     </div>
                 </fieldset>
                 <button class="btn btn-lg btn-success btn-block">Cadastrar</button>

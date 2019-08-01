@@ -1,9 +1,14 @@
 $('input[name="optionsRadios"]').change(function () {
     if ($('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP" || 
-    $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-IPTV" ||
-    $('input[name="optionsRadios"]:checked').val() === "VAS_IPTV-VoIP" ||
-    $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-IPTV-REAL" ||
-    $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-REAL" ) {
+        $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-IPTV" ||
+        $('input[name="optionsRadios"]:checked').val() === "VAS_IPTV-VoIP" ||
+        $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-IPTV-REAL" ||
+        $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-REAL" ||
+        $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-twoVoIP" ||
+        $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-twoVoIP-IPTV" ||
+        $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-twoVoIP-REAL" ||
+        $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-twoVoIP-IPTV-REAL")
+    {
       $('input[name="numeroTel"]').attr("required", "required");
       $('input[name="passwordTel"]').attr("required", "required");
       $('.camposTelefone').show();
@@ -17,7 +22,9 @@ $('input[name="optionsRadios"]').change(function () {
 
 $('input[name="optionsRadios"]').change(function () {
     if ($('input[name="optionsRadios"]:checked').val() === "VAS_IPTV" ||
-        $('input[name="optionsRadios"]:checked').val() === "VAS_IPTV-VoIP" )
+        $('input[name="optionsRadios"]:checked').val() === "VAS_IPTV-VoIP" ||
+        $('input[name="optionsRadios"]:checked').val() === "VAS_IPTV-VoIP-REAL" ||
+        $('input[name="optionsRadios"]:checked').val() === "VAS_IPTV-twoVoIP" )
     {
       $('select[name="pacote"]').removeAttr("required","required");
       $('.camposPacotes').hide();
@@ -32,7 +39,9 @@ $('input[name="cgnat_status"]').change(function(){
       ($('input[name="profileVas"]').val() === "VAS_Internet-REAL" ||
       $('input[name="profileVas"]').val() === "VAS_Internet-IPTV-REAL" ||
       $('input[name="profileVas"]').val() === "VAS_Internet-VoIP-REAL" ||
-      $('input[name="profileVas"]').val() === "VAS_Internet-VoIP-IPTV-REAL") ) 
+      $('input[name="profileVas"]').val() === "VAS_Internet-VoIP-IPTV-REAL" ||
+      $('input[name="profileVas"]').val() === "VAS_Internet-twoVoIP-REAL" ||
+      $('input[name="profileVas"]').val() === "VAS_Internet-twoVoIP-IPTV-REAL") ) 
   {
     switch ($('input[name="profileVas"]').val()) {
       case 'VAS_Internet-REAL':
@@ -46,6 +55,12 @@ $('input[name="cgnat_status"]').change(function(){
         break;
       case 'VAS_Internet-VoIP-IPTV-REAL':
         $('input[name="profileVas"]').val('VAS_Internet-VoIP-IPTV')
+        break;
+      case 'VAS_Internet-twoVoIP-REAL':
+        $('input[name="profileVas"]').val('VAS_Internet-twoVoIP')
+        break;
+      case 'VAS_Internet-twoVoIP-IPTV-REAL':
+        $('input[name="profileVas"]').val('VAS_Internet-twoVoIP-IPTV')
         break;
       default:
         break;
@@ -77,6 +92,24 @@ $('input[name="cgnat_status"]').change(function(){
     $('#optionsRadios3').val("VAS_Internet-IPTV-REAL")
     $('#optionsRadios4').val("VAS_Internet-VoIP-REAL")
     $('#optionsRadios6').val("VAS_Internet-VoIP-IPTV-REAL")
+  }
+});
+
+$('select[name="equipamentos"]').change(function(){
+  var second_phone_user = $("#tel2_user");
+  var second_phone_pass = $("#tel2_pass");
+  if($('select[name="equipamentos"] option:selected').val() === "EG8245H5" ) {
+    second_phone_user.append(
+                              "<label>Telefone</label>" +
+                              "<input class='form-control' placeholder='Segundo Telefone' name='numeroTelNovo2' type='text' autofocus>"
+                            );
+    second_phone_pass.append(
+                              "<label>Senha do Telefone</label>" +
+                              "<input class='form-control' placeholder='Senha do Segundo Telefone' name='passwordTelNovo2' type='text' autofocus>"
+                            );                           
+  }else{
+    second_phone_user.val() === ""? second_phone_user.empty() : "";
+    second_phone_pass.val() === ""? second_phone_pass.empty() : "";
   }
 });
 
@@ -130,7 +163,9 @@ $('input[name="modo_bridge"]').change(function () {
 
 $('input[name="optionsRadios"]').change(function () {
   if($('input[name="optionsRadios"]:checked').val() === "VAS_Internet-CORP-IP-Bridge" ||
-      $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-IPTV-CORP-IP-Bridge")
+      $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-IPTV-CORP-IP-Bridge" ||
+      $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-CORP-IP-Bridge" ||
+      $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge" )
   {
     $("input[name='modo_bridge']").attr('checked',true);
     $(".bridge").show();
@@ -144,8 +179,12 @@ $('input[name="optionsRadios"]').change(function () {
 
 $('input[name="optionsRadios"]').change(function(){
   if($('input[name="optionsRadios"]:checked').val() === "VAS_Internet-CORP-IP" ||
+      $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-CORP-IP" ||
       $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-CORP-IP-Bridge" ||
-      $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-IPTV-CORP-IP-Bridge" )
+      $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-IPTV-CORP-IP-Bridge" ||
+      $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-CORP-IP-Bridge" ||
+      $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge" ||
+      $('input[name="optionsRadios"]:checked').val() === "VAS_Internet-VoIP-IPTV-CORP-IP" )
   {
      $(".ipFixoSelector").show();
   }else{
