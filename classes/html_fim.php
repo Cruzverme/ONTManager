@@ -30,6 +30,9 @@ echo '
 
         <!-- Metis Menu Plugin JavaScript -->
         <script src="../vendor/vertv/vertv.js"></script>
+
+        <!--JS Interno -->
+        <script src="./js/vertv_interno.js"></script>
         
     </body>
 </html>

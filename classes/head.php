@@ -24,10 +24,15 @@
     <!-- VERTV CSS -->
     <link href="../vendor/vertv/vertv.css" rel="stylesheet">
 
+    <!--CSS Interno -->
+    <script src="./css/vertv_interno.css"></script>
+    
     <!-- MetisMenu CSS -->
     <!-- <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">-->
 
     <!-- Custom CSS -->
     <!-- <link href="../dist/css/sb-admin-2.css" rel="stylesheet"> -->
+
+        
   ';
 ?>
