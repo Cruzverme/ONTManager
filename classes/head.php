@@ -25,7 +25,7 @@
     <link href="../vendor/vertv/vertv.css" rel="stylesheet">
 
     <!--CSS Interno -->
-    <script src="./css/vertv_interno.css"></script>
+    <link href="./css/vertv_interno.css" rel="stylesheet"></link>
     
     <!-- MetisMenu CSS -->
     <!-- <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">-->

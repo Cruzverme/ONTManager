@@ -4,6 +4,9 @@
   {
     switch($errorCode)
     {
+      case '1615003666':
+        return "VasProfile Não Existe!";
+        break;
       case '2686058498':
         return "Informação Faltando";
         break;

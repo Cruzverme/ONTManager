@@ -19,13 +19,13 @@
   $cto = filter_input(INPUT_POST,'cto');
   $device = filter_input(INPUT_POST,'device');
   $contrato = filter_input(INPUT_POST,'contrato');
-  $designacao_circuito = filter_input(INPUT_POST,'designacao');
+  $designacao = filter_input(INPUT_POST,'designacao');
   $vlan_associada = filter_input(INPUT_POST,'vlan_number');
 
 
   if(!empty($vlan_associada))
   {
-    $designacao_circuito = "$designacao_circuito-$vlan_associada";
+    $designacao = "$designacao-$vlan_associada";
   }
     
 
@@ -35,7 +35,7 @@
     echo '
       <script language= "JavaScript">
         alert("Contrato Inexistente ou Cancelado");
-        location.href="../ont_classes/ont_register.php";
+        location.href="../ont_corp/select_cto.php";
       </script>
     ';
   }
@@ -56,12 +56,12 @@
           </div>
           <div class="panel-body">
           <fieldset>
-              <legend>Informações</legend>
-                <p><?php echo "PORTA: $porta_selecionado | OLT: $device | FRAME: $frame | SLOT: $slot | PON: $pon | CTO: $cto | DESIGNAÇÃO OLT: $designacao_circuito";?></p>
+            <legend>Informações</legend>
+              <p><?php echo "PORTA: $porta_selecionado | OLT: $device | FRAME: $frame | SLOT: $slot | PON: $pon | CTO: $cto | DESIGNAÇÃO OLT: $designacao";?></p>
           </fieldset>
           </div>
           <div class="panel-body">
-            <form role="form" action="../classes/cadastrar_corporativo.php" method="post">
+            <form role="form" method="post"> <!--action="../classes/cadastrar_corporativo.php" -->
               <fieldset class="check-planos">
                   <div class="form-group">
                     <legend>Selecione o Plano</legend>
@@ -99,7 +99,7 @@
                   
                   <div class="form-group">
                     <label>VAS Profile</label>
-                    <input class="form-control" name="vasProfile" value='<?php echo "VAS_L2L-$designacao_circuito";?>'type="text" readonly>
+                    <input class="form-control" name="vasProfile" value='<?php echo "VAS_L2L-$designacao";?>'type="text" readonly>
                   </div>
                   
                   <div class="form-group">
@@ -210,13 +210,14 @@
                     
                   </div>
               </fieldset>
-              <button class="btn btn-lg btn-success btn-block">Cadastrar</button>
+              <button class="btn btn-lg btn-success btn-block" type="button" onclick="cadastrar_corporativo();">Cadastrar</button>
             </form>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <div class="modal modal-espera"></div>
 </div>
 
 <?php
