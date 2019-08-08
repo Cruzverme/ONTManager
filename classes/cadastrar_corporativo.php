@@ -29,6 +29,7 @@
   $lanToLan = filter_input(INPUT_POST,"vlan_check");
   $iptv = filter_input(INPUT_POST,"iptv");
   $voip = filter_input(INPUT_POST,"voip");
+  $modo_bridge = filter_input(INPUT_POST,'modo_bridge');
 
   ## ALIAS DO ASSINANTE PARA U2000
   $nomeAlias = str_replace(" ","_",$nome);
@@ -76,52 +77,145 @@
 
     if($cadastrar)
     {
-      array_push($array_process_result,"Cadastrado no Banco Local");
+      array_push($array_process_result,"Cadastrado no Banco Local $designacao");
 
-      if($internet == "Internet")
+      $sql_atualiza_limite = "UPDATE ont SET limite_equipamentos=0 WHERE contrato = $contrato";
+      $diminui_limite = mysqli_query($conectar,$sql_atualiza_limite);
+
+      ####### CADASTRA A ONT NO U2000 ############
+      $ontID = cadastrar_ont($device,$frame,$slot,$pon,$contrato,$nomeAlias,$cto,$porta_selecionado,$serial_number,$modelo_ont,$vasProfile,null,$designacao);
+      
+      $onuID = NULL; //zera ONUID para evitar problema de cash.
+      
+      sleep(1); //dorme para processar
+
+      $tira_ponto_virgula = explode(";",$ontID);
+      $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
+      $remove_desc = explode("ENDESC=",$check_sucesso[1]);
+      $errorCode = trim($remove_desc[0]);
+      if($errorCode != "0")
       {
-        $sql_atualiza_limite = "UPDATE ont SET limite_equipamentos=0 WHERE contrato = $contrato";
-        $diminui_limite = mysqli_query($conectar,$sql_atualiza_limite);
+        $trato = tratar_errors($errorCode);
+        array_push($array_process_result,"!!!! Houve erro ao inserir a ONT no u2000: $trato !!!!");
 
-        ####### CADASTRA A ONT NO U2000 ############
-        $ontID = cadastrar_ont($device,$frame,$slot,$pon,$contrato,$nomeAlias,$cto,$porta_selecionado,$serial_number,$modelo_ont,$vasProfile);
-        echo "$device,$frame,$slot,$pon,$contrato,$nomeAlias,$cto,$porta_selecionado,$serial_number,$modelo_ont,$vasProfile";
-        $onuID = NULL; //zera ONUID para evitar problema de cash.
-        
-        sleep(1); //dorme para processar
+        //se der erro ele irá apagar o registro salvo na tabela local ont
+        $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial_number'" );
+        mysqli_query($conectar,$sql_apagar_onu);
 
-        $tira_ponto_virgula = explode(";",$ontID);
-        $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
-        $remove_desc = explode("ENDESC=",$check_sucesso[1]);
-        $errorCode = trim($remove_desc[0]);
-        if($errorCode != "0")
+        array_push($array_process_result,"Removido do Banco Local!");
+      }else{
+        array_push($array_process_result,"ONT Adicionada ao U2000!");
+
+      ########## PEGANDO ID DA ONT PARA SALVAR ############
+        $remove_barras_para_pegar_id = explode("---------------------------",$tira_ponto_virgula[1]);
+        $filtra_espaco = explode("\r\n",$remove_barras_para_pegar_id[1]);
+        $pega_id = explode("	",$filtra_espaco[2]);//posicao 4 será sempre o ONTID
+        $onuID=trim($pega_id[4]);
+
+        $insere_ont_id = "UPDATE ont SET ontID='$onuID' WHERE serial = '$serial_number'";
+        $executa_insere_ont_id = mysqli_query($conectar,$insere_ont_id);
+
+        array_push($array_process_result,"Inserido ID da ONT!");
+
+      #### SELECT OLT IP ####
+        $sql_pega_olt_ip = "SELECT olt_ip FROM pon WHERE deviceName='$device'";
+        $executa_pega_olt_ip = mysqli_query($conectar,$sql_pega_olt_ip);
+        while ($ip = mysqli_fetch_array($executa_pega_olt_ip, MYSQLI_BOTH))
         {
-          $trato = tratar_errors($errorCode);
-          array_push($array_process_result,"!!!! Houve erro ao inserir a ONT no u2000: $trato !!!!");
+          $ip_olt = $ip['olt_ip'];
+        }
 
-          //se der erro ele irá apagar o registro salvo na tabela local ont
-          $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial_number'" );
-          mysqli_query($conectar,$sql_apagar_onu);
+    ############ INICIO DA ATIVACAO DOS SERVIÇOS #######
+        if($lanToLan == "l2l")
+        {
+          array_push($array_process_result,"Lan to Lan");
 
-          array_push($array_process_result,"Removido do Banco Local!");
-        }else{
-          array_push($array_process_result,"ONT Adicionada ao U2000!");
+        ######## ADICIONA A ONT NO RADIUS PARA PEGAR BANDA E IP ########
+          $insere_ont_radius_username = "INSERT INTO radcheck( username, attribute, op, value)
+              VALUES ( '2500/$slot/$pon/$serial_number@vertv', 'User-Name', ':=', '2500/$slot/$pon/$serial_number@vertv' )";
+
+          $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value)
+              VALUES ( '2500/$slot/$pon/$serial_number@vertv', 'User-Password', ':=', 'vlan' )";
+
+          $executa_query_username= mysqli_query($conectar_radius,$insere_ont_radius_username);
+          $executa_query_password= mysqli_query($conectar_radius,$insere_ont_radius_password);
+          
+          if($executa_query_username && $executa_query_password)
+            array_push($array_process_result,"ONT inserida no Radius IP Gerencia!");
+          else
+          {
+            $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/$pon/$serial_number@vertv' ";
+            $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
+            
+            array_push($array_process_result,"Removido do Radius");
+          }
         }
         
-        #array_push($array_process_result,"Internet");
-        #array_push($array_process_result,"Internet");
-        #array_push($array_process_result,"Internet");
+        if($internet == "Internet"){          
+        
+        ############### INSERE A BANDA NO RADIUS ################
+          $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
+              VALUES ( '2500/$slot/$pon/$serial_number@vertv', 'Huawei-Qos-Profile-Name', ':=', '$pacote_internet' )";
+          
+          $executa_query_qos_profile= mysqli_query($conectar_radius,$insere_ont_radius_qos_profile);
+          $executa_query_profile_ip_fixo = true;
+
+          if($executa_query_username && $executa_query_profile_ip_fixo) 
+          {
+            array_push($array_process_result,"ONT inserida Banda no Radius!");
+
+            $servicePortInternet = get_service_port_internet($device,$frame,$slot,$pon,$onuID,$contrato,$vasProfile,$modo_bridge);
+            $tira_ponto_virgula = explode(";",$servicePortInternet);
+            $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
+            $remove_desc = explode("ENDESC=",$check_sucesso[1]);
+            $errorCode = trim($remove_desc[0]);
+            if($errorCode != "0") //se der erro na service port internet
+            {
+              $trato = tratar_errors($errorCode);
+
+              //se der erro ele irá apagar o registro salvo na tabela local ont
+              $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial_number'" );
+              mysqli_query($conectar,$sql_apagar_onu);
+
+              $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial_number@vertv' 
+                AND attribute='Huawei-Qos-Profile-Name' ";
+              mysqli_query($conectar_radius,$deletar_onu_radius_banda);
+
+              deletar_onu_2000($device,$frame,$slot,$pon,$onuID,$ip_olt,$servicePortIPTV);
+            }else{
+              $remove_barras_para_pegar_id = explode("--------------",$tira_ponto_virgula[1]);
+              $pegar_servicePorta_ID = explode("\r\n",$remove_barras_para_pegar_id[1]);
+              $pega_id = explode("	",$pegar_servicePorta_ID[2]);//posicao 4 será sempre o ONTID
+              
+              $servicePortInternetID= $pega_id[0] - 1;
+              
+              array_push($array_process_result,"Service Port de Internet Criada $servicePortInternetID!");
+
+              $insere_service_internet = "UPDATE ont SET service_port_internet=$servicePortInternetID WHERE serial = '$serial_number'";
+              $executa_insere_service_internet = mysqli_query($conectar,$insere_service_internet);
+
+              array_push($array_process_result,"Internet Cadastrada!");
+            }
+          }else{
+            array_push($array_process_result,"Ocorreu um erro ao Inserir no Radius!");
+
+            $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial_number@vertv' 
+              AND attribute='Huawei-Qos-Profile-Name' ";
+            $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
+
+            array_push($array_process_result,"Removido do Radius");
+          }
+          
+        }
+        if($iptv == "IPTV") {
+          array_push($array_process_result,"Selecione o IPTV");
+        }
+        if($voip == "Telefone") {
+          array_push($array_process_result,"Telefone VOIP");
+        }
       }
+
       
-      if($lanToLan == "l2l"){
-        array_push($array_process_result,"Lan to Lan");
-      }
-      if($iptv == "IPTV") {
-        array_push($array_process_result,"Selecione o IPTV");
-      }
-      if($voip == "Telefone") {
-        array_push($array_process_result,"Telefone VOIP");
-      }
     
     }else{
       echo "OCORREU UM PROBLEMA AO CADASTRAR A ONT NO BANCO LOCAL";

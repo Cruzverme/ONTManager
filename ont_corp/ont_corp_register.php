@@ -194,6 +194,7 @@
                           <input type=hidden name=pon value=$pon>
                           <input type=hidden name=caixa_atendimento_select value=$cto>
                           <input type=hidden name=deviceName value=$device>
+                          <input type=hidden name=designacao value=$designacao>
                     ";
                   ?>
               
