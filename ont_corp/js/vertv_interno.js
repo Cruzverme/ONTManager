@@ -46,7 +46,7 @@ function cadastrar_corporativo(){
   device= $("input[name='deviceName']").val(),
   contrato= $("input[name='contrato']").val(),
   designacao= $("input[name='designacao']").val(),
-  vlan_associada= $("input[name='vlan_number']").val(),
+  vlan_number= $("input[name='vlan_number']").val(),
   internet_check = $("input[name='internet_checked']:checked").val(),
   vlan_check = $("input[name='l_to_l']:checked").val(),
   iptv = $("input[name='iptv_checked']:checked").val(),
@@ -55,7 +55,7 @@ function cadastrar_corporativo(){
   $.post('../classes/cadastrar_corporativo.php',
   {nome,vasProfile,serial,pacote_internet,
     modelo_ont,sip_number,sip_password,porta_atendimento,frame,slot,pon,cto,device: device,contrato,
-    designacao,vlan_number: vlan_associada,internet_check,vlan_check,iptv,voip},function(msg_retorno)
+    designacao,vlan_number,internet_check,vlan_check,iptv,voip},function(msg_retorno)
     {
       
       alert(msg_retorno)

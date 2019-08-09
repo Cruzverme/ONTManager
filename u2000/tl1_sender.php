@@ -210,7 +210,7 @@
       // {
       //   return $errorCode;
       // }else
-      // {     
+      // {
         if($servPortIPTV != NULL)
         {
           deleta_btv_iptv($dev,$frame,$slot,$pon,$ontID);
@@ -263,6 +263,32 @@
        $retornoTL1 = fread($fp,2024);
        return $retornoTL1;
       }  
+      fclose($fp);
+    }
+  }
+
+  function get_service_port_l2l($dev,$frame,$slot,$pon,$ontID,$contrato,$vlanltwol)
+  {
+    include "telnet_config.php";
+    $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
+
+    if(!$fp) 
+    {
+      echo "ERROR: $errno - $errstr<br />\n";
+    }else{
+      $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
+    
+      $comando = "CRT-SERVICEPORT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:3::VLANID=$vlanltwol,SVPID=LAN_TO_LAN-$contrato,ONTID=$ontID,GEMPORTID=9,UV=$vlanltwol,RETURID=TRUE;";
+        
+      fwrite($fp,$login_command);
+      fwrite($fp,$comando);
+
+      stream_set_timeout($fp,8);
+      while($c = fgetc($fp)!==false)
+      {
+        $retornoTL1 = fread($fp,2024);
+        return $retornoTL1;
+      }
       fclose($fp);
     }
   }

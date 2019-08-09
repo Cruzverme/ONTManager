@@ -195,6 +195,7 @@
                           <input type=hidden name=caixa_atendimento_select value=$cto>
                           <input type=hidden name=deviceName value=$device>
                           <input type=hidden name=designacao value=$designacao>
+                          <input type=hidden name=vlan_number value=$vlan_associada>
                     ";
                   ?>
               
