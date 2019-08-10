@@ -312,7 +312,84 @@
     ######################################### I P T V ##################################################
 
         if($iptv == "IPTV") {
-          array_push($array_process_result,"Selecione o IPTV");
+          array_push($array_process_result,"###I P T V###");
+
+          ####### ATIVA SERVICE PORT IPTV ########
+          $servicePortIPTV = get_service_port_iptv($device,$frame,$slot,$pon,$onuID,$contrato);
+
+          $tira_ponto_virgula = explode(";",$servicePortIPTV);
+          $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
+          $remove_desc = explode("ENDESC=",$check_sucesso[1]);
+          $errorCode = trim($remove_desc[0]);
+          if($errorCode != "0") //se der erro na service port iptv
+          {
+            $trato = tratar_errors($errorCode);
+
+            array_push($array_process_result,"Houve erro Inserir a Service Port de IPTV: $trato");
+
+            //se der erro ele irá apagar o registro salvo na tabela local ont
+            $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial_number'" );
+            mysqli_query($conectar,$sql_apagar_onu);
+            array_push($array_process_result,"Removido do Banco Local");
+            
+            $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial_number@vertv' 
+              AND attribute='Huawei-Qos-Profile-Name' ";
+            $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
+
+            $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/$pon/$serial_number@vertv' ";
+            $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
+            array_push($array_process_result,"Removido do Radius");
+
+            deletar_onu_2000($device,$frame,$slot,$pon,$onuID,$ip_olt,$servicePortIPTV);
+            array_push($array_process_result,"Removido do do u2000");
+
+          }else{
+            $remove_barras_para_pegar_id = explode("--------------",$tira_ponto_virgula[1]);
+            $pegar_servicePorta_ID = explode("\r\n",$remove_barras_para_pegar_id[1]);
+            
+            $pega_id = explode("	",$pegar_servicePorta_ID[2]);//posicao 4 será sempre o ONTID
+            
+            $servicePortIptvID= $pega_id[0] - 1;
+            array_push($array_process_result,"Service Port IPTV Criado: $servicePortIptvID");
+            
+            $insere_service_iptv = "UPDATE ont SET service_port_iptv='$servicePortIptvID' WHERE serial = '$serial_number'";
+            $executa_insere_service_iptv = mysqli_query($conectar,$insere_service_iptv);
+            array_push($array_process_result,"Atualizado Service Port na ONT");
+            
+            ### BTV ###
+            $btv_olt = insere_btv_iptv($device,$frame,$slot,$pon,$onuID);
+            $tira_ponto_virgula = explode(";",$btv_olt);
+            $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
+            $remove_desc = explode("ENDESC=",$check_sucesso[1]);
+            $errorCode = trim($remove_desc[0]);
+
+            if($errorCode != "0") //se der erro na btv iptv
+            {
+              $trato = tratar_errors($errorCode);
+
+              array_push($array_process_result,"Houve erro ao criar o BTV: $trato");
+
+              //se der erro ele irá apagar o registro salvo na tabela local ont
+              $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial_number'" );
+              mysqli_query($conectar,$sql_apagar_onu);
+              array_push($array_process_result,"Removido do Banco Local");
+              
+              $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial_number@vertv' 
+                AND attribute='Huawei-Qos-Profile-Name' ";
+              $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
+
+              $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/$pon/$serial_number@vertv' ";
+              $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
+              array_push($array_process_result,"Removido do Radius");
+
+              deletar_onu_2000($device,$frame,$slot,$pon,$onuID,$ip_olt,$servicePortIPTV);
+              array_push($array_process_result,"Removido do do u2000");
+
+            }else{
+              array_push($array_process_result,"BTV Criado na OLT");
+              array_push($array_process_result,"IPTV Ativada!");
+            }
+          }
         }
 
     ##################################### T E L E F O N E ##############################################    
