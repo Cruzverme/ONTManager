@@ -11,8 +11,8 @@
   $serial_number = filter_input(INPUT_POST,'serial');
   $pacote_internet = filter_input(INPUT_POST,'pacote_internet');
   $modelo_ont = filter_input(INPUT_POST,'modelo_ont');
-  $sip_number = filter_input(INPUT_POST,'numeroTel');
-  $sip_password = filter_input(INPUT_POST,'passwordTel');
+  $sip_number = filter_input(INPUT_POST,'sip_number');
+  $sip_password = filter_input(INPUT_POST,'sip_password');
   $usuario = $_SESSION["id_usuario"];
 
   $porta_selecionado = filter_input(INPUT_POST,'porta_atendimento');
@@ -52,6 +52,17 @@
   if ($limite_registro < 1 AND $limite_registro != null) 
   {
     array_push($array_process_result,"Favor, entrar em contato com o TI, para solicitar aumento de registro de equipamentos");
+
+    ##### FECHA AS CONEXOES COM OS BANCOS #####
+    mysqli_close($conectar_radius);
+    mysqli_close($conectar);
+    
+    echo "Ocorreu um Erro \r";
+    foreach($array_process_result as $result)
+    {
+      echo "$result \r";
+    }
+    exit;
   }
 
 ############### VERIFICA O MAC SE JA FOI CADASTRADO ################
@@ -62,6 +73,17 @@
   {
     $limiteONT = mysqli_fetch_array($executa_verifica_limite_ont, MYSQLI_BOTH);
     array_push($array_process_result,"MAC Já Cadastrado no contrato $limiteONT[contrato]");
+
+    ##### FECHA AS CONEXOES COM OS BANCOS #####
+    mysqli_close($conectar_radius);
+    mysqli_close($conectar);
+    
+    echo "Ocorreu um erro \r";
+    foreach($array_process_result as $result)
+    {
+      echo "$result \r";
+    }
+    exit;
   }
 
   ########## VERIFICA SE O CHECKBOX DOS SERVIÇOS FOI MARCADO  ################
@@ -395,7 +417,81 @@
     ##################################### T E L E F O N E ##############################################    
 
         if($voip == "Telefone") {
-          array_push($array_process_result,"Telefone VOIP");
+          array_push($array_process_result,"###TELEFONE###");
+          
+          #### ATIVA A POTS DO TELEFONE #####
+          $telefone_on = ativa_telefonia($device,$frame,$slot,$pon,$onuID,$sip_number,$sip_password,$sip_number);
+          $tira_ponto_virgula = explode(";",$telefone_on);
+          $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
+          $remove_desc = explode("ENDESC=",$check_sucesso[1]);
+          $errorCode = trim($remove_desc[0]);
+          if($errorCode != "0") //se der erro na ativacao da telefonia
+          {
+            $trato = tratar_errors($errorCode);
+
+            array_push($array_process_result,"Houve erro ao ativar os numeros na ONT: $trato");
+
+            //se der erro ele irá apagar o registro salvo na tabela local ont
+            $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial_number'" );
+            mysqli_query($conectar,$sql_apagar_onu);
+            array_push($array_process_result,"Removido do Banco Local");
+            
+            $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial_number@vertv' 
+              AND attribute='Huawei-Qos-Profile-Name' ";
+            $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
+
+            $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/$pon/$serial_number@vertv' ";
+            $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
+            array_push($array_process_result,"Removido do Radius");
+
+            deletar_onu_2000($device,$frame,$slot,$pon,$onuID,$ip_olt,NULL);
+            array_push($array_process_result,"Removido do do u2000");
+
+          }else{
+
+            ## INICIO SERVICE PORT TELEFONE ##
+            $servicePortTelefone = get_service_port_telefone($device,$frame,$slot,$pon,$onuID,$contrato);
+
+            $tira_ponto_virgula = explode(";",$servicePortTelefone);
+            $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
+            $remove_desc = explode("ENDESC=",$check_sucesso[1]);
+            $errorCode = trim($remove_desc[0]);
+            if($errorCode != "0") //se der erro na service port telefone
+            {
+              $trato = tratar_errors($errorCode);
+
+              array_push($array_process_result,"Houve erro ao criar a Service Port de Telefonia: $trato");
+
+              //se der erro ele irá apagar o registro salvo na tabela local ont
+              $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial_number'" );
+              mysqli_query($conectar,$sql_apagar_onu);
+              array_push($array_process_result,"Removido do Banco Local");
+              
+              $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial_number@vertv' 
+                AND attribute='Huawei-Qos-Profile-Name' ";
+              $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
+
+              $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/$pon/$serial_number@vertv' ";
+              $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
+              array_push($array_process_result,"Removido do Radius");
+
+              deletar_onu_2000($device,$frame,$slot,$pon,$onuID,$ip_olt,NULL);
+              array_push($array_process_result,"Removido do do u2000");
+            }else{
+              $remove_barras_para_pegar_id = explode("--------------",$tira_ponto_virgula[1]);
+              $pegar_servicePortTel_ID = explode("\r\n",$remove_barras_para_pegar_id[1]);
+              
+              $pega_id = explode("	",$pegar_servicePortTel_ID[2]);//posicao 4 será sempre o ONTID
+              
+              $servicePortTelefoneID= $pega_id[0] - 1; 
+              array_push($array_process_result,"Service Port Telefonia Criado: $servicePortTelefoneID");
+
+              $insere_service_telefone = "UPDATE ont SET service_port_telefone='$servicePortTelefoneID' WHERE serial = '$serial_number'";
+              $executa_insere_service_telefone = mysqli_query($conectar,$insere_service_telefone);
+              array_push($array_process_result,"Atualizado Service Port na ONT");
+            }
+
+          }
         }
       }
     }else{

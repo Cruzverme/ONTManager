@@ -57,7 +57,6 @@ function cadastrar_corporativo(){
     modelo_ont,sip_number,sip_password,porta_atendimento,frame,slot,pon,cto,device: device,contrato,
     designacao,vlan_number,internet_check,vlan_check,iptv,voip},function(msg_retorno)
     {
-      
       alert(msg_retorno)
       if(msg_retorno)
         body.removeClass("loading");
