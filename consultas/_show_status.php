@@ -102,7 +102,9 @@
       $errorCode_service_port = trim($remove_desc_service_port[0]);
       //FIM SERVICE PORT
       
-      if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV")
+      if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV" ||
+         $vasProfile == "VAS_Internet-VoIP-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-CORP-IP-Bridge" ||
+         $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge")
       {
         $status_sip = get_status_sip($device,$frame,$slot,$pon,$ontID);
         //SIP
