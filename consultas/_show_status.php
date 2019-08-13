@@ -191,7 +191,9 @@
                     echo "<td>$filtra_resultados_signal[7]Dbm</td>
                     <td>$filtra_resultados_signal[8]Dbm</td>
                     <td>$filtra_resultados_signal[13]Dbm</td>";
-                    if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV")
+                    if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV"
+                      || $vasProfile == "VAS_Internet-VoIP-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-CORP-IP-Bridge"
+                      || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge")
                     {
                       switch($filtra_resultados_sip[9])
                       {

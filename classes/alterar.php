@@ -195,13 +195,15 @@ if (!mysqli_connect_errno())
            || $vasProfile == "VAS_Internet-VoIP-IPTV-REAL" || $vasProfile == "VAS_Internet-IPTV-CORP-IP-Bridge" 
            || $vasProfile == "VAS_Internet-twoVoIP-IPTV" || $vasProfile == "VAS_Internet-twoVoIP-IPTV-REAL" 
            || $vasProfile == "VAS_Internet-twoVoIP-REAL" || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP" 
-           || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge" ) // se somente internet
+           || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge" || $vasProfile == "VAS_Internet-VoIP-CORP-IP"
+           || $vasProfile == "VAS_Internet-VoIP-CORP-IP-Bridge" ) // se somente internet
         {
           ############ INSERE RADIUS ############
 
           if($vasProfile == "VAS_Internet-CORP-IP" || $vasProfile == "VAS_Internet-CORP-IP-Bridge" || 
               $vasProfile == "VAS_Internet-IPTV-CORP-IP-Bridge" || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP" 
-              || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge")
+              || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge" || $vasProfile == "VAS_Internet-VoIP-CORP-IP"
+              || $vasProfile == "VAS_Internet-VoIP-CORP-IP-Bridge")
           {
 
             $atualiza_mac_ip_ont = "UPDATE ont SET mac='$mac_novo',ip='$ip_novo' WHERE serial = '$serial'";
@@ -338,7 +340,8 @@ if (!mysqli_connect_errno())
           || $vasProfile == "VAS_IPTV-VoIP" || $vasProfile == "VAS_Internet-VoIP-REAL" || $vasProfile == "VAS_Internet-twoVoIP" 
           || $vasProfile == "VAS_Internet-twoVoIP-IPTV" || $vasProfile == "VAS_Internet-twoVoIP-IPTV-REAL" 
           || $vasProfile == "VAS_IPTV-twoVoIP" || $vasProfile == "VAS_Internet-twoVoIP-REAL" 
-          || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge" )
+          || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge"
+          || $vasProfile == "VAS_Internet-VoIP-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-CORP-IP-Bridge" )
         {
           
           ########## ATIVA TL1 ############
@@ -423,7 +426,8 @@ if (!mysqli_connect_errno())
                 WHERE serial = '$serial'";
                 $executa_insere_service_telefone = mysqli_query($conectar,$insere_service_telefone);
                 echo "eae";
-                if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-REAL")
+                if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-REAL" 
+                  || $vasProfile == "VAS_Internet-VoIP-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-CORP-IP-Bridge")
                 {
                   $_SESSION['menssagem'] = "Plano Alterado! Em caso de alteração de Velocidade: Consulte o Equipamento e Reinicie Para efetivar a mudança";    
                   header('Location: ../ont_classes/ont_change.php');

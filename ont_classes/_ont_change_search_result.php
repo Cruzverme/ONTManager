@@ -239,13 +239,15 @@
                   || $codigo == 350 || $codigo == 351 || $codigo == 352 || $codigo == 353 || $codigo == 354)
                   {
                     if($profile == "VAS_Internet-CORP-IP-Bridge" || $profile == "VAS_Internet-IPTV-CORP-IP-Bridge" ||
-                      $profile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge" ||  $profile == "VAS_Internet-VoIP-CORP-IP-Bridge")
+                      $profile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge" ||  $profile == "VAS_Internet-VoIP-CORP-IP-Bridge" ||
+                      $profile == "VAS_Internet-VoIP-CORP-IP-Bridge")
                     {
                       $marcado = "checked";
                       $visivel = "style=display:visible;";
                       $visivelIP = "style=display:visible;";
                     }
-                    elseif($profile == "VAS_Internet-CORP-IP" || $profile == "VAS_Internet-VoIP-IPTV-CORP-IP" || $profile == "VAS_Internet-VoIP-CORP-IP")
+                    elseif($profile == "VAS_Internet-CORP-IP" || $profile == "VAS_Internet-VoIP-IPTV-CORP-IP" || $profile == "VAS_Internet-VoIP-CORP-IP"
+                          || $profile == "VAS_Internet-VoIP-IPTV-CORP-IP")
                     {
                       $marcado = "";
                       $visivel = "style=display:none;";
