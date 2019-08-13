@@ -239,15 +239,13 @@
                   || $codigo == 350 || $codigo == 351 || $codigo == 352 || $codigo == 353 || $codigo == 354)
                   {
                     if($profile == "VAS_Internet-CORP-IP-Bridge" || $profile == "VAS_Internet-IPTV-CORP-IP-Bridge" ||
-                      $profile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge" ||  $profile == "VAS_Internet-VoIP-CORP-IP-Bridge" ||
-                      $profile == "VAS_Internet-VoIP-CORP-IP-Bridge")
+                      $profile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge" ||  $profile == "VAS_Internet-VoIP-CORP-IP-Bridge")
                     {
                       $marcado = "checked";
                       $visivel = "style=display:visible;";
                       $visivelIP = "style=display:visible;";
                     }
-                    elseif($profile == "VAS_Internet-CORP-IP" || $profile == "VAS_Internet-VoIP-IPTV-CORP-IP" || $profile == "VAS_Internet-VoIP-CORP-IP"
-                          || $profile == "VAS_Internet-VoIP-IPTV-CORP-IP")
+                    elseif($profile == "VAS_Internet-CORP-IP" || $profile == "VAS_Internet-VoIP-IPTV-CORP-IP" || $profile == "VAS_Internet-VoIP-CORP-IP")
                     {
                       $marcado = "";
                       $visivel = "style=display:none;";
@@ -274,7 +272,7 @@
                         <label>IP</label>";
                           $lista_ip = "select numero_ip from ips_valido WHERE utilizado = false";
                           $executa_ip = mysqli_query($conectar,$lista_ip);
-                          echo"<select  class=form-control name=ipFixo>";
+                          echo"<select class=form-control name=ipFixo>";
                           
                           if($ip != 'NULL')
                           {
@@ -315,7 +313,7 @@
                   if( $profile == "VAS_Internet-VoIP-IPTV" || $profile == "VAS_IPTV-VoIP" || $profile == "VAS_Internet-VoIP"
                     || $profile == "VAS_Internet-VoIP-IPTV-REAL" || $profile == "VAS_Internet-VoIP-REAL" || $profile == "VAS_Internet-twoVoIP"
                     || $profile == "VAS_Internet-twoVoIP-IPTV" || $profile == "VAS_Internet-twoVoIP-IPTV-REAL" || $profile == "VAS_Internet-twoVoIP-REAL" 
-                    || $profile == "VAS_Internet-VoIP-CORP-IP" ){
+                    || $profile == "VAS_Internet-VoIP-CORP-IP" || $profile == "VAS_Internet-VoIP-CORP-IP-Bridge"){
                     $visivel = "style=display:visible";
                   }else{
                     $visivel = "style=display:none";
