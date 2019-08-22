@@ -13,6 +13,9 @@
       case '1615331079':
         return "Contrato já existe no u2000";
         break;
+      case '2689014776':
+        return 'Serial já cadastrado no u2000';
+        break;
       case '2686058497':
         return "Erro de Sintaxe";
         break;
