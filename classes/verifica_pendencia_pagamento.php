@@ -16,7 +16,7 @@
     $execute_remove_lista_inadimplente = mysqli_query($conectar,$sql_remove_lista_inadimplente);
 
     #### contrato dos assinantes
-    $sql_assinantes_cadastrados = "SELECT contrato,status from ont";
+    $sql_assinantes_cadastrados = "SELECT contrato,status,serial from ont";
     $execute_contrato = mysqli_query($conectar,$sql_assinantes_cadastrados);
     $status_contrato_assinante = mysqli_fetch_all($execute_contrato);
     
@@ -35,7 +35,7 @@
         ##### Se tiver ont no banco cadastrado, irá realizar entrar na lista.
         if($assinante[0] == $contrato)
         {
-          $sql_insert_contrato_inadimplente = "INSERT INTO blocked_costumer (contrato,nome,inadimplente) VALUES ($contrato,'$nomeCompleto',$assinante[1])";
+          $sql_insert_contrato_inadimplente = "INSERT INTO blocked_costumer (contrato,nome,inadimplente,serial) VALUES ($contrato,'$nomeCompleto',$assinante[1],'$assinante[2]')";
           $execute_insert_contrato_inadimplente = mysqli_query($conectar,$sql_insert_contrato_inadimplente);
         }
       }
