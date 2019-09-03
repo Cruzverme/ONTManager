@@ -145,40 +145,43 @@ echo '   </head>
                       </li>';  
                   }
                   
-
+                  if($_SESSION["consulta_onts"] == 1 || $_SESSION["consulta_ctos"] == 1 || $_SESSION["consulta_relatorio_sinal"] == 1)
+                  {
+                    echo '
+                      <li>
+                        <a class="tituloSubMenu" href="#">Consultas</a>
+                        <ul class="nav" id="side-menu">';
+                          if($_SESSION["consulta_onts"] == 1)
+                          echo'  
+                              <li>
+                                <a href="../consultas/get_status.php"><i class="fa fa-info fa-fw"></i> Consulta de ONT</a>
+                              </li>';
+                          if($_SESSION["consulta_ctos"] == 1)
+                            echo '<li>
+                                    <a href="../consultas/get_info_cto.php"><i class="fa fa-info fa-fw"></i> Consulta de CTO e OLT</a>
+                                  </li>';
+                            echo'  
+                                <li>
+                                  <a href="../cto_classes/liberar_cto.php"><i class="fa fa-info fa-fw"></i> Ativar/Desativar CTO Única </a>
+                                </li>';
+                          if($_SESSION["consulta_relatorio_sinal"] == 1)
+                            echo'  
+                              <li>
+                                <a href="../consultas/relatorio_sinal_ruim.php"><i class="fa fa-bug fa-fw"></i> Relatório de Sinais </a>
+                              </li>
+                              <li>
+                                <a href="../consultas/analise_pon.php"><i class="fa fa-bug fa-fw"></i> Relatório de Sinais Por Porta Pon </a>
+                              </li>
+                            ';
+                          if($_SESSION["desativar_ativar_onu"] == 1)
+                            echo '<li>
+                                    <a href="../tarefas_automaticas/show_bloqueados.php"><i class="fa fa-bug fa-fw"></i> Clientes Inconsistentes com Cplus </a>
+                                  </li>';
+                          
+                    echo' </ul>
+                      </li>';  
+                  }
                   
-                  if($_SESSION["consulta_onts"] == 1)
-                  {
-                    echo'  
-                      <li class="tituloSubMenu">
-                        <a href="../consultas/get_status.php"><i class="fa fa-info fa-fw"></i> Consulta de ONT</a>
-                      </li>
-                    ';
-                  }
-                  if($_SESSION["consulta_ctos"] == 1)
-                  {
-                    echo'  
-                      <li class="tituloSubMenu">
-                        <a href="../consultas/get_info_cto.php"><i class="fa fa-info fa-fw"></i> Consulta de CTO e OLT</a>
-                      </li>
-                    ';
-                    echo'  
-                      <li class="tituloSubMenu">
-                        <a href="../cto_classes/liberar_cto.php"><i class="fa fa-info fa-fw"></i> Ativar/Desativar CTO Única </a>
-                      </li>
-                    ';
-                  }
-                  if($_SESSION["consulta_relatorio_sinal"] == 1)
-                  {
-                    echo'  
-                      <li class="tituloSubMenu">
-                        <a href="../consultas/relatorio_sinal_ruim.php"><i class="fa fa-bug fa-fw"></i> Relatório de Sinais </a>
-                      </li>
-                      <li class="tituloSubMenu">
-                        <a href="../consultas/analise_pon.php"><i class="fa fa-bug fa-fw"></i> Relatório de Sinais Por Porta Pon </a>
-                      </li>
-                    ';
-                  }
                   if($_SESSION["transferir_celula"] == 1)
                   {
                     echo'  

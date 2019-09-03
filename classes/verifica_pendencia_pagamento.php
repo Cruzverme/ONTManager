@@ -40,6 +40,7 @@
         }
       }
     }
+    echo "concluido";
   }else{
     echo "Não Consegui Pegar os Contratos!";
   }
