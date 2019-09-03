@@ -2,7 +2,6 @@
 <html lang="pt">
     <?php session_start(); ?>
     <head>
-
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -60,7 +59,7 @@
 
         <div id="page-wrapper" style="border-left:none">
 
-            <div class="container">
+            <!-- <div class="container"> -->
                 <div class="row">
                     <div class="login col-md-4 col-md-offset-4">
                         <div class="login-panel panel panel-default">
@@ -81,7 +80,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            <!-- </div> -->
         </div>
     </div>
 
