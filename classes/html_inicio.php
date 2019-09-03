@@ -145,7 +145,7 @@ echo '   </head>
                       </li>';  
                   }
                   
-                  if($_SESSION["consulta_onts"] == 1 || $_SESSION["consulta_ctos"] == 1 || $_SESSION["consulta_relatorio_sinal"] == 1)
+                  if($_SESSION["consulta_onts"] == 1 || $_SESSION["consulta_ctos"] == 1 || $_SESSION["consulta_relatorio_sinal"] == 1 || $_SESSION["desativar_ativar_onu"] == 1)
                   {
                     echo '
                       <li>
