@@ -436,4 +436,46 @@
     }// fim deletar
   }
 
+  function converteDataOracleMySQL($data)
+  {
+    list($dia,$mes,$ano) = explode('-',$data);
+    switch($mes)
+    {
+      case 'JAN': $mes = '01';break;
+      case 'FEB': $mes = '02';break;
+      case 'MAR': $mes = '03';break;
+      case 'APR': $mes = '04';break;
+      case 'MAY': $mes = '05';break;
+      case 'JUN': $mes = '06';break;
+      case 'JUL': $mes = '07';break;
+      case 'AUG': $mes = '08';break;
+      case 'SEP': $mes = '09';break;
+      case 'OCT': $mes = '10';break;
+      case 'NOV': $mes = '11';break;
+      case 'DEC': $mes = '12';break;
+    }
+    return "$dia/$mes/$ano";
+  }
+
+  function converteDataMySQLOracle($data)
+  {
+    list($dia,$mes,$ano) = explode('/',$data);
+    switch($mes)
+    {
+      case '01': $mes = 'JAN';break;
+      case '02': $mes = 'FEB';break;
+      case '03': $mes = 'MAR';break;
+      case '04': $mes = 'APR';break;
+      case '05': $mes = 'MAY';break;
+      case '06': $mes = 'JUN';break;
+      case '07': $mes = 'JUL';break;
+      case '08': $mes = 'AUG';break;
+      case '09': $mes = 'SEP';break;
+      case '10': $mes = 'OCT';break;
+      case '11': $mes = 'NOV';break;
+      case '12': $mes = 'DEC';break;
+    }
+    return "$dia-$mes-$ano";
+  }
+
 ?>
