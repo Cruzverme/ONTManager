@@ -3,9 +3,9 @@
   ######## este script apenas olha no ERP quem está inadimplente e renova tabela do banco 
   ######## e bloqueia quem está inadimplente
 
-  include "/var/www/html/ONTManager/db/db_config_mysql.php";
-  include "/var/www/html/ONTManager/db/db_config_radius.php";
-  include "/var/www/html/ONTManager/classes/funcoes.php";
+  include "/var/www/html/ontManager/db/db_config_mysql.php";
+  include "/var/www/html/ontManager/db/db_config_radius.php";
+  include "/var/www/html/ontManager/classes/funcoes.php";
 
   ####### PEGAR CLIENTES FTTH 
   $json_file = @file_get_contents("http://localhost/sisspc/demos/get_inadimplentes.php");
