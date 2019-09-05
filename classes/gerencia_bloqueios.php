@@ -1,8 +1,8 @@
 <?php 
 
-  include_once "../db/db_config_mysql.php";
-  include_once "../db/db_config_radius.php";
-  include_once "../u2000/tl1_sender.php";
+  include_once "/var/www/html/ONTManager/db/db_config_mysql.php";
+  include_once "/var/www/html/ONTManager/db/db_config_radius.php";
+  include_once "/var/www/html/ONTManager/u2000/tl1_sender.php";
 
   $motivo = filter_input(INPUT_POST,"motivo");
   $contrato = filter_input(INPUT_POST,"contrato");

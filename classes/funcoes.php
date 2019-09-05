@@ -1,6 +1,6 @@
 <?php 
 
-  include_once "../u2000/tl1_sender.php";
+  include_once "/var/www/html/ONTManager/u2000/tl1_sender.php";
   
 
   function checar_contrato($contrato)
@@ -476,6 +476,14 @@
       case '12': $mes = 'DEC';break;
     }
     return "$dia-$mes-$ano";
+  }
+
+  function send_to_block_unblock($motivo,$contrato,$serial)
+  {
+    $cmd = "curl -F 'motivo=$motivo' -F 'contrato=$contrato' -F 'serial=$serial' http://localhost/ONTManager/classes/gerencia_bloqueios.php";
+    $result = shell_exec($cmd);
+
+    return $result;
   }
 
 ?>
