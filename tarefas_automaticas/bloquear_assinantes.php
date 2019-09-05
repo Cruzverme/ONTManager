@@ -11,6 +11,8 @@
   $json_file = @file_get_contents("http://localhost/sisspc/demos/get_inadimplentes.php");
   $json_str = json_decode($json_file, true);
   
+  $retorno_bloqueio = "";
+
   if($json_str['success'] == 1)
   {
     ########## REMOVE LISTA ATUAL #########
