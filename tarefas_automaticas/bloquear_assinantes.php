@@ -15,8 +15,23 @@
 
   if($json_str['success'] == 1)
   {
+    ######## HTML TO EMAIL ########
+    $html = '
+          <table class="table table-hover display" id="tabelaSinais" data-link="row">
+          <thead>
+            <tr>
+              <th>Contrato</th>
+              <th>Nome</th>
+              <th>Data Vencimento</th>
+              <th>Data Bloqueio</th>
+              <th>Status</th>
+              <th>Serial</th>
+            </tr>
+          </thead>
+          <tbody>
+      ';
     ########## REMOVE LISTA ATUAL #########
-    $sql_remove_lista_inadimplente = "DELETE FROM blocked_costumer";
+    $sql_remove_lista_inadimplente = "DELETE FROM blocked_costumer_daily";
     $execute_remove_lista_inadimplente = mysqli_query($conectar,$sql_remove_lista_inadimplente);
 
     #### contrato dos assinantes
@@ -43,26 +58,43 @@
         {
           if(!in_array($assinante[0],$lista))
           {
+            $retorno_bloqueio = "";
             ### ADICIONA A LISTA PARA QUE NAO SEJA INSERIDO NOVAMENTE
             array_push($lista,$contrato);
             
-            $sql_insert_contrato_inadimplente = "INSERT INTO blocked_costumer (contrato,nome,inadimplente,serial,dataVencimento) VALUES ($contrato,'$nomeCompleto',$assinante[1],'$assinante[2]','$data_vencimento')";
+            $sql_insert_contrato_inadimplente = "INSERT INTO blocked_costumer_daily (contrato,nome,inadimplente,serial,dataVencimento) VALUES ($contrato,'$nomeCompleto',$assinante[1],'$assinante[2]','$data_vencimento')";
             $execute_insert_contrato_inadimplente = mysqli_query($conectar,$sql_insert_contrato_inadimplente);
 
             ##### SE O STATUS FOR CONECTADO, ELE IRÁ EXECUTAR O BLOQUEIO
             if($assinante[1] == 2)
               $retorno_bloqueio = send_to_block_unblock($assinante[1],$contrato,$assinante[2]);
-
+            
             if($retorno_bloqueio == "Cliente desativado")
             {
+              $data = date('d/m/Y h:i');
+              $html .= "<tr>
+                    <td>$contrato</td>
+                    <td>$nomeCompleto</td>
+                    <td>$data_vencimento</td>
+                    <td>$data</td>
+                    <td>Bloqueado</td>
+                    <td>$assinante[2]</td>
+              </tr>";
+
               #### SALVA LOG DO BLOQUEIO ###
               $sql_log_estado = "INSERT INTO log_estado (contrato,user_id,estado) VALUES ($contrato,0,'Bloqueado Automatico')";
               mysqli_query($conectar,$sql_log_estado);
             }
           }
         }
-      }
+      }  
     }
+    $html .= '
+        </tbody>
+      </table>
+    ';
+
+    send_email("Clientes Bloqueados",$html,"cobranca@vertv.com.br","TI");
     echo "concluido";
   }else{
     echo "Não Consegui Pegar os Contratos!";

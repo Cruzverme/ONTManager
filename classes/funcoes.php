@@ -488,10 +488,10 @@
 
   function send_email($assunto,$corpoEmail,$destinatario,$nomeDestinatario,$arquivo = NULL)
   {
-    include "../auth/autenticacoes.php";
+    include "/var/www/html/ontManager/auth/autenticacoes.php";
     
     // Inclui o arquivo class.phpmailer.php localizado na mesma pasta do arquivo php 
-    include "../lib/mailer/PHPMailerAutoload.php";
+    include "/var/www/html/ontManager/lib/mailer/PHPMailerAutoload.php";
 
     // Inicia a classe PHPMailer 
     $mail = new PHPMailer(); 
@@ -527,7 +527,7 @@
     $mail->FromName = "VERTV"; 
     
     // Define o(s) destinatário(s) 
-    $mail->AddAddress('ti@vertv.com.br', 'TI');
+    $mail->AddAddress($destinatario, $nomeDestinatario);
 
     // Opcional: mais de um destinatário
     // $mail->AddAddress('fernando@email.com'); 
@@ -544,18 +544,11 @@
     $mail->CharSet = 'UTF-8'; 
     
     // Assunto da mensagem 
-    $mail->Subject = "O Céu está caindo"; 
+    $mail->Subject = $assunto;
     
     // Corpo do email 
-    $mail->Body = '<table>
-                      <tr><th>vai</th></tr>
-                      <tr><td>Pokebola</td></tr>
-                  </table>
-                  
-                  <div>
-                    <h3>Mais um Teste de Pokemon</h3>
-                  </div>'; 
-    
+    $mail->Body = $corpoEmail;
+
     if($arquivo != NULL)
     {
       // Opcional: Anexos 
