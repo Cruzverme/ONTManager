@@ -483,7 +483,13 @@
     $cmd = "curl -F 'motivo=$motivo' -F 'contrato=$contrato' -F 'serial=$serial' http://localhost/ontManager/classes/gerencia_bloqueios.php";
     $result = shell_exec($cmd);
 
-    return $result;
+#    return $result;
+    
+    if($result)
+      return 1;
+    else
+      return $result;
+    
   }
 
   function send_email($assunto,$corpoEmail,$destinatario,$nomeDestinatario,$arquivo = NULL)

@@ -62,15 +62,18 @@
             ### ADICIONA A LISTA PARA QUE NAO SEJA INSERIDO NOVAMENTE
             array_push($lista,$contrato);
             
-            $sql_insert_contrato_inadimplente = "INSERT INTO blocked_costumer_daily (contrato,nome,inadimplente,serial,dataVencimento) VALUES ($contrato,'$nomeCompleto',$assinante[1],'$assinante[2]','$data_vencimento')";
-            $execute_insert_contrato_inadimplente = mysqli_query($conectar,$sql_insert_contrato_inadimplente);
 
+    
             ##### SE O STATUS FOR CONECTADO, ELE IRÁ EXECUTAR O BLOQUEIO
-            if($assinante[1] == 2)
+            if($assinante[1] == 2) 
               $retorno_bloqueio = send_to_block_unblock($assinante[1],$contrato,$assinante[2]);
             
-            if($retorno_bloqueio == "Cliente desativado")
+            if($retorno_bloqueio == 1)
             {
+            
+              $sql_insert_contrato_inadimplente = "INSERT INTO blocked_costumer_daily (contrato,nome,inadimplente,serial,dataVencimento) VALUES ($contrato,'$nomeCompleto',$assinante[1],'$assinante[2]','$data_vencimento')";
+              
+              $execute_insert_contrato_inadimplente = mysqli_query($conectar,$sql_insert_contrato_inadimplente);
               $data = date('d/m/Y h:i');
               $html .= "<tr>
                     <td>$contrato</td>
