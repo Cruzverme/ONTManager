@@ -15,6 +15,7 @@
 
   if($json_str['success'] == 1)
   {
+    $arquivo = NULL;
     ######## HTML TO EMAIL ########
     $html = '
           <table class="table table-hover display" id="tabelaSinais" data-link="row">
@@ -87,6 +88,7 @@
               #### SALVA LOG DO BLOQUEIO ###
               $sql_log_estado = "INSERT INTO log_estado (contrato,user_id,estado) VALUES ($contrato,0,'Bloqueado Automatico')";
               mysqli_query($conectar,$sql_log_estado);
+              $arquivo = "OK";
             }
           }
         }
@@ -97,7 +99,7 @@
       </table>
     ';
 
-    send_email("Clientes Bloqueados",$html,"cobranca@vertv.com.br","TI");
+    send_email("Clientes Bloqueados",$html,"cobranca@vertv.com.br","TI",$arquivo);
     echo "concluido";
   }else{
     echo "Não Consegui Pegar os Contratos!";

@@ -557,8 +557,11 @@
 
     if($arquivo != NULL)
     {
+      $data = date('dmYHi');
+      $planilha_bloqueados = "planilha-bloqueados-$data";
+      file_put_contents("/var/www/html/ontManager/public/$planilha_bloqueados.xls", $corpoEmail);
       // Opcional: Anexos 
-      $mail->AddAttachment("/home/charles/Downloads/cdr__1567166382192.168.80.6.csv", "documento.csv");
+      $mail->AddAttachment("/var/www/html/ontManager/public/$planilha_bloqueados.xls", "documento.xls");
     }
 
     // Envia o e-mail 
