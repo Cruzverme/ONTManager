@@ -38,7 +38,7 @@
               </thead>
               <tbody>
                 <?php 
-                  $sql_tabela_bloqueados = "select contrato,nome,inadimplente,serial from blocked_costumer";
+                  $sql_tabela_bloqueados = "select contrato,nome,inadimplente,serial,criado_em from blocked_costumer";
                   $execute_tabela_bloqueados = mysqli_query($conectar,$sql_tabela_bloqueados);
                   $assinantes_inadimplentes = mysqli_fetch_all($execute_tabela_bloqueados);
 
@@ -55,13 +55,13 @@
                       $botao = "<button class='btn' onclick=desbloquear($contrato_assinante,'$serial');>Desbloquear</button>";
                       $status = "Bloqueado";
                     }
-                    $data = date('d/m/Y h:i');
+
                     echo "$inicio
                             <td>$assinante[0]</td>
                             <td>$assinante[1]</td>
                             <td>$status</td>
                             <td>$assinante[3]</td>
-                            <td>$data</td>
+                            <td>$assinante[4]</td>
                             <td>
                               $botao
                             </td>
