@@ -32,6 +32,7 @@
                   <th>Nome</th>
                   <th>Status</th>
                   <th>Serial</th>
+                  <th>Atualizado em</th>
                   <th class="action">Ações</th>
                 </tr>
               </thead>
@@ -54,12 +55,13 @@
                       $botao = "<button class='btn' onclick=desbloquear($contrato_assinante,'$serial');>Desbloquear</button>";
                       $status = "Bloqueado";
                     }
-                      
+                    $data = date('d/m/Y h:i');
                     echo "$inicio
                             <td>$assinante[0]</td>
                             <td>$assinante[1]</td>
                             <td>$status</td>
                             <td>$assinante[3]</td>
+                            <td>$data</td>
                             <td>
                               $botao
                             </td>
