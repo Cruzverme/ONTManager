@@ -34,11 +34,12 @@ function verificar_inadimplente_erp()
     if(msg == "concluido")
     {  
       body.removeClass("loading");
-      alert(msg);
+      alert(msg)
       window.location.reload();
     }else{
       body.removeClass("loading");
       alert(msg);
+      window.location.reload();
     }
   })
 }
