@@ -558,10 +558,13 @@
     if($arquivo != NULL)
     {
       $data = date('dmYHi');
-      $planilha_bloqueados = "planilha-bloqueados-$data";
-      file_put_contents("/var/www/html/ontManager/public/$planilha_bloqueados.xls", $corpoEmail);
+
+      
+      $planilha = "planilha-$data";
+
+      file_put_contents("/var/www/html/ontManager/public/$planilha.xls", $corpoEmail);
       // Opcional: Anexos 
-      $mail->AddAttachment("/var/www/html/ontManager/public/$planilha_bloqueados.xls", "documento.xls");
+      $mail->AddAttachment("/var/www/html/ontManager/public/$planilha.xls", "documento.xls");
     }
 
     // Envia o e-mail 
