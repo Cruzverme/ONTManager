@@ -88,6 +88,11 @@
               #### SALVA LOG DO BLOQUEIO ###
               $sql_log_estado = "INSERT INTO log_estado (contrato,user_id,estado) VALUES ($contrato,0,'Bloqueado Automatico')";
               mysqli_query($conectar,$sql_log_estado);
+
+              ### INSERE INFO NO CPLUS ###
+              $comando = "curl http://192.168.80.5/sisspc/demos/push_information_in_cplus.php\?contrato\=$contrato\&assunto\=Contrato%20Bloqueado%20Automaticamente";
+              $exec = shell_exec($comando);
+
               $arquivo = "OK";
             }
           }
