@@ -2,8 +2,8 @@
 
   ######## este script apenas olha no ERP quem está inadimplente e renova tabela do banco
 
-  include "../db/db_config_mysql.php";
-  include "../db/db_config_radius.php";
+  include "/var/www/html/ontManager/db/db_config_mysql.php";
+  include "/var/www/html/ontManager/db/db_config_radius.php";
 
   ####### PEGAR CLIENTES FTTH 
   $json_file = @file_get_contents("http://localhost/sisspc/demos/get_pendente_pagamento.php");
