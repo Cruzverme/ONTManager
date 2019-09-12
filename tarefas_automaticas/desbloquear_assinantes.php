@@ -87,7 +87,7 @@
       </table>
     ';
 
-    send_email("Clientes Desbloqueados",$html,"ti@vertv.com.br","TI",$arquivo);
+    send_email("Clientes Desbloqueados",$html,"cobranca@vertv.com.br","TI",$arquivo);
     echo "concluido";
   }else{
     echo "Não Consegui Pegar os Contratos!";
