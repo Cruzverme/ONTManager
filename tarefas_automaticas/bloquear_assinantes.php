@@ -104,7 +104,7 @@
       </table>
     ';
 
-    send_email("Clientes Bloqueados",$html,"cobranca@vertv.com.br","TI",$arquivo);
+    $arquivo != NULL? send_email("Clientes Bloqueados",$html,"ti@vertv.com.br","TI",$arquivo) : send_email("Clientes Bloqueados","<p style='font-weight:bold;'>Nenhum Cliente Bloqueado Esta Manhã!</p>","ti@vertv.com.br","TI");
     echo "concluido";
   }else{
     echo "Não Consegui Pegar os Contratos!";
