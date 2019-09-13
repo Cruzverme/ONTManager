@@ -2,6 +2,10 @@
 
   include_once "/var/www/html/ontManager/u2000/tl1_sender.php";
   
+  require '/var/www/html/ontManager/vendor/autoload.php'; //autoload do projeto
+
+  use PhpOffice\PhpSpreadsheet\Spreadsheet; //classe responsável pela manipulação da planilha
+  use PhpOffice\PhpSpreadsheet\Writer\Xlsx; //classe que salvará a planilha em .xlsx
 
   function checar_contrato($contrato)
   {
@@ -557,14 +561,13 @@
 
     if($arquivo != NULL)
     {
-      $data = date('dmYHi');
+      $data = date('dmY');
 
+      create_xls();
       
-      $planilha = "planilha-$data";
-
-      file_put_contents("/var/www/html/ontManager/public/$planilha.xls", $corpoEmail);
+      #file_put_contents("/var/www/html/ontManager/public/$planilha$data.xls", $corpoEmail);
       // Opcional: Anexos 
-      $mail->AddAttachment("/var/www/html/ontManager/public/$planilha.xls", "documento.xls");
+      $mail->AddAttachment("/var/www/html/ontManager/public/planilha$data.xlsx", "documento_de_clientes_fibra.xlsx");
     }
 
     // Envia o e-mail 
@@ -577,9 +580,87 @@
       echo "Houve um erro enviando o email: ".$mail->ErrorInfo;
   }
 
+  
   function create_xls()
   {
+    include "/var/www/html/ontManager/db/db_config_mysql.php";
 
+    $sql = "SELECT contrato,inadimplente,nome,dataVencimento,serial,criado_em FROM blocked_costumer_daily";
+    $exec_sql = mysqli_query($conectar,$sql);
+
+    $spreadsheet = new Spreadsheet(); //instanciando uma nova planilha
+    $sheet = $spreadsheet->getActiveSheet(); //retornando a aba ativa
+    $sheet->getStyle('A1:E1')->getFont()->setBold(true);
+    $sheet->setTitle('Bloqueados'); //define titulo da aba
+    
+    #### Titulos da ABA Bloqueado
+    $sheet->setCellValue('A1', 'Contrato'); //Definindo a célula A1
+    $sheet->setCellValue('B1', 'Nome'); //Definindo a célula B1
+    $sheet->setCellValue('C1', 'Data Bloqueio');
+    $sheet->setCellValue('D1', 'Status');
+    $sheet->setCellValue('E1', 'Serial');
+
+    $total_linhas = mysqli_num_rows($exec_sql) + 1;
+  
+    ####### Body dos Bloqueados
+    $celula = 2;
+    
+    while($rowBlocked = mysqli_fetch_array($exec_sql,MYSQLI_NUM))
+    {
+      while($celula <= $total_linhas)
+      {
+        $sheet->setCellValue("A$celula",$rowBlocked[0]);
+        $sheet->setCellValue("B$celula",$rowBlocked[2]);
+        $sheet->setCellValue("C$celula","$rowBlocked[5]");
+        $sheet->setCellValue("D$celula",'Bloqueado');
+        $sheet->setCellValue("E$celula","$rowBlocked[4]");
+        break;
+      }
+      $celula+=1;
+    }
+
+    ########### ABA DESBLOQUEADOS #############
+    $sql_unblock = "SELECT contrato,nome,status,serial,desbloqueado_em FROM unblocked_costumer";
+    $exec_sql_unblock = mysqli_query($conectar,$sql_unblock);
+    $total_linhas_unblock = mysqli_num_rows($exec_sql_unblock) + 1;
+
+    $spreadsheet->createSheet();
+    
+    $spreadsheet->setActiveSheetIndex(1);
+    $sheet2 = $spreadsheet->getActiveSheet();
+    
+    $sheet2->getStyle('A1:E1')->getFont()->setBold(true);
+    $sheet2->setTitle('Desbloqueados'); //define titulo da aba
+
+    #### Titulos da ABA Bloqueado
+    $sheet2->setCellValue('A1', 'Contrato'); //Definindo a célula A1
+    $sheet2->setCellValue('B1', 'Nome'); //Definindo a célula B1
+    $sheet2->setCellValue('C1', 'Status');
+    $sheet2->setCellValue('D1', 'Serial');
+    $sheet2->setCellValue('E1', 'Data Desloqueio');
+
+    ####### Body dos Desbloqueados
+    $celula = 2;
+
+    while($rowUnblocked = mysqli_fetch_array($exec_sql_unblock,MYSQLI_NUM))
+    {
+      while($celula <= $total_linhas_unblock)
+      {
+        $sheet2->setCellValue("A$celula",$rowUnblocked[0]);
+        $sheet2->setCellValue("B$celula",$rowUnblocked[1]);
+        $sheet2->setCellValue("C$celula","$rowUnblocked[2]");
+        $sheet2->setCellValue("D$celula",'Desbloqueado');
+        $sheet2->setCellValue("E$celula","$rowUnblocked[4]");
+        break;
+      }
+      $celula+=1;
+    }
+    
+    $spreadsheet->setActiveSheetIndex(0);
+    $data = date('dmY');
+    
+    $writer = new Xlsx($spreadsheet); //Instanciando uma nova planilha
+    $writer->save("/var/www/html/ontManager/public/planilha$data.xlsx"); //salvando a planilha na extensão definida
   }
 
 ?>
