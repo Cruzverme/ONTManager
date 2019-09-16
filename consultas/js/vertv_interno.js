@@ -22,6 +22,11 @@ function desbloquear(contrato,serial){
   });
 }
 
+function cancelar(contrato,serial)
+{
+  alert("cancela nao cara!" + contrato +" com "+ serial);
+}
+
 function verificar_inadimplente_erp()
 {
   var body = $('#page-wrapper');
@@ -31,6 +36,28 @@ function verificar_inadimplente_erp()
   });
 
   $.post("../classes/verifica_pendencia_pagamento.php",function(msg){
+    if(msg == "concluido")
+    {  
+      body.removeClass("loading");
+      alert(msg)
+      window.location.reload();
+    }else{
+      body.removeClass("loading");
+      alert(msg);
+      window.location.reload();
+    }
+  })
+}
+
+function verificar_cancelados_erp()
+{
+  var body = $('#page-wrapper');
+
+  $(document).on({
+    ajaxStart: function() {body.addClass("loading");}
+  });
+
+  $.post("../classes/verifica_pendencia_cancelamento.php",function(msg){
     if(msg == "concluido")
     {  
       body.removeClass("loading");
