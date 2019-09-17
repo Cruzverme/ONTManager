@@ -96,7 +96,7 @@
     {
       send_email("Verificar Clientes Cancelados",$html,"gisele@vertv.com.br","Cancelamento",$arquivo);
     }else{
-      send_email("Verificar Clientes Cancelados","<p style='font-weight:bold;'>Nenhum Cliente Cancelado!</p>","ti@vertv.com.br","Cancelamento");
+      send_email("Verificar Clientes Cancelados","<p style='font-weight:bold;'>Nenhum Cliente Cancelado!</p>","gisele@vertv.com.br","Cancelamento");
     }
     
     echo "concluido";
