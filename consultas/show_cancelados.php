@@ -61,7 +61,7 @@
                             <td>$assinante[3]</td>
                             <td>$assinante[4]</td>
                             <td>
-                              <button class='btn' onclick=cancelar($contrato_assinante,'$serial');>Desbloquear</button>
+                              <button class='btn' onclick=cancelar($contrato_assinante,'$serial');>Cancelar</button>
                             </td>
                           </tr>";
                   }                  
