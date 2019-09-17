@@ -2,10 +2,18 @@ function bloquear(contrato,serial){
   $.post("../classes/gerencia_bloqueios.php",{motivo: 2,contrato,serial},function(msg){
     if(msg == "Cliente desativado")
     {
-      alert(msg);
-      window.location.reload();
+      bootbox.alert({
+        size:"small",
+        message: msg,
+        callback: function(){ 
+            window.location.reload();
+        }
+      });
     }else{
-      alert(msg);
+      bootbox.alert({
+        size:"small",
+        message: msg
+      });
     }
   });
 }
@@ -24,7 +32,30 @@ function desbloquear(contrato,serial){
 
 function cancelar(contrato,serial)
 {
-  alert("cancela nao cara!" + contrato +" com "+ serial);
+  bootbox.confirm({
+    size: "small",
+    message: "Tem Certeza de Cancelar?",
+    callback: function(result){
+      if(result)
+      {
+        $.post("../classes/gerencia_cancelamento.php",{contrato,serial},function(msg){
+          if(msg != "")
+          {
+            bootbox.alert({
+              size:"small",
+              message: msg,
+              callback: function(){ 
+                  window.location.reload();
+              }
+            });
+          }
+        });
+      }
+      else{
+        bootbox.alert({size:"small",message:"Obrigado por me salvar!"});
+      }
+    }
+  });
 }
 
 function verificar_inadimplente_erp()
@@ -38,13 +69,23 @@ function verificar_inadimplente_erp()
   $.post("../classes/verifica_pendencia_pagamento.php",function(msg){
     if(msg == "concluido")
     {  
-      body.removeClass("loading");
-      alert(msg)
-      window.location.reload();
+      body.removeClass("loading");   
+      bootbox.alert({
+        size:"small",
+        message: msg,
+        callback: function(){ 
+            window.location.reload();
+        }
+      });
     }else{
       body.removeClass("loading");
-      alert(msg);
-      window.location.reload();
+      bootbox.alert({
+        size:"small",
+        message: msg,
+        callback: function(){ 
+            window.location.reload();
+        }
+      });
     }
   })
 }
@@ -61,12 +102,22 @@ function verificar_cancelados_erp()
     if(msg == "concluido")
     {  
       body.removeClass("loading");
-      alert(msg)
-      window.location.reload();
+      bootbox.alert({
+        size:"small",
+        message: msg,
+        callback: function(){ 
+            window.location.reload();
+        }
+      });
     }else{
       body.removeClass("loading");
-      alert(msg);
-      window.location.reload();
+      bootbox.alert({
+        size:"small",
+        message: msg,
+        callback: function(){ 
+            window.location.reload();
+        }
+      });
     }
   })
 }
