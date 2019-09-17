@@ -32,7 +32,7 @@
                   <th>Nome</th>
                   <th>Status</th>
                   <th>Serial</th>
-                  <th>Cancelado em</th>
+                  <th>Atualizado em</th>
                   <th class="action">Ações</th>
                 </tr>
               </thead>
