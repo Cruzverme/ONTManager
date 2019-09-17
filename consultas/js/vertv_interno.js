@@ -22,10 +22,18 @@ function desbloquear(contrato,serial){
   $.post("../classes/gerencia_bloqueios.php",{motivo: 1,contrato,serial},function(msg){
     if(msg == "Cliente reativado")
     {
-      alert(msg);
-      window.location.reload();
+      bootbox.alert({
+        size:"small",
+        message: msg,
+        callback: function(){ 
+          window.location.reload();
+        }
+      });
     }else{
-      alert(msg);
+      bootbox.alert({
+        size:"small",
+        message: msg
+      });
     }
   });
 }
