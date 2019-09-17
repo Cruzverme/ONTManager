@@ -79,8 +79,8 @@
               mysqli_query($conectar,$sql_log_estado);
 
               ### INSERE INFO NO CPLUS ###
-              #$comando = "curl http://192.168.80.5/sisspc/demos/push_information_in_cplus.php\?contrato\=$contrato\&assunto\=Contrato%20Cancelado%20Automaticamente";
-              #$exec = shell_exec($comando);
+              $comando = "curl http://192.168.80.5/sisspc/demos/push_information_in_cplus.php\?contrato\=$contrato\&assunto\=Contrato%20Cancelado%20Automaticamente";
+              $exec = shell_exec($comando);
 
               $arquivo = "OK";
             }
