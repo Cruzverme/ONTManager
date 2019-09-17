@@ -496,7 +496,19 @@
     
   }
 
-  function send_email($assunto,$corpoEmail,$destinatario,$nomeDestinatario,$arquivo = NULL)
+  function send_to_cancel($contrato,$serial)
+  {
+    $cmd = "curl -F 'contrato=$contrato' -F 'serial=$serial' http://localhost/ontManager/classes/gerencia_cancelamento.php";
+    $result = shell_exec($cmd);
+   
+    if($result)
+      return 1;
+    else
+      return $result;
+    
+  }
+
+  function send_email($assunto,$corpoEmail,$destinatario,$nomeDestinatario,$arquivo = NULL,$secondDestinatario = NULL)
   {
     include "/var/www/html/ontManager/auth/autenticacoes.php";
     
@@ -538,7 +550,8 @@
     
     // Define o(s) destinatário(s) 
     $mail->AddAddress($destinatario, $nomeDestinatario);
-
+    
+    $secondDestinatario != NULL? $mail->AddAddress($secondDestinatario) : "";
     // Opcional: mais de um destinatário
     // $mail->AddAddress('fernando@email.com'); 
     
