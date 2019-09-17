@@ -575,12 +575,12 @@
     if($arquivo != NULL)
     {
       $data = date('dmY');
-
-      create_xls();
+      ### até colocar a versao 7.1 para testar em producao
+      #create_xls();
       
-      #file_put_contents("/var/www/html/ontManager/public/$planilha$data.xls", $corpoEmail);
+      file_put_contents("/var/www/html/ontManager/public/planilha$data.xls", $corpoEmail);
       // Opcional: Anexos 
-      $mail->AddAttachment("/var/www/html/ontManager/public/planilha$data.xlsx", "documento_de_clientes_fibra.xlsx");
+      $mail->AddAttachment("/var/www/html/ontManager/public/planilha$data.xls", "documento_de_clientes_fibra.xls");
     }
 
     // Envia o e-mail 
