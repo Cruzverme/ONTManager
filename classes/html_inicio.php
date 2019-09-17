@@ -172,6 +172,9 @@ echo '   </head>
                           if($_SESSION["desativar_ativar_onu"] == 1)
                             echo '<li>
                                     <a href="../consultas/show_bloqueados.php"><i class="fa fa-bug fa-fw"></i> Clientes Inconsistentes com Cplus </a>
+                                  </li>
+                                  <li>
+                                    <a href="../consultas/show_cancelados.php"><i class="fa fa-bug fa-fw"></i> Clientes Cancelados no Cplus </a>
                                   </li>';
                           
                     echo' </ul>
