@@ -1,5 +1,6 @@
 /db/*
-
+/auth/*
+/public/*
 /testes/*
 /.vscode/*
 /u2000/telnet_config.php

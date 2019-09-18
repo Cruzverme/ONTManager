@@ -1,7 +1,11 @@
 <?php 
 
-  include_once "../u2000/tl1_sender.php";
+  include_once "/var/www/html/ontManager/u2000/tl1_sender.php";
   
+  require '/var/www/html/ontManager/vendor/autoload.php'; //autoload do projeto
+
+  use PhpOffice\PhpSpreadsheet\Spreadsheet; //classe responsável pela manipulação da planilha
+  use PhpOffice\PhpSpreadsheet\Writer\Xlsx; //classe que salvará a planilha em .xlsx
 
   function checar_contrato($contrato)
   {
@@ -434,6 +438,242 @@
         
       }//fim cadastrar
     }// fim deletar
+  }
+
+  function converteDataOracleMySQL($data)
+  {
+    list($dia,$mes,$ano) = explode('-',$data);
+    switch($mes)
+    {
+      case 'JAN': $mes = '01';break;
+      case 'FEB': $mes = '02';break;
+      case 'MAR': $mes = '03';break;
+      case 'APR': $mes = '04';break;
+      case 'MAY': $mes = '05';break;
+      case 'JUN': $mes = '06';break;
+      case 'JUL': $mes = '07';break;
+      case 'AUG': $mes = '08';break;
+      case 'SEP': $mes = '09';break;
+      case 'OCT': $mes = '10';break;
+      case 'NOV': $mes = '11';break;
+      case 'DEC': $mes = '12';break;
+    }
+    return "$dia/$mes/$ano";
+  }
+
+  function converteDataMySQLOracle($data)
+  {
+    list($dia,$mes,$ano) = explode('/',$data);
+    switch($mes)
+    {
+      case '01': $mes = 'JAN';break;
+      case '02': $mes = 'FEB';break;
+      case '03': $mes = 'MAR';break;
+      case '04': $mes = 'APR';break;
+      case '05': $mes = 'MAY';break;
+      case '06': $mes = 'JUN';break;
+      case '07': $mes = 'JUL';break;
+      case '08': $mes = 'AUG';break;
+      case '09': $mes = 'SEP';break;
+      case '10': $mes = 'OCT';break;
+      case '11': $mes = 'NOV';break;
+      case '12': $mes = 'DEC';break;
+    }
+    return "$dia-$mes-$ano";
+  }
+
+  function send_to_block_unblock($motivo,$contrato,$serial)
+  {
+    $cmd = "curl -F 'motivo=$motivo' -F 'contrato=$contrato' -F 'serial=$serial' http://localhost/ontManager/classes/gerencia_bloqueios.php";
+    $result = shell_exec($cmd);
+
+#    return $result;
+    
+    if($result)
+      return 1;
+    else
+      return $result;
+    
+  }
+
+  function send_to_cancel($contrato,$serial)
+  {
+    $cmd = "curl -F 'contrato=$contrato' -F 'serial=$serial' http://localhost/ontManager/classes/gerencia_cancelamento.php";
+    $result = shell_exec($cmd);
+   
+    if($result)
+      return 1;
+    else
+      return $result;
+    
+  }
+
+  function send_email($assunto,$corpoEmail,$destinatario,$nomeDestinatario,$arquivo = NULL,$secondDestinatario = NULL)
+  {
+    include "/var/www/html/ontManager/auth/autenticacoes.php";
+    
+    // Inclui o arquivo class.phpmailer.php localizado na mesma pasta do arquivo php 
+    include "/var/www/html/ontManager/lib/mailer/PHPMailerAutoload.php";
+
+    // Inicia a classe PHPMailer 
+    $mail = new PHPMailer(); 
+    
+    // Método de envio 
+    $mail->IsSMTP(); 
+    
+    // Enviar por SMTP 
+    $mail->Host = $host_email;
+
+    // Você pode alterar este parametro para o endereço de SMTP do seu provedor 
+    $mail->Port = $snmp_port; 
+    
+    // Usar autenticação SMTP (obrigatório) 
+    $mail->SMTPAuth = true;
+
+    // Usuário do servidor SMTP (endereço de email) 
+    // obs: Use a mesma senha da sua conta de email 
+    $mail->Username = $usuario_email; 
+    $mail->Password = $senha_email; 
+
+    // Configurações de compatibilidade para autenticação em TLS 
+    $mail->SMTPOptions = array( 'ssl' => array( 'verify_peer' => false, 'verify_peer_name' => false, 'allow_self_signed' => true ) ); 
+
+    // Você pode habilitar esta opção caso tenha problemas. Assim pode identificar mensagens de erro. 
+    // $mail->SMTPDebug = 2; 
+    
+    // Define o remetente 
+    // Seu e-mail 
+    $mail->From = "bloqueadorcliente@vertv.com.br"; 
+    
+    // Seu nome 
+    $mail->FromName = "VERTV"; 
+    
+    // Define o(s) destinatário(s) 
+    $mail->AddAddress($destinatario, $nomeDestinatario);
+    
+    $secondDestinatario != NULL? $mail->AddAddress($secondDestinatario) : "";
+    // Opcional: mais de um destinatário
+    // $mail->AddAddress('fernando@email.com'); 
+    
+    // Opcionais: CC e BCC
+    // $mail->AddCC('joana@provedor.com', 'Joana'); 
+    // $mail->AddBCC('roberto@gmail.com', 'Roberto'); 
+    
+    // Definir se o e-mail é em formato HTML ou texto plano 
+    // Formato HTML . Use "false" para enviar em formato texto simples ou "true" para HTML.
+    $mail->IsHTML(true); 
+    
+    // Charset (opcional) 
+    $mail->CharSet = 'UTF-8'; 
+    
+    // Assunto da mensagem 
+    $mail->Subject = $assunto;
+    
+    // Corpo do email 
+    $mail->Body = $corpoEmail;
+
+    if($arquivo != NULL)
+    {
+      $data = date('dmY');
+      ### até colocar a versao 7.1 para testar em producao
+      #create_xls();
+      
+      file_put_contents("/var/www/html/ontManager/public/planilha$data.xls", $corpoEmail);
+      // Opcional: Anexos 
+      $mail->AddAttachment("/var/www/html/ontManager/public/planilha$data.xls", "documento_de_clientes_fibra.xls");
+    }
+
+    // Envia o e-mail 
+    $enviado = $mail->Send(); 
+    
+    // Exibe uma mensagem de resultado 
+    if ($enviado) 
+      echo "Seu email foi enviado com sucesso!"; 
+    else
+      echo "Houve um erro enviando o email: ".$mail->ErrorInfo;
+  }
+
+  
+  function create_xls()
+  {
+    include "/var/www/html/ontManager/db/db_config_mysql.php";
+
+    $sql = "SELECT contrato,inadimplente,nome,dataVencimento,serial,criado_em FROM blocked_costumer_daily";
+    $exec_sql = mysqli_query($conectar,$sql);
+
+    $spreadsheet = new Spreadsheet(); //instanciando uma nova planilha
+    $sheet = $spreadsheet->getActiveSheet(); //retornando a aba ativa
+    $sheet->getStyle('A1:E1')->getFont()->setBold(true);
+    $sheet->setTitle('Bloqueados'); //define titulo da aba
+    
+    #### Titulos da ABA Bloqueado
+    $sheet->setCellValue('A1', 'Contrato'); //Definindo a célula A1
+    $sheet->setCellValue('B1', 'Nome'); //Definindo a célula B1
+    $sheet->setCellValue('C1', 'Data Bloqueio');
+    $sheet->setCellValue('D1', 'Status');
+    $sheet->setCellValue('E1', 'Serial');
+
+    $total_linhas = mysqli_num_rows($exec_sql) + 1;
+  
+    ####### Body dos Bloqueados
+    $celula = 2;
+    
+    while($rowBlocked = mysqli_fetch_array($exec_sql,MYSQLI_NUM))
+    {
+      while($celula <= $total_linhas)
+      {
+        $sheet->setCellValue("A$celula",$rowBlocked[0]);
+        $sheet->setCellValue("B$celula",$rowBlocked[2]);
+        $sheet->setCellValue("C$celula","$rowBlocked[5]");
+        $sheet->setCellValue("D$celula",'Bloqueado');
+        $sheet->setCellValue("E$celula","$rowBlocked[4]");
+        break;
+      }
+      $celula+=1;
+    }
+
+    ########### ABA DESBLOQUEADOS #############
+    $sql_unblock = "SELECT contrato,nome,status,serial,desbloqueado_em FROM unblocked_costumer";
+    $exec_sql_unblock = mysqli_query($conectar,$sql_unblock);
+    $total_linhas_unblock = mysqli_num_rows($exec_sql_unblock) + 1;
+
+    $spreadsheet->createSheet();
+    
+    $spreadsheet->setActiveSheetIndex(1);
+    $sheet2 = $spreadsheet->getActiveSheet();
+    
+    $sheet2->getStyle('A1:E1')->getFont()->setBold(true);
+    $sheet2->setTitle('Desbloqueados'); //define titulo da aba
+
+    #### Titulos da ABA Bloqueado
+    $sheet2->setCellValue('A1', 'Contrato'); //Definindo a célula A1
+    $sheet2->setCellValue('B1', 'Nome'); //Definindo a célula B1
+    $sheet2->setCellValue('C1', 'Status');
+    $sheet2->setCellValue('D1', 'Serial');
+    $sheet2->setCellValue('E1', 'Data Desloqueio');
+
+    ####### Body dos Desbloqueados
+    $celula = 2;
+
+    while($rowUnblocked = mysqli_fetch_array($exec_sql_unblock,MYSQLI_NUM))
+    {
+      while($celula <= $total_linhas_unblock)
+      {
+        $sheet2->setCellValue("A$celula",$rowUnblocked[0]);
+        $sheet2->setCellValue("B$celula",$rowUnblocked[1]);
+        $sheet2->setCellValue("C$celula","$rowUnblocked[2]");
+        $sheet2->setCellValue("D$celula",'Desbloqueado');
+        $sheet2->setCellValue("E$celula","$rowUnblocked[4]");
+        break;
+      }
+      $celula+=1;
+    }
+    
+    $spreadsheet->setActiveSheetIndex(0);
+    $data = date('dmY');
+    
+    $writer = new Xlsx($spreadsheet); //Instanciando uma nova planilha
+    $writer->save("/var/www/html/ontManager/public/planilha$data.xlsx"); //salvando a planilha na extensão definida
   }
 
 ?>

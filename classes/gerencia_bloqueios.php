@@ -1,8 +1,8 @@
 <?php 
 
-  include_once "../db/db_config_mysql.php";
-  include_once "../db/db_config_radius.php";
-  include_once "../u2000/tl1_sender.php";
+  include_once "/var/www/html/ontManager/db/db_config_mysql.php";
+  include_once "/var/www/html/ontManager/db/db_config_radius.php";
+  include_once "/var/www/html/ontManager/u2000/tl1_sender.php";
 
   $motivo = filter_input(INPUT_POST,"motivo");
   $contrato = filter_input(INPUT_POST,"contrato");
@@ -46,7 +46,7 @@
       $trato = tratar_errors($errorCode);
       echo $mensagem = "Houve erro ao alterar status no u2000: $trato";
       mysqli_close($conectar_radius);
-      mysqli_close($conectar);      
+      mysqli_close($conectar);
     }else{
       $sql_altera_status_ont = "UPDATE ont SET status=$status WHERE serial='$serial'";
       $result_status = mysqli_query($conectar,$sql_altera_status_ont);
@@ -54,7 +54,7 @@
       $sql_altera_status_blocked = "UPDATE blocked_costumer SET inadimplente=$status WHERE serial='$serial'";
       $result_blocked = mysqli_query($conectar,$sql_altera_status_blocked);
       
-      echo "$mensagem";
+      echo $mensagem;
       mysqli_free_result($result_blocked);
       mysqli_free_result($result_status);
       
