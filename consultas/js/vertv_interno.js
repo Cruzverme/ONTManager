@@ -77,7 +77,7 @@ function verificar_inadimplente_erp()
   $.post("../classes/verifica_pendencia_pagamento.php",function(msg){
     if(msg == "concluido")
     {  
-      body.removeClass("loading");   
+      body.removeClass("loading");
       bootbox.alert({
         size:"small",
         message: msg,

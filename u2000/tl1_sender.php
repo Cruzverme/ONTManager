@@ -168,7 +168,7 @@
       echo "ERROR: $errno - $errstr<br />\n";
     }else{     
       $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
-      echo "$userNameSIP2 e $userPSWSip2 <br>";
+      //echo "$userNameSIP2 e $userPSWSip2 <br>";
       //CFG-ONTVAINDIV::DEV=A1_VERTV-01,FN=0,SN=13,PN=1,ONTID=0,SIPUSERNAME_1=2202300000,
       //SIPUSERPWD_1=123456,SIPNAME_1=2202300000:1::;
       if($userNameSIP2 == NULL || $userPSWSip2 == NULL || $sipNameNumber2 == NULL)
@@ -176,7 +176,7 @@
         $comando_cadastra_sip = "CFG-ONTVAINDIV::DEV=$dev,FN=$frame,SN=$slot,PN=$pon,ONTID=$ontID,SIPUSERNAME_1=$userNameSIP,SIPUSERPWD_1=$userPSWSip,SIPNAME_1=$sipNameNumber:1::;";
       }else{
         $comando_cadastra_sip = "CFG-ONTVAINDIV::DEV=$dev,FN=$frame,SN=$slot,PN=$pon,ONTID=$ontID,SIPUSERNAME_1=$userNameSIP,SIPUSERPWD_1=$userPSWSip,SIPNAME_1=$sipNameNumber,SIPUSERNAME_2=$userNameSIP2,SIPUSERPWD_2=$userPSWSip2,SIPNAME_2=$sipNameNumber2:1::;";
-        echo "<br> SOU TEL : $userNameSIP2, $userPSWSip2 <br>";
+        //echo "<br> SOU TEL : $userNameSIP2, $userPSWSip2 <br>";
         echo $comando_cadastra_sip;
       }
       fwrite($fp,$login_command);
@@ -711,9 +711,11 @@
     {
       $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
       $add_vlan = "ADD-VLAN::DEV=$deviceName:1::VLANID=$vlanID,VLANALIAS=$alias,VLANTYPE=SMART;";
+      $association_vlan_pon = "ASS-ETHPORTANDVLAN::DEV=$deviceName,FN=0,SN=18,PN=0:1::VLANID=$vlanID;";
 
       fwrite($fp,$login_command);
       fwrite($fp,$add_vlan);
+      fwrite($fp,$association_vlan_pon);
 
       stream_set_timeout($fp,8);
       while($c = fgetc($fp)!==false)

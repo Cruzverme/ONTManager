@@ -16,6 +16,10 @@ $('input[name="optionsRadios"]').change(function () {
       $('.camposTelefone').show();
     } else {
       $('input[name="numeroTel"]').removeAttr("required");
+      $('input[name="passwordTel"]').val("");
+      $('input[name="numeroTel"]').val("");
+      $('input[name="passwordTelNovo2"]').val("");
+      $('input[name="numeroTelNovo2"]').val("");
       $('input[name="passwordTel"]').removeAttr("required");
       $('.camposTelefone').hide();
     }
@@ -159,6 +163,7 @@ $('input[name="modo_bridge"]').change(function () {
   else
   {
     $(".bridge").hide();
+    $("input[name='mac']").val("");
   }
 });
 
