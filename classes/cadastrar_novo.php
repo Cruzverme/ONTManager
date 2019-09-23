@@ -369,6 +369,14 @@
         $insere_service_internet = "UPDATE ont SET service_port_internet=$servicePortInternetID WHERE serial = '$serial'";
         $executa_insere_service_internet = mysqli_query($conectar,$insere_service_internet);
 
+        $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
+            VALUES ('ServicePort Internet Cadastrada 
+            informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+            Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+            MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
+            Senha Telefone: $telPass','$usuario')";
+        $executa_log = mysqli_query($conectar,$sql_insert_log);
+
         array_push($array_processos_historico,"<p style='color:green'>Internet Ativada!</p>");
       }
 
@@ -553,6 +561,14 @@
           array_push($array_processos_historico,"Removido do u2000");
 
         }else{
+          $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
+            VALUES ('BTV Criado e SP IPTV Cadastrada 
+            informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+            Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+            MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
+            Senha Telefone: $telPass','$usuario')";
+          $executa_log = mysqli_query($conectar,$sql_insert_log);
+
           array_push($array_processos_historico,"<p>BTV Criado na OLT</p>");
           array_push($array_processos_historico,"<p style='color:green;';>IPTV Ativada</p>");
         }
