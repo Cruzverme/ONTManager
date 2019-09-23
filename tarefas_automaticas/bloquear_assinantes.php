@@ -90,8 +90,8 @@
               mysqli_query($conectar,$sql_log_estado);
 
               ### INSERE INFO NO CPLUS ###
-              #$comando = "curl http://192.168.80.5/sisspc/demos/push_information_in_cplus.php\?contrato\=$contrato\&assunto\=Contrato%20Bloqueado%20Automaticamente";
-              #$exec = shell_exec($comando);
+              $comando = "curl http://192.168.80.5/sisspc/demos/push_information_in_cplus.php\?contrato\=$contrato\&assunto\=Contrato%20Bloqueado%20Automaticamente";
+              $exec = shell_exec($comando);
 
               $arquivo = "OK";
             }
@@ -105,12 +105,12 @@
     ';
     if($arquivo != NULL)
     {
-      send_email("Clientes Bloqueados",$html,"ti@vertv.com.br","TI",$arquivo);
+      send_email("Clientes Bloqueados",$html,"cobranca@vertv.com.br","Inadimplencia",$arquivo);
       
       $sql_remove_lista_inadimplente = "DELETE FROM unblocked_costumer";
       $execute_remove_lista_inadimplente = mysqli_query($conectar,$sql_remove_lista_inadimplente);
     }else{
-      send_email("Clientes Bloqueados","<p style='font-weight:bold;'>Nenhum Cliente Bloqueado!</p>","ti@vertv.com.br","TI");
+      send_email("Clientes Bloqueados","<p style='font-weight:bold;'>Nenhum Cliente Bloqueado!</p>","cobranca@vertv.com.br","Inadimplencia");
     }
     
     echo "concluido";
