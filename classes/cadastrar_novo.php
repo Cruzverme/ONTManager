@@ -144,14 +144,14 @@
                                   "VAS_Internet-CORP-IP","VAS_Internet-VoIP-IPTV-CORP-IP",
                                   "VAS_Internet-VoIP-CORP-IP",
                                   "VAS_Internet-CORP-IP-Bridge","VAS_Internet-IPTV-CORP-IP-Bridge",
-                                  "VAS_Internet-VoIP-IPTV-CORP-IP-B"
+                                  "VAS_Internet-VoIP-IPTV-CORP-IP-B","VAS_Internet-VoIP-CORP-IP-Bridge"
                                 ];
   
   $array_profiles_telefonia = [
                                 "VAS_Internet-VoIP","VAS_IPTV-VoIP","VAS_Internet-VoIP-IPTV",
                                 "VAS_Internet-twoVoIP-IPTV","VAS_Internet-twoVoIP",
                                 "VAS_Internet-VoIP-CORP-IP","VAS_Internet-VoIP-IPTV-CORP-IP",
-                                "VAS_Internet-VoIP-IPTV-CORP-IP-B"
+                                "VAS_Internet-VoIP-IPTV-CORP-IP-B","VAS_Internet-VoIP-CORP-IP-Bridge"
                               ];
   
   $array_profiles_iptv =[
