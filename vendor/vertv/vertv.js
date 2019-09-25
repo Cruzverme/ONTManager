@@ -383,46 +383,6 @@ if($("#cto_transfer_padrao").length){
                       {translation: {0: {pattern:/[a-f0-9]/} }});
   });
 
-  function acordaONT(device,frame,slot,pon,ontID,acao) 
-  { 
-    var devName = device;
-    var frame = frame;
-    var slot = slot;
-    var pon = pon;
-    var ontID = ontID;
-    var tipoDeAcao = acao;
-    
-    bootbox.confirm({
-      message: "Deseja realizar esta operação ?",
-      buttons: {
-        confirm: {
-          label: '<i class="fa fa-check"></i> SIM',
-          className: 'btn-success'
-        },
-        cancel: {
-          label: '<i class="fa fa-times"></i> NAO',
-          className: 'btn-danger'
-        }
-      },callback: function(escolhaDoUsuario){
-        if(escolhaDoUsuario)
-        {
-          $.post("../consultas/_helper_show_status.php",{dev: devName,frame: frame,slot: slot,pon: pon,ont: ontID,acao: tipoDeAcao} ,function(msg_retorno){
-            bootbox.alert({
-              message: msg_retorno,
-              backdrop: true,
-              size: 'small'
-            });
-          });
-        }else{
-          bootbox.alert({
-            message: 'OPERAÇÃO CANCELADA PELO USUÁRIO',
-            backdrop: true,
-            size: 'small'
-          });
-        }
-      }
-    });
-  }
 
 
   function listUserForDnat(olt)
