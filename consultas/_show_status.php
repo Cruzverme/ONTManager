@@ -18,9 +18,7 @@
   $mac = filter_input(INPUT_POST,'mac');
 
   if(array_key_exists('reiniciar',$_POST))
-  {
     echo "<script>alert('Favor entrar no contrato novamente');</script>";
-  }
 
   if($mac)
   {
@@ -52,21 +50,26 @@
 
     if($serial != 0)
     {
-      $select_ont_infos = "SELECT onu.ontID,onu.cto,onu.porta,onu.perfil,onu.service_port_iptv,onu.service_port_internet,onu.equipamento,ct.frame_slot_pon,ct.pon_id_fk,p.deviceName,p.olt_ip FROM ont onu 
+      $select_ont_infos = "SELECT onu.ontID,onu.cto,onu.porta,onu.perfil,ct.frame_slot_pon,p.deviceName,
+        onu.service_port_l2l,onu.service_port_internet,onu.service_port_iptv,onu.service_port_telefone
+        FROM ont onu 
         INNER JOIN ctos ct ON ct.serial='$serial' AND ct.caixa_atendimento= onu.cto 
         INNER JOIN pon p ON p.pon_id = ct.pon_id_fk 
         WHERE onu.serial='$serial' AND onu.contrato='$contrato'";
 
       $execute_ont_infos = mysqli_query($conectar,$select_ont_infos);
-      while($info = mysqli_fetch_array($execute_ont_infos, MYSQLI_BOTH))
-      {
-        $ontID = $info['ontID'];
-        list($frame,$slot,$pon) = explode('-',$info['frame_slot_pon']);
-        $device = $info['deviceName'];
-        $vasProfile = $info['perfil'];
-        $cto = $info['cto'];
-        $porta_atendimento = $info['porta'];
-      }
+      $info = mysqli_fetch_assoc($execute_ont_infos);
+      
+      $ontID = $info['ontID'];
+      list($frame,$slot,$pon) = explode('-',$info['frame_slot_pon']);
+      $device = $info['deviceName'];
+      $vasProfile = $info['perfil'];
+      $cto = $info['cto'];
+      $porta_atendimento = $info['porta'];
+      $service_port_l2l = $info['service_port_l2l'];
+      $service_port_internet = $info['service_port_internet'];
+      $service_port_iptv = $info['service_port_iptv'];
+      $service_port_telefone = $info['service_port_telefone'];
 
       $status = get_status_ont($device,$frame,$slot,$pon,$ontID);
       $status_signal = get_signal_ont($device,$frame,$slot,$pon,$ontID);
@@ -102,9 +105,13 @@
       $errorCode_service_port = trim($remove_desc_service_port[0]);
       //FIM SERVICE PORT
       
-      if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV" ||
-         $vasProfile == "VAS_Internet-VoIP-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-CORP-IP-Bridge" ||
-         $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge")
+      //LISTA DE PLANOS COM TELEFONE
+      $lista_planos_telefone = ["VAS_Internet-VoIP","VAS_IPTV-VoIP","VAS_Internet-VoIP-IPTV",
+                                "VAS_Internet-twoVoIP-IPTV","VAS_Internet-twoVoIP",
+                                "VAS_Internet-VoIP-CORP-IP","VAS_Internet-VoIP-IPTV-CORP-IP",
+                                "VAS_Internet-VoIP-IPTV-CORP-IP-B","VAS_Internet-VoIP-CORP-IP-Bridge"];
+      
+      if(in_array($vasProfile,$lista_planos_telefone))
       {
         $status_sip = get_status_sip($device,$frame,$slot,$pon,$ontID);
         //SIP
@@ -142,112 +149,147 @@
 
         $filtra_enter_service_port = explode(PHP_EOL,$remove_barra_service_port[1]);
         
-
+        if("-2400" <= $filtra_resultados_signal[7] )
+          $tr_inicial = "<tr id=consulta_ont_positivo>";
+        else
+          $tr_inicial = "<tr id=consulta_ont_negativo>";
+        
+        if($filtra_resultados[7] == "Down")
+          $color = "#ff3333";
+        else
+          $color = "#b3d1ff";
         echo "
         <div class='row'>
-          <div class='col-lg-16'>
+          <div class='col-lg-12'>
             <div class='table-responsive'>
-              <table class='table'>
-                <thead>
-                  <tr>
-                    <th>CONTRATO</th>
-                    <th>MAC</th>
-                    <th>OLT</th>
-                    <th>SLOT</th>
-                    <th>PON</th>
-                    <th>ONT ID</th>
-                    <th>CTO-Porta de Atendimento</th>
-                    <th>STATUS</th>
-                    <th>Ultima Vez Offline</th>
-                    <th>RX</th>
-                    <th>TX</th>
-                    <th>RX By OLT</th>
-                    <th>SIP STATUS</th>
-                    <th>SIP SERVICE STATUS</th>  
-                  </tr>
-                </thead>
-                <tbody>";
-                if("-2400" <= $filtra_resultados_signal[7] )
-                {
-                  echo "<tr id=consulta_ont_positivo>";
-                }else{
-                  echo "<tr id=consulta_ont_negativo>";
-                }
+              <center><h3 class='h4'>INFORMAÇÕES ONT</h3></center>
+              <table class='table'>";
+                echo"
+                  <thead>
+                    <tr>
+                      <th>CONTRATO</th>
+                      <th>MAC</th>
+                      <th>CTO-Porta de Atendimento</th>
+                      <th>STATUS</th>
+                      <th>Ultima Vez Offline</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr style='background-color:$color'> 
+                      <td>$contrato</td>
+                      <td>$serial</td>
+                      <td>$cto-$porta_atendimento</td>";
+
+                      if($filtra_resultados[7] == "Down") 
+                        echo "<td style='font-weight: bold;color:#ff8c1a'>$filtra_resultados[7]</td>";
+                      else
+                        echo "<td>$filtra_resultados[7]</td>";
+                      
+                      if($filtra_resultados[12] != '--')
+                        echo "<td style='font-weight: bold'>$filtra_resultados[12]-$filtra_resultados[13]</td>";
+                      else
+                        echo "<td>Sem Registro</td>";
+                      
                   echo"
-                    <td>$contrato</td>
-                    <td>$serial</td>
-                    <td>$device</td>
-                    <td>$filtra_resultados[2]</td>
-                    <td>$filtra_resultados[3]</td>
-                    <td>$ontID</td>
-                    <td>$cto-$porta_atendimento</td>
-                    <td>$filtra_resultados[7]</td>";
-                    
-                    if($filtra_resultados[12] != '--')
-                    {
-                      echo "<td>$filtra_resultados[12]-$filtra_resultados[13]</td>";
-                    }
-                    else{
-                      echo "<td>Sem Registro</td>";
-                    }
-                    echo "<td>$filtra_resultados_signal[7]Dbm</td>
-                    <td>$filtra_resultados_signal[8]Dbm</td>
-                    <td>$filtra_resultados_signal[13]Dbm</td>";
-                    if($vasProfile == "VAS_Internet-VoIP" || $vasProfile == "VAS_Internet-VoIP-IPTV"
-                      || $vasProfile == "VAS_Internet-VoIP-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-CORP-IP-Bridge"
-                      || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge")
-                    {
-                      switch($filtra_resultados_sip[9])
-                      {
-                        case 'REGISTERING':
-                          echo "<td>Tentando registrar </td>";
-                          break;
-                        case 'IDLE':
-                          echo "<td>Registrado e aguardando</td>";
-                          break;
-                        case 'DIALING':
-                          echo "<td>Telefone Fora do Gancho</td>";
-                          break;
-                        case 'RINGING':
-                          echo "<td>Telefone Tocando</td>";
-                          break;
-                        case'DEACTIVED':
-                          echo "<td>Desativado</td>";
-                          break;
-                        case 'CONNECTED':
-                          echo "<td>Conectado</td>";
-                          break;
-                        case'FAILED-REGISTRATTION':
-                          echo "<td>A autenticação falhou</td>";
-                          break;
-                        default:
-                          echo "<td>$filtra_resultados_sip[9]</td>";
-                      }
-                      switch($filtra_resultados_sip[10])
-                      {
-                        case 'REMOTE-BLOCKED':
-                          echo "<td>aeae</td>";
-                          break;
-                        case 'NORMAL':
-                          echo "<td>Funcionamento normal</td>";
-                          break;
-                        case 'REMOTE-FAULT':
-                          echo "<td>O algum erro na autenticação.</td>";
-                          break;
-                        default:
-                          echo "<td>$filtra_resultados_sip[10]</td>";
-                      }
-                    }else{
-                      echo "<td>NAO HA TELEFONE </td>";
-                      echo "<td>NAO HA TELEFONE </td>";
-                    }
+                    </tr>
+                  </tbody>
+                </table>
+                <hr>
+                <center><h3 class='h4' >INFORMAÇÕES SINAL </h3></center>
+                  <table class='table'>
+                    <thead>
+                      <tr>
+                        <th>RX</th>
+                        <th>TX</th>
+                        <th>RX By OLT</th>
+                        <th>SIP STATUS</th>
+                        <th>SIP SERVICE STATUS</th>  
+                      </tr>
+                    </thead>
+                    <tbody>
+                      $tr_inicial
+                        <td>$filtra_resultados_signal[7]Dbm</td>
+                        <td>$filtra_resultados_signal[8]Dbm</td>
+                        <td>$filtra_resultados_signal[13]Dbm</td>";
+                        if(in_array($vasProfile,$lista_planos_telefone))
+                        {
+                          switch($filtra_resultados_sip[9])
+                          {
+                            case 'REGISTERING':
+                              echo "<td>Tentando registrar </td>";
+                              break;
+                            case 'IDLE':
+                              echo "<td>Registrado e aguardando</td>";
+                              break;
+                            case 'DIALING':
+                              echo "<td>Telefone Fora do Gancho</td>";
+                              break;
+                            case 'RINGING':
+                              echo "<td>Telefone Tocando</td>";
+                              break;
+                            case'DEACTIVED':
+                              echo "<td>Desativado</td>";
+                              break;
+                            case 'CONNECTED':
+                              echo "<td>Conectado</td>";
+                              break;
+                            case'FAILED-REGISTRATTION':
+                              echo "<td>A autenticação falhou</td>";
+                              break;
+                            default:
+                              echo "<td>$filtra_resultados_sip[9]</td>";
+                          }
+                          switch($filtra_resultados_sip[10])
+                          {
+                            case 'REMOTE-BLOCKED':
+                              echo "<td>aeae</td>";
+                              break;
+                            case 'NORMAL':
+                              echo "<td>Funcionamento normal</td>";
+                              break;
+                            case 'REMOTE-FAULT':
+                              echo "<td>O algum erro na autenticação.</td>";
+                              break;
+                            default:
+                              echo "<td>$filtra_resultados_sip[10]</td>";
+                          }
+                        }else{
+                          echo "<td>NAO HA TELEFONE </td>";
+                          echo "<td>NAO HA TELEFONE </td>";
+                        }
                 echo "
-                  </tr>
-                </tbody>
-              </table>";
+                    </tr>
+                  </tbody>
+                </table>";
+                
+
+                echo "
+                <hr>
+                <center><h4>INFORMAÇÕES OLT</h4></center>
+                <table class='table'>
+                  <thead>
+                    <tr>
+                      <th>ONT ID</th>
+                      <th>OLT</th>
+                      <th>SLOT</th>
+                      <th>PON</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>$ontID</td>
+                      <td>$device</td>
+                      <td>$filtra_resultados[2]</td>
+                      <td>$filtra_resultados[3]</td>";
+                echo "
+                    </tr>
+                  </tbody>
+                </table>";          
+                  
               // TRATAMENTO DE WAN
               
-              echo " <center><h3 class='h4'>INFORMAÇÕES ADICIONAIS</h3></center>";
+              echo " <center><h4 class='informacoes_legend'>INFORMAÇÕES ADICIONAIS <i class='fa fa-chevron-down'></i></h4></center>
+              <div class='hider_infos' style='display: none'>";
               for($inicio = 2; $inicio < (count($filtra_enter_wan) - 1);$inicio++)
               {
                 $filtra_resultados_wan = preg_split('/\s+/', $filtra_enter_wan[$inicio]);
@@ -278,22 +320,18 @@
         echo "
             <table class=table>
               <legend>Service Ports</legend>
+              
               <thead>
-                <tr>
-                  <th>Service Ports</th>
-                </tr>
-              </thead>
-              <tbody>
                 <tr>";
                 for($inicio = 2; $inicio < (count($filtra_enter_service_port) - 1);$inicio++)
                 {
                   $filtra_resultados_service_port = preg_split('/\s+/', $filtra_enter_service_port[$inicio]);
-                  echo "<td>$filtra_resultados_service_port[10]</td>";
+                  echo "<th>$filtra_resultados_service_port[10]</th>";
                 }
         echo"  </tr>
-              </tbody>
+              </thead>
             </table>
-                
+            </div> <!-- fim div de hidder -->
                 ";//FIM TRATAMENTO DE SERVICE PORT
 
               //TRATAMENTO PORTA STATUS
