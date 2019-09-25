@@ -1,3 +1,64 @@
+//// CONSULTA ONT
+$(".informacoes_legend").click(function(){
+  var icone = $(this).find("i.fa");
+
+  if(icone.attr('class') == "fa fa-chevron-down")
+  {
+    icone.removeClass("fa-chevron-down");
+    icone.addClass("fa-chevron-up");
+  }else
+  {
+    icone.removeClass("fa-chevron-up")
+    icone.addClass("fa-chevron-down")
+  }
+  $(".hider_infos").toggle();
+});
+
+function acordaONT(device,frame,slot,pon,ontID,acao) 
+{ 
+  var devName = device;
+  var frame = frame;
+  var slot = slot;
+  var pon = pon;
+  var ontID = ontID;
+  var tipoDeAcao = acao;
+  
+  bootbox.confirm({
+    message: "Deseja realizar esta operação ?",
+    buttons: {
+      confirm: {
+        label: '<i class="fa fa-check"></i> SIM',
+        className: 'btn-success'
+      },
+      cancel: {
+        label: '<i class="fa fa-times"></i> NAO',
+        className: 'btn-danger'
+      }
+    },callback: function(escolhaDoUsuario){
+      if(escolhaDoUsuario)
+      {
+        $.post("../consultas/_helper_show_status.php",{dev: devName,frame: frame,slot: slot,pon: pon,ont: ontID,acao: tipoDeAcao} ,function(msg_retorno){
+          bootbox.alert({
+            message: msg_retorno,
+            backdrop: true,
+            size: 'small'
+          });
+        });
+      }else{
+        bootbox.alert({
+          message: 'OPERAÇÃO CANCELADA PELO USUÁRIO',
+          backdrop: true,
+          size: 'small'
+        });
+      }
+    }
+  });
+}
+
+
+///// FIM CONSULTA ONT
+
+//// CONSULTA BLOQUEADO E CANCELADOS E DESBLOQUEADOS
 function bloquear(contrato,serial){
   $.post("../classes/gerencia_bloqueios.php",{motivo: 2,contrato,serial},function(msg){
     if(msg == "Cliente desativado")
