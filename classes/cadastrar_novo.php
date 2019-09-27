@@ -214,7 +214,7 @@
 
     /// salva no log
     $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
-              VALUES ('ERRO NO U2000 AO GERAR ONTID $trato 
+              VALUES ('ERRO NO U2000 AO GERAR ONTID $trato Número Sem Tratamento: $errorCode
               informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
               Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
               MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
@@ -222,7 +222,9 @@
 
     $executa_log = mysqli_query($conectar,$sql_insert_log);
 
-    array_push($array_processos_historico,"<p>Removido do Banco Local!</p>");
+    deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID,$ip_olt,NULL);
+    
+    array_push($array_processos_historico,"Removido u2000");
   }else{
     array_push($array_processos_historico,"<p style='color:green'>ONT Adicionada ao U2000!</p>");
 
