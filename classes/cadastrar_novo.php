@@ -205,7 +205,7 @@
   $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
   $remove_desc = explode("ENDESC=",$check_sucesso[1]);
   $errorCode = trim($remove_desc[0]);
-  if($errorCode != "0")
+  if($errorCode != "0" && ($errorCode != " " OR $errorCode != "" OR $errorCode != NULL))
   {
     $ativado = "Ocorreu Error"; //variavel de sucesso para o JS
     $trato = tratar_errors($errorCode);
