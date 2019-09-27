@@ -1,4 +1,17 @@
 $(".informacoes_legend").click(function(){
+  
+  var icone = $(this).find("i.fa");
+  
+  if(icone.attr('class') == "fa fa-chevron-down")
+  {
+    icone.removeClass("fa-chevron-down");
+    icone.addClass("fa-chevron-up");
+  }else
+  {
+    icone.removeClass("fa-chevron-up")
+    icone.addClass("fa-chevron-down")
+  }
+
   $(this).find('.hider_infos').toggle();
 });
 

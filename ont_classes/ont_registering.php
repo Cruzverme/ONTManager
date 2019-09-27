@@ -48,7 +48,7 @@
           <div class="panel-body">
             <form role="form" method="post"> <!-- action="../classes/cadastrar.php"  -->
               <fieldset class="informacoes_legend">
-                <legend>Informações</legend>
+                <legend>Informações<i class='fa fa-chevron-down'></i></legend>
                 <div class="hider_infos" style="display:none">
                   <p>
                     <?php echo "PORTA: $porta_selecionado | OLT: $device | FRAME: $frame | SLOT: $slot | PON: $pon | CTO: $cto";?>
