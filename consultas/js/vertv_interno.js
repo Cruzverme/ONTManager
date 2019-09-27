@@ -1,7 +1,16 @@
 //// CONSULTA ONT
-$(".informacoes_legend").click(function(){
-  var icone = $(this).find("i.fa");
+($("#contrato")).keypress(function(e) {
+  if(e.which == 13)  consultar();
+});
 
+$("#mac_pon").keypress(function(e) {
+  if(e.which == 13)  consultar();
+});
+
+function levanta()
+{
+  var icone = $(".informacoes_legend").find("i.fa");
+  
   if(icone.attr('class') == "fa fa-chevron-down")
   {
     icone.removeClass("fa-chevron-down");
@@ -12,7 +21,50 @@ $(".informacoes_legend").click(function(){
     icone.addClass("fa-chevron-down")
   }
   $(".hider_infos").toggle();
-});
+}
+
+
+function consultar(){
+  var body = $("#page-wrapper");
+
+  $(document).on({
+     ajaxStart: function() {body.addClass("loading")}
+  })
+
+  var contrato = $("#contrato").val();
+  var mac = $("#mac_pon").val();
+
+  if(mac != '' && mac.length < 16)
+  {
+    bootbox.alert("<p style='text-align:center'>MAC deve ter no mínimo 16 caracteres!</p>");
+  }
+
+  if(contrato == '' && mac == '')
+  { 
+    body.removeClass("loading");
+    bootbox.alert({
+      message: "<center>Insira o MAC ou o Contrato!</center>",
+      size:"small"
+    })
+  }
+  else{
+    $.post("_show_status.php",{mac,contrato},function(msg)
+    {
+      body.removeClass("loading");
+      $("#show_status").empty();
+
+      $("#show_status").append(msg);
+    });
+  }
+}
+
+function wait(ms){
+  var start = new Date().getTime();
+  var end = start;
+  while(end < start + ms) {
+    end = new Date().getTime();
+  }
+}
 
 function acordaONT(device,frame,slot,pon,ontID,acao) 
 { 
@@ -41,7 +93,12 @@ function acordaONT(device,frame,slot,pon,ontID,acao)
           bootbox.alert({
             message: msg_retorno,
             backdrop: true,
-            size: 'small'
+            size: 'small',
+            callback: function(){
+              wait(5000);
+              console.log('perei 5 sec');
+              consultar();
+            }
           });
         });
       }else{
