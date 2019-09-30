@@ -383,6 +383,15 @@ if($("#cto_transfer_padrao").length){
                       {translation: {0: {pattern:/[a-f0-9]/} }});
   });
 
+  //trata numero limitacao de Contratos
+  $(document).ready(function () { 
+    var $seuCampoContrato = $("input[name='contrato']");
+    $seuCampoContrato.mask('00000', 
+                      {
+                        translation: {pattern:/[0-9]/ }
+                      }
+                    );
+  });
 
 
   function listUserForDnat(olt)

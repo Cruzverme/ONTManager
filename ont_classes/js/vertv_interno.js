@@ -70,9 +70,86 @@ function cadastrar()
         }else{
           body.removeClass("loading");
         }
-          
       }
     });
   })
-  //}
+}
+
+
+//  TRATAMENTO DE REMOCAO
+($("#contrato")).keypress(function(e) {
+  if(e.which == 13)  consultar();
+});
+
+$("#contrato-remocao").keypress(function(e){
+  if(e.which == 13) check_contrato();
+})
+
+function check_contrato(){
+  var contrato = $("#contrato-remocao").val();
+  
+  if(contrato.trim() === '')
+  {
+    bootbox.alert({message:"<p style='text-align:center;color:blue'>Favor Inserir Contrato</p>",size:'small'});
+  }else{
+    
+    var url = '../ont_classes/_ont_delete_search_result.php';
+
+    var form = $('<form action="' + url + '" method="post">' +
+      '<input type="text" name="contrato" value="' + contrato + '" />' +
+      '</form>');
+    $('body').append(form);
+    form.submit();
+  }
+}
+
+function deletar(){
+  var contrato = $("input[name='contrato']").val();
+  var serial = $("select[name='serial']").val();
+
+  var body = $("#page-wrapper");
+
+  $(document).on({
+    ajaxStart: function() {body.addClass("loading")}
+  })
+
+  bootbox.confirm({
+    message:"<p style='text-align: center;'>Deseja Remover o Contrato "+contrato+"?</p>",
+    buttons: {
+      confirm: {
+          label: 'Sim',
+          className: 'btn-success'
+      },
+      cancel: {
+          label: 'Não',
+          className: 'btn-danger'
+      }
+    },
+    callback: function(retorno){
+      if(retorno)
+      {
+        $.post("../classes/deletar.php",{contrato,serial: serial},function(msg)
+        {
+          bootbox.alert({
+            message:msg,
+            callback: function(){
+              if(msg.includes("deletada"))
+              {
+                window.location.replace('../ont_classes/ont_delete.php');
+                body.removeClass("loading");
+              }else{
+                body.removeClass("loading");
+              }
+            }
+          });
+        })
+      }else{
+        bootbox.alert({
+          size:'small',
+          message: "<p style='text-align:center;'>Operação Cancelada!</p>"
+        })
+      }
+    }
+  })
+  
 }
