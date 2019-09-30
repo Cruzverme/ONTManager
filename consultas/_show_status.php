@@ -239,7 +239,7 @@
                     elseif($filtra_resultados[7] == "Up")
                       echo "<td style='color:#2e9700'>ONLINE</td>";
                     else{
-                      echo "<td>aeee $filtra_resultados[7]</td>";
+                      echo "<td>$filtra_resultados[7]</td>";
                     }
                   ?> 
           
