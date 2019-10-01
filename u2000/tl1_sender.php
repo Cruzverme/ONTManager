@@ -31,6 +31,9 @@
       case '2686058552':
         return "Recurso Inexistente";
         break;
+      case '2689017157':
+        return "Sistema está ocupado, tente novamente em segundos!";
+        break;
       case '2689012370':
         return "ONT Não Está Online";
         break;
