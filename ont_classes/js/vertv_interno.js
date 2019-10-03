@@ -47,7 +47,7 @@ function cadastrar()
   var ip_fixo = $("select[name='ipFixo']").val();
   var modo_bridge = $("input[name='modo_bridge']:checked").val();
   
-  $.post("../classes/cadastrar_novo.php",
+  $.post("../classes/cadastrar.php",
   {
     pacote,
     caixa_atendimento_select: cto,

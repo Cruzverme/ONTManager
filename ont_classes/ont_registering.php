@@ -46,7 +46,7 @@
               <h3 class="panel-title">Cadastro de ONT</h3>
           </div>
           <div class="panel-body">
-            <form role="form" method="post"> <!-- action="../classes/cadastrar.php"  -->
+            <form role="form" method="post">
               <fieldset class="informacoes_legend">
                 <legend>Informações<i class='fa fa-chevron-down'></i></legend>
                 <div class="hider_infos" style="display:none">
