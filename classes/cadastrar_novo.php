@@ -317,7 +317,7 @@
         $sql_atualiza_ip_fixo = "UPDATE ont SET mac='$mac',ip='$ip_fixo' WHERE serial='$serial'";
         $executa_atualiza_ip_fixo = mysqli_query($conectar,$sql_atualiza_ip_fixo);
 
-        $sql_atualiza_utilizado_ip = "UPDATE ips_valido SET utilizado=true,utilizado_por='$cont rato',mac_serial='$mac'
+        $sql_atualiza_utilizado_ip = "UPDATE ips_valido SET utilizado=true,utilizado_por='$contrato',mac_serial='$mac'
           WHERE numero_ip ='$ip_fixo'";
         $executa_atualiza_utitlizado_ip = mysqli_query($conectar,$sql_atualiza_utilizado_ip);
       }else{
