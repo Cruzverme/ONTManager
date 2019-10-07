@@ -214,7 +214,7 @@
 
     /// salva no log
     $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
-              VALUES ('ERRO NO U2000 AO GERAR ONTID $trato Número Sem Tratamento: $errorCode
+              VALUES ('ERRO NO U2000 AO GERAR ONTID $trato Número Sem Tratamento: $errorCode e U2000: $ontID 
               informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
               Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
               MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
