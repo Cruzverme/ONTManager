@@ -667,7 +667,7 @@
   ##### FECHA AS CONEXOES COM OS BANCOS #####
   mysqli_close($conectar_radius);
   mysqli_close($conectar);
-  
+  array_push($array_processos_historico,$ativado);
   echo "<p style='font-weight:bold;text-align:center'>TIMELINE</p>";
 
   foreach($array_processos_historico as $historia)
