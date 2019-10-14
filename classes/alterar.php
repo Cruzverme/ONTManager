@@ -367,7 +367,7 @@
       }
       if($internet_ip || $internet) // cria o service port de internet no u2000
       {
-        $servicePortInternet = get_service_port_internet($device,$frame,$slot,$pon,$onuID,$contrato,$vasProfile,$modo_bridge);
+        $servicePortInternet = get_service_port_internet($device,$frame,$slot,$pon,$onuID,$contrato,$vasProfile,$modo_bridge,$cgnat_status);
         $tira_ponto_virgula = explode(";",$servicePortInternet);
         $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
         $remove_desc = explode("ENDESC=",$check_sucesso[1]);
