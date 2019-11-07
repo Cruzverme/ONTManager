@@ -118,9 +118,9 @@
                 $atualiza_radius_password = "UPDATE radcheck SET username='$frame/$slot/$pon/$serial@vertv'
                   WHERE username='$frame/$slot/$pon/$novoSerial@vertv' AND attribute='User-Password'";
                 
-                $update_serial = "UPDATE ont SET serial='$serial' WHERE serial = '$novoSerial'";
+                $update_serial = "UPDATE ont SET serial='$novoSerial' WHERE serial = '$serial'";
 
-                $update_serial_cto = "UPDATE ctos SET serial='$serial' WHERE serial='$novoSerial' ";
+                $update_serial_cto = "UPDATE ctos SET serial='$novoSerial' WHERE serial='$serial' ";
 
                 $executa_query_radius_username= mysqli_query($conectar_radius,$atualiza_radius_username);//atualiza radiu username
                 $executa_query_radius_password= mysqli_query($conectar_radius,$atualiza_radius_password);//atualiza radius password
