@@ -37,14 +37,14 @@
       {
         if($servicePortInter != null)
         {
-          $atualiza_qos_radius = "UPDATE radreply SET username='2500/13/0/$novoSerial@vertv' WHERE username='2500/13/0/$serial@vertv' 
+          $atualiza_qos_radius = "UPDATE radreply SET username='$frame/$slot/$pon/$novoSerial@vertv' WHERE username='$frame/$slot/$pon/$serial@vertv' 
             AND attribute='Huawei-Qos-Profile-Name' ";
           
-          $atualiza_radius_username = "UPDATE radcheck SET username='2500/13/0/$novoSerial@vertv', value='2500/13/0/$novoSerial@vertv' 
-            WHERE username='2500/13/0/$serial@vertv' AND attribute='User-Name'";
+          $atualiza_radius_username = "UPDATE radcheck SET username='$frame/$slot/$pon/$novoSerial@vertv', value='$frame/$slot/$pon/$novoSerial@vertv' 
+            WHERE username='$frame/$slot/$pon/$serial@vertv' AND attribute='User-Name'";
 
-          $atualiza_radius_password = "UPDATE radcheck SET username='2500/13/0/$novoSerial@vertv' 
-            WHERE username='2500/13/0/$serial@vertv' AND attribute='User-Password'";
+          $atualiza_radius_password = "UPDATE radcheck SET username='$frame/$slot/$pon/$novoSerial@vertv' 
+            WHERE username='$frame/$slot/$pon/$serial@vertv' AND attribute='User-Password'";
           
           $update_serial = "UPDATE ont SET serial='$novoSerial' WHERE serial='$serial'";
 
@@ -72,14 +72,14 @@
           {
             if($servicePortInter != null ) // VOLTA PARA O SERIAL ANTERIOR SE DER RUIM
             {
-              $atualiza_qos_radius = "UPDATE radreply SET username='2500/13/0/$serial@vertv' WHERE username='2500/13/0/$novoSerial@vertv' 
+              $atualiza_qos_radius = "UPDATE radreply SET username='$frame/$slot/$pon/$serial@vertv' WHERE username='$frame/$slot/$pon/$novoSerial@vertv' 
               AND attribute='Huawei-Qos-Profile-Name' ";
             
-              $atualiza_radius_username = "UPDATE radcheck SET username='2500/13/0/$serial@vertv', value='2500/13/0/$serial@vertv'
-                WHERE username='2500/13/0/$novoSerial@vertv' AND attribute='User-Name'";
+              $atualiza_radius_username = "UPDATE radcheck SET username='$frame/$slot/$pon/$serial@vertv', value='$frame/$slot/$pon/$serial@vertv'
+                WHERE username='$frame/$slot/$pon/$novoSerial@vertv' AND attribute='User-Name'";
 
-              $atualiza_radius_password = "UPDATE radcheck SET username='2500/13/0/$serial@vertv'
-                WHERE username='2500/13/0/$novoSerial@vertv' AND attribute='User-Password'";
+              $atualiza_radius_password = "UPDATE radcheck SET username='$frame/$slot/$pon/$serial@vertv'
+                WHERE username='$frame/$slot/$pon/$novoSerial@vertv' AND attribute='User-Password'";
               
               $update_serial = "UPDATE ont SET serial='$serial' WHERE serial = '$novoSerial'";
 
@@ -109,14 +109,14 @@
             {
               if($servicePortInter != null ) // VOLTA PARA O SERIAL ANTERIOR SE DER RUIM
               {
-                $atualiza_qos_radius = "UPDATE radreply SET username='2500/13/0/$serial@vertv' WHERE username='2500/13/0/$novoSerial@vertv' 
+                $atualiza_qos_radius = "UPDATE radreply SET username='$frame/$slot/$pon/$serial@vertv' WHERE username='$frame/$slot/$pon/$novoSerial@vertv' 
                 AND attribute='Huawei-Qos-Profile-Name' ";
               
-                $atualiza_radius_username = "UPDATE radcheck SET username='2500/13/0/$serial@vertv', value='2500/13/0/$serial@vertv'
-                  WHERE username='2500/13/0/$novoSerial@vertv' AND attribute='User-Name'";
+                $atualiza_radius_username = "UPDATE radcheck SET username='$frame/$slot/$pon/$serial@vertv', value='$frame/$slot/$pon/$serial@vertv'
+                  WHERE username='$frame/$slot/$pon/$novoSerial@vertv' AND attribute='User-Name'";
 
-                $atualiza_radius_password = "UPDATE radcheck SET username='2500/13/0/$serial@vertv'
-                  WHERE username='2500/13/0/$novoSerial@vertv' AND attribute='User-Password'";
+                $atualiza_radius_password = "UPDATE radcheck SET username='$frame/$slot/$pon/$serial@vertv'
+                  WHERE username='$frame/$slot/$pon/$novoSerial@vertv' AND attribute='User-Password'";
                 
                 $update_serial = "UPDATE ont SET serial='$serial' WHERE serial = '$novoSerial'";
 
@@ -151,14 +151,14 @@
           echo $_SESSION['menssagem'] = "Ocorreu Erro no Radius! SQL: $erro";
           if($servicePortInter != null) // VOLTA PARA O SERIAL ANTERIOR SE DER RUIM
           {
-            $atualiza_qos_radius = "UPDATE radreply SET username='2500/13/0/$serial@vertv' WHERE username='2500/13/0/$novoSerial@vertv' 
+            $atualiza_qos_radius = "UPDATE radreply SET username='$frame/$slot/$pon/$serial@vertv' WHERE username='$frame/$slot/$pon/$novoSerial@vertv' 
               AND attribute='Huawei-Qos-Profile-Name' ";
           
-            $atualiza_radius_username = "UPDATE radcheck SET username='2500/13/0/$serial@vertv', value='2500/13/0/$serial@vertv'
-              WHERE username='2500/13/0/$novoSerial@vertv' AND attribute='User-Name' )";
+            $atualiza_radius_username = "UPDATE radcheck SET username='$frame/$slot/$pon/$serial@vertv', value='$frame/$slot/$pon/$serial@vertv'
+              WHERE username='$frame/$slot/$pon/$novoSerial@vertv' AND attribute='User-Name' )";
 
-            $atualiza_radius_password = "UPDATE radcheck SET username='2500/13/0/$serial@vertv'
-              WHERE username='2500/13/0/$novoSerial@vertv' AND attribute='User-Password' )";
+            $atualiza_radius_password = "UPDATE radcheck SET username='$frame/$slot/$pon/$serial@vertv'
+              WHERE username='$frame/$slot/$pon/$novoSerial@vertv' AND attribute='User-Password' )";
             
             $update_serial = "UPDATE ont SET serial='$serial' WHERE serial = '$novoSerial'";
 
