@@ -40,15 +40,13 @@
                                 VALUES ('Usuário $nome Entrou no Sistema!','$usuario_id')";
                             $executa_log = mysqli_query($conectar,$sql_insert_log);
 
-                            $sql_select_permissoes = "SELECT cadastrar_onu, deletar_onu, modificar_onu, desativar_ativar_onu, 
-                                cadastrar_cto, cadastrar_olt, cadastrar_velocidade, cadastrar_usuario, cadastrar_equipamento,
-                                alterar_mac_ont, consulta_ont, consulta_cto, remover_cto, remover_olt, alterar_usuario, relatorio_sinal,
-                                transferir_celula, migrar_cgnat
+                            $sql_select_permissoes = "SELECT *
                                 FROM usuario_permissao WHERE usuario=$_SESSION[id_usuario]";
                             $execute_sql_select_permissoes = mysqli_query($conectar,$sql_select_permissoes);
                             $permissoes = @mysqli_fetch_array($execute_sql_select_permissoes); //@ qualquer mensagem de erro sera ignorada
 
                             $_SESSION["cadastrar_onu"] = $permissoes['cadastrar_onu'];
+                            $_SESSION["cadastrar_onu_corp"] = $permissoes['cadastrar_onu_corp'];
                             $_SESSION["deletar_onu"] = $permissoes['deletar_onu'];
                             $_SESSION["modificar_onu"] = $permissoes['modificar_onu'];
                             $_SESSION["desativar_ativar_onu"] = $permissoes['desativar_ativar_onu'];

@@ -6,6 +6,8 @@
   if($_SESSION["cadastrar_onu"] == 1)
   {
     header('Location: ../ont_classes/ont_register.php');
+  } elseif ($_SESSION['cadastrar_onu_corp']) {
+    header('Location: ../ont_corp/select_cto.php');
   }elseif ($_SESSION["modificar_onu"] == 1) {
     header('Location: ../ont_classes/ont_change.php');
   }elseif ($_SESSION["deletar_onu"] == 1) {

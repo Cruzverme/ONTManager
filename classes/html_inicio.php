@@ -10,7 +10,7 @@
     print "<script>alert(\"{$_SESSION['menssagem']}\")</script>";
     unset( $_SESSION['menssagem'] );
   }
-   
+
 echo '
   <head>';
     include_once "head.php";
@@ -68,10 +68,6 @@ echo '   </head>
                             echo '<li>
                                     <a href="../ont_classes/ont_register.php"><i class="fa fa-cloud-upload fa-fw"></i> Cadastrar ONT</a>
                                   </li>';
-                          // if($_SESSION["cadastrar_onu_corp"] == 1)
-                          //   echo '<li>
-                          //           <a href="../ont_classes/ont_register_corp.php"><i class="fa fa-cloud-upload fa-fw"></i> Cadastrar CORP</a>
-                          //         </li>';
                           if($_SESSION["cadastrar_cto"] == 1)
                             echo '<li>
                                     <a href="../cto_classes/show_ctos.php"><i class="fa fa-sitemap fa-fw"></i> Cadastrar CTO</a>
@@ -95,6 +91,29 @@ echo '   </head>
                   echo  '</ul>
                       </li>
                     ';                    
+                  }
+                  if($_SESSION["cadastrar_onu"] == 1 )
+                  {
+                    echo '
+                      <li>
+                        <a class="tituloSubMenu" href="#">Corporativo</a>
+                        <ul class="nav" id="side-menu">';
+                          if($_SESSION["cadastrar_onu_corp"] == 1)
+                            echo '<li>
+                                    <a href="../ont_corp/select_cto.php"><i class="fa fa-cloud-upload fa-fw"></i> Cadastrar CORP</a>
+                                  </li>
+                                  
+                                  <li>
+                                    <a href="../vlan/select_olt.php"><i class="fa fa-cloud-upload fa-fw"></i> Cadastrar VLAN</a>
+                                  </li>
+                                  
+                                  <li>
+                                    <a href="../vlan/vlan_list.php"><i class="fa fa-cloud-upload fa-fw"></i> Consultar VLAN</a>
+                                  </li>
+                                  ';
+                                  
+                    echo'</ul>
+                      </li>';
                   }
                   if($_SESSION["modificar_onu"] == 1 || $_SESSION["alterar_macONT"] == 1 ||
                   $_SESSION["desativar_ativar_onu"] == 1 || $_SESSION["alterar_usuario"] == 1)
