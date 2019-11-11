@@ -31,6 +31,7 @@
         $alterar_usuario = $_POST["personalizada15"] ?? 0;
         $consulta_relatorio_sinal = $_POST["personalizada16"] ?? 0;
         $transferir_celula = $_POST["personalizada17"] ?? 0;
+        $cadastrar_corporativo = $_POST["personalizada18"] ?? 0;
         //fim variaveis de permissao
         
         //permissoes personalizadas
@@ -142,6 +143,8 @@
         }
 
         $transferir_celula == 17? $permitir_transferencia_celula = 1 : $permitir_transferencia_celula = 0;
+
+        $cadastrar_corporativo == 18? $permitir_cadastro_corporativo = 1 : $permitir_cadastro_corporativo = 0;
         
         // FIM PERMISSOES PERSONALIZADAS
 
@@ -168,11 +171,11 @@
               $dados = @mysqli_fetch_array($getUserID); 
               $userID = $dados['usuario_id']; //pega o usuario_id
 
-              $sql_cadastrar_permissao = "INSERT INTO usuario_permissao (usuario, cadastrar_onu, deletar_onu, modificar_onu,
+              $sql_cadastrar_permissao = "INSERT INTO usuario_permissao (usuario, cadastrar_onu, cadastrar_onu_corp, deletar_onu, modificar_onu,
                   desativar_ativar_onu, cadastrar_cto, cadastrar_olt, cadastrar_velocidade, cadastrar_usuario, cadastrar_equipamento,
                   alterar_mac_ont, consulta_ont, consulta_cto, remover_cto, remover_olt,
                   alterar_usuario, relatorio_sinal, transferir_celula)
-                  VALUES ($userID,$permitir_cadastrar_ONU,$permitir_removerONU,$permitir_alterarONU,$permitir_desabilitarHabilitar,
+                  VALUES ($userID,$permitir_cadastrar_ONU, permitir_cadastro_corporativo, $permitir_removerONU,$permitir_alterarONU,$permitir_desabilitarHabilitar,
                   $permitir_cadastrarCTO,$permitir_cadastrarOLT,$permitir_cadastrarVelocidade, $permitir_cadastrarUsuarios, $permitir_cadastrarEquipamento,
                   $permitir_alterar_MAC,$permitir_consulta_onu,$permitir_consulta_cto, $permitir_removerCTO, $permitir_removerOLT,
                   $permitir_listar_usuario, $permitir_relatorio_sinal, $permitir_transferencia_celula)";

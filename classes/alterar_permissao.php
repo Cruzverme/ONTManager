@@ -55,6 +55,7 @@
       $alterar_usuario = filter_input(INPUT_POST,"personalizada15") ?? 0;
       $consulta_relatorio_sinal = filter_input(INPUT_POST,"personalizada16") ?? 0;
       $transferir_celula = filter_input(INPUT_POST,"personalizada17") ?? 0;
+      $cadastrar_corporativo = filter_input(INPUT_POST,"personalizada18") ?? 0;
       //fim variaveis de permissao
         
       ########## permissoes personalizadas ########
@@ -91,6 +92,8 @@
       $consulta_relatorio_sinal == 16? $permitir_relatorio_sinal = 1 : $permitir_relatorio_sinal = 0;
       
       $transferir_celula == 17? $permitir_transferencia_celula = 1 : $permitir_transferencia_celula = 0;
+
+      $cadastrar_corporativo == 18? $permitir_cadastro_corporativo = 1 : $permitir_cadastro_corporativo = 0;
       #######  FIM PERMISSOES PERSONALIZADAS ########
 
       if($senha == null)
@@ -110,8 +113,9 @@
 
         #### SE TIVER NOVAS OPÇOES DEVERA INCLUIR NO BANCO E ACRESCENTAR A COLUNA AQUI ####
         $sql_cadastrar_permissao = " UPDATE usuario_permissao SET cadastrar_onu = $permitir_cadastrar_ONU, 
-            deletar_onu = $permitir_removerONU, modificar_onu = $permitir_alterarONU, 
-            desativar_ativar_onu = $permitir_desabilitarHabilitar, cadastrar_cto = $permitir_cadastrarCTO, 
+            cadastrar_onu_corp = $permitir_cadastro_corporativo, deletar_onu = $permitir_removerONU,
+            modificar_onu = $permitir_alterarONU, desativar_ativar_onu = $permitir_desabilitarHabilitar,
+            cadastrar_cto = $permitir_cadastrarCTO, 
             cadastrar_olt = $permitir_cadastrarOLT, cadastrar_velocidade = $permitir_cadastrarVelocidade, 
             cadastrar_usuario = $permitir_cadastrarUsuarios, cadastrar_equipamento = $permitir_cadastrarEquipamento,
             alterar_mac_ont = $permitir_alterar_MAC, consulta_ont = $permitir_consulta_onu, 

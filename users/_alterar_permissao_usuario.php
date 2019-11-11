@@ -15,8 +15,9 @@
 
   $usuario = filter_input(INPUT_GET,'user');
   
-  $select_info_user = "SELECT usuario_id, nome,senha, cadastrar_onu, deletar_onu, modificar_onu,
-          desativar_ativar_onu, cadastrar_cto, cadastrar_olt, cadastrar_velocidade, cadastrar_equipamento,
+  $select_info_user = "SELECT usuario_id, nome,senha, cadastrar_onu, cadastrar_onu_corp,
+          deletar_onu, modificar_onu, desativar_ativar_onu, cadastrar_cto,
+          cadastrar_olt, cadastrar_velocidade, cadastrar_equipamento,
           cadastrar_usuario, alterar_mac_ont, consulta_ont, consulta_cto, remover_cto, remover_olt, 
           alterar_usuario, relatorio_sinal, transferir_celula
       FROM usuarios usuario
@@ -28,6 +29,7 @@
 
   $nome = $user_detail['nome'];
   $cadastrarONT = $user_detail['cadastrar_onu'];
+  $cadastrarCorporativo = $user_detail['cadastrar_onu_corp'];
   $senha = $user_detail['senha'];
   $deletarONT = $user_detail['deletar_onu'];
   $alterarONT = $user_detail['modificar_onu'];
@@ -95,6 +97,7 @@
                       <input name="personalizada15" value=15 type="checkbox" <?php if($alterar_usuario == 1)echo "checked"; ?>> Alterar e Listar Usuário <br/>
                       <input name="personalizada16" value=16 type="checkbox" <?php if($consulta_relatorio_sinal == 1)echo "checked"; ?>> Consultar Relatório de Sinal <br/>
                       <input name="personalizada17" value=17 type="checkbox" <?php if($transferir_celula == 1)echo "checked"; ?>> Transferir Celula <br/>
+                      <input name="personalizada18" value=18 type="checkbox" <?php if($cadastrarCorporativo == 1) echo "checked"; ?>> Cadastrar Corporativo L2L <br/>
                     </div>
               </fieldset>
               <div class="form-group">

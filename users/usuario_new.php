@@ -59,6 +59,8 @@
                         <input name="personalizada14" value=14 type="checkbox"> Remover de OLT <br/>
                         <input name="personalizada15" value=15 type="checkbox"> Alterar e Listar Usuário <br/>
                         <input name="personalizada16" value=16 type="checkbox"> Consultar Relatório de Sinal <br/>
+                        <input name="personalizada17" value=17 type="checkbox"> Transferir Celula <br/>
+                        <input name="personalizada18" value=18 type="checkbox"> Cadastrar Corporativo L2L <br/>
                       </fieldset>
                     </div>
                   </div>
