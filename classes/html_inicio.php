@@ -92,13 +92,12 @@ echo '   </head>
                       </li>
                     ';                    
                   }
-                  if($_SESSION["cadastrar_onu"] == 1 )
+                  if($_SESSION["cadastrar_onu_corp"] == 1 )
                   {
                     echo '
                       <li>
                         <a class="tituloSubMenu" href="#">Corporativo</a>
                         <ul class="nav" id="side-menu">';
-                          if($_SESSION["cadastrar_onu_corp"] == 1)
                             echo '<li>
                                     <a href="../ont_corp/select_cto.php"><i class="fa fa-cloud-upload fa-fw"></i> Cadastrar CORP</a>
                                   </li>
