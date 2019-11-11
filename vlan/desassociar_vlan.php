@@ -19,7 +19,7 @@
   
   while($row = mysqli_fetch_array($execute_sql,MYSQLI_BOTH))
   {
-     array_push($listaClientes,$row[0]);
+    array_push($listaClientes,$row[0]);
   }
 
 ?>
@@ -34,7 +34,7 @@
         <div class="panel-body">
           <form action="../classes/vlan_desassociation.php" method="post">
             <div class="form-group">
-              <label for="cliente_vlan">Selecione a VLAN <?php echo sizeof($listaClientes); ?></label>
+              <label for="cliente_vlan">Selecione o contrato na VLAN <?php echo $vlan; ?></label>
               <select name="clientes_vlan" id="cliente_vlan" class='form-control'>
                 <?php 
                   if(!sizeof($listaClientes) < 1)
