@@ -718,6 +718,7 @@
 
       fwrite($fp,$login_command);
       fwrite($fp,$add_vlan);
+      sleep(4);
       fwrite($fp,$association_vlan_pon);
 
       stream_set_timeout($fp,8);

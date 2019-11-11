@@ -25,11 +25,11 @@
                   <label>Selecione a OLT</label>
                   <select class="form-control" name="olt">
                     <?php 
-                      $sql_consulta_olt = "SELECT deviceName,pon_id,slot FROM pon";
+                      $sql_consulta_olt = "SELECT DISTINCT deviceName,olt_ip FROM `pon`";
                       $executa_query = mysqli_query($conectar,$sql_consulta_olt);
                       while ($ont = mysqli_fetch_array($executa_query, MYSQLI_BOTH))
                       {
-                        echo "<option value=$ont[deviceName]>$ont[deviceName] - Slot: $ont[slot]</option>";
+                        echo "<option value=$ont[deviceName]>$ont[deviceName]</option>";
                       }
                     ?>
                   </select>
