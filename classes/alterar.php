@@ -350,7 +350,7 @@
           array_push($array_processos_historico,"Mac: $mac_novo e IP $ip_fixo_novo associados ao contrato $contrato!");
 
           // atualiza Ip Novo
-          $sql_atualiza_utilizado_ip = "UPDATE ips_valido SET utilizado=true,utilizado_por='$contrato',mac_serial='$mac'
+          $sql_atualiza_utilizado_ip = "UPDATE ips_valido SET utilizado=true,utilizado_por='$contrato',mac_serial='$mac_novo'
             WHERE numero_ip ='$ip_fixo_novo'";
           $executa_atualiza_utitlizado_ip = mysqli_query($conectar,$sql_atualiza_utilizado_ip);
           
