@@ -28,7 +28,7 @@ function consultar(){
   var body = $("#page-wrapper");
 
   $(document).on({
-     ajaxStart: function() {body.addClass("loading")}
+    ajaxStart: function() {body.addClass("loading")}
   })
 
   var contrato = $("#contrato").val();
