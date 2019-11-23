@@ -19,7 +19,7 @@
           deletar_onu, modificar_onu, desativar_ativar_onu, cadastrar_cto,
           cadastrar_olt, cadastrar_velocidade, cadastrar_equipamento,
           cadastrar_usuario, alterar_mac_ont, consulta_ont, consulta_cto, remover_cto, remover_olt, 
-          alterar_usuario, relatorio_sinal, transferir_celula
+          alterar_usuario, relatorio_sinal, transferir_celula, cadastrar_ip
       FROM usuarios usuario
       INNER JOIN usuario_permissao permissao ON permissao.usuario = usuario.usuario_id
       WHERE usuario.usuario = '$usuario'";
@@ -36,6 +36,7 @@
   $desativarONT = $user_detail['desativar_ativar_onu'];
   $cadastrarCTO = $user_detail['cadastrar_cto'];
   $cadastrarOLT = $user_detail['cadastrar_olt'];
+  $cadastrarIP = $user_detail['cadastrar_ip'];
   $cadastrarVelocidade = $user_detail['cadastrar_velocidade'];
   $cadastrarEquipamento = $user_detail['cadastrar_equipamento'];
   $cadastrarUsuario = $user_detail['cadastrar_usuario'];
@@ -98,6 +99,7 @@
                       <input name="personalizada16" value=16 type="checkbox" <?php if($consulta_relatorio_sinal == 1)echo "checked"; ?>> Consultar Relatório de Sinal <br/>
                       <input name="personalizada17" value=17 type="checkbox" <?php if($transferir_celula == 1)echo "checked"; ?>> Transferir Celula <br/>
                       <input name="personalizada18" value=18 type="checkbox" <?php if($cadastrarCorporativo == 1) echo "checked"; ?>> Cadastrar Corporativo L2L <br/>
+                      <input name="personalizada19" value=19 type="checkbox" <?php if($cadastrarIP == 1) echo "checked"; ?>> Cadastrar IP <br/>
                     </div>
               </fieldset>
               <div class="form-group">

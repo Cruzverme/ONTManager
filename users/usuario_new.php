@@ -61,6 +61,7 @@
                         <input name="personalizada16" value=16 type="checkbox"> Consultar Relatório de Sinal <br/>
                         <input name="personalizada17" value=17 type="checkbox"> Transferir Celula <br/>
                         <input name="personalizada18" value=18 type="checkbox"> Cadastrar Corporativo L2L <br/>
+                        <input name="personalizada19" value=19 type="checkbox"> Cadastrar IP <br/>
                       </fieldset>
                     </div>
                   </div>

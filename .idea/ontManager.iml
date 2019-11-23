@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/vendor/bootstrap/bootstrap-select" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/bootstrap/css" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/bootstrap/fonts" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/bootstrap/js" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/datatables/css" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/datatables/images" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/datatables/js" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/font-awesome/css" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/font-awesome/fonts" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/font-awesome/less" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/font-awesome/scss" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/markbaker/complex" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/markbaker/matrix" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/pdf-php/.vscode" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/pdf-php/examples" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/pdf-php/extensions" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/pdf-php/src" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/pdf-php/tests" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpmailer/phpmailer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpoffice/phpspreadsheet" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/phpseclib/phpseclib" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/psr/simple-cache" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

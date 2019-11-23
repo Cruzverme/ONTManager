@@ -60,6 +60,7 @@
                             $_SESSION["consulta_ctos"] = $permissoes['consulta_cto'];
                             $_SESSION["remover_cto"] = $permissoes['remover_cto'];
                             $_SESSION["remover_olt"] = $permissoes['remover_olt'];
+                            $_SESSION["cadastrar_ip"] = $permissoes['cadastrar_ip'];
                             $_SESSION["alterar_usuario"] = $permissoes['alterar_usuario'];
                             $_SESSION["consulta_relatorio_sinal"] = $permissoes['relatorio_sinal'];
                             $_SESSION["transferir_celula"] = $permissoes['transferir_celula'];

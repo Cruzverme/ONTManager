@@ -76,6 +76,10 @@ echo '   </head>
                             echo '<li>
                                   <a href="../cto_classes/pon_create.php"><i class="fa fa-columns fa-fw"></i> Cadastro de Slot da OLT </a>
                                 </li>';
+                          if($_SESSION["cadastrar_ip"] == 1)
+                            echo '<li>
+                                    <a href="../ip/new_ip.php"><i class="fa fa-rss fa-fw"></i> Cadastrar IP</a>
+                                  </li>';
                           if($_SESSION["cadastrar_velocidade"] == 1)
                             echo '<li>
                                     <a href="../planos/planos_create.php"><i class="fa fa-wifi fa-fw"></i> Cadastrar Nova Velocidade</a>
@@ -177,6 +181,10 @@ echo '   </head>
                           if($_SESSION["consulta_ctos"] == 1)
                             echo '<li>
                                     <a href="../consultas/get_info_cto.php"><i class="fa fa-info fa-fw"></i> Consulta de CTO e OLT</a>
+                                  </li>';
+                          if($_SESSION["cadastrar_ip"] == 1)
+                            echo '<li>
+                                    <a href="../ip/show_ip.php"><i class="fa fa-rss fa-fw"></i> Exibir IPs</a>
                                   </li>';
                           if($_SESSION["consulta_relatorio_sinal"] == 1)
                             echo'  
