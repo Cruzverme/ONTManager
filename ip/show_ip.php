@@ -39,7 +39,7 @@ $ipsVagos = 0;
                             </thead>
                             <tbody>
                                 <?php foreach ($listaIp as $ip) {
-                                    $ip['utilizado'] == 1 ? $ipsVagos += 1 : $ipsVagos;
+                                    $ip['utilizado'] == 0? $ipsVagos += 1 : $ipsVagos;
                                     ?>
                                     <tr>
                                         <td><?php echo $ip['numero_ip']; ?></td>
