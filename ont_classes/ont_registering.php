@@ -37,6 +37,7 @@
   $itens = $json_str['velocidade'];
   $nome = $json_str['nome'];
   
+  in_array(358,$itens)? $conversor = true : $conversor = false;
 ?>
   <div id="page-wrapper">
     <div class="row">
@@ -63,6 +64,15 @@
                           <input type="radio" name="optionsRadios" id="optionsRadios1" value="VAS_Internet" checked>INTERNET
                       </label>
                     </div>
+                    <?php if($conversor){
+                      echo '
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="conversorHFC">CONVERSOR
+                          </label>
+                        </div>
+                      ';
+                    } ?>
                     <div class="radio">
                       <label>
                           <input type="radio" name="optionsRadios" id="optionsRadios2" value="VAS_IPTV">IPTV
@@ -105,8 +115,8 @@
                         name="nome" value='<?php echo $nome[0];?>'type="text" autofocus readonly>
                   </div>
                   
-                  <div class="form-group">
-                      <label>Pon MAC</label>                                                
+                  <div class="form-group conversorHide">
+                      <label>Pon MAC</label>
                       <input class="form-control" placeholder="MAC PON" name="serial" type="text" minlength=16 maxlength=16 required>
                   </div>
                   <div class="camposPacotes" style="display:visible" >                                   
@@ -177,7 +187,7 @@
                     }
                   ?>
 
-                  <div class="form-group">
+                  <div class="form-group conversorHide">
                     <label>Equipamento</label>
                     <select class="form-control" name="equipamentos">
                       <?php 

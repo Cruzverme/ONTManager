@@ -195,6 +195,19 @@
 
   $array_processos_historico = [];
 
+  ### CADASTRAR CLIENTE NO BANCO SOMENTE CONVERSOR ###
+  if($vasProfile == 'conversorHFC'){
+    array_push($array_processos_historico,"<p style='font-weight:bold;'>### CONVERSOR HFC ###</p>");
+
+    ### CRIA NO BANCO LOCAL
+    $sql_registra_onu = ("INSERT INTO ont (contrato, serial, cto, tel_number, tel_user, tel_password, tel_number2, tel_user2, tel_password2, perfil, pacote, usuario_id,equipamento,porta)
+                              VALUES ('$contrato','$serial','$cto','$telNumber','$telNumber','$telPass', '$telNumber2','$telNumber2','$telPass2','$vasProfile','$pacote','$usuario','$modelo_ont','$porta_atendimento')" );
+    $cadastrar = mysqli_query($conectar,$sql_registra_onu);
+
+    array_push($array_processos_historico,"ONT cadastrada no banco local");
+  }
+
+
   $ontID = cadastrar_ont($deviceName,$frame,$slot,$pon,$contrato,$nomeCompleto,$cto,$porta_atendimento,$serial,$modelo_ont,$vasProfile);
       
   $onuID = NULL; //zera ONUID para evitar problema de cash.

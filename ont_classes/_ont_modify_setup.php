@@ -94,6 +94,7 @@
     $arrayVasProfileCGNAT = [
                               'Internet' => 'VAS_Internet',
                               'IPTV' => 'VAS_IPTV',
+                              'CONVERSOR' => 'conversorHFC',
                               'Internet e IPTV' => 'VAS_Internet-IPTV',
                               'Internet e Telefone' => 'VAS_Internet-VoIP',
                               'IPTV e Telefone' => 'VAS_IPTV-VoIP',
@@ -103,6 +104,7 @@
     $arrayVasProfileCGNAT = [
                               'Internet' => 'VAS_Internet-REAL',
                               'IPTV' => 'VAS_IPTV',
+                              'CONVERSOR' => 'conversorHFC',
                               'Internet e IPTV' => 'VAS_Internet-IPTV-REAL',
                               'Internet e Telefone' => 'VAS_Internet-VoIP-REAL',
                               'IPTV e Telefone' => 'VAS_IPTV-VoIP',
@@ -318,7 +320,7 @@
               </div>
             </div>
 
-            <div class="form-group form-group-sm">
+            <div class="form-group form-group-sm conversorHide">
               <label for="serial" class="col-sm-2 control-label">Pon(MAC)</label>
               <div class="col-sm-10">
                 <select class="form-control" name="serial" id="serial">
@@ -336,7 +338,7 @@
               </div>
             </div>
 
-            <div class="form-group form-group-sm">
+            <div class="form-group form-group-sm conversorHide">
               <label for="equipamentoID" class="control-label col-sm-3">Equipamento</label>
               <div class="col-sm-9">
                 <select class="form-control" name="equipamentos" id="equipamentoID">
@@ -411,7 +413,7 @@
             <?php }?>
           <!-- FIM TELEFONIA -->
 
-            <div class="form-group form-group-sm">
+            <div class="form-group form-group-sm conversorHFC">
               <label for="checkCGNAT" class="control-label col-sm-7">Ativar Redirecionamento de Porta</label>
               <div class="col-sm-2">
                 <input type=checkbox name='cgnat_status' value='ip_real_ativo' id=checkCGNAT <?php echo $checkCgnat;?> /> 

@@ -266,6 +266,43 @@ $('select[name="vasProfile"]').change(function () {
   }
 });
 
+/// REMOVE PACOTE INTERNET QND SOMENTE CONVERSOR ALTERAR
+$('select[name="vasProfile"]').change(function () {
+  if ($(this).val() === "conversorHFC" )
+  {
+    $('select[name="serial"]').removeAttr("required","required");
+    $('select[name="pacote"]').removeAttr("required","required");
+
+    $('.camposPacotes').hide();
+    $('.conversorHide').hide();
+  } else {
+    $('select[name="serial"]').attr("required","required");
+    $('select[name="pacote"]').attr("required","required");
+
+    $('.camposPacotes').show();
+    $('.conversorHide').show();
+  }
+});
+/// REMOVE PACOTE INTERNET QND SOMENTE CONVERSOR CADASTRO
+$('input[name="optionsRadios"]').change(function () {
+  if ($('input[name="optionsRadios"]:checked').val() === "conversorHFC")
+  {
+    $('input[name="serial"]').removeAttr("required","required");
+    $('select[name="pacote"]').removeAttr("required","required");
+
+    $('.camposPacotes').hide();
+    $('.conversorHide').hide();
+
+  } else {
+    $('input[name="serial"]').attr("required","required");
+    $('select[name="pacote"]').attr("required","required");
+
+    $('.camposPacotes').show();
+    $('.conversorHide').show();
+  }
+});
+
+
 //exibe ou esconde selector de ip fixo
 $('select[name="vasProfile"]').change(function(){
   if($(this).val() === "VAS_Internet-CORP-IP" ||

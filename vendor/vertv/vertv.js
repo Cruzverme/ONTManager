@@ -28,6 +28,7 @@ $('input[name="optionsRadios"]').change(function () {
 
 $('input[name="optionsRadios"]').change(function () {
     if ($('input[name="optionsRadios"]:checked').val() === "VAS_IPTV" ||
+        $('input[name="optionsRadios"]:checked').val() === "conversorHFC" ||
         $('input[name="optionsRadios"]:checked').val() === "VAS_IPTV-VoIP" ||
         $('input[name="optionsRadios"]:checked').val() === "VAS_IPTV-VoIP-REAL" ||
         $('input[name="optionsRadios"]:checked').val() === "VAS_IPTV-twoVoIP" )
