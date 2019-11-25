@@ -60,18 +60,19 @@
   $nomeCompleto = str_replace(" ","_",$nome);
 
   $verifica_contrato_existente = "";
+
   ####### SE MAC ESTIVER VAZIO ELE IRA ALERTAR
-  if($serial == NULL OR strlen($serial) < 16 )
+  if( ($serial == NULL || strlen($serial) < 16) && $vasProfile != 'conversorHFC')
   {
     $s = strlen($serial);
-    echo "<p style='color: blue;text-align:center;'>Digite o PON Number (MAC da Ont) ou Revise o MAC</p>";
+    echo "<p style='color: blue;text-align:center;'>Digite o PON Number $serial (MAC da Ont) ou $vasProfile Revise o MAC</p>";
     mysqli_close($conectar_radius);
     mysqli_close($conectar);
     exit;
   }
 
   ###### VERIFICA SE ESCOLHERAM O PACOTE DO ASSINANTE SE ELE TIVER INTERNET
-  if(($pacote == '' && $vasProfile != 'VAS_IPTV') || ($pacote == '' && $vasProfile != 'VAS_IPTV-VoIP'))
+  if( (($pacote == '' && $vasProfile != 'VAS_IPTV') || ($pacote == '' && $vasProfile != 'VAS_IPTV-VoIP')) && $vasProfile != 'conversorHFC')
   {
     echo "<p style='color: blue;text-align:center;'>Plano de Internet Inexistente no Contrato do Control Plus ou Velocidade não selecionada</p>";
     mysqli_close($conectar_radius);
@@ -182,7 +183,7 @@
     
   if (in_array($vasProfile,$array_profiles_iptv)) 
     $iptv = true;
-  if(!$internet AND !$internet_ip AND !$telefone AND !$iptv)
+  if(!$internet AND !$internet_ip AND !$telefone AND !$iptv AND $vasProfile != 'conversorHFC')
   {
     echo "<p style=color:blue;text-align:center;>VAS Profile - <strong>$vasProfile</strong> - Não cadastrado!</p>";
     exit;
@@ -199,53 +200,7 @@
   if($vasProfile == 'conversorHFC'){
     array_push($array_processos_historico,"<p style='font-weight:bold;'>### CONVERSOR HFC ###</p>");
 
-    ### CRIA NO BANCO LOCAL
-    $sql_registra_onu = ("INSERT INTO ont (contrato, serial, cto, tel_number, tel_user, tel_password, tel_number2, tel_user2, tel_password2, perfil, pacote, usuario_id,equipamento,porta)
-                              VALUES ('$contrato','$serial','$cto','$telNumber','$telNumber','$telPass', '$telNumber2','$telNumber2','$telPass2','$vasProfile','$pacote','$usuario','$modelo_ont','$porta_atendimento')" );
-    $cadastrar = mysqli_query($conectar,$sql_registra_onu);
-
-    array_push($array_processos_historico,"ONT cadastrada no banco local");
-  }
-
-
-  $ontID = cadastrar_ont($deviceName,$frame,$slot,$pon,$contrato,$nomeCompleto,$cto,$porta_atendimento,$serial,$modelo_ont,$vasProfile);
-      
-  $onuID = NULL; //zera ONUID para evitar problema de cash.
-  
-  sleep(1); //dorme para processar
-
-  $tira_ponto_virgula = explode(";",$ontID);
-  $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
-  $remove_desc = explode("ENDESC=",$check_sucesso[1]);
-  $errorCode = trim($remove_desc[0]);
-  if($errorCode != "0" && ($errorCode != " " OR $errorCode != "" OR $errorCode != NULL))
-  {
-    $ativado = "Ocorreu Error"; //variavel de sucesso para o JS
-    $trato = tratar_errors($errorCode);
-
-    array_push($array_processos_historico,"<p style='color:red'>!!!! Houve erro ao inserir a ONT no u2000: <strong>$trato</strong> !!!!</p>");
-
-    /// salva no log
-    $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
-              VALUES ('ERRO NO U2000 AO GERAR ONTID $trato Número Sem Tratamento: $errorCode e U2000: $ontID 
-              informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
-              Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
-              MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
-              Senha Telefone: $telPass',$usuario)";
-
-    $executa_log = mysqli_query($conectar,$sql_insert_log);
-
-    deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID,$ip_olt,NULL);
-    
-    array_push($array_processos_historico,"Removido u2000");
-  }else{
-    array_push($array_processos_historico,"<p style='color:green'>ONT Adicionada ao U2000!</p>");
-
-    ########## PEGANDO ID DA ONT PARA SALVAR ############
-    $remove_barras_para_pegar_id = explode("---------------------------",$tira_ponto_virgula[1]);
-    $filtra_espaco = explode("\r\n",$remove_barras_para_pegar_id[1]);
-    $pega_id = explode("	",$filtra_espaco[2]);//posicao 4 será sempre o ONTID
-    $onuID=trim($pega_id[4]);
+    $serial = "CONVERSOR";
 
     ### CRIA NO BANCO LOCAL
     $sql_registra_onu = ("INSERT INTO ont (contrato, serial, cto, tel_number, tel_user, tel_password, tel_number2, tel_user2, tel_password2, perfil, pacote, usuario_id,equipamento,porta)
@@ -253,12 +208,6 @@
     $cadastrar = mysqli_query($conectar,$sql_registra_onu);
 
     array_push($array_processos_historico,"ONT cadastrada no banco local");
-    
-    //insere o id no banco local
-    $insere_ont_id = "UPDATE ont SET ontID='$onuID' WHERE serial = '$serial'";
-    $executa_insere_ont_id = mysqli_query($conectar,$insere_ont_id);
-
-    array_push($array_processos_historico,"Inserido ID da ONT!");
 
     //Atualizar Porta CTO
     $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 1, serial = '$serial'
@@ -268,346 +217,352 @@
 
     $sql_atualiza_limite = "UPDATE ont SET limite_equipamentos=0 WHERE contrato = $contrato";
     $diminui_limite = mysqli_query($conectar,$sql_atualiza_limite);
-
-  ##################################### I N T E R N E T ##############################################
-
-    if($internet)
-    {
-      array_push($array_processos_historico,"<p style='font-weight:bold;'>### INTERNET ###</p>");
-
-      $insere_ont_radius_username = "INSERT INTO radcheck( username, attribute, op, value)
-          VALUES ( '2500/$slot/$pon/$serial@vertv', 'User-Name', ':=', '2500/$slot/$pon/$serial@vertv' )";
-
-      $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value)
-          VALUES ( '2500/$slot/$pon/$serial@vertv', 'User-Password', ':=', 'vlan' )";
-
-      $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
-          VALUES ( '2500/$slot/$pon/$serial@vertv', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";
+  }else{
+    $ontID = cadastrar_ont($deviceName,$frame,$slot,$pon,$contrato,$nomeCompleto,$cto,$porta_atendimento,$serial,$modelo_ont,$vasProfile);
       
-      $executa_query_username= mysqli_query($conectar_radius,$insere_ont_radius_username);
-      $executa_query_password= mysqli_query($conectar_radius,$insere_ont_radius_password);
-      $executa_query_qos_profile= mysqli_query($conectar_radius,$insere_ont_radius_qos_profile);
+    $onuID = NULL; //zera ONUID para evitar problema de cash.
+    
+    sleep(1); //dorme para processar
+  
+    $tira_ponto_virgula = explode(";",$ontID);
+    $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
+    $remove_desc = explode("ENDESC=",$check_sucesso[1]);
+    $errorCode = trim($remove_desc[0]);
+    if($errorCode != "0" && ($errorCode != " " OR $errorCode != "" OR $errorCode != NULL))
+    {
+      $ativado = "Ocorreu Error"; //variavel de sucesso para o JS
+      $trato = tratar_errors($errorCode);
+  
+      array_push($array_processos_historico,"<p style='color:red'>!!!! Houve erro ao inserir a ONT no u2000: <strong>$trato</strong> !!!!</p>");
+  
+      /// salva no log
+      $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
+                VALUES ('ERRO NO U2000 AO GERAR ONTID $trato Número Sem Tratamento: $errorCode e U2000: $ontID 
+                informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+                Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
+                Senha Telefone: $telPass',$usuario)";
+  
+      $executa_log = mysqli_query($conectar,$sql_insert_log);
+  
+      deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID,$ip_olt,NULL);
       
-      if($executa_query_qos_profile && $executa_query_password && $executa_query_username)
-        array_push($array_processos_historico,"Radius: Banda Ativada e DHCP Configurado");  
-      else
-        array_push($array_processos_historico,"Radius: Erro ao Ativar Banda e Configurar DHCP");
-
-      array_push($array_processos_historico,"Ativando Internet");
-    }
-    if($internet_ip)
-    {
-      array_push($array_processos_historico,"<p style='font-weight:bold;'>### INTERNET ###</p>");
-
-      $insere_ont_radius_username = "INSERT INTO radcheck( username, attribute, op, value)
-        VALUES ( '2503/$slot/$pon/$serial@vertv-corp-ip', 'User-Name', ':=', '2503/$slot/$pon/$serial@vertv-corp-ip' )";
-
-      $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value)
-        VALUES ( '2503/$slot/$pon/$serial@vertv-corp-ip', 'User-Password', ':=', 'vlan' )";
-
-      $insere_ont_radius_profile_ip_fixo = "INSERT INTO radreply( username, attribute, op, value)
-        VALUES ( '2503/$slot/$pon/$serial@vertv-corp-ip', 'Framed-IP-Address',':=','$ip_fixo')";
-
-      $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
-        VALUES ( '2503/$slot/$pon/$serial@vertv-corp-ip', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";
-
-      //exibe que não esta no CCGNAT
-      $cgnat_sql = "UPDATE ont SET cgnat = false WHERE serial = '$serial'";
-
-      if($modo_bridge == 'mac_externo')
+      array_push($array_processos_historico,"Removido u2000");
+    }else{
+      array_push($array_processos_historico,"<p style='color:green'>ONT Adicionada ao U2000!</p>");
+  
+      ########## PEGANDO ID DA ONT PARA SALVAR ############
+      $remove_barras_para_pegar_id = explode("---------------------------",$tira_ponto_virgula[1]);
+      $filtra_espaco = explode("\r\n",$remove_barras_para_pegar_id[1]);
+      $pega_id = explode("	",$filtra_espaco[2]);//posicao 4 será sempre o ONTID
+      $onuID=trim($pega_id[4]);
+  
+      ### CRIA NO BANCO LOCAL
+      $sql_registra_onu = ("INSERT INTO ont (contrato, serial, cto, tel_number, tel_user, tel_password, tel_number2, tel_user2, tel_password2, perfil, pacote, usuario_id,equipamento,porta)
+                                VALUES ('$contrato','$serial','$cto','$telNumber','$telNumber','$telPass', '$telNumber2','$telNumber2','$telPass2','$vasProfile','$pacote','$usuario','$modelo_ont','$porta_atendimento')" );
+      $cadastrar = mysqli_query($conectar,$sql_registra_onu);
+  
+      array_push($array_processos_historico,"ONT cadastrada no banco local");
+      
+      //insere o id no banco local
+      $insere_ont_id = "UPDATE ont SET ontID='$onuID' WHERE serial = '$serial'";
+      $executa_insere_ont_id = mysqli_query($conectar,$insere_ont_id);
+  
+      array_push($array_processos_historico,"Inserido ID da ONT!");
+  
+      //Atualizar Porta CTO
+      $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 1, serial = '$serial'
+      WHERE caixa_atendimento = '$cto' AND porta_atendimento= '$porta_atendimento'";
+      $executa_insere_porta = mysqli_query($conectar,$sql_insere_porta);
+      array_push($array_processos_historico,"Reservada Porta $porta_atendimento da CTO $cto");
+  
+      $sql_atualiza_limite = "UPDATE ont SET limite_equipamentos=0 WHERE contrato = $contrato";
+      $diminui_limite = mysqli_query($conectar,$sql_atualiza_limite);
+  
+    ##################################### I N T E R N E T ##############################################
+  
+      if($internet)
       {
-        $insere_ont_radius_mac = "INSERT INTO radcheck(username,attribute,op,value) 
-          values('2503/$slot/$pon/$serial@vertv-corp-ip','Huawei-User-Mac','=','$mac')";
-        $executa_query_ont_radius_mac = mysqli_query($conectar_radius,$insere_ont_radius_mac);
-      }                                                                                   
-                                                                                  
-      $executa_query_username= mysqli_query($conectar_radius,$insere_ont_radius_username);
-      $executa_query_password= mysqli_query($conectar_radius,$insere_ont_radius_password);
-      $executa_query_qos_profile= mysqli_query($conectar_radius,$insere_ont_radius_qos_profile);
-      $executa_query_profile_ip_fixo = mysqli_query($conectar_radius,$insere_ont_radius_profile_ip_fixo);
-      $executa_cgnat_sql = mysqli_query($conectar,$cgnat_sql); //cgnat ativa devido a ser ip fixo publico
-
-      if($executa_query_qos_profile && $executa_query_password && $executa_query_username && $executa_query_profile_ip_fixo)
-      {
-        array_push($array_processos_historico,"Radius: Banda Ativada e IP Fixo Configurado");  
-
-        $sql_atualiza_ip_fixo = "UPDATE ont SET mac='$mac',ip='$ip_fixo' WHERE serial='$serial'";
-        $executa_atualiza_ip_fixo = mysqli_query($conectar,$sql_atualiza_ip_fixo);
-
-        $sql_atualiza_utilizado_ip = "UPDATE ips_valido SET utilizado=true,utilizado_por='$contrato',mac_serial='$mac'
-          WHERE numero_ip ='$ip_fixo'";
-        $executa_atualiza_utitlizado_ip = mysqli_query($conectar,$sql_atualiza_utilizado_ip);
-      }else{
-        array_push($array_processos_historico,"Radius: Erro ao Ativar Banda e Configurar IP Fixo");
+        array_push($array_processos_historico,"<p style='font-weight:bold;'>### INTERNET ###</p>");
+  
+        $insere_ont_radius_username = "INSERT INTO radcheck( username, attribute, op, value)
+            VALUES ( '2500/$slot/$pon/$serial@vertv', 'User-Name', ':=', '2500/$slot/$pon/$serial@vertv' )";
+  
+        $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value)
+            VALUES ( '2500/$slot/$pon/$serial@vertv', 'User-Password', ':=', 'vlan' )";
+  
+        $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
+            VALUES ( '2500/$slot/$pon/$serial@vertv', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";
+        
+        $executa_query_username= mysqli_query($conectar_radius,$insere_ont_radius_username);
+        $executa_query_password= mysqli_query($conectar_radius,$insere_ont_radius_password);
+        $executa_query_qos_profile= mysqli_query($conectar_radius,$insere_ont_radius_qos_profile);
+        
+        if($executa_query_qos_profile && $executa_query_password && $executa_query_username)
+          array_push($array_processos_historico,"Radius: Banda Ativada e DHCP Configurado");  
+        else
+          array_push($array_processos_historico,"Radius: Erro ao Ativar Banda e Configurar DHCP");
+  
+        array_push($array_processos_historico,"Ativando Internet");
       }
-
-      array_push($array_processos_historico,"Ativando Internet com IP");
-
-    }
-    if($internet_ip || $internet) // cria o service port de internet no u2000
-    {
-      $servicePortInternet = get_service_port_internet($deviceName,$frame,$slot,$pon,$onuID,$contrato,$vasProfile,$modo_bridge);
-      $tira_ponto_virgula = explode(";",$servicePortInternet);
-      $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
-      $remove_desc = explode("ENDESC=",$check_sucesso[1]);
-      $errorCode = trim($remove_desc[0]);
-      if($errorCode != "0") //se der erro na service port internet
+      if($internet_ip)
       {
-        $ativado = "Ocorreu Error"; //variavel de sucesso para o JS
-        $trato = tratar_errors($errorCode);
-
-        array_push($array_processos_historico,"Erro ao criar o service port de Internet: $trato");
-
-        //se der erro ele irá apagar o registro salvo na tabela local ont
-        $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
-        mysqli_query($conectar,$sql_apagar_onu);
-
-        array_push($array_processos_historico,"<p>Removido do banco local</p>");
-
-        //Dessassocia IP
-        $sql_remove_utilizado_antigo = "UPDATE ips_valido SET utilizado=false,utilizado_por=NULL,mac_serial=NULL
-        WHERE numero_ip ='$ip_fixo'";
-        $executa_atualiza_utitlizado_ip = mysqli_query($conectar,$sql_remove_utilizado_antigo);
-
-        //Desativa Porta CTO
-        $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 0, serial = '$serial'
-        WHERE caixa_atendimento = '$cto' AND porta_atendimento= '$porta_atendimento'";
-        $executa_insere_porta = mysqli_query($conectar,$sql_insere_porta);
-        array_push($array_processos_historico,"Desassociada Porta $porta_atendimento da CTO $cto");
-
-        $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username like '%$serial%'";
-        mysqli_query($conectar_radius,$deletar_onu_radius_banda);
-
-        $deletar_onu_radius = "DELETE FROM radcheck WHERE username like '%$serial%'";
-        mysqli_query($conectar_radius,$deletar_onu_radius);
-
-        array_push($array_processos_historico,"Removido do Radius");
-
-        deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID,$ip_olt,NULL);
-
-        array_push($array_processos_historico,"Removido u2000");
-
-      }else{
-        $remove_barras_para_pegar_id = explode("--------------",$tira_ponto_virgula[1]);
-        $pegar_servicePorta_ID = explode("\r\n",$remove_barras_para_pegar_id[1]);
-        $pega_id = explode("	",$pegar_servicePorta_ID[2]);//posicao 4 será sempre o ONTID
-        
-        $servicePortInternetID= $pega_id[0] - 1;
-        
-        array_push($array_processos_historico,"Service Port de Internet Criada: $servicePortInternetID!");
-
-        $insere_service_internet = "UPDATE ont SET service_port_internet=$servicePortInternetID WHERE serial = '$serial'";
-        $executa_insere_service_internet = mysqli_query($conectar,$insere_service_internet);
-
-        $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
-            VALUES ('ServicePort Internet Cadastrada 
-            informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
-            Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
-            MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
-            Senha Telefone: $telPass','$usuario')";
-        $executa_log = mysqli_query($conectar,$sql_insert_log);
-
-        array_push($array_processos_historico,"<p style='color:green'>Internet Ativada!</p>");
+        array_push($array_processos_historico,"<p style='font-weight:bold;'>### INTERNET ###</p>");
+  
+        $insere_ont_radius_username = "INSERT INTO radcheck( username, attribute, op, value)
+          VALUES ( '2503/$slot/$pon/$serial@vertv-corp-ip', 'User-Name', ':=', '2503/$slot/$pon/$serial@vertv-corp-ip' )";
+  
+        $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value)
+          VALUES ( '2503/$slot/$pon/$serial@vertv-corp-ip', 'User-Password', ':=', 'vlan' )";
+  
+        $insere_ont_radius_profile_ip_fixo = "INSERT INTO radreply( username, attribute, op, value)
+          VALUES ( '2503/$slot/$pon/$serial@vertv-corp-ip', 'Framed-IP-Address',':=','$ip_fixo')";
+  
+        $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
+          VALUES ( '2503/$slot/$pon/$serial@vertv-corp-ip', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";
+  
+        //exibe que não esta no CCGNAT
+        $cgnat_sql = "UPDATE ont SET cgnat = false WHERE serial = '$serial'";
+  
+        if($modo_bridge == 'mac_externo')
+        {
+          $insere_ont_radius_mac = "INSERT INTO radcheck(username,attribute,op,value) 
+            values('2503/$slot/$pon/$serial@vertv-corp-ip','Huawei-User-Mac','=','$mac')";
+          $executa_query_ont_radius_mac = mysqli_query($conectar_radius,$insere_ont_radius_mac);
+        }                                                                                   
+                                                                                    
+        $executa_query_username= mysqli_query($conectar_radius,$insere_ont_radius_username);
+        $executa_query_password= mysqli_query($conectar_radius,$insere_ont_radius_password);
+        $executa_query_qos_profile= mysqli_query($conectar_radius,$insere_ont_radius_qos_profile);
+        $executa_query_profile_ip_fixo = mysqli_query($conectar_radius,$insere_ont_radius_profile_ip_fixo);
+        $executa_cgnat_sql = mysqli_query($conectar,$cgnat_sql); //cgnat ativa devido a ser ip fixo publico
+  
+        if($executa_query_qos_profile && $executa_query_password && $executa_query_username && $executa_query_profile_ip_fixo)
+        {
+          array_push($array_processos_historico,"Radius: Banda Ativada e IP Fixo Configurado");  
+  
+          $sql_atualiza_ip_fixo = "UPDATE ont SET mac='$mac',ip='$ip_fixo' WHERE serial='$serial'";
+          $executa_atualiza_ip_fixo = mysqli_query($conectar,$sql_atualiza_ip_fixo);
+  
+          $sql_atualiza_utilizado_ip = "UPDATE ips_valido SET utilizado=true,utilizado_por='$contrato',mac_serial='$mac'
+            WHERE numero_ip ='$ip_fixo'";
+          $executa_atualiza_utitlizado_ip = mysqli_query($conectar,$sql_atualiza_utilizado_ip);
+        }else{
+          array_push($array_processos_historico,"Radius: Erro ao Ativar Banda e Configurar IP Fixo");
+        }
+  
+        array_push($array_processos_historico,"Ativando Internet com IP");
+  
       }
-
-    }
-
-    ##################################### T E L E F O N I A ##############################################
-
-    if($telefone)
-    {
-      array_push($array_processos_historico,"<p style='font-weight: bold'>### TELEFONE ###</p>");
-          
-      #### ATIVA A POTS DO TELEFONE #####
-      if( $telNumber2 == 0 && $telPass2 == 0)
-        $telefone_on = ativa_telefonia($deviceName,$frame,$slot,$pon,$onuID,$telNumber,$telPass,$telNumber);
-      else
-        $telefone_on = ativa_telefonia($deviceName,$frame,$slot,$pon,$onuID,$telNumber,$telPass,$telNumber,$telNumber2,$telPass2,$telNumber2);
-
-      $tira_ponto_virgula = explode(";",$telefone_on);
-      $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
-      $remove_desc = explode("ENDESC=",$check_sucesso[1]);
-      $errorCode = trim($remove_desc[0]);
-      if($errorCode != "0") //se der erro na ativacao da telefonia
+      if($internet_ip || $internet) // cria o service port de internet no u2000
       {
-        $ativado = "Ocorreu Error"; //variavel de sucesso para o JS
-        $trato = tratar_errors($errorCode);
-
-        array_push($array_processos_historico,"<p style='color:red'>Houve erro ao ativar os numeros na ONT: $trato</p>");
-
-        //se der erro ele irá apagar o registro salvo na tabela local ont
-        $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
-        mysqli_query($conectar,$sql_apagar_onu);
-        array_push($array_processos_historico,"<p>Removido do Banco Local</p>");
-
-        //Dessassocia IP
-        $sql_remove_utilizado_antigo = "UPDATE ips_valido SET utilizado=false,utilizado_por=NULL,mac_serial=NULL
-        WHERE numero_ip ='$ip_fixo'";
-        $executa_atualiza_utitlizado_ip = mysqli_query($conectar,$sql_remove_utilizado_antigo);
-
-        //Desativa Porta CTO
-        $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 0, serial = '$serial'
-        WHERE caixa_atendimento = '$cto' AND porta_atendimento= '$porta_atendimento'";
-        $executa_insere_porta = mysqli_query($conectar,$sql_insere_porta);
-        array_push($array_processos_historico,"Desassociada Porta $porta_atendimento da CTO $cto");
-        
-        $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username like '%$serial%'";
-        mysqli_query($conectar_radius,$deletar_onu_radius_banda);
-
-        $deletar_onu_radius = "DELETE FROM radcheck WHERE username like '%$serial%'";
-        mysqli_query($conectar_radius,$deletar_onu_radius);
-        array_push($array_processos_historico,"Removido do Radius");
-
-        deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID,$ip_olt,NULL);
-        array_push($array_processos_historico,"Removido do u2000");
-
-      }else{
-        array_push($array_processos_historico,"Número(s) Ativado(s)");
-        ## INICIO SERVICE PORT TELEFONE ##
-        $servicePortTelefone = get_service_port_telefone($deviceName,$frame,$slot,$pon,$onuID,$contrato);
-
-        $tira_ponto_virgula = explode(";",$servicePortTelefone);
+        $servicePortInternet = get_service_port_internet($deviceName,$frame,$slot,$pon,$onuID,$contrato,$vasProfile,$modo_bridge);
+        $tira_ponto_virgula = explode(";",$servicePortInternet);
         $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
         $remove_desc = explode("ENDESC=",$check_sucesso[1]);
         $errorCode = trim($remove_desc[0]);
-        if($errorCode != "0") //se der erro na service port telefone
+        if($errorCode != "0") //se der erro na service port internet
         {
           $ativado = "Ocorreu Error"; //variavel de sucesso para o JS
           $trato = tratar_errors($errorCode);
-
-          array_push($array_process_result,"<p style='color:red'>Houve erro ao criar a Service Port de Telefonia: <strong>$trato</strong></p>");
-
+  
+          array_push($array_processos_historico,"Erro ao criar o service port de Internet: $trato");
+  
           //se der erro ele irá apagar o registro salvo na tabela local ont
           $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
           mysqli_query($conectar,$sql_apagar_onu);
-          array_push($array_process_result,"Removido do Banco Local");
-          
+  
+          array_push($array_processos_historico,"<p>Removido do banco local</p>");
+  
           //Dessassocia IP
           $sql_remove_utilizado_antigo = "UPDATE ips_valido SET utilizado=false,utilizado_por=NULL,mac_serial=NULL
           WHERE numero_ip ='$ip_fixo'";
           $executa_atualiza_utitlizado_ip = mysqli_query($conectar,$sql_remove_utilizado_antigo);
-
+  
           //Desativa Porta CTO
           $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 0, serial = '$serial'
           WHERE caixa_atendimento = '$cto' AND porta_atendimento= '$porta_atendimento'";
           $executa_insere_porta = mysqli_query($conectar,$sql_insere_porta);
           array_push($array_processos_historico,"Desassociada Porta $porta_atendimento da CTO $cto");
-
-          $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username like '%$serial%' ";
-          $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
-
-          $deletar_onu_radius = " DELETE FROM radcheck WHERE username like '%$serial%' ";
-          $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
-          array_push($array_process_result,"Removido do Radius");
-
+  
+          $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username like '%$serial%'";
+          mysqli_query($conectar_radius,$deletar_onu_radius_banda);
+  
+          $deletar_onu_radius = "DELETE FROM radcheck WHERE username like '%$serial%'";
+          mysqli_query($conectar_radius,$deletar_onu_radius);
+  
+          array_push($array_processos_historico,"Removido do Radius");
+  
           deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID,$ip_olt,NULL);
-          array_push($array_process_result,"Removido u2000");
-        }else
-        {
+  
+          array_push($array_processos_historico,"Removido u2000");
+  
+        }else{
           $remove_barras_para_pegar_id = explode("--------------",$tira_ponto_virgula[1]);
-          $pegar_servicePortTel_ID = explode("\r\n",$remove_barras_para_pegar_id[1]);
+          $pegar_servicePorta_ID = explode("\r\n",$remove_barras_para_pegar_id[1]);
+          $pega_id = explode("	",$pegar_servicePorta_ID[2]);//posicao 4 será sempre o ONTID
           
-          $pega_id = explode("	",$pegar_servicePortTel_ID[2]);//posicao 4 será sempre o ONTID
+          $servicePortInternetID= $pega_id[0] - 1;
           
-          $servicePortTelefoneID= $pega_id[0] - 1; 
-          array_push($array_processos_historico,"Service Port Telefonia Criado: $servicePortTelefoneID");
-
+          array_push($array_processos_historico,"Service Port de Internet Criada: $servicePortInternetID!");
+  
+          $insere_service_internet = "UPDATE ont SET service_port_internet=$servicePortInternetID WHERE serial = '$serial'";
+          $executa_insere_service_internet = mysqli_query($conectar,$insere_service_internet);
+  
           $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
-            VALUES ('ServicePort Telefone Cadastrada 
-            informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
-            Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
-            MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
-            Senha Telefone: $telPass','$usuario')";
+              VALUES ('ServicePort Internet Cadastrada 
+              informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+              Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+              MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
+              Senha Telefone: $telPass','$usuario')";
           $executa_log = mysqli_query($conectar,$sql_insert_log);
-
-          $insere_service_telefone = "UPDATE ont SET service_port_telefone='$servicePortTelefoneID' WHERE serial = '$serial'";
-          $executa_insere_service_telefone = mysqli_query($conectar,$insere_service_telefone);
-          array_push($array_processos_historico,"Atualizado Service Port na ONT");
-
-          array_push($array_processos_historico,"<p style='color: green'>Telefone Ativado! </p>");
+  
+          array_push($array_processos_historico,"<p style='color:green'>Internet Ativada!</p>");
         }
+  
       }
-      
-    }
-
-    ##################################### I P T V ##############################################
-
-    if($iptv)
-    {
-      array_push($array_processos_historico,"<p style='font-weight:bold'> ###I P T V### </p>");
-      ####### ATIVA SERVICE PORT IPTV ########
-      $servicePortIPTV = get_service_port_iptv($deviceName,$frame,$slot,$pon,$onuID,$contrato);
-
-      $tira_ponto_virgula = explode(";",$servicePortIPTV);
-      $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
-      $remove_desc = explode("ENDESC=",$check_sucesso[1]);
-      $errorCode = trim($remove_desc[0]);
-      if($errorCode != "0") //se der erro na service port iptv
+  
+      ##################################### T E L E F O N I A ##############################################
+  
+      if($telefone)
       {
-        $ativado = "Ocorreu Error"; //variavel de sucesso para o JS
-        $trato = tratar_errors($errorCode);
-
-        array_push($array_processos_historico,"<p style='color:red'>Houve erro Inserir a Service Port de IPTV: <strong>$trato</strong></p>");
-
-        //se der erro ele irá apagar o registro salvo na tabela local ont
-        $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
-        
-        //remove do radius
-        mysqli_query($conectar,$sql_apagar_onu);
-        array_push($array_processos_historico,"<p>Removido do Banco Local</p>");
-        
-        //Dessassocia IP
-        $sql_remove_utilizado_antigo = "UPDATE ips_valido SET utilizado=false,utilizado_por=NULL,mac_serial=NULL
-        WHERE numero_ip ='$ip_fixo'";
-        $executa_atualiza_utitlizado_ip = mysqli_query($conectar,$sql_remove_utilizado_antigo);
-
-        //Desativa Porta CTO
-        $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 0, serial = '$serial'
-        WHERE caixa_atendimento = '$cto' AND porta_atendimento= '$porta_atendimento'";
-        $executa_insere_porta = mysqli_query($conectar,$sql_insere_porta);
-        array_push($array_processos_historico,"Desassociada Porta $porta_atendimento da CTO $cto");
-
-        $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username like '%$serial%'";
-        mysqli_query($conectar_radius,$deletar_onu_radius_banda);
-
-        $deletar_onu_radius = "DELETE FROM radcheck WHERE username like '%$serial%'";
-        mysqli_query($conectar_radius,$deletar_onu_radius);
-
-        array_push($array_processos_historico,"Removido do Radius");
-
-        //remove do u2000
-        deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID,$ip_olt,$servicePortIPTV);
-        array_push($array_processos_historico,"Removido do u2000");
-
-      }else{
-        $remove_barras_para_pegar_id = explode("--------------",$tira_ponto_virgula[1]);
-        $pegar_servicePorta_ID = explode("\r\n",$remove_barras_para_pegar_id[1]);
-        
-        $pega_id = explode("	",$pegar_servicePorta_ID[2]);//posicao 4 será sempre o ONTID
-        
-        $servicePortIptvID= $pega_id[0] - 1;
-        array_push($array_processos_historico,"Service Port IPTV Criado: $servicePortIptvID");
-        
-        $insere_service_iptv = "UPDATE ont SET service_port_iptv='$servicePortIptvID' WHERE serial = '$serial'";
-        $executa_insere_service_iptv = mysqli_query($conectar,$insere_service_iptv);
-        array_push($array_processos_historico,"Atualizado Service Port na ONT");
-        
-        ### BTV ###
-        $btv_olt = insere_btv_iptv($deviceName,$frame,$slot,$pon,$onuID);
-        $tira_ponto_virgula = explode(";",$btv_olt);
+        array_push($array_processos_historico,"<p style='font-weight: bold'>### TELEFONE ###</p>");
+            
+        #### ATIVA A POTS DO TELEFONE #####
+        if( $telNumber2 == 0 && $telPass2 == 0)
+          $telefone_on = ativa_telefonia($deviceName,$frame,$slot,$pon,$onuID,$telNumber,$telPass,$telNumber);
+        else
+          $telefone_on = ativa_telefonia($deviceName,$frame,$slot,$pon,$onuID,$telNumber,$telPass,$telNumber,$telNumber2,$telPass2,$telNumber2);
+  
+        $tira_ponto_virgula = explode(";",$telefone_on);
         $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
         $remove_desc = explode("ENDESC=",$check_sucesso[1]);
         $errorCode = trim($remove_desc[0]);
-
-        if($errorCode != "0") //se der erro na btv iptv
+        if($errorCode != "0") //se der erro na ativacao da telefonia
         {
           $ativado = "Ocorreu Error"; //variavel de sucesso para o JS
           $trato = tratar_errors($errorCode);
-
-          array_push($array_processos_historico,"Houve erro ao criar o BTV: $trato");
-
+  
+          array_push($array_processos_historico,"<p style='color:red'>Houve erro ao ativar os numeros na ONT: $trato</p>");
+  
           //se der erro ele irá apagar o registro salvo na tabela local ont
           $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
+          mysqli_query($conectar,$sql_apagar_onu);
+          array_push($array_processos_historico,"<p>Removido do Banco Local</p>");
+  
+          //Dessassocia IP
+          $sql_remove_utilizado_antigo = "UPDATE ips_valido SET utilizado=false,utilizado_por=NULL,mac_serial=NULL
+          WHERE numero_ip ='$ip_fixo'";
+          $executa_atualiza_utitlizado_ip = mysqli_query($conectar,$sql_remove_utilizado_antigo);
+  
+          //Desativa Porta CTO
+          $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 0, serial = '$serial'
+          WHERE caixa_atendimento = '$cto' AND porta_atendimento= '$porta_atendimento'";
+          $executa_insere_porta = mysqli_query($conectar,$sql_insere_porta);
+          array_push($array_processos_historico,"Desassociada Porta $porta_atendimento da CTO $cto");
+          
+          $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username like '%$serial%'";
+          mysqli_query($conectar_radius,$deletar_onu_radius_banda);
+  
+          $deletar_onu_radius = "DELETE FROM radcheck WHERE username like '%$serial%'";
+          mysqli_query($conectar_radius,$deletar_onu_radius);
+          array_push($array_processos_historico,"Removido do Radius");
+  
+          deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID,$ip_olt,NULL);
+          array_push($array_processos_historico,"Removido do u2000");
+  
+        }else{
+          array_push($array_processos_historico,"Número(s) Ativado(s)");
+          ## INICIO SERVICE PORT TELEFONE ##
+          $servicePortTelefone = get_service_port_telefone($deviceName,$frame,$slot,$pon,$onuID,$contrato);
+  
+          $tira_ponto_virgula = explode(";",$servicePortTelefone);
+          $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
+          $remove_desc = explode("ENDESC=",$check_sucesso[1]);
+          $errorCode = trim($remove_desc[0]);
+          if($errorCode != "0") //se der erro na service port telefone
+          {
+            $ativado = "Ocorreu Error"; //variavel de sucesso para o JS
+            $trato = tratar_errors($errorCode);
+  
+            array_push($array_process_result,"<p style='color:red'>Houve erro ao criar a Service Port de Telefonia: <strong>$trato</strong></p>");
+  
+            //se der erro ele irá apagar o registro salvo na tabela local ont
+            $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
+            mysqli_query($conectar,$sql_apagar_onu);
+            array_push($array_process_result,"Removido do Banco Local");
+            
+            //Dessassocia IP
+            $sql_remove_utilizado_antigo = "UPDATE ips_valido SET utilizado=false,utilizado_por=NULL,mac_serial=NULL
+            WHERE numero_ip ='$ip_fixo'";
+            $executa_atualiza_utitlizado_ip = mysqli_query($conectar,$sql_remove_utilizado_antigo);
+  
+            //Desativa Porta CTO
+            $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 0, serial = '$serial'
+            WHERE caixa_atendimento = '$cto' AND porta_atendimento= '$porta_atendimento'";
+            $executa_insere_porta = mysqli_query($conectar,$sql_insere_porta);
+            array_push($array_processos_historico,"Desassociada Porta $porta_atendimento da CTO $cto");
+  
+            $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username like '%$serial%' ";
+            $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
+  
+            $deletar_onu_radius = " DELETE FROM radcheck WHERE username like '%$serial%' ";
+            $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
+            array_push($array_process_result,"Removido do Radius");
+  
+            deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID,$ip_olt,NULL);
+            array_push($array_process_result,"Removido u2000");
+          }else
+          {
+            $remove_barras_para_pegar_id = explode("--------------",$tira_ponto_virgula[1]);
+            $pegar_servicePortTel_ID = explode("\r\n",$remove_barras_para_pegar_id[1]);
+            
+            $pega_id = explode("	",$pegar_servicePortTel_ID[2]);//posicao 4 será sempre o ONTID
+            
+            $servicePortTelefoneID= $pega_id[0] - 1; 
+            array_push($array_processos_historico,"Service Port Telefonia Criado: $servicePortTelefoneID");
+  
+            $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
+              VALUES ('ServicePort Telefone Cadastrada 
+              informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+              Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+              MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
+              Senha Telefone: $telPass','$usuario')";
+            $executa_log = mysqli_query($conectar,$sql_insert_log);
+  
+            $insere_service_telefone = "UPDATE ont SET service_port_telefone='$servicePortTelefoneID' WHERE serial = '$serial'";
+            $executa_insere_service_telefone = mysqli_query($conectar,$insere_service_telefone);
+            array_push($array_processos_historico,"Atualizado Service Port na ONT");
+  
+            array_push($array_processos_historico,"<p style='color: green'>Telefone Ativado! </p>");
+          }
+        }
+        
+      }
+  
+      ##################################### I P T V ##############################################
+  
+      if($iptv)
+      {
+        array_push($array_processos_historico,"<p style='font-weight:bold'> ###I P T V### </p>");
+        ####### ATIVA SERVICE PORT IPTV ########
+        $servicePortIPTV = get_service_port_iptv($deviceName,$frame,$slot,$pon,$onuID,$contrato);
+  
+        $tira_ponto_virgula = explode(";",$servicePortIPTV);
+        $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
+        $remove_desc = explode("ENDESC=",$check_sucesso[1]);
+        $errorCode = trim($remove_desc[0]);
+        if($errorCode != "0") //se der erro na service port iptv
+        {
+          $ativado = "Ocorreu Error"; //variavel de sucesso para o JS
+          $trato = tratar_errors($errorCode);
+  
+          array_push($array_processos_historico,"<p style='color:red'>Houve erro Inserir a Service Port de IPTV: <strong>$trato</strong></p>");
+  
+          //se der erro ele irá apagar o registro salvo na tabela local ont
+          $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
+          
+          //remove do radius
           mysqli_query($conectar,$sql_apagar_onu);
           array_push($array_processos_historico,"<p>Removido do Banco Local</p>");
           
@@ -615,42 +570,101 @@
           $sql_remove_utilizado_antigo = "UPDATE ips_valido SET utilizado=false,utilizado_por=NULL,mac_serial=NULL
           WHERE numero_ip ='$ip_fixo'";
           $executa_atualiza_utitlizado_ip = mysqli_query($conectar,$sql_remove_utilizado_antigo);
-
+  
           //Desativa Porta CTO
           $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 0, serial = '$serial'
           WHERE caixa_atendimento = '$cto' AND porta_atendimento= '$porta_atendimento'";
           $executa_insere_porta = mysqli_query($conectar,$sql_insere_porta);
           array_push($array_processos_historico,"Desassociada Porta $porta_atendimento da CTO $cto");
-
-          //remove do radius
+  
           $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username like '%$serial%'";
           mysqli_query($conectar_radius,$deletar_onu_radius_banda);
-
+  
           $deletar_onu_radius = "DELETE FROM radcheck WHERE username like '%$serial%'";
           mysqli_query($conectar_radius,$deletar_onu_radius);
-
+  
           array_push($array_processos_historico,"Removido do Radius");
-
+  
+          //remove do u2000
           deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID,$ip_olt,$servicePortIPTV);
           array_push($array_processos_historico,"Removido do u2000");
-
+  
         }else{
-          $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
-            VALUES ('BTV Criado e SP IPTV Cadastrada 
-            informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
-            Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
-            MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
-            Senha Telefone: $telPass','$usuario')";
-          $executa_log = mysqli_query($conectar,$sql_insert_log);
-
-          array_push($array_processos_historico,"<p>BTV Criado na OLT</p>");
-          array_push($array_processos_historico,"<p style='color:green;';>IPTV Ativada</p>");
+          $remove_barras_para_pegar_id = explode("--------------",$tira_ponto_virgula[1]);
+          $pegar_servicePorta_ID = explode("\r\n",$remove_barras_para_pegar_id[1]);
+          
+          $pega_id = explode("	",$pegar_servicePorta_ID[2]);//posicao 4 será sempre o ONTID
+          
+          $servicePortIptvID= $pega_id[0] - 1;
+          array_push($array_processos_historico,"Service Port IPTV Criado: $servicePortIptvID");
+          
+          $insere_service_iptv = "UPDATE ont SET service_port_iptv='$servicePortIptvID' WHERE serial = '$serial'";
+          $executa_insere_service_iptv = mysqli_query($conectar,$insere_service_iptv);
+          array_push($array_processos_historico,"Atualizado Service Port na ONT");
+          
+          ### BTV ###
+          $btv_olt = insere_btv_iptv($deviceName,$frame,$slot,$pon,$onuID);
+          $tira_ponto_virgula = explode(";",$btv_olt);
+          $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
+          $remove_desc = explode("ENDESC=",$check_sucesso[1]);
+          $errorCode = trim($remove_desc[0]);
+  
+          if($errorCode != "0") //se der erro na btv iptv
+          {
+            $ativado = "Ocorreu Error"; //variavel de sucesso para o JS
+            $trato = tratar_errors($errorCode);
+  
+            array_push($array_processos_historico,"Houve erro ao criar o BTV: $trato");
+  
+            //se der erro ele irá apagar o registro salvo na tabela local ont
+            $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
+            mysqli_query($conectar,$sql_apagar_onu);
+            array_push($array_processos_historico,"<p>Removido do Banco Local</p>");
+            
+            //Dessassocia IP
+            $sql_remove_utilizado_antigo = "UPDATE ips_valido SET utilizado=false,utilizado_por=NULL,mac_serial=NULL
+            WHERE numero_ip ='$ip_fixo'";
+            $executa_atualiza_utitlizado_ip = mysqli_query($conectar,$sql_remove_utilizado_antigo);
+  
+            //Desativa Porta CTO
+            $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 0, serial = '$serial'
+            WHERE caixa_atendimento = '$cto' AND porta_atendimento= '$porta_atendimento'";
+            $executa_insere_porta = mysqli_query($conectar,$sql_insere_porta);
+            array_push($array_processos_historico,"Desassociada Porta $porta_atendimento da CTO $cto");
+  
+            //remove do radius
+            $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username like '%$serial%'";
+            mysqli_query($conectar_radius,$deletar_onu_radius_banda);
+  
+            $deletar_onu_radius = "DELETE FROM radcheck WHERE username like '%$serial%'";
+            mysqli_query($conectar_radius,$deletar_onu_radius);
+  
+            array_push($array_processos_historico,"Removido do Radius");
+  
+            deletar_onu_2000($deviceName,$frame,$slot,$pon,$onuID,$ip_olt,$servicePortIPTV);
+            array_push($array_processos_historico,"Removido do u2000");
+  
+          }else{
+            $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
+              VALUES ('BTV Criado e SP IPTV Cadastrada 
+              informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+              Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+              MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
+              Senha Telefone: $telPass','$usuario')";
+            $executa_log = mysqli_query($conectar,$sql_insert_log);
+  
+            array_push($array_processos_historico,"<p>BTV Criado na OLT</p>");
+            array_push($array_processos_historico,"<p style='color:green;';>IPTV Ativada</p>");
+          }
+          
         }
         
       }
-      
     }
+  
   }
+
+
 
   ##### FECHA AS CONEXOES COM OS BANCOS #####
   mysqli_close($conectar_radius);
