@@ -42,7 +42,7 @@
                               "VAS_Internet-VoIP-CORP-IP",
                               "VAS_Internet-CORP-IP-Bridge",
                               "VAS_Internet-IPTV-CORP-IP-Bridge",
-                              "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge",
+                              "VAS_Internet-VoIP-IPTV-CORP-IP-B",
                               "VAS_Internet-VoIP-CORP-IP-Bridge"
         ];
 
@@ -56,7 +56,7 @@
                               "VAS_Internet-VoIP-IPTV-REAL",
                               "VAS_Internet-VoIP-CORP-IP",
                               "VAS_Internet-VoIP-IPTV-CORP-IP",
-                              "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge",
+                              "VAS_Internet-VoIP-IPTV-CORP-IP-B",
                               "VAS_Internet-VoIP-CORP-IP-Bridge"
       ];
 
@@ -69,7 +69,7 @@
                     "VAS_Internet-VoIP-IPTV-REAL",
                     "VAS_Internet-VoIP-IPTV-CORP-IP",
                     "VAS_Internet-IPTV-CORP-IP",
-                    "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge",
+                    "VAS_Internet-VoIP-IPTV-CORP-IP-B",
                     "VAS_Internet-IPTV-CORP-IP-Bridge"
   ];
 
@@ -101,7 +101,7 @@
   }
 
   ### VAS PROFILE BRIDGE EM TRIPLE PLAY 
-  $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge"? $vasProfile = "VAS_Internet-VoIP-IPTV-CORP-IP-B" : $vasProfile;
+  $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP-B"? $vasProfile = "VAS_Internet-VoIP-IPTV-CORP-IP-B" : $vasProfile;
   
   ### VARIAVEL SE ACERTOU TUDO ###
   $ativado = "recadastrado";
@@ -199,7 +199,7 @@
       array_push($array_processos_historico,"<p style='color:red'>!!!! Houve erro ao inserir a ONT no u2000 $vasProfile: <strong>$trato</strong> !!!!</p>");
       
       //salva em LOG
-      $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
+      $sql_insert_log = "INSERT INTO log (registro,codigo_usuario, mac, cto, contrato)
           VALUES (ERRO NO U2000 AO Recadastrar a ONT ONTID Não Criada $trato 
           informações relatadas: 
               OLT: $device, PON: $pon, Frame: $frame,
@@ -207,7 +207,7 @@
               Slot: $slot, CTO: $cto Contrato: $contrato,
               MAC: $serial, Novo Perfil: $vasProfile, 
               Internet: $pacote, Telefone: $telNumber,
-              Senha Telefone: $telPass,$usuario)";
+              Senha Telefone: $telPass,$usuario, $serial, $cto, $contrato)";
       
       $executa_log = mysqli_query($conectar,$sql_insert_log);
 
@@ -264,7 +264,7 @@
             VALUES ( '2500/$slot/$pon/$serial@vertv', 'User-Name', ':=', '2500/$slot/$pon/$serial@vertv' )";
 
           $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value)
-              VALUES ( '2500/$slot/$pon/$serial@vertv', 'User-Password', ':=', 'vlan' )";
+              VALUES ( '2500/$slot/$pon/$serial@vertv', 'Cleartext-Password', ':=', 'vlan' )";
 
           $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
               VALUES ( '2500/$slot/$pon/$serial@vertv', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";
@@ -276,7 +276,7 @@
                   VALUES ( '2504/$slot/$pon/$serial@vertv-real', 'User-Name', ':=', '2504/$slot/$pon/$serial@vertv-real' )";
 
           $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value) 
-                VALUES ( '2504/$slot/$pon/$serial@vertv-real', 'User-Password', ':=', 'vlan' )";
+                VALUES ( '2504/$slot/$pon/$serial@vertv-real', 'Cleartext-Password', ':=', 'vlan' )";
 
           $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
                 VALUES ( '2504/$slot/$pon/$serial@vertv-real', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";
@@ -319,7 +319,7 @@
           VALUES ( '2503/$slot/$pon/$serial@vertv-corp-ip', 'User-Name', ':=', '2503/$slot/$pon/$serial@vertv-corp-ip' )";
 
         $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value)
-          VALUES ( '2503/$slot/$pon/$serial@vertv-corp-ip', 'User-Password', ':=', 'vlan' )";
+          VALUES ( '2503/$slot/$pon/$serial@vertv-corp-ip', 'Cleartext-Password', ':=', 'vlan' )";
 
         $insere_ont_radius_profile_ip_fixo = "INSERT INTO radreply( username, attribute, op, value)
           VALUES ( '2503/$slot/$pon/$serial@vertv-corp-ip', 'Framed-IP-Address',':=','$ip_fixo_novo')";
@@ -472,7 +472,7 @@
         array_push($array_processos_historico,"Removido do u2000");
 
         //salva em LOG
-        $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
+        $sql_insert_log = "INSERT INTO log(registro,codigo_usuario, mac, cto, contrato)
         VALUES (ERRO NO U2000 AO ATIVAR O SIP - $trato 
         informações relatadas Ativar Telefonia: 
             OLT: $device, PON: $pon, Frame: $frame,
@@ -480,7 +480,7 @@
             Slot: $slot, CTO: $cto Contrato: $contrato,
             MAC: $serial, Novo Perfil: $vasProfile, 
             Internet: $pacote, Telefone: $telNumber,
-            Senha Telefone: $telPass,$usuario)";
+            Senha Telefone: $telPass,$usuario, $serial, $cto, $contrato)";
     
         $executa_log = mysqli_query($conectar,$sql_insert_log);
       }else{
@@ -515,7 +515,7 @@
           array_push($array_process_result,"Removido u2000");
 
           //salva em LOG
-          $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
+          $sql_insert_log = "INSERT INTO log (registro,codigo_usuario, mac, cto, contrato)
           VALUES (ERRO NO U2000 AO GERAR SERVICE PORT TELEFONIA $trato 
           informações relatadas SP Telefonia: 
               OLT: $device, PON: $pon, Frame: $frame,
@@ -523,7 +523,7 @@
               Slot: $slot, CTO: $cto Contrato: $contrato,
               MAC: $serial, Novo Perfil: $vasProfile, 
               Internet: $pacote, Telefone: $telNumber,
-              Senha Telefone: $telPass,$usuario)";
+              Senha Telefone: $telPass,$usuario, $serial, $cto, $contrato)";
       
           $executa_log = mysqli_query($conectar,$sql_insert_log);
 
