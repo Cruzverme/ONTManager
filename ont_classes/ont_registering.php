@@ -33,6 +33,8 @@
   }
 
   $json_file = file_get_contents("http://192.168.80.5/sisspc/demos/get_pacote_ftth_cplus.php?contra=$contrato");
+   // $json_teste = json_encode($json_file, true);
+   // $json_str = json_decode($json_teste, true);
   $json_str = json_decode($json_file, true);
   $itens = $json_str['velocidade'];
   $nome = $json_str['nome'];
@@ -155,11 +157,10 @@
                   </div> <!-- fim div pacote -->
                   
                   <?php
-                    if($codigo == 330 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335 || $codigo == 336 || 
-                        $codigo == 349  || $codigo == 350 || $codigo == 351 || $codigo == 352 || $codigo == 353 || $codigo == 354 )
+                    if($codigo == 358 |  $codigo == 389 || $codigo == 330 || $codigo == 388 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335 || $codigo == 336 || $codigo == 349  || $codigo == 350 || $codigo == 351 || $codigo == 352 || $codigo == 353 || $codigo == 354 || $codigo == 372 || $codigo == 374 || $codigo == 377 || $codigo == 380 || $codigo == 381)
                     {
                       echo "
-                      <div class='form-group'>
+                      <div class='form-group' style='display: none;'>
                         <input type=checkbox name='modo_bridge' value='mac_externo'> IP Utilizado em Equipamento Externo</checkbox>
                       </div>
 

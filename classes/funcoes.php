@@ -10,7 +10,11 @@
   function checar_contrato($contrato)
   {
     $json_file = file_get_contents("http://192.168.80.5/sisspc/demos/get_contrato_status_ftth_cplus.php?contra=$contrato");
-    $json_str = json_decode($json_file, true);
+    
+   // $json_teste = json_encode($json_file, true);
+   // $json_str = json_decode($json_teste, true);
+
+   $json_str = json_decode($json_file, true);
     
     $contratoInterno = $json_str['contrato'];
     
@@ -95,7 +99,7 @@
               VALUES ( '2500/$slot/$pon/$serial@vertv', 'User-Name', ':=', '2500/$slot/$pon/$serial@vertv' )";
 
         $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value) 
-              VALUES ( '2500/$slot/$pon/$serial@vertv', 'User-Password', ':=', 'vlan' )";
+              VALUES ( '2500/$slot/$pon/$serial@vertv', 'Cleartext-Password', ':=', 'vlan' )";
 
         $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
               VALUES ( '2500/$slot/$pon/$serial@vertv', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";
@@ -233,8 +237,11 @@
   
   function get_nome_alias_cplus($contrato)
   {
+    
     //pega o Alias do assinante
     $json_file = file_get_contents("http://192.168.80.5/sisspc/demos/get_pacote_ftth_cplus.php?contra=$contrato");
+    //$json_teste = json_encode($json_file, true) ;
+   // $json_str = json_decode($json_teste, true);   
     $json_str = json_decode($json_file, true);
     $itens = $json_str['velocidade'];
     $nome = $json_str['nome'];
@@ -303,7 +310,7 @@
                 VALUES ( '2500/$slot/$pon/$serial@vertv', 'User-Name', ':=', '2500/$slot/$pon/$serial@vertv' )";
 
           $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value) 
-                VALUES ( '2500/$slot/$pon/$serial@vertv', 'User-Password', ':=', 'vlan' )";
+                VALUES ( '2500/$slot/$pon/$serial@vertv', 'Cleartext-Password', ':=', 'vlan' )";
 
           $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
                 VALUES ( '2500/$slot/$pon/$serial@vertv', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";

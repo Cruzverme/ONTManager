@@ -7,7 +7,6 @@
   $motivo = filter_input(INPUT_POST,"motivo");
   $contrato = filter_input(INPUT_POST,"contrato");
   $serial = filter_input(INPUT_POST,"serial");
-
   if($motivo && $contrato && $serial)
   {
     $selectInfos = "SELECT onu.ontID,onu.service_port_iptv,ct.frame_slot_pon,ct.pon_id_fk,p.deviceName,p.olt_ip 
@@ -24,7 +23,6 @@
     $infoDev = $onu_info['deviceName'];
     $ip = $onu_info['olt_ip'];
     $servicePortIptv = $onu_info['service_port_iptv'];
-    
     if($motivo == 1)
     {
       $tl1_metodo =  ativa_inadimplente($infoDev,$frame,$slot,$pon,$infoONTID);

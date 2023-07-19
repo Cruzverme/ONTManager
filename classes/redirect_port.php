@@ -206,7 +206,7 @@
                   VALUES ( '2504/$slot/$pon/$serial@vertv-cgnat', 'User-Name', ':=', '2504/$slot/$pon/$serial@vertv-cgnat' )";
 
             $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value) 
-                  VALUES ( '2504/$slot/$pon/$serial@vertv-cgnat', 'User-Password', ':=', 'vlan' )";
+                  VALUES ( '2504/$slot/$pon/$serial@vertv-cgnat', 'Cleartext-Password', ':=', 'vlan' )";
 
             $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
                   VALUES ( '2504/$slot/$pon/$serial@vertv-cgnat', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";

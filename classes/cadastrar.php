@@ -222,7 +222,7 @@
       
     $onuID = NULL; //zera ONUID para evitar problema de cash.
     
-    sleep(1); //dorme para processar
+    sleep(4); //dorme para processar
   
     $tira_ponto_virgula = explode(";",$ontID);
     $check_sucesso = explode("EN=",$tira_ponto_virgula[1]);
@@ -289,7 +289,7 @@
             VALUES ( '2500/$slot/$pon/$serial@vertv', 'User-Name', ':=', '2500/$slot/$pon/$serial@vertv' )";
   
         $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value)
-            VALUES ( '2500/$slot/$pon/$serial@vertv', 'User-Password', ':=', 'vlan' )";
+            VALUES ( '2500/$slot/$pon/$serial@vertv', 'Cleartext-Password', ':=', 'vlan' )";
   
         $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value) 
             VALUES ( '2500/$slot/$pon/$serial@vertv', 'Huawei-Qos-Profile-Name', ':=', '$pacote' )";
@@ -313,7 +313,7 @@
           VALUES ( '2503/$slot/$pon/$serial@vertv-corp-ip', 'User-Name', ':=', '2503/$slot/$pon/$serial@vertv-corp-ip' )";
   
         $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value)
-          VALUES ( '2503/$slot/$pon/$serial@vertv-corp-ip', 'User-Password', ':=', 'vlan' )";
+          VALUES ( '2503/$slot/$pon/$serial@vertv-corp-ip', 'Cleartext-Password', ':=', 'vlan' )";
   
         $insere_ont_radius_profile_ip_fixo = "INSERT INTO radreply( username, attribute, op, value)
           VALUES ( '2503/$slot/$pon/$serial@vertv-corp-ip', 'Framed-IP-Address',':=','$ip_fixo')";

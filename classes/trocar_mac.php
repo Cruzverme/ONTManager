@@ -44,7 +44,7 @@
             WHERE username='$frame/$slot/$pon/$serial@vertv' AND attribute='User-Name'";
 
           $atualiza_radius_password = "UPDATE radcheck SET username='$frame/$slot/$pon/$novoSerial@vertv' 
-            WHERE username='$frame/$slot/$pon/$serial@vertv' AND attribute='User-Password'";
+            WHERE username='$frame/$slot/$pon/$serial@vertv' AND attribute='Cleartext-Password'";
           
           $update_serial = "UPDATE ont SET serial='$novoSerial' WHERE serial='$serial'";
 
@@ -79,7 +79,7 @@
                 WHERE username='$frame/$slot/$pon/$novoSerial@vertv' AND attribute='User-Name'";
 
               $atualiza_radius_password = "UPDATE radcheck SET username='$frame/$slot/$pon/$serial@vertv'
-                WHERE username='$frame/$slot/$pon/$novoSerial@vertv' AND attribute='User-Password'";
+                WHERE username='$frame/$slot/$pon/$novoSerial@vertv' AND attribute='Cleartext-Password'";
               
               $update_serial = "UPDATE ont SET serial='$serial' WHERE serial = '$novoSerial'";
 
@@ -116,7 +116,7 @@
                   WHERE username='$frame/$slot/$pon/$novoSerial@vertv' AND attribute='User-Name'";
 
                 $atualiza_radius_password = "UPDATE radcheck SET username='$frame/$slot/$pon/$serial@vertv'
-                  WHERE username='$frame/$slot/$pon/$novoSerial@vertv' AND attribute='User-Password'";
+                  WHERE username='$frame/$slot/$pon/$novoSerial@vertv' AND attribute='Cleartext-Password'";
                 
                 $update_serial = "UPDATE ont SET serial='$novoSerial' WHERE serial = '$serial'";
 
@@ -158,7 +158,7 @@
               WHERE username='$frame/$slot/$pon/$novoSerial@vertv' AND attribute='User-Name' )";
 
             $atualiza_radius_password = "UPDATE radcheck SET username='$frame/$slot/$pon/$serial@vertv'
-              WHERE username='$frame/$slot/$pon/$novoSerial@vertv' AND attribute='User-Password' )";
+              WHERE username='$frame/$slot/$pon/$novoSerial@vertv' AND attribute='Cleartext-Password' )";
             
             $update_serial = "UPDATE ont SET serial='$serial' WHERE serial = '$novoSerial'";
 
