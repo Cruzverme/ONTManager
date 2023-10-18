@@ -77,7 +77,7 @@
         return ['errorCode' => $errorCode, 'ontResult' => $tira_ponto_virgula];
     }
 
-    $connectionsList = [$conectar]; //$conecta_radius
+    $connectionsList = [$conectar, $conecta_radius];
 
     // CHECA O LIMITE DE ONT NO CLIENTE
     $sql_verifica_limite = "SELECT limite_equipamentos FROM ont WHERE contrato = ?";
