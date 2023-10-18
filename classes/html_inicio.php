@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt">
-<?php    
-  // Verificador de sessão 
+<?php
+  // Verificador de sessão
   include "../classes/verifica_sessao.php";
 
   #capturar mensagem
@@ -72,7 +72,7 @@ echo '   </head>
                             echo '<li>
                                     <a href="../cto_classes/show_ctos.php"><i class="fa fa-sitemap fa-fw"></i> Cadastrar CTO</a>
                                   </li>';
-                          if($_SESSION["cadastrar_olt"] == 1)        
+                          if($_SESSION["cadastrar_olt"] == 1)
                             echo '<li>
                                   <a href="../cto_classes/pon_create.php"><i class="fa fa-columns fa-fw"></i> Cadastro de Slot da OLT </a>
                                 </li>';
@@ -94,29 +94,41 @@ echo '   </head>
                             </li>';
                   echo  '</ul>
                       </li>
-                    ';                    
+                    ';
                   }
-                  if($_SESSION["cadastrar_onu_corp"] == 1 )
-                  {
+                  if ($_SESSION["cadastrar_onu_corp"] == 1 ) {
                     echo '
-                      <li>
-                        <a class="tituloSubMenu" href="#">Corporativo</a>
-                        <ul class="nav" id="side-menu">';
-                            echo '<li>
-                                    <a href="../ont_corp/select_cto.php"><i class="fa fa-cloud-upload fa-fw"></i> Cadastrar CORP</a>
-                                  </li>
-                                  
-                                  <li>
-                                    <a href="../vlan/select_olt.php"><i class="fa fa-cloud-upload fa-fw"></i> Cadastrar VLAN</a>
-                                  </li>
-                                  
-                                  <li>
-                                    <a href="../vlan/vlan_list.php"><i class="fa fa-cloud-upload fa-fw"></i> Consultar VLAN</a>
-                                  </li>
-                                  ';
-                                  
-                    echo'</ul>
-                      </li>';
+                        <li>
+                            <a class="tituloSubMenu" href="#">Clear Channel</a>
+                            <ul class="nav" id="side-menu">
+                                <li>
+                                    <a href="../clear_channel/channel_config.php"><i class="fa fa-cloud-upload fa-fw"></i> Gerenciar L2L</a>
+                                </li>
+                                <li>
+                                    <a href="../clear_channel/select_cto.php"><i class="fa fa-cloud-upload fa-fw"></i> Cadastrar Cliente L2L</a>
+                                </li>
+                            </ul>
+                        </li>
+                    ';
+//                    echo ' DESCONTINUADO
+//                      <li>
+//                        <a class="tituloSubMenu" href="#">Corporativo</a>
+//                        <ul class="nav" id="side-menu">';
+//                            echo '<li>
+//                                    <a href="../ont_corp/select_cto.php"><i class="fa fa-cloud-upload fa-fw"></i> Cadastrar CORP</a>
+//                                  </li>
+//
+//                                  <li>
+//                                    <a href="../vlan/select_olt.php"><i class="fa fa-cloud-upload fa-fw"></i> Cadastrar VLAN</a>
+//                                  </li>
+//
+//                                  <li>
+//                                    <a href="../vlan/vlan_list.php"><i class="fa fa-cloud-upload fa-fw"></i> Consultar VLAN</a>
+//                                  </li>
+//                                  ';
+//
+//                    echo'</ul>
+//                      </li>';
                   }
                   if($_SESSION["modificar_onu"] == 1 || $_SESSION["alterar_macONT"] == 1 ||
                   $_SESSION["desativar_ativar_onu"] == 1 || $_SESSION["alterar_usuario"] == 1)
@@ -129,11 +141,11 @@ echo '   </head>
                             echo '<li>
                                     <a href="../ont_classes/ont_change.php"><i class="fa fa-wrench fa-fw"></i> Alterar ONT</a>
                                   </li>';
-                          if($_SESSION["alterar_macONT"] == 1)        
+                          if($_SESSION["alterar_macONT"] == 1)
                             echo '<li>
                                     <a href="../ont_classes/alterar_mac_ont.php"><i class="fa fa-exchange fa-fw"></i> Trocar ONT</a>
                                   </li>';
-                          if($_SESSION["desativar_ativar_onu"] == 1)  
+                          if($_SESSION["desativar_ativar_onu"] == 1)
                             echo '<li>
                                     <a href="../ont_classes/ont_disable.php"><i class="fa fa-pause-circle fa-fw"></i> Desabilitar e Habilitar Cliente </a>
                                   </li>';
@@ -143,7 +155,7 @@ echo '   </head>
                                   </li>';
                   echo' </ul>
                       </li>
-                    ';             
+                    ';
                   }
                   if($_SESSION["deletar_onu"] == 1 || $_SESSION["remover_cto"] == 1 || $_SESSION["remover_olt"] == 1)
                   {
@@ -162,11 +174,11 @@ echo '   </head>
                           if($_SESSION["remover_olt"] == 1)
                             echo' <li>
                                     <a href="../cto_classes/remover_olt.php"><i class="fa fa-ban fa-fw"></i> Remover OLT</a>
-                                  </li>';   
+                                  </li>';
                   echo' </ul>
-                      </li>';  
+                      </li>';
                   }
-                  
+
                   if($_SESSION["consulta_onts"] == 1 || $_SESSION["consulta_ctos"] == 1 || $_SESSION["consulta_relatorio_sinal"] == 1 || $_SESSION["desativar_ativar_onu"] == 1)
                   {
                     echo '
@@ -202,9 +214,9 @@ echo '   </head>
                                   <li>
                                     <a href="../consultas/show_cancelados.php"><i class="fa fa-bug fa-fw"></i> Clientes Cancelados no Cplus </a>
                                   </li>';
-                          
+
                     echo' </ul>
-                      </li>';  
+                      </li>';
                   }
 
                   if($_SESSION["consulta_ctos"] == 1)

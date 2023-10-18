@@ -1,8 +1,8 @@
 <?php 
 
-  include_once "/var/www/html/ontManager/u2000/tl1_sender.php";
+  include_once "../u2000/tl1_sender.php";
   
-  require '/var/www/html/ontManager/vendor/autoload.php'; //autoload do projeto
+  require '../vendor/autoload.php'; //autoload do projeto
 
   use PhpOffice\PhpSpreadsheet\Spreadsheet; //classe responsável pela manipulação da planilha
   use PhpOffice\PhpSpreadsheet\Writer\Xlsx; //classe que salvará a planilha em .xlsx
