@@ -33,7 +33,7 @@ class Packages
      */
     public static function getVelocityPack($conectar)
     {
-        $sql_lista_velocidades = "SELECT plano_id, nome, nomenclatura_velocidade, referencia_cplus FROM planos WHERE is_active IS FALSE";
+        $sql_lista_velocidades = "SELECT plano_id, nome, nomenclatura_velocidade, referencia_cplus FROM planos";
         $executa_query = mysqli_query($conectar, $sql_lista_velocidades);
 
         $planos = array();
