@@ -3,14 +3,14 @@ include_once "../classes/html_inicio.php";
 include_once "../db/db_config_mysql.php";
 //TODO ajustar permissao
 
-//if($_SESSION["modificar_onu"] == 0) {
-//    echo '
-//    <script language= "JavaScript">
-//      alert("Sem Permissão de Acesso!");
-//      location.href="../classes/redirecionador_pagina.php";
-//    </script>
-//    ';
-//}
+if($_SESSION["gerenciar_l2l"] == 0) {
+    echo '
+    <script language= "JavaScript">
+      alert("Sem Permissão de Acesso!");
+      location.href="../classes/redirecionador_pagina.php";
+    </script>
+    ';
+}
 ?>
     <div id="page-wrapper">
          <div class="container">

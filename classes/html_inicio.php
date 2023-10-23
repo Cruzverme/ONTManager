@@ -96,20 +96,25 @@ echo '   </head>
                       </li>
                     ';
                   }
-                  if ($_SESSION["cadastrar_onu_corp"] == 1 ) {
-                    echo '
-                        <li>
-                            <a class="tituloSubMenu" href="#">Clear Channel</a>
-                            <ul class="nav" id="side-menu">
-                                <li>
-                                    <a href="../clear_channel/channel_config.php"><i class="fa fa-cloud-upload fa-fw"></i> Gerenciar L2L</a>
-                                </li>
-                                <li>
-                                    <a href="../clear_channel/select_cto.php"><i class="fa fa-cloud-upload fa-fw"></i> Cadastrar Cliente L2L</a>
-                                </li>
-                            </ul>
-                        </li>
-                    ';
+                  if ($_SESSION["cadastrar_onu"]) { ?>
+                    <li>
+                        <a class="tituloSubMenu" href="#">Clear Channel</a>
+                        <ul class="nav" id="side-menu">
+                            <li>
+                                <a href="../clear_channel/select_cto.php">
+                                    <i class="fa fa-cloud-upload fa-fw"></i> Cadastrar Cliente L2L
+                                </a>
+                            </li>
+                        <?php if ($_SESSION['gerenciar_l2l']) { ?>
+                            <li>
+                                <a href="../clear_channel/channel_config.php">
+                                    <i class="fa fa-cloud-upload fa-fw"></i> Gerenciar L2L
+                                </a>
+                            </li>
+                        <?php } ?>
+                        </ul>
+                    </li>
+                  <?php
 //                    echo ' DESCONTINUADO
 //                      <li>
 //                        <a class="tituloSubMenu" href="#">Corporativo</a>
