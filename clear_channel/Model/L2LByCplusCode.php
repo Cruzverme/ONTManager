@@ -8,7 +8,7 @@ function getLans(int $contract)
 {
     include_once "../../db/db_config_mysql.php";
 
-    $json_file = file_get_contents("http://192.168.80.5/sisspc/demos/get_pacote_ftth_cplus.php?contra=$contrato");
+    $json_file = file_get_contents("http://192.168.80.5/sisspc/demos/get_pacote_ftth_cplus.php?contra=$contract");
 
     $json_str = json_decode($json_file, true);
     $itens = $json_str['velocidade'];
@@ -22,7 +22,13 @@ function getLans(int $contract)
 
     if ($result->num_rows > 0) {
         $rows = $result->fetch_all(MYSQLI_ASSOC);
-        return json_encode($rows);
+        $jsonData = json_encode($rows);
+
+        if (!$jsonData) {
+            return 'ERROR ' . json_last_error_msg();
+        }
+
+        return $jsonData;
     }
 
     return '{}';
