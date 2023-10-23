@@ -1,7 +1,7 @@
 <?php
 
     include_once "../db/db_config_mysql.php";
-    //include_once "../db/db_config_radius.php";
+    include_once "../db/db_config_radius.php";
     include_once "../u2000/tl1_sender.php";
     // Inicia sessões
     session_start();
