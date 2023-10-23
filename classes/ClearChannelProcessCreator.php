@@ -24,8 +24,6 @@
     $cto = filter_input(INPUT_POST, 'cto');
     $device = filter_input(INPUT_POST, 'device');
     $contrato = filter_input(INPUT_POST, 'contrato');
-    $designacao = filter_input(INPUT_POST, 'designacao');
-    $vlan_associada = filter_input(INPUT_POST, 'vlan_number');
 
     $internet = filter_input(INPUT_POST, "internet_check");
     $lanToLan = filter_input(INPUT_POST, "vlan_check");
@@ -198,10 +196,10 @@
 
         ######## ADICIONA A ONT NO RADIUS PARA PEGAR BANDA E IP ########
         $insere_ont_radius_username = "INSERT INTO radcheck( username, attribute, op, value)
-              VALUES ( '2500/$slot/$pon/$serial_number@vertv', 'User-Name', ':=', '2500/$slot/$pon/$serial_number@vertv' )";
+              VALUES ( '$gemPortList[6]/$slot/$pon/$serial_number@vertv', 'User-Name', ':=', '$gemPortList[6]/$slot/$pon/$serial_number@vertv' )";
 
         $insere_ont_radius_password = "INSERT INTO radcheck( username, attribute, op, value)
-              VALUES ( '2500/$slot/$pon/$serial_number@vertv', 'User-Password', ':=', 'vlan' )";
+              VALUES ( '$gemPortList[6]/$slot/$pon/$serial_number@vertv', 'User-Password', ':=', 'vlan' )";
 
         $executa_query_username= mysqli_query($conectar_radius,$insere_ont_radius_username);
         $executa_query_password= mysqli_query($conectar_radius,$insere_ont_radius_password);
@@ -214,7 +212,7 @@
             mysqli_query($conectar,$sql_apagar_onu);
             $array_process_result[] = "Removido do Banco Local";
 
-            $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/$pon/$serial_number@vertv'";
+            $deletar_onu_radius = " DELETE FROM radcheck WHERE username='$gemPortList[6]/$slot/$pon/$serial_number@vertv'";
             $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
             $array_process_result[] = "Removido do Radius";
 
@@ -243,7 +241,7 @@
 
             $array_process_result[] = "Removido do banco local";
 
-                $deletar_onu_radius_banda = "DELETE FROM radcheck WHERE username='2500/$slot/$pon/$serial_number@vertv'
+                $deletar_onu_radius_banda = "DELETE FROM radcheck WHERE username='$gemPortList[6]/$slot/$pon/$serial_number@vertv'
                 AND attribute='Huawei-Qos-Profile-Name' ";
                 mysqli_query($conectar_radius, $deletar_onu_radius_banda);
 
@@ -289,7 +287,7 @@
 
             array_push($array_process_result, "Removido do banco local");
 
-                $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial_number@vertv'
+                $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='$gemPortList[6]/$slot/$pon/$serial_number@vertv'
                   AND attribute='Huawei-Qos-Profile-Name' ";
                 mysqli_query($conectar_radius, $deletar_onu_radius_banda);
 
@@ -328,7 +326,7 @@
             mysqli_query($conectar,$sql_apagar_onu);
             array_push($array_process_result,"Removido do Banco Local");
 
-            $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial_number@vertv'
+            $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='$gemPortList[6]/$slot/$pon/$serial_number@vertv'
               AND attribute='Huawei-Qos-Profile-Name' ";
             mysqli_query($conectar_radius,$deletar_onu_radius_banda);
             $array_process_result[] = "Removido do Radius";
@@ -340,7 +338,7 @@
         }
         ############### INSERE A BANDA NO RADIUS ################
         $insere_ont_radius_qos_profile = "INSERT INTO radreply( username, attribute, op, value)
-            VALUES ( '2500/$slot/$pon/$serial_number@vertv', 'Huawei-Qos-Profile-Name', ':=', '$pacote_internet' )";
+            VALUES ( '$gemPortList[6]/$slot/$pon/$serial_number@vertv', 'Huawei-Qos-Profile-Name', ':=', '$pacote_internet' )";
 
         $executa_query_qos_profile = mysqli_query($conectar_radius, $insere_ont_radius_qos_profile);
 
@@ -352,7 +350,7 @@
             mysqli_query($conectar, $sql_apagar_onu);
             $array_process_result[] = "Removido do Banco Local";
 
-            $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial_number@vertv'
+            $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='$gemPortList[6]/$slot/$pon/$serial_number@vertv'
                 AND attribute='Huawei-Qos-Profile-Name' ";
             $executa_query = mysqli_query($conectar_radius, $deletar_onu_radius_banda);
             $array_process_result[] = "Removido do Radius";
@@ -393,11 +391,11 @@
             mysqli_query($conectar, $sql_apagar_onu);
             $array_process_result[] = "Removido do Banco Local";
 
-            $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial_number@vertv'
+            $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='$gemPortList[6]/$slot/$pon/$serial_number@vertv'
               AND attribute='Huawei-Qos-Profile-Name' ";
             $executa_query = mysqli_query($conectar_radius, $deletar_onu_radius_banda);
 
-            $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/$pon/$serial_number@vertv' ";
+            $deletar_onu_radius = " DELETE FROM radcheck WHERE username='$gemPortList[6]/$slot/$pon/$serial_number@vertv' ";
             $executa_query_radius = mysqli_query($conectar_radius, $deletar_onu_radius);
             $array_process_result[] = "Removido do Radius";
 
@@ -436,11 +434,11 @@
             mysqli_query($conectar, $sql_apagar_onu);
             $array_process_result[] = "Removido do Banco Local";
 
-            $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial_number@vertv'
+            $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='$gemPortList[6]/$slot/$pon/$serial_number@vertv'
               AND attribute='Huawei-Qos-Profile-Name' ";
             $executa_query = mysqli_query($conectar_radius, $deletar_onu_radius_banda);
 
-            $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/$pon/$serial_number@vertv' ";
+            $deletar_onu_radius = " DELETE FROM radcheck WHERE username='$gemPortList[6]/$slot/$pon/$serial_number@vertv' ";
             $executa_query_radius = mysqli_query($conectar_radius, $deletar_onu_radius);
             $array_process_result[] = "Removido do Radius";
 
@@ -472,11 +470,11 @@
             mysqli_query($conectar,$sql_apagar_onu);
             $array_process_result[] = "Removido do Banco Local";
 
-            $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial_number@vertv'
+            $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='$gemPortList[6]/$slot/$pon/$serial_number@vertv'
               AND attribute='Huawei-Qos-Profile-Name' ";
             $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
 
-            $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/$pon/$serial_number@vertv' ";
+            $deletar_onu_radius = " DELETE FROM radcheck WHERE username='$gemPortList[6]/$slot/$pon/$serial_number@vertv' ";
             $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
             $array_process_result[] = "Removido do Radius";
 
@@ -502,11 +500,11 @@
             mysqli_query($conectar,$sql_apagar_onu);
             $array_process_result[] = "Removido do Banco Local";
 
-            $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='2500/$slot/$pon/$serial_number@vertv'
+            $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='$gemPortList[6]/$slot/$pon/$serial_number@vertv'
                 AND attribute='Huawei-Qos-Profile-Name' ";
             $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
 
-            $deletar_onu_radius = " DELETE FROM radcheck WHERE username='2500/$slot/$pon/$serial_number@vertv' ";
+            $deletar_onu_radius = " DELETE FROM radcheck WHERE username='$gemPortList[6]/$slot/$pon/$serial_number@vertv' ";
             $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
             $array_process_result[] = "Removido do Radius";
 
@@ -527,7 +525,7 @@
         $executa_insere_service_telefone = mysqli_query($conectar,$insere_service_telefone);
         $array_process_result[] = "Atualizado Service Port na ONT";
     }
-
+deletar_onu_2000($device,$frame,$slot,$pon,$onuID,$ip_olt,NULL);
 return exitWithMessage($array_process_result, $connectionsList, false);
 
 
