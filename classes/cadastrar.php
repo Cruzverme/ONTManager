@@ -6,7 +6,6 @@
   session_start();
 
   $pacote = filter_input(INPUT_POST,'pacote');
-  [$pacote, $planoId] = explode('-', $pacote);
 
   #### SE O USUARIO NAO PRECISAR DE INTERNET, PACOTE É VAZIO
   $_POST["optionsRadios"] == "VAS_IPTV-VoIP"? $pacote = "none" : $pacote ;
