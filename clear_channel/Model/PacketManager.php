@@ -12,7 +12,7 @@
 
     foreach ($packs as $pack) {
         $packetList[] = [
-            'name' => mb_convert_encoding($pack['nome'], 'UTF-8'. 'UTF-8'),
+            'name' => mb_convert_encoding($pack['nome'], 'UTF-8', 'UTF-8'),
             'id' => mb_convert_encoding($pack['plano_id'], 'UTF-8', 'UTF-8')
         ];
     }
