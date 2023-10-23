@@ -60,7 +60,7 @@ if($_SESSION["gerenciar_l2l"] == 0) {
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="button" id="clonar-div" class="btn btn-primary  btn-block" onclick="clonarDiv()" style="margin-bottom: 10px;width: 50%; margin-left: 25%">Clonar</button>
+                                    <button type="button" id="clonar-div" class="btn btn-primary  btn-block" onclick="clonarDiv()" style="margin-bottom: 10px;width: 50%; margin-left: 25%">Adicionar</button>
                                     <div id="clones"></div>
                                     <button id="buttonAddEdit" type="submit" class="btn btn-primary  btn-block">Salvar</button>
                                 </div>
