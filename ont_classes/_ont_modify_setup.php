@@ -162,7 +162,7 @@
     $telefoniaVisivel = "style=display:none";
 
 #####Verifica Programaçãoq ue contém IPFixo
-  $arrayProgramacaoIpFixo = array(330,331,332,333,334,335,336,349,350,351,352,353,354,358,372,374,377,380,381,388,389);
+  $arrayProgramacaoIpFixo = array(330,331,332,333,334,335,336,349,350,351,352,353,354,358,372,374,377,380,381,388,389, 392);
   $arrayVasProfileIpFixoBridge = [
                             'Internet - Bridge' => "VAS_Internet-CORP-IP-Bridge",
                             'Internet e IPTV - Bridge' => "VAS_Internet-IPTV-CORP-IP-Bridge",
