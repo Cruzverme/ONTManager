@@ -5,8 +5,6 @@
     //iniciando sessao para enviar as msgs
     session_start();
 
-    //    echo json_encode(['name'=> 'nomin', 'id' => 123]);
-//    echo getL2lList();
     $packets = new Packages();
     $packs = $packets->getVelocityPack($conectar);
 
@@ -14,9 +12,14 @@
 
     foreach ($packs as $pack) {
         $packetList[] = [
-            'name' => $pack['nome'],
-            'id' => $pack['plano_id']
+            'name' => mb_convert_encoding($pack['nome'], 'UTF-8'. 'UTF-8'),
+            'id' => mb_convert_encoding($pack['plano_id'], 'UTF-8', 'UTF-8')
         ];
     }
+    $jsonData = json_encode($packetList);
 
-    echo json_encode($packetList);
+    if (!$jsonData) {
+        echo 'ERROR ' . json_last_error_msg();
+    } else {
+        echo $jsonData;
+    }

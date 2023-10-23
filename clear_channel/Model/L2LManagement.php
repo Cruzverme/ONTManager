@@ -17,6 +17,12 @@
 
         if ($result->num_rows > 0) {
             $rows = $result->fetch_all(MYSQLI_ASSOC);
-            return json_encode($rows);
+            $jsonData = json_encode($rows);
+
+            if (!$jsonData) {
+                return 'ERROR ' . json_last_error_msg();
+            }
+
+            return $jsonData;
         }
     }
