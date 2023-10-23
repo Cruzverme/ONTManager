@@ -272,6 +272,7 @@
             $contrato,
             null,
             null,
+            null,
             $gemPortList[6]);
         $tira_ponto_virgula = explode(";", $servicePortInternet);
         $check_sucesso = explode("EN=", $tira_ponto_virgula[1]);
