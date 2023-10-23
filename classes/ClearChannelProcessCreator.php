@@ -190,6 +190,12 @@
     mysqli_stmt_fetch($stmt);
     mysqli_stmt_close($stmt);
 
+###### ASSOCIANDO CTO A ONT ######
+    $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 1, serial = '$serial_number'
+        WHERE caixa_atendimento = '$cto' AND porta_atendimento= '$porta_selecionado'";
+    $executa_insere_porta = mysqli_query($conectar,$sql_insere_porta);
+    $array_process_result[] ="Reservada Porta $porta_selecionado da CTO $cto";
+
 ############ INICIO DA ATIVACAO DOS SERVIÇOS #######
     ##################################### L A N t o L A N ##############################################
     if ($lanToLan) {
@@ -212,6 +218,12 @@
             $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial_number'" );
             mysqli_query($conectar,$sql_apagar_onu);
             $array_process_result[] = "Removido do Banco Local";
+
+            //Desativa Porta CTO
+            $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 0, serial = '$serial_number'
+                WHERE caixa_atendimento = '$cto' AND porta_atendimento= '$porta_selecionado'";
+            $executa_insere_porta = mysqli_query($conectar,$sql_insere_porta);
+            $array_process_result[] = "Desassociada Porta $porta_selecionado da CTO $cto";
 
             $deletar_onu_radius = " DELETE FROM radcheck WHERE username='$gemPortList[6]/$slot/$pon/$serial_number@vertv'";
             $executa_query_radius = mysqli_query($conectar_radius,$deletar_onu_radius);
@@ -327,6 +339,12 @@
             $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial_number'" );
             mysqli_query($conectar,$sql_apagar_onu);
             array_push($array_process_result,"Removido do Banco Local");
+
+            //Desativa Porta CTO
+            $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 0, serial = '$serial_number'
+                WHERE caixa_atendimento = '$cto' AND porta_atendimento= '$porta_selecionado'";
+            $executa_insere_porta = mysqli_query($conectar,$sql_insere_porta);
+            $array_process_result[] = "Desassociada Porta $porta_selecionado da CTO $cto";
 
             $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='$gemPortList[6]/$slot/$pon/$serial_number@vertv'
               AND attribute='Huawei-Qos-Profile-Name' ";
@@ -472,6 +490,12 @@
             mysqli_query($conectar,$sql_apagar_onu);
             $array_process_result[] = "Removido do Banco Local";
 
+            //Desativa Porta CTO
+            $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 0, serial = '$serial_number'
+                WHERE caixa_atendimento = '$cto' AND porta_atendimento= '$porta_selecionado'";
+            $executa_insere_porta = mysqli_query($conectar,$sql_insere_porta);
+            $array_process_result[] = "Desassociada Porta $porta_selecionado da CTO $cto";
+
             $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='$gemPortList[6]/$slot/$pon/$serial_number@vertv'
               AND attribute='Huawei-Qos-Profile-Name' ";
             $executa_query= mysqli_query($conectar_radius,$deletar_onu_radius_banda);
@@ -501,6 +525,12 @@
             $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial_number'" );
             mysqli_query($conectar,$sql_apagar_onu);
             $array_process_result[] = "Removido do Banco Local";
+
+            //Desativa Porta CTO
+            $sql_insere_porta = "UPDATE ctos SET porta_atendimento_disponivel = 0, serial = '$serial_number'
+                WHERE caixa_atendimento = '$cto' AND porta_atendimento= '$porta_selecionado'";
+            $executa_insere_porta = mysqli_query($conectar,$sql_insere_porta);
+            $array_process_result[] = "Desassociada Porta $porta_selecionado da CTO $cto";
 
             $deletar_onu_radius_banda = "DELETE FROM radreply WHERE username='$gemPortList[6]/$slot/$pon/$serial_number@vertv'
                 AND attribute='Huawei-Qos-Profile-Name' ";
