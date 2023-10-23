@@ -256,7 +256,11 @@ function addUserWithLanProcess() {
             modelo_ont, sip_number, sip_password, porta_atendimento, frame, slot, pon, cto, device: device, contrato,
             designacao, vlan_number, internet_check, vlan_check, iptv, voip, vas, gems, line, serv
         }, function (msg_retorno) {
-            alert(msg_retorno)
+            response = JSON.parse(msg_retorno);
+            alert(response.message)
+            if (response.status  === 200)
+                window.location.replace('select_cto.php')
+
             if (msg_retorno)
                 body.removeClass("loading");
         });

@@ -49,16 +49,17 @@
         }
 
         $finalMessage = "Ocorreu um erro \r";
-
+        $status = 400;
         if (!$isError) {
             $finalMessage = "SERVIÇOS ATIVADOS \r";
+            $status = 200;
         }
 
         foreach ($messages as $message) {
             $finalMessage = $finalMessage . "$message \r";
         }
 
-        echo $finalMessage;
+        echo json_encode(['message' => $finalMessage, 'status' => $status]);
     }
 
     function obterInformacoesOnt($ontID)
@@ -525,7 +526,7 @@
         $executa_insere_service_telefone = mysqli_query($conectar,$insere_service_telefone);
         $array_process_result[] = "Atualizado Service Port na ONT";
     }
-deletar_onu_2000($device,$frame,$slot,$pon,$onuID,$ip_olt,NULL);
+
 return exitWithMessage($array_process_result, $connectionsList, false);
 
 
