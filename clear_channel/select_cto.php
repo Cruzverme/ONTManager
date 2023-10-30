@@ -3,7 +3,7 @@
   include "../classes/html_inicio.php";
   include_once "../db/db_config_mysql.php";
 
-  if($_SESSION["cadastrar_onu"] == 0)
+  if($_SESSION['gerenciar_l2l'] == 0) //$_SESSION["cadastrar_onu"] == 0 &&
   {
     echo '
     <script language= "JavaScript">

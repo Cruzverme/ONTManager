@@ -31,7 +31,7 @@ if ($nome_velocidade && $velocidade_download && $velocidade_upload && $tipo_plan
             $nomenclatura,
             $velocidade_download,
             $velocidade_upload,
-            $codigo_cplus,
+            $codigo_cplus
         );
         $result = mysqli_stmt_execute($stmt);
 

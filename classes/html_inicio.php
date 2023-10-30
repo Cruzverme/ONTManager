@@ -96,7 +96,7 @@ echo '   </head>
                       </li>
                     ';
                   }
-                  if ($_SESSION["cadastrar_onu"]) { ?>
+                  if ($_SESSION["gerenciar_l2l"]) { ?>
                     <li>
                         <a class="tituloSubMenu" href="#">Clear Channel</a>
                         <ul class="nav" id="side-menu">
