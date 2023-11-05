@@ -119,7 +119,7 @@ $conversor = in_array(CONVERSOR_KEY, $itens) ? true : false;
                                             foreach ($planos as $plano) :
                                                 if ($codigoPlano == $plano['referencia_cplus']) {
                                                     $codigo = $plano['referencia_cplus'];
-                                                    echo "<option value='{$plano['nomenclatura_velocidade']}-{$plano['plano_id']}'>{$plano['nome']}</option>";
+                                                    echo "<option value='{$plano['nomenclatura_velocidade']}'>{$plano['nome']}</option>";
                                                     $hasCplusReference = true;
                                                 }
                                             endforeach;
