@@ -62,10 +62,6 @@ async function initializePacketByCplus() {
                     value: l2l.name,
                     text: l2l.name
                 }));
-                $('.gems').val(l2l.gem_ports);
-                $('.vas').val(l2l.vas_profile);
-                $('.line').val(l2l.line_profile);
-                $('.serv').val(l2l.service_profile);
             });
             return;
         }

@@ -19,11 +19,8 @@
   $cto = filter_input(INPUT_POST,'cto');
   $device = filter_input(INPUT_POST,'device');
   $contrato = filter_input(INPUT_POST,'contrato');
-  $gemsPort = filter_input(INPUT_POST, 'gems');
-  $vasProfile = filter_input(INPUT_POST, 'vas');
-  $lineProfile = filter_input(INPUT_POST, 'line');
-  $serviceProfile = filter_input(INPUT_POST, 'serv');
   $vlanName = filter_input(INPUT_POST, 'vlanName');
+  list($vasProfile, $lineProfile, $serviceProfile, $gemsPort) = getL2LInformationByName($vlanName);
 
   if(checar_contrato($contrato) == null)
   {
@@ -90,39 +87,39 @@
                     </div>
                   </div>
               </fieldset>
-              
+
               <fieldset>
                 <legend>Requisitos</legend>
                   <div class="form-group">
-                      <label>Contrato</label> 
+                      <label>Contrato</label>
                       <input class="form-control" name="contrato" value='<?php echo $contrato;?>'type="text" readonly>
                   </div>
 
                   <div class="form-group">
-                      <label>Nome do Assinante</label> 
+                      <label>Nome do Assinante</label>
                       <input class="form-control" name="nome" value='<?php echo $nome[0];?>'type="text" readonly>
                   </div>
-                  
+
                   <div class="form-group">
                     <label>VAS Profile</label>
                     <input class="form-control" name="vasProfile" value='<?php echo "$vasProfile";?>'type="text" readonly>
                   </div>
-                  
+
                   <div class="form-group">
-                      <label>Pon MAC</label>                                                
+                      <label>Pon MAC</label>
                       <input class="form-control" placeholder="MAC PON" name="serial" type="text" minlength=16 maxlength=16 autofocus required>
                   </div>
-                  <div class="camposPacotes" style="display:none" >                                   
+                  <div class="camposPacotes" style="display:none" >
                     <div class="form-group" >
                       <?php include "../classes/listaPlanos.php" ?>
                       <label>Pacote</label>
                       <select class="form-control" name="pacote" required>
                         <option value='' selected disabled>Selecione a Velocidade</option>
-                      <?php 
+                      <?php
                         $codigoCplus = '';
                         $codigo = '';
                         $verificacao = 0;
-                        
+
                         $sql_lista_velocidades = "SELECT nome,nomenclatura_velocidade, referencia_cplus FROM planos";
                         $executa_query = mysqli_query($conectar,$sql_lista_velocidades);
                         while ($listaPlanos = mysqli_fetch_array($executa_query, MYSQLI_BOTH))
@@ -130,7 +127,7 @@
                           foreach ( $itens as $codigoPlano )
                           {
                             $codigoCplus = $codigoPlano;
-                            
+
                             if($codigoCplus == $listaPlanos['referencia_cplus'])
                             {
                               $codigo = $listaPlanos['referencia_cplus'];
@@ -146,9 +143,9 @@
                       </select>
                     </div>
                   </div> <!-- fim div pacote -->
-                  
+
                   <?php
-                    if($codigo == 330 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335 || $codigo == 336 || 
+                    if($codigo == 330 || $codigo == 331 || $codigo == 332 || $codigo == 333 || $codigo == 334 || $codigo == 335 || $codigo == 336 ||
                        $codigo == 349  || $codigo == 350 || $codigo == 351 || $codigo == 352 || $codigo == 353 || $codigo == 354 )
                     {
                       echo "
@@ -168,7 +165,7 @@
                           echo"<select  class=form-control name=ipFixo>";
                           while ($listaIP = mysqli_fetch_array($executa_ip, MYSQLI_BOTH))
                           {
-                            echo"<option>$listaIP[0]</option>";       
+                            echo"<option>$listaIP[0]</option>";
                           }
                           echo "</select>
                       </div>";
@@ -182,17 +179,17 @@
                   <div class="form-group">
                     <label>Equipamento</label>
                     <select class="form-control" name="equipamentos">
-                      <?php 
+                      <?php
                         $sql_consulta_equipamentos = "SELECT * FROM equipamentos";
                         $executa_query_equipamentos = mysqli_query($conectar,$sql_consulta_equipamentos);
-                        while ($equipamentos = mysqli_fetch_array($executa_query_equipamentos, MYSQLI_BOTH)) 
+                        while ($equipamentos = mysqli_fetch_array($executa_query_equipamentos, MYSQLI_BOTH))
                         {
                           echo "<option value=$equipamentos[modelo]>$equipamentos[modelo]</option>";
                         }
                       ?>
                     </select>
                   </div>
-                  
+
                   <?php
                     echo "<input type=hidden name=porta_atendimento value=$porta_selecionado>
                           <input type=hidden name=frame value=$frame>
@@ -211,13 +208,13 @@
                     <div class="form-group">
                       <label>Telefone</label>
                       <input class="form-control" placeholder="Telefone" name="numeroTel" type="text" autofocus>
-                    </div> 
-                    
+                    </div>
+
                     <div class="form-group">
                       <label>Senha do Telefone</label>
                       <input class="form-control" placeholder="Senha do Telefone" name="passwordTel" type="text" autofocus>
                     </div>
-                    
+
                   </div>
               </fieldset>
               <button class="btn btn-lg btn-success btn-block" type="button" onclick="addUserWithLanProcess();">Cadastrar</button>

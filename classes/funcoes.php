@@ -689,4 +689,20 @@
     $writer->save("/var/www/html/ontManager/public/planilha$data.xlsx"); //salvando a planilha na extensão definida
   }
 
+  function getL2LInformationByName(string $l2lName)
+  {
+    include "../db/db_config_mysql.php";
+
+    if ($l2lName) {
+      $sqlLanLanInfo = "SELECT vas_profile, line_profile, service_profile, gem_ports FROM lan_lan WHERE name = '$l2lName'";
+
+      $result = $conectar->query($sqlLanLanInfo);
+
+      if ($result->num_rows > 0) {
+        $rows = $result->fetch_all(MYSQLI_NUM);
+        return $rows[0];
+      }
+    }
+    return [];
+  }
 ?>
