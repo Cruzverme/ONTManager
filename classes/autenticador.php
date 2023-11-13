@@ -65,6 +65,7 @@
                             $_SESSION["consulta_relatorio_sinal"] = $permissoes['relatorio_sinal'];
                             $_SESSION["transferir_celula"] = $permissoes['transferir_celula'];
                             $_SESSION["transferir_cgnat"] = $permissoes['migrar_cgnat'];
+                            $_SESSION['gerenciar_l2l'] = $permissoes['gerenciar_l2l'];
                             header('Location: redirecionador_pagina.php');
                             mysqli_close($conectar);
                             exit;

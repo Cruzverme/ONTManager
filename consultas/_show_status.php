@@ -272,6 +272,7 @@
                     <?php echo $statusSip;?>
                     <?php echo $serviceStatusSip;?>
                   </tr>
+                </tbody>
               </table>
 
               <table class='table'>
