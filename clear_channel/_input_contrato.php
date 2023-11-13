@@ -1,7 +1,7 @@
 <?php
 include_once "../classes/html_inicio.php";
 
-  if($_SESSION['gerenciar_l2l'] == 0) {//$_SESSION["cadastrar_onu"] == 0 &&
+  if($_SESSION['cadastrar_onu_corp'] == 0 && ($_SESSION['cadastrar_onu_corp'] == 0 && $_SESSION["gerenciar_l2l"] == 0)) {
     echo '
     <script language= "JavaScript">
       alert("Sem Permissão de Acesso!");

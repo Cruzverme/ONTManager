@@ -96,7 +96,7 @@ echo '   </head>
                       </li>
                     ';
                   }
-                  if ($_SESSION["gerenciar_l2l"]) { ?>
+                  if ($_SESSION["cadastrar_onu_corp"] || $_SESSION["gerenciar_l2l"]) { ?>
                     <li>
                         <a class="tituloSubMenu" href="#">Clear Channel</a>
                         <ul class="nav" id="side-menu">
@@ -115,25 +115,6 @@ echo '   </head>
                         </ul>
                     </li>
                   <?php
-//                    echo ' DESCONTINUADO
-//                      <li>
-//                        <a class="tituloSubMenu" href="#">Corporativo</a>
-//                        <ul class="nav" id="side-menu">';
-//                            echo '<li>
-//                                    <a href="../ont_corp/select_cto.php"><i class="fa fa-cloud-upload fa-fw"></i> Cadastrar CORP</a>
-//                                  </li>
-//
-//                                  <li>
-//                                    <a href="../vlan/select_olt.php"><i class="fa fa-cloud-upload fa-fw"></i> Cadastrar VLAN</a>
-//                                  </li>
-//
-//                                  <li>
-//                                    <a href="../vlan/vlan_list.php"><i class="fa fa-cloud-upload fa-fw"></i> Consultar VLAN</a>
-//                                  </li>
-//                                  ';
-//
-//                    echo'</ul>
-//                      </li>';
                   }
                   if($_SESSION["modificar_onu"] == 1 || $_SESSION["alterar_macONT"] == 1 ||
                   $_SESSION["desativar_ativar_onu"] == 1 || $_SESSION["alterar_usuario"] == 1)
