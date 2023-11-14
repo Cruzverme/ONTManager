@@ -19,7 +19,7 @@
           deletar_onu, modificar_onu, desativar_ativar_onu, cadastrar_cto,
           cadastrar_olt, cadastrar_velocidade, cadastrar_equipamento,
           cadastrar_usuario, alterar_mac_ont, consulta_ont, consulta_cto, remover_cto, remover_olt, 
-          alterar_usuario, relatorio_sinal, transferir_celula, cadastrar_ip, consulta_log
+          alterar_usuario, relatorio_sinal, transferir_celula, cadastrar_ip, gerenciar_l2l, consulta_log
       FROM usuarios usuario
       INNER JOIN usuario_permissao permissao ON permissao.usuario = usuario.usuario_id
       WHERE usuario.usuario = '$usuario'";
@@ -48,6 +48,7 @@
   $alterar_usuario = $user_detail['alterar_usuario'];
   $consulta_relatorio_sinal = $user_detail['relatorio_sinal'];
   $transferir_celula = $user_detail['transferir_celula'];
+  $gerenciar_l2l = $user_detail['gerenciar_l2l'];
   $consultaLog = $user_detail['consulta_log'];
 
 ?>
@@ -101,7 +102,8 @@
                       <input name="personalizada17" value=17 type="checkbox" <?php if($transferir_celula == 1)echo "checked"; ?>> Transferir Celula <br/>
                       <input name="personalizada18" value=18 type="checkbox" <?php if($cadastrarCorporativo == 1) echo "checked"; ?>> Cadastrar Corporativo L2L <br/>
                       <input name="personalizada19" value=19 type="checkbox" <?php if($cadastrarIP == 1) echo "checked"; ?>> Cadastrar IP <br/>
-                      <input name="personalizada20" value=20 type="checkbox" <?php if($consultaLog == 1) echo "checked"; ?>> Consultar Log <br/>
+                      <input name="personalizada20" value=20 type="checkbox" <?php if($gerenciar_l2l == 1) echo "checked"; ?>> Gerenciar L2L <br/>
+                      <input name="personalizada21" value=21 type="checkbox" <?php if($consultaLog == 1) echo "checked"; ?>> Consultar Log <br/>
 
                     </div>
               </fieldset>

@@ -219,12 +219,10 @@ function verificar_inadimplente_erp()
 function verificar_cancelados_erp()
 {
   var body = $('#page-wrapper');
-
   $(document).on({
     ajaxStart: function() {body.addClass("loading");}
   });
-
-  $.post("../classes/verifica_pendencia_cancelamento.php",function(msg){
+  $.post("../classes/verifica_pendencia_can.php",function(msg){
     if(msg == "concluido")
     {  
       body.removeClass("loading");

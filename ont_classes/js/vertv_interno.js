@@ -168,7 +168,7 @@ $('select[name="vasProfile"]').change(function () {
       $(this).val() === "VAS_Internet-VoIP-CORP-IP" ||
       $(this).val() === "VAS_Internet-VoIP-IPTV-CORP-IP" ||
       $(this).val() === "VAS_Internet-VoIP-CORP-IP-Bridge" ||
-      $(this).val() === "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge")
+      $(this).val() === "VAS_Internet-VoIP-IPTV-CORP-IP-B")
   {
     $('input[name="numeroTel"]').attr("required", "required");
     $('input[name="passwordTel"]').attr("required", "required");
@@ -190,7 +190,7 @@ $('input[name="modo_bridge_check"]').change(function () {
     ($('select[name="vasProfile"]').val() === "VAS_Internet-CORP-IP-Bridge" ||
     $('select[name="vasProfile"]').val() === "VAS_Internet-IPTV-CORP-IP-Bridge" ||
     $('select[name="vasProfile"]').val() === "VAS_Internet-VoIP-CORP-IP-Bridge" ||
-    $('select[name="vasProfile"]').val() === "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge" ||
+    $('select[name="vasProfile"]').val() === "VAS_Internet-VoIP-IPTV-CORP-IP-B" ||
     $('select[name="vasProfile"]').val() === "VAS_Internet-VoIP-CORP-IP-Bridge")
   )
   {
@@ -211,7 +211,7 @@ $('select[name="vasProfile"]').change(function () {
   if($(this).val() === "VAS_Internet-CORP-IP-Bridge" ||
       $(this).val() === "VAS_Internet-IPTV-CORP-IP-Bridge" ||
       $(this).val() === "VAS_Internet-VoIP-CORP-IP-Bridge" ||
-      $(this).val() === "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge" ||
+      $(this).val() === "VAS_Internet-VoIP-IPTV-CORP-IP-B" ||
       $(this).val() === "VAS_Internet-VoIP-CORP-IP-Bridge")
   {
     $("input[name='modo_bridge_check']").prop('checked',true);
@@ -312,7 +312,7 @@ $('select[name="vasProfile"]').change(function(){
       $(this).val() === "VAS_Internet-CORP-IP-Bridge" ||
       $(this).val() === "VAS_Internet-IPTV-CORP-IP-Bridge" ||
       $(this).val() === "VAS_Internet-VoIP-CORP-IP-Bridge" ||
-      $(this).val() === "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge")
+      $(this).val() === "VAS_Internet-VoIP-IPTV-CORP-IP-B")
   {
     $(".ipFixoSelector").show();
   }else{

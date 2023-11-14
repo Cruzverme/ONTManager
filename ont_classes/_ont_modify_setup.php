@@ -45,7 +45,7 @@
   $cgnat_status == true? $checkCgnat = '' : $checkCgnat = "checked";
 
   ### VAS PROFILE BRIDGE EM TRIPLE PLAY 
-  $profile == "VAS_Internet-VoIP-IPTV-CORP-IP-B"? $profile = "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge" : $profile;
+  $profile == "VAS_Internet-VoIP-IPTV-CORP-IP-B"? $profile = "VAS_Internet-VoIP-IPTV-CORP-IP-B" : $profile;
 
   ###### VERIFICA SE O CONTRATO TEM MAC CADASTRADO
   if(empty($serial))
@@ -162,12 +162,12 @@
     $telefoniaVisivel = "style=display:none";
 
 #####Verifica Programaçãoq ue contém IPFixo
-  $arrayProgramacaoIpFixo = array(330,331,332,333,334,335,336,349,350,351,352,353,354);
+  $arrayProgramacaoIpFixo = array(330,331,332,333,334,335,336,349,350,351,352,353,354,358,372,374,377,380,381,388,389, 392);
   $arrayVasProfileIpFixoBridge = [
                             'Internet - Bridge' => "VAS_Internet-CORP-IP-Bridge",
                             'Internet e IPTV - Bridge' => "VAS_Internet-IPTV-CORP-IP-Bridge",
                             'Internet e Telefone - Bridge' => "VAS_Internet-VoIP-CORP-IP-Bridge",
-                            'Internet Telefone e IPTV - Bridge' => "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge"
+                            'Internet Telefone e IPTV - Bridge' => "VAS_Internet-VoIP-IPTV-CORP-IP-B"
   ];
 
   $arrayVasProfileIpFixo = [
@@ -358,21 +358,22 @@
                 </select>
               </div>
             </div>
-            
-            <div class='form-group form-group-sm bridge_check' <?php echo $visivel;?>>
+
+           <div style="display: none;"> 
+            <div class='form-group form-group-sm bridge_check' <?php echo $visivel;?> style='display: none'>
               <label for="bridge_modify_check" class="control-label col-sm-8">IP Utilizado em Equipamento Externo</label>
               <div class="col-sm-2">
                 <input id="bridge_modify_check" type=checkbox name='modo_bridge_check' value='mac_externo' <?php echo $marcado; ?>/> 
               </div>
             </div>
               
-            <div class='form-group form-group-sm bridge_modify' <?php echo $visivel;?>>
+            <div class='form-group form-group-sm bridge_modify' <?php echo $visivel;?> style='display: none'>
               <label for="mac" class="control-label col-sm-6">MAC do Equipamento</label>
               <div class="col-sm-6">
                 <input type=text class="form-control" id=mac name=mac value='<?php if($mac != null && $mac != $serial)echo "$mac";?>' />
               </div>
             </div>
-
+          </div>
             
           <?php }?>
           <!-- FIM TRATATIVAS IP FIXO -->

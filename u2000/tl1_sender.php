@@ -4,6 +4,8 @@
   {
     switch($errorCode)
     {
+      case 'vtv99999':
+        return "Ocorreu um erro ao tentar abrir conexão com u2000";
       case '1615003666':
         return "VasProfile Não Existe!";
         break;
@@ -76,15 +78,12 @@
       case '2686058521':
         return "Usuário Não Logado";
         break;
+      case '2686058576':
+        return "Service port não existe";
+        break;
       case '0':
         return "Sucesso";
         break;
-      // case 'value':
-      //   return "";
-      //   break;
-      // case 'value':
-      //   return "";
-      //   break;
       default:
         return "OCORREU UM ERRO DESCONHECIDO DE CODIGO $errorCode";
     }
@@ -135,7 +134,7 @@
       //                        SERIALNUM=48575443909B298B,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=HGW839M,
       //                        MAINSOFTVERSION=V3R016C10S130,VAPROFILE=VAS_Internet-VoIP-IPTV,BUILDTOPO=TRUE; \n\r\n";
       if($vasProfile == "VAS_Internet-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-CORP-IP" || $vasProfile == "VAS_Internet-CORP-IP-Bridge"  || $vasProfile == "VAS_Internet-CORP-IP-Bridge" || $vasProfile == "VAS_Internet-IPTV-CORP-IP-Bridge" 
-        || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge")
+        || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP-B" || $vasProfile == "VAS_Internet-VoIP-CORP-IP-Bridge")
         $comando_cadastra_ont = "ADD-ONT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:1::NAME=$contrato,ALIAS=$alias,LINEPROF=line-profile-corp-ip,SRVPROF=srv-profile-corp-ip,SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V3R016C10S130,VAPROFILE=$vasProfile,BUILDTOPO=TRUE;";
       elseif($tipoNAT == 1)
         $comando_cadastra_ont = "ADD-ONT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:1::NAME=$contrato,ALIAS=$alias,LINEPROF=line-profile_real,SRVPROF=srv-profile_real,SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V3R016C10S130,VAPROFILE=$vasProfile,BUILDTOPO=TRUE;";
@@ -159,6 +158,43 @@
       }
       fclose($fp);
     }
+  }
+
+  function cadastrar_ont_l2l(
+      $dev,
+      $frame,
+      $slot,
+      $pon,
+      $contrato,
+      $alias,
+      $serial,
+      $equipment,
+      $vasProfile,
+      $lineProfile,
+      $serviceProfile
+  ) {
+    include "telnet_config.php";
+    $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
+
+    if(!$fp) {
+      echo "ERROR: $errno - $errstr<br />\n";
+      return false;
+    }
+    $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
+    $comando_cadastra_ont = "ADD-ONT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:1::NAME=$contrato,ALIAS=$alias,LINEPROF=$lineProfile,SRVPROF=$serviceProfile,SERIALNUM=$serial,AUTH=SN,VENDORID=HWTC,EQUIPMENTID=$equipment,MAINSOFTVERSION=V3R016C10S130,VAPROFILE=$vasProfile,BUILDTOPO=TRUE;";
+
+    fwrite($fp,$login_command);
+    fwrite($fp,$comando_cadastra_ont);
+
+    stream_set_timeout($fp,8);
+
+    while($c = fgetc($fp)!==false)
+    {
+      $retornoTL1 = fread($fp,2024);
+      return $retornoTL1;
+    }
+    fclose($fp);
+    return false;
   }
 
   function ativa_telefonia($dev,$frame,$slot,$pon,$ontID,$userNameSIP,$userPSWSip,$sipNameNumber,$userNameSIP2 = null,$userPSWSip2 = null,$sipNameNumber2 = null)
@@ -241,7 +277,7 @@
     fclose($fp);
   }
 
-  function get_service_port_internet($dev,$frame,$slot,$pon,$ontID,$contrato,$vasProfile,$modo, $tipoNAT = 0)
+  function get_service_port_internet($dev,$frame,$slot,$pon,$ontID,$contrato,$vasProfile,$modo, $tipoNAT = 0, $customVlan = null)
   {
     include "telnet_config.php";
     $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
@@ -251,14 +287,18 @@
       echo "ERROR: $errno - $errstr<br />\n";
     }else{     
       $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
-    
+
+      $comando = "CRT-SERVICEPORT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:3::VLANID=2500,SVPID=INTERNET-$contrato,ONTID=$ontID,GEMPORTID=6,UV=2500,RETURID=TRUE;";
+
       if($vasProfile == "VAS_Internet-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-CORP-IP" || $modo == 'mac_externo'
-        || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP-Bridge")
+        || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP" || $vasProfile == "VAS_Internet-VoIP-IPTV-CORP-IP-B")
         $comando = "CRT-SERVICEPORT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:3::VLANID=2503,SVPID=INTERNET-$contrato,ONTID=$ontID,GEMPORTID=6,UV=2503,RETURID=TRUE;";
       elseif($tipoNAT == 1)
         $comando = "CRT-SERVICEPORT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:3::VLANID=2504,SVPID=INTERNET-$contrato,ONTID=$ontID,GEMPORTID=6,UV=2504,RETURID=TRUE;";
-      else
-        $comando = "CRT-SERVICEPORT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:3::VLANID=2500,SVPID=INTERNET-$contrato,ONTID=$ontID,GEMPORTID=6,UV=2500,RETURID=TRUE;";
+      elseif ($customVlan) {
+        $comando = "CRT-SERVICEPORT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:3::VLANID=$customVlan,SVPID=INTERNET-$contrato,ONTID=$ontID,GEMPORTID=6,UV=$customVlan,RETURID=TRUE;";
+      }
+
         
       fwrite($fp,$login_command);
       fwrite($fp,$comando);
@@ -640,7 +680,7 @@
       fwrite($fp,$login_command);
       fwrite($fp,$comando);
 
-      stream_set_timeout($fp,8);
+      stream_set_timeout($fp,12);
       while($c = fgetc($fp)!==false)
       {
         $retornoTL1 = fread($fp,2024);

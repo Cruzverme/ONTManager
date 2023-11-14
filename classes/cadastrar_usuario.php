@@ -46,7 +46,8 @@ if (!mysqli_connect_errno()) {
         $transferir_celula = $_POST["personalizada17"] ?? 0;
         $cadastrar_corporativo = $_POST["personalizada18"] ?? 0;
         $cadastrar_ip = $_POST["personalizada19"] ?? 0;
-        $consulta_log = $_POST["personalizada20"] ?? 0;
+        $gerenciar_l2l = $_POST["personalizada20"] ?? 0;
+        $consulta_log = $_POST["personalizada21"] ?? 0;
 
         //fim variaveis de permissao
 
@@ -70,7 +71,8 @@ if (!mysqli_connect_errno()) {
         $permitir_transferencia_celula = checkPermission($transferir_celula, 17, $nivel_usuario);
         $permitir_cadastro_corporativo = checkPermission($cadastrar_corporativo, 18, $nivel_usuario);
         $permitir_cadastro_ip = checkPermission($cadastrar_ip, 19, $nivel_usuario);
-        $permitir_consultaLog = checkPermission($consulta_log, 20, $nivel_usuario);
+        $permitir_gerenciar_l2l = checkPermission($gerenciar_l2l, 20, $nivel_usuario);
+        $permitir_consultaLog = checkPermission($consulta_log, 21, $nivel_usuario);
 
         // FIM PERMISSOES PERSONALIZADAS
 
@@ -93,11 +95,11 @@ if (!mysqli_connect_errno()) {
                     $sql_cadastrar_permissao = "INSERT INTO usuario_permissao (usuario, cadastrar_onu, cadastrar_onu_corp, deletar_onu, modificar_onu,
                       desativar_ativar_onu, cadastrar_cto, cadastrar_olt, cadastrar_velocidade, cadastrar_usuario, cadastrar_equipamento,
                       alterar_mac_ont, consulta_ont, consulta_cto, consulta_log, remover_cto, remover_olt,
-                      alterar_usuario, relatorio_sinal, transferir_celula, cadastrar_ip)
+                      alterar_usuario, relatorio_sinal, transferir_celula, gerenciar_l2l, cadastrar_ip)
                       VALUES ($userID,$permitir_cadastrar_ONU, $permitir_cadastro_corporativo, $permitir_removerONU,$permitir_alterarONU,$permitir_desabilitarHabilitar,
                       $permitir_cadastrarCTO,$permitir_cadastrarOLT,$permitir_cadastrarVelocidade, $permitir_cadastrarUsuarios, $permitir_cadastrarEquipamento,
                       $permitir_alterar_MAC,$permitir_consulta_onu,$permitir_consulta_cto, $permitir_consultaLog, $permitir_removerCTO, $permitir_removerOLT,
-                      $permitir_listar_usuario, $permitir_relatorio_sinal, $permitir_transferencia_celula, $permitir_cadastro_ip)";
+                      $permitir_listar_usuario, $permitir_relatorio_sinal, $permitir_transferencia_celula, $permitir_gerenciar_l2l, $permitir_cadastro_ip)";
 
                     $permissoes = mysqli_query($conectar,$sql_cadastrar_permissao);
 

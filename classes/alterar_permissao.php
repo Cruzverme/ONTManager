@@ -21,7 +21,8 @@ const CODIGO_RELATORIO_SINAL = 16;
 const CODIGO_TRANSFERENCIA_CELULA = 17;
 const CODIGO_CADASTRO_CORPORATIVO = 18;
 const CODIGO_CADASTRO_IP = 19;
-const CODIGO_CONSULTA_LOG = 20;
+const CODIGO_GERENCIA_L2L = 20;
+const CODIGO_CONSULTA_LOG = 21;
 // ... definir as outras constantes de código de permissão aqui
 
 function checkPermission($userPermission, $permissionCode)
@@ -84,7 +85,8 @@ if (!mysqli_connect_errno()) {
         $transferir_celula = filter_input(INPUT_POST,"personalizada17") ?? 0;
         $cadastrar_corporativo = filter_input(INPUT_POST,"personalizada18") ?? 0;
         $cadastrar_ip = filter_input(INPUT_POST,"personalizada19") ?? 0;
-        $consulta_log = filter_input(INPUT_POST,"personalizada20") ?? 0;
+        $gerenciar_l2l = filter_input(INPUT_POST, "personalizada20") ?? 0;
+        $consulta_log = filter_input(INPUT_POST,"personalizada21") ?? 0;
 
         //fim variaveis de permissao
 
@@ -109,6 +111,7 @@ if (!mysqli_connect_errno()) {
         $permitir_transferencia_celula = checkPermission($transferir_celula, CODIGO_TRANSFERENCIA_CELULA);
         $permitir_cadastro_corporativo = checkPermission($cadastrar_corporativo, CODIGO_CADASTRO_CORPORATIVO);
         $permitir_cadastro_ip = checkPermission($cadastrar_ip, CODIGO_CADASTRO_IP);
+        $permitir_gerenciar_l2l = checkPermission($gerenciar_l2l, CODIGO_GERENCIA_L2L);
         $permitir_consulta_log = checkPermission($consulta_log, CODIGO_CONSULTA_LOG);
 
         #######  FIM PERMISSOES PERSONALIZADAS ########
@@ -154,11 +157,12 @@ if (!mysqli_connect_errno()) {
                 relatorio_sinal = ?,
                 transferir_celula = ?,
                 cadastrar_ip = ?,
+                gerenciar_l2l = ?,
                 consulta_log = ?
                 WHERE usuario = ?";
 
             $stmt_cadastrar_permissao = mysqli_prepare($conectar, $sql_cadastrar_permissao);
-            mysqli_stmt_bind_param($stmt_cadastrar_permissao, "iiiiiiiiiiiiiiiiiiiii",
+            mysqli_stmt_bind_param($stmt_cadastrar_permissao, "iiiiiiiiiiiiiiiiiiiiii",
                 $permitir_cadastrar_ONU,
                 $permitir_cadastro_corporativo,
                 $permitir_removerONU,
@@ -178,6 +182,7 @@ if (!mysqli_connect_errno()) {
                 $permitir_relatorio_sinal,
                 $permitir_transferencia_celula,
                 $permitir_cadastro_ip,
+                $permitir_gerenciar_l2l,
                 $permitir_consulta_log,
                 $userID
             );

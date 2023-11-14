@@ -74,6 +74,7 @@ if (!mysqli_connect_errno()) {
                                 $transferir_celula,
                                 $migrar_cgnat,
                                 $permitir_cadastro_corporativo,
+                                $gerenciar_l2l,
                                 $consulta_log
                             );
                             mysqli_stmt_fetch($stmt_select_permissoes);
@@ -98,6 +99,7 @@ if (!mysqli_connect_errno()) {
                             $_SESSION["consulta_relatorio_sinal"] = $relatorio_sinal;
                             $_SESSION["transferir_celula"] = $transferir_celula;
                             $_SESSION["transferir_cgnat"] = $migrar_cgnat;
+                            $_SESSION['gerenciar_l2l'] = $gerenciar_l2l;
                             $_SESSION["consulta_log"] = $consulta_log;
 
                             header('Location: redirecionador_pagina.php');

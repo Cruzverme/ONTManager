@@ -12,13 +12,13 @@
   if($json_str['success'] == 1)
   {
     ########## REMOVE LISTA ATUAL #########
-    $sql_remove_lista_inadimplente = "DELETE FROM canceled_costumer";
-    $execute_remove_lista_inadimplente = mysqli_query($conectar,$sql_remove_lista_inadimplente);
+    $sql_remove_lista_cancelado = "DELETE FROM canceled_costumer";
+    $execute_remove_lista_inadimplente = mysqli_query($conectar,$sql_remove_lista_cancelado);
 
     #### contrato dos assinantes
     $sql_assinantes_cadastrados = "SELECT contrato,status,serial from ont";
     $execute_contrato = mysqli_query($conectar,$sql_assinantes_cadastrados);
-    $status_contrato_assinante = mysqli_fetch_all($execute_contrato);
+    $status_contrato_assinante = mysqli_fetch_all($execute_contrato); 
     
     $lista = array();
 

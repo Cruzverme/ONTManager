@@ -100,23 +100,22 @@ if (isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem'])) {
                 <?php endif; ?>
 
                 <!-- Corporativo -->
-                <?php if ($_SESSION["cadastrar_onu_corp"] == 1) : ?>
-                    <li>
-                        <a class="tituloSubMenu" href="#">Corporativo</a>
-                        <ul class="nav" id="side-menu">
-                            <li>
-                                <a href="../ont_corp/select_cto.php"><i class="fa fa-cloud-upload fa-fw"></i> Cadastrar CORP</a>
-                            </li>
-
-                            <li>
-                                <a href="../vlan/select_olt.php"><i class="fa fa-cloud-upload fa-fw"></i> Cadastrar VLAN</a>
-                            </li>
-
-                            <li>
-                                <a href="../vlan/vlan_list.php"><i class="fa fa-cloud-upload fa-fw"></i> Consultar VLAN</a>
-                            </li>
-                        </ul>
-                    </li>
+                <?php if ($_SESSION["cadastrar_onu_corp"] || $_SESSION["gerenciar_l2l"]) : ?>
+                <li>
+                    <a class="tituloSubMenu" href="#">Clear Channel</a>
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a href="../clear_channel/select_cto.php">
+                                <i class="fa fa-cloud-upload fa-fw"></i> Cadastrar Cliente L2L
+                            </a>
+                        </li>
+                        <?php if ($_SESSION['gerenciar_l2l']) : ?>
+                        <li>
+                            <a href="../clear_channel/channel_config.php">
+                                <i class="fa fa-cloud-upload fa-fw"></i> Gerenciar L2L
+                            </a>
+                        </li>
+                        <?php endif ?>
                 <?php endif; ?>
 
                 <!-- Modificações -->
