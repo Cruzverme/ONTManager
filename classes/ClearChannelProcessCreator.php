@@ -30,6 +30,7 @@
     $iptv = filter_input(INPUT_POST, "iptv");
     $voip = filter_input(INPUT_POST, "voip");
     $modo_bridge = filter_input(INPUT_POST, 'modo_bridge');
+    $haveMoreServices = ($internet || $iptv || $voip) ?? false;
 
     $gemsPort = filter_input(INPUT_POST, 'gems');
     $gemPortList = array_flip(json_decode($gemsPort, true));
@@ -39,7 +40,6 @@
 
     ## CODIGO TAVA AKI
     $array_process_result = [];
-
 
     // Função para sair com mensagens
     function exitWithMessage($messages, $connections, $isError = true)
@@ -76,7 +76,59 @@
         return ['errorCode' => $errorCode, 'ontResult' => $tira_ponto_virgula];
     }
 
-    $connectionsList = [$conectar, $conecta_radius];
+    function createServicePortL2L($device, $frame, $slot, $pon, $onuID, $contrato, $gemPortList)
+    {
+        $servicePortIdList = [
+            'error' => 0,
+            'servicesPortsIds' => ''
+        ];
+        foreach ($gemPortList as $gem => $vlan) {
+            if ($gem == 6) continue;
+
+            $servicePortl2l = get_service_port_l2l($device, $frame, $slot, $pon, $onuID, $contrato, $vlan, $gem);
+            $tira_ponto_virgula = explode(";", $servicePortl2l);
+            $check_sucesso = explode("EN=", $tira_ponto_virgula[1]);
+            $remove_desc = explode("ENDESC=", $check_sucesso[1]);
+            $errorCode = trim($remove_desc[0]);
+            if ($errorCode != 0) {
+                $servicePortIdList['error'] = $errorCode;
+                return $servicePortIdList;
+            }
+
+            $remove_barras_para_pegar_id = explode("--------------", $tira_ponto_virgula[1]);
+            $pegar_servicePorta_ID = explode("\r\n", $remove_barras_para_pegar_id[1]);
+            $pega_id = explode("\t", $pegar_servicePorta_ID[2]);//servicePort sempre será -1
+            $servicePortIdList['servicesPortsIds'] = $servicePortIdList['servicesPortsIds'] . ' ' . ($pega_id[0] - 1);
+            sleep(2);
+        }
+        return $servicePortIdList;
+    }
+
+    function createUniqueServicePortL2L($device, $frame, $slot, $pon, $onuID, $contrato, $gemVlan, $gem)
+    {
+        $servicePortIdList = [
+            'error' => 0,
+            'servicesPortsIds' => ''
+        ];
+
+        $servicePortl2l = get_service_port_l2l($device, $frame, $slot, $pon, $onuID, $contrato, $gemVlan, $gem);
+        $tira_ponto_virgula = explode(";", $servicePortl2l);
+        $check_sucesso = explode("EN=", $tira_ponto_virgula[1]);
+        $remove_desc = explode("ENDESC=", $check_sucesso[1]);
+        $errorCode = trim($remove_desc[0]);
+        if ($errorCode != 0) {
+            $servicePortIdList['error'] = $errorCode;
+            return $servicePortIdList;
+        }
+
+        $remove_barras_para_pegar_id = explode("--------------", $tira_ponto_virgula[1]);
+        $pegar_servicePorta_ID = explode("\r\n", $remove_barras_para_pegar_id[1]);
+        $pega_id = explode("\t", $pegar_servicePorta_ID[2]);//servicePort sempre será -1
+        $servicePortIdList['servicesPortsIds'] = $servicePortIdList['servicesPortsIds'] . ', ' . ($pega_id[0] - 1);
+        return $servicePortIdList;
+    }
+
+    $connectionsList = [$conectar, $conectar_radius];
 
     // CHECA O LIMITE DE ONT NO CLIENTE
     $sql_verifica_limite = "SELECT limite_equipamentos FROM ont WHERE contrato = ?";
@@ -237,14 +289,14 @@
 
         $array_process_result[] = '1-ONT inserida no Radius IP Gerencia!';
         ###### CRIA SERVICE PORT VLAN ######
-        $servicePortl2l = get_service_port_l2l($device, $frame, $slot, $pon, $onuID, $contrato, $gemPortList[9]);
-        $tira_ponto_virgula = explode(";", $servicePortl2l);
-        $check_sucesso = explode("EN=", $tira_ponto_virgula[1]);
-        $remove_desc = explode("ENDESC=", $check_sucesso[1]);
-        $errorCode = trim($remove_desc[0]);
+        if (!$haveMoreServices) {
+            $servicePortL2LIds = createServicePortL2L($device, $frame, $slot, $pon, $onuID, $contrato, $gemPortList);
+        } else {
+            $servicePortL2LIds = createUniqueServicePortL2L($device, $frame, $slot, $pon, $onuID, $contrato, $gemPortList[9], 9);
+        }
 
-        if ($errorCode != "0") {//se der erro na service port internet
-            $trato = tratar_errors($errorCode);
+        if ($servicePortL2LIds['error'] != "0") {//se der erro na service port internet
+            $trato = tratar_errors($servicePortL2LIds['error']);
 
             $array_process_result[] = "Erro ao criar o service porta de Lan to Lan: $trato";
 
@@ -264,14 +316,9 @@
             $array_process_result[] = "Removido do u2000";
             return exitWithMessage($array_process_result, $connectionsList);
         }
-        $remove_barras_para_pegar_id = explode("--------------", $tira_ponto_virgula[1]);
-        $pegar_servicePorta_ID = explode("\r\n", $remove_barras_para_pegar_id[1]);
-        $pega_id = explode("\t", $pegar_servicePorta_ID[2]);//servicePort sempre será -1
-        $servicePortl2lID = $pega_id[0] - 1;
+        $array_process_result[] = "2-Service Port de Clear Channel Criada $servicePortL2LIds[servicesPortsIds]!";
 
-        $array_process_result[] = "2-Service Port de Clear Channel Criada $servicePortl2lID!";
-
-        $insere_service_l2l = "UPDATE ont SET service_port_l2l=$servicePortl2lID WHERE serial = '$serial_number'";
+        $insere_service_l2l = "UPDATE ont SET service_port_l2l='$servicePortL2LIds[servicesPortsIds]' WHERE serial = '$serial_number'";
         $executa_insere_service_l2l = mysqli_query($conectar, $insere_service_l2l);
 
         ############## CRIA O SERVICE PORT DE GERENCIA ####################
