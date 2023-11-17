@@ -15,6 +15,9 @@
       case '1615331079':
         return "Contrato já existe no u2000";
         break;
+      case '1616637952':
+        return "Nome do servicePort já existente";
+        break;
       case '2689014776':
         return 'Serial já cadastrado no u2000';
         break;
@@ -313,7 +316,7 @@
     }
   }
 
-  function get_service_port_l2l($dev,$frame,$slot,$pon,$ontID,$contrato,$vlanltwol)
+  function get_service_port_l2l($dev,$frame,$slot,$pon,$ontID,$contrato,$vlanltwol, $gemport)
   {
     include "telnet_config.php";
     $fp = fsockopen($servidor, $porta, $errno, $errstr, 30);
@@ -324,8 +327,8 @@
     }else{
       $login_command = "LOGIN:::1::UN=$user_tl1,PWD=$psw_tl1; \n\r\n";
     
-      $comando = "CRT-SERVICEPORT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:3::VLANID=$vlanltwol,SVPID=LAN_TO_LAN-$contrato,ONTID=$ontID,GEMPORTID=9,UV=$vlanltwol,RETURID=TRUE;";
-        
+      $comando = "CRT-SERVICEPORT::DEV=$dev,FN=$frame,SN=$slot,PN=$pon:3::VLANID=$vlanltwol,SVPID=LAN_TO_LAN-$contrato-$vlanltwol,ONTID=$ontID,GEMPORTID=$gemport,UV=$vlanltwol,RETURID=TRUE;";
+
       fwrite($fp,$login_command);
       fwrite($fp,$comando);
 
