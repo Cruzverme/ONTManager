@@ -24,12 +24,11 @@ if (!$_SESSION["consulta_log"]) {
                         <table class='table display' id='tabelaLog' data-link='row'>
                             <thead>
                                 <tr>
-                                    <th>contrato</th>
-                                    <th>registro</th>
-                                    <th>codigo_usuario</th>
-                                    <th>mac</th>
-                                    <th>cto</th>
-                                    <th>horario</th>
+                                    <th>REGISTRO</th>
+                                    <th>CONTRATO</th>
+                                    <th>MAC</th>
+                                    <th>CTO</th>
+                                    <th>HORARIO</th>
                                 </tr>
                             </thead>
                         </table>

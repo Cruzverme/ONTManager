@@ -378,6 +378,19 @@
           $trato = tratar_errors($errorCode);
   
           array_push($array_processos_historico,"Erro ao criar o service port de Internet: $trato");
+
+          //salva em LOG
+          $sql_insert_log = "INSERT INTO log (registro,codigo_usuario, mac, cto, contrato)
+          VALUES (ERRO NO U2000 AO Recadastrar Service Port Internet Não Criada $trato 
+          informações relatadas: 
+              OLT: $device, PON: $pon, Frame: $frame,
+              Porta de Atendimento: $porta_atendimento, 
+              Slot: $slot, CTO: $cto Contrato: $contrato,
+              MAC: $serial, Novo Perfil: $vasProfile, 
+              Internet: $pacote, Telefone: $telNumber,
+              Senha Telefone: $telPass,$usuario, $serial, $cto, $contrato)";
+
+          $executa_log = mysqli_query($conectar,$sql_insert_log);
   
           //se der erro ele irá apagar o registro salvo na tabela local ont
           $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
@@ -575,6 +588,19 @@
 
         array_push($array_processos_historico,"<span style='color:red'>Houve erro Inserir a Service Port de IPTV: <strong>$trato</strong></span>");
 
+        //salva em LOG
+        $sql_insert_log = "INSERT INTO log (registro,codigo_usuario, mac, cto, contrato)
+          VALUES (ERRO NO U2000 AO Recadastrar Service Port IPTV Não Criada $trato 
+          informações relatadas: 
+              OLT: $device, PON: $pon, Frame: $frame,
+              Porta de Atendimento: $porta_atendimento, 
+              Slot: $slot, CTO: $cto Contrato: $contrato,
+              MAC: $serial, Novo Perfil: $vasProfile, 
+              Internet: $pacote, Telefone: $telNumber,
+              Senha Telefone: $telPass,$usuario, $serial, $cto, $contrato)";
+
+        $executa_log = mysqli_query($conectar,$sql_insert_log);
+
         //se der erro ele irá apagar o registro salvo na tabela local ont
         $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
         
@@ -625,6 +651,19 @@
           $trato = tratar_errors($errorCode);
 
           array_push($array_processos_historico,"Houve erro ao criar o BTV: $trato");
+
+          //salva em LOG
+          $sql_insert_log = "INSERT INTO log (registro,codigo_usuario, mac, cto, contrato)
+          VALUES (ERRO NO U2000 AO Recadastrar BTV Não Criada $trato 
+          informações relatadas: 
+              OLT: $device, PON: $pon, Frame: $frame,
+              Porta de Atendimento: $porta_atendimento, 
+              Slot: $slot, CTO: $cto Contrato: $contrato,
+              MAC: $serial, Novo Perfil: $vasProfile, 
+              Internet: $pacote, Telefone: $telNumber,
+              Senha Telefone: $telPass,$usuario, $serial, $cto, $contrato)";
+
+          $executa_log = mysqli_query($conectar,$sql_insert_log);
 
           //se der erro ele irá apagar o registro salvo na tabela local ont
           $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );

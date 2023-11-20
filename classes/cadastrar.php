@@ -368,6 +368,16 @@
 
           array_push($array_processos_historico,"Erro ao criar o service port de Internet: $trato");
 
+          /// salva no log
+          $sql_insert_log = "INSERT INTO log (registro,codigo_usuario, mac, cto, contrato)
+                VALUES ('ERRO NO U2000 AO GERAR CRIAR SERVICE PORT INTERNET $trato Número Sem Tratamento: $errorCode e U2000: $ontID 
+                informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+                Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
+                Senha Telefone: $telPass',$usuario, $serial, $cto, $contrato)";
+
+          $executa_log = mysqli_query($conectar,$sql_insert_log);
+
           //se der erro ele irá apagar o registro salvo na tabela local ont
           $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
           mysqli_query($conectar,$sql_apagar_onu);
@@ -444,6 +454,16 @@
 
           array_push($array_processos_historico,"<p style='color:red'>Houve erro ao ativar os numeros na ONT: $trato</p>");
 
+          /// salva no log
+          $sql_insert_log = "INSERT INTO log (registro,codigo_usuario, mac, cto, contrato)
+                VALUES ('ERRO NO U2000 ATIVAR POTS DE TELEFONIA $trato Número Sem Tratamento: $errorCode e U2000: $ontID 
+                informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+                Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
+                Senha Telefone: $telPass',$usuario, $serial, $cto, $contrato)";
+
+          $executa_log = mysqli_query($conectar,$sql_insert_log);
+
           //se der erro ele irá apagar o registro salvo na tabela local ont
           $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
           mysqli_query($conectar,$sql_apagar_onu);
@@ -485,6 +505,16 @@
             $trato = tratar_errors($errorCode);
 
             array_push($array_process_result,"<p style='color:red'>Houve erro ao criar a Service Port de Telefonia: <strong>$trato</strong></p>");
+
+            /// salva no log
+            $sql_insert_log = "INSERT INTO log (registro,codigo_usuario, mac, cto, contrato)
+                VALUES ('ERRO NO U2000 AO GERAR CRIAR SERVICE PORT TELEFONIA $trato Número Sem Tratamento: $errorCode e U2000: $ontID 
+                informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+                Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
+                Senha Telefone: $telPass',$usuario, $serial, $cto, $contrato)";
+
+            $executa_log = mysqli_query($conectar,$sql_insert_log);
 
             //se der erro ele irá apagar o registro salvo na tabela local ont
             $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
@@ -558,6 +588,16 @@
 
           array_push($array_processos_historico,"<p style='color:red'>Houve erro Inserir a Service Port de IPTV: <strong>$trato</strong></p>");
 
+          /// salva no log
+          $sql_insert_log = "INSERT INTO log (registro,codigo_usuario, mac, cto, contrato)
+                VALUES ('ERRO NO U2000 AO GERAR CRIAR SERVICE PORT IPTV $trato Número Sem Tratamento: $errorCode e U2000: $ontID 
+                informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+                Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
+                Senha Telefone: $telPass',$usuario, $serial, $cto, $contrato)";
+
+          $executa_log = mysqli_query($conectar,$sql_insert_log);
+
           //se der erro ele irá apagar o registro salvo na tabela local ont
           $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
 
@@ -615,6 +655,16 @@
 
             array_push($array_processos_historico,"Houve erro ao criar o BTV: $trato");
 
+            /// salva no log
+            $sql_insert_log = "INSERT INTO log (registro,codigo_usuario, mac, cto, contrato)
+                VALUES ('ERRO NO U2000 AO GERAR CRIAR BTV $trato Número Sem Tratamento: $errorCode e U2000: $ontID 
+                informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+                Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
+                Senha Telefone: $telPass',$usuario, $serial, $cto, $contrato)";
+
+            $executa_log = mysqli_query($conectar,$sql_insert_log);
+
             //se der erro ele irá apagar o registro salvo na tabela local ont
             $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial'" );
             mysqli_query($conectar,$sql_apagar_onu);
@@ -671,7 +721,22 @@
 
   foreach($array_processos_historico as $historia)
   {
+    $hasError = 0;
+    if (stripos($historia, 'erro') !== false) {
+      $hasError+=1;
+    }
+
     echo "<div style='text-align:center'>$historia</div>";
+  }
+
+  if (!$hasError) {
+    $sql_insert_log = "INSERT INTO log (registro,codigo_usuario, mac, cto, contrato)
+              VALUES ('Cadastro da ONT concluido com sucesso 
+              informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
+              Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
+              MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
+              Senha Telefone: $telPass','$usuario', $serial, $cto, $contrato)";
+    $executa_log = mysqli_query($conectar,$sql_insert_log);
   }
 
 ?>

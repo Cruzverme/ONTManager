@@ -116,6 +116,8 @@ if (isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem'])) {
                             </a>
                         </li>
                         <?php endif ?>
+                    </ul>
+                </li>
                 <?php endif; ?>
 
                 <!-- Modificações -->
