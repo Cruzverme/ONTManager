@@ -719,7 +719,7 @@
   array_push($array_processos_historico,$ativado);
   echo "<p style='font-weight:bold;text-align:center'>TIMELINE</p>";
 
-  $hasError = false;
+  $hasError = 0;
 
   foreach($array_processos_historico as $historia)
   {
