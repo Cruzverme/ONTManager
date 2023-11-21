@@ -221,7 +221,7 @@
               Slot: $slot, CTO: $cto Contrato: $contrato,
               MAC: $serial, Novo Perfil: $vasProfile, 
               Internet: $pacote, Telefone: $telNumber,
-              Senha Telefone: $telPass',$usuario, $serial, $cto, $contrato)";
+              Senha Telefone: $telPass','$usuario', '$serial', '$cto', '$contrato')";
       
       $executa_log = mysqli_query($conectar,$sql_insert_log);
 
@@ -414,7 +414,7 @@
               Slot: $slot, CTO: $cto Contrato: $contrato,
               MAC: $serial, Novo Perfil: $vasProfile, 
               Internet: $pacote, Telefone: $telNumber,
-              Senha Telefone: $telPass',$usuario, $serial, $cto, $contrato)";
+              Senha Telefone: $telPass','$usuario', '$serial', '$cto', '$contrato')";
 
           $executa_log = mysqli_query($conectar,$sql_insert_log);
   
@@ -519,7 +519,7 @@
             Slot: $slot, CTO: $cto Contrato: $contrato,
             MAC: $serial, Novo Perfil: $vasProfile, 
             Internet: $pacote, Telefone: $telNumber,
-            Senha Telefone: $telPass',$usuario, $serial, $cto, $contrato)";
+            Senha Telefone: $telPass','$usuario', '$serial', '$cto', '$contrato')";
     
         $executa_log = mysqli_query($conectar,$sql_insert_log);
       }else{
@@ -562,7 +562,7 @@
               Slot: $slot, CTO: $cto Contrato: $contrato,
               MAC: $serial, Novo Perfil: $vasProfile, 
               Internet: $pacote, Telefone: $telNumber,
-              Senha Telefone: $telPass',$usuario, $serial, $cto, $contrato)";
+              Senha Telefone: $telPass','$usuario', '$serial', '$cto', '$contrato')";
       
           $executa_log = mysqli_query($conectar,$sql_insert_log);
 
@@ -623,7 +623,7 @@
               Slot: $slot, CTO: $cto Contrato: $contrato,
               MAC: $serial, Novo Perfil: $vasProfile, 
               Internet: $pacote, Telefone: $telNumber,
-              Senha Telefone: $telPass',$usuario, $serial, $cto, $contrato)";
+              Senha Telefone: $telPass','$usuario', '$serial', '$cto', '$contrato')";
 
         $executa_log = mysqli_query($conectar,$sql_insert_log);
 
@@ -687,7 +687,7 @@
               Slot: $slot, CTO: $cto Contrato: $contrato,
               MAC: $serial, Novo Perfil: $vasProfile, 
               Internet: $pacote, Telefone: $telNumber,
-              Senha Telefone: $telPass',$usuario, $serial, $cto, $contrato)";
+              Senha Telefone: $telPass','$usuario', '$serial', '$cto', '$contrato')";
 
           $executa_log = mysqli_query($conectar,$sql_insert_log);
 
