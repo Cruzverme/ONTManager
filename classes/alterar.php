@@ -176,6 +176,20 @@
     $trato = tratar_errors($errorCode);
 
     echo "<p style='text-align:center;'>Houve erro ao remover no u2000: $errorCode - $trato</p>" ;
+
+    //salva em LOG
+    $sql_insert_log = "INSERT INTO log (registro,codigo_usuario, mac, cto, contrato)
+          VALUES (ERRO NO U2000 AO remover a ONT atual $trato 
+          informações antes da alteração: 
+              OLT: $device, PON: $pon, Frame: $frame,
+              Porta de Atendimento: $porta_atendimento, 
+              Slot: $slot, CTO: $cto Contrato: $contrato,
+              MAC: $mac_atual, Perfil: $vasProfileOld, 
+              Internet: $pacoteAtual, Telefone: $telNumber,
+              Senha Telefone: $telPass,$usuario, $serial, $cto, $contrato)";
+
+    $executa_log = mysqli_query($conectar,$sql_insert_log);
+
     mysqli_close($conectar_radius);
     mysqli_close($conectar);
     exit;
@@ -216,6 +230,18 @@
     }else{
       array_push($array_processos_historico,"<span style='color:blue'>Realizando Recadastramento</span>");
       array_push($array_processos_historico,"<span style='color:green'>ONT Adicionada ao U2000!</span>");
+
+      $sql_insert_log = "INSERT INTO log (registro,codigo_usuario, mac, cto, contrato)
+          VALUES (Iniciou o recadastramento 
+          informações relatadas:
+              OLT: $device, PON: $pon, Frame: $frame,
+              Porta de Atendimento: $porta_atendimento, 
+              Slot: $slot, CTO: $cto Contrato: $contrato,
+              MAC: $serial, Novo Perfil: $vasProfile, 
+              Internet: $pacote, Telefone: $telNumber,
+              Senha Telefone: $telPass,$usuario, $serial, $cto, $contrato)";
+
+      $executa_log = mysqli_query($conectar,$sql_insert_log);
 
 ########## PEGANDO ID DA ONT PARA SALVAR ############
       $remove_barras_para_pegar_id = explode("---------------------------",$tira_ponto_virgula[1]);
