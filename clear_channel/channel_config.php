@@ -74,6 +74,7 @@ if($_SESSION["gerenciar_l2l"] == 0) {
 
                             <button class="btn btn-primary  btn-block" onclick="changeLanLan()" style="">Alterar</button>
                             <button id="cancelEditButton" class="btn btn-primary btn-block" onclick='window.location.reload()' style="" disabled>Cancelar Alteração</button>
+                            <button id="deleteButton" class="btn btn-primary  btn-block" onclick="deleteLanLan()" style="" disabled>Excluir</button>
                         </div>
                     </div>
                 </div>

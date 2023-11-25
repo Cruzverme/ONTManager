@@ -211,17 +211,11 @@ if (isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem'])) {
                                     <a href="../consultas/show_cancelados.php"><i class="fa fa-bug fa-fw"></i> Clientes Cancelados no Cplus </a>
                                 </li>
                             <?php endif; ?>
-                        </ul>
-                    </li>
-                <?php endif; ?>
-
-                <?php if($_SESSION["consulta_log"]) :?>
-                    <li>
-                        <a class="tituloSubMenu" href="#">Log</a>
-                        <ul class="nav" id="side-menu">
-                            <li>
-                                <a href="../logs/show_log.php"><i class="fa fa-rss fa-fw"></i> Consultar Log</a>
-                            </li>
+                            <?php if ($_SESSION["consulta_log"]) : ?>
+                                <li>
+                                    <a href="../logs/show_log.php"><i class="fa fa-rss fa-fw"></i> Consultar Log</a>
+                                </li>
+                            <?php endif; ?>
                         </ul>
                     </li>
                 <?php endif; ?>
@@ -248,8 +242,4 @@ if (isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem'])) {
         <!-- /.sidebar-collapse -->
     </div>
     <!-- /.navbar-static-side -->
-</div>
 <!-- /#wrapper -->
-</body>
-
-</html>
