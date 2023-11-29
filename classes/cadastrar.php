@@ -710,12 +710,6 @@
     }
   }
 
-
-
-  ##### FECHA AS CONEXOES COM OS BANCOS #####
-  mysqli_close($conectar_radius);
-  mysqli_close($conectar);
-
   array_push($array_processos_historico,$ativado);
   echo "<p style='font-weight:bold;text-align:center'>TIMELINE</p>";
 
@@ -740,4 +734,7 @@
     $executa_log = mysqli_query($conectar,$sql_insert_log);
   }
 
+  ##### FECHA AS CONEXOES COM OS BANCOS #####
+  mysqli_close($conectar_radius);
+  mysqli_close($conectar);
 ?>
