@@ -125,6 +125,54 @@ function preventSpace(event) {
     }
 }
 
+function deleteLanLan() {
+    bootbox.confirm({
+        message: `Deseja realmente Excluir?`,
+        buttons: {
+            confirm: {
+                label: '<i class="fa fa-check"></i> SIM',
+                className: 'btn-success'
+            },
+            cancel: {
+                label: '<i class="fa fa-times"></i> NAO',
+                className: 'btn-danger'
+            }
+        },
+        centerVertical: true,
+        callback: (buttonResponse) => {
+            if (buttonResponse) {
+                let lanIdToDelete = document.getElementById('l2l_select').value;
+
+                if (lanIdToDelete.length > 0) {
+                    removeLanLan(lanIdToDelete);
+                    window.location.reload();
+                }
+            }
+
+        }
+    });
+}
+
+function removeLanLan(lanlanId)
+{
+    let url = `Model/L2LManagement.php?id=${lanlanId}&method=delete`
+    $.ajax({
+        url: url,
+        type: 'DELETE',
+        async: false,
+        success: function (response) {
+            responseMessage = response;
+        },
+        error: function (error) {
+            responseMessage = "Erro ao excluir.";
+        }
+    });
+    return responseMessage;
+}
+
+$('#l2l_select').change(() => {
+    $('#deleteButton').attr('disabled', false);
+})
 async function changeLanLan() {
     let typeRequisition = document.getElementById('typeRequisition');
     let ccNameInput = document.getElementById('cc_name');

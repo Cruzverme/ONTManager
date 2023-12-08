@@ -44,6 +44,7 @@ form fieldset{
 
 .nav > li > a:focus, .nav > li > a:hover {
 	text-decoration: none;
+	color: #000;
 	background-color: #ff9700;
 }
 
@@ -181,15 +182,21 @@ a:hover{
 }
 
 .tituloSubMenu{
-	background-color:  #f6b323
+	background-color:  #f6b323;
+	color: #000;
 }
 
 .sidebar ul li{
-	border-bottom:1px solid #ff9700
+	border-bottom:1px solid #ff9700;
+}
+
+.sidebar ul li ul li a{
+	color: #FFFFFFCC;
 }
 
 .sidebar ul li a.active{
-	background-color: #ff9700
+	background-color: #ff9700;
+	color: #000;
 }
 
 .sidebar .arrow{

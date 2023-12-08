@@ -1,6 +1,6 @@
   <?php
       // Verificador de sessão 
-    include "../classes/html_inicio.php"; 
+    include "../classes/html_inicio.php";
     
     if($_SESSION["cadastrar_usuario"] == 0) {
       echo '
@@ -62,6 +62,7 @@
                         <input name="personalizada17" value=17 type="checkbox"> Transferir Celula <br/>
                         <input name="personalizada18" value=18 type="checkbox"> Cadastrar Corporativo L2L <br/>
                         <input name="personalizada19" value=19 type="checkbox"> Cadastrar IP <br/>
+                        <input name="personalizada20" value=20 type="checkbox"> Consultar Log <br/>
                       </fieldset>
                     </div>
                   </div>
