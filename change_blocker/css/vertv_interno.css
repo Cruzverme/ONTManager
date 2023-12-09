@@ -1,0 +1,9 @@
+#blockedContractButton {
+    display: flex;
+    padding: 1%;
+}
+
+#add_blocker {
+    margin-right: 1%;
+}
+

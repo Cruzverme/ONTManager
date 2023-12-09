@@ -23,7 +23,7 @@ const CODIGO_CADASTRO_CORPORATIVO = 18;
 const CODIGO_CADASTRO_IP = 19;
 const CODIGO_GERENCIA_L2L = 20;
 const CODIGO_CONSULTA_LOG = 21;
-// ... definir as outras constantes de código de permissão aqui
+const CODIGO_BLOQUEIO_ALTERACAO_CONTRATO = 22;
 
 function checkPermission($userPermission, $permissionCode)
 {
@@ -87,6 +87,7 @@ if (!mysqli_connect_errno()) {
         $cadastrar_ip = filter_input(INPUT_POST,"personalizada19") ?? 0;
         $gerenciar_l2l = filter_input(INPUT_POST, "personalizada20") ?? 0;
         $consulta_log = filter_input(INPUT_POST,"personalizada21") ?? 0;
+        $blockCustomerChanges = filter_input(INPUT_POST,"personalizada22") ?? 0;
 
         //fim variaveis de permissao
 
@@ -113,7 +114,7 @@ if (!mysqli_connect_errno()) {
         $permitir_cadastro_ip = checkPermission($cadastrar_ip, CODIGO_CADASTRO_IP);
         $permitir_gerenciar_l2l = checkPermission($gerenciar_l2l, CODIGO_GERENCIA_L2L);
         $permitir_consulta_log = checkPermission($consulta_log, CODIGO_CONSULTA_LOG);
-
+        $permitir_bloqueio_alteracao_contrato = checkPermission($blockCustomerChanges, CODIGO_BLOQUEIO_ALTERACAO_CONTRATO);
         #######  FIM PERMISSOES PERSONALIZADAS ########
         // Consulta preparada para atualizar informações do usuário
         if ($senha == null) {
@@ -158,11 +159,12 @@ if (!mysqli_connect_errno()) {
                 transferir_celula = ?,
                 cadastrar_ip = ?,
                 gerenciar_l2l = ?,
-                consulta_log = ?
+                consulta_log = ?,
+                block_customer_changes = ?
                 WHERE usuario = ?";
 
             $stmt_cadastrar_permissao = mysqli_prepare($conectar, $sql_cadastrar_permissao);
-            mysqli_stmt_bind_param($stmt_cadastrar_permissao, "iiiiiiiiiiiiiiiiiiiiii",
+            mysqli_stmt_bind_param($stmt_cadastrar_permissao, "iiiiiiiiiiiiiiiiiiiiiii",
                 $permitir_cadastrar_ONU,
                 $permitir_cadastro_corporativo,
                 $permitir_removerONU,
@@ -184,6 +186,7 @@ if (!mysqli_connect_errno()) {
                 $permitir_cadastro_ip,
                 $permitir_gerenciar_l2l,
                 $permitir_consulta_log,
+                $permitir_bloqueio_alteracao_contrato,
                 $userID
             );
 
