@@ -10,13 +10,22 @@
     </script>
     ';
   }
-  
 ?>
   
   <?php 
     include "../db/db_config_mysql.php";
     $contrato = filter_input(INPUT_POST,"contrato");
-    
+
+    if (isContractBlockedToChanges((int)$contrato)) {
+        mysqli_close($conectar);
+        echo '
+                    <script language= "JavaScript">
+                        alert("Para Alterar este contrato, gentileza contatar o TI");
+                        location.href="../ont_classes/ont_delete.php";
+                    </script>
+          ';
+    }
+
     if(checar_contrato($contrato) == null)
     {
       echo '
