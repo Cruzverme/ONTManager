@@ -237,6 +237,13 @@ if (isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem'])) {
                         <a href="../ont_classes/troca_nat.php"><i class="fa fa-bug fa-fw"></i> Migrar para CGNAT </a>
                     </li>
                 <?php endif; ?>
+                <?php if($_SESSION['block_customer_changes']) :?>
+                    <li class="tituloSubMenu">
+                        <a href="../change_blocker/blockedList.php">
+                            <i class="fa fa-bug fa-fw"></i> Bloqueio de Alteração de Contrato
+                        </a>
+                    </li>
+                <?php endif; ?>
             </ul>
         </div>
         <!-- /.sidebar-collapse -->

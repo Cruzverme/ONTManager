@@ -705,4 +705,18 @@
     }
     return [];
   }
+
+  function isContractBlockedToChanges(int $contract)
+  {
+      include "../db/db_config_mysql.php";
+
+      $sqlIsBloqued = "SELECT contract FROM customer_change_blocked WHERE contract = $contract";
+      $result = $conectar->query($sqlIsBloqued);
+
+      if ($result->num_rows > 0) {
+        return true;
+
+      }
+      return false;
+  }
 ?>

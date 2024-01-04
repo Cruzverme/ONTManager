@@ -75,7 +75,8 @@ if (!mysqli_connect_errno()) {
                                 $migrar_cgnat,
                                 $permitir_cadastro_corporativo,
                                 $gerenciar_l2l,
-                                $consulta_log
+                                $consulta_log,
+                                $block_customer_changes
                             );
                             mysqli_stmt_fetch($stmt_select_permissoes);
 
@@ -101,6 +102,7 @@ if (!mysqli_connect_errno()) {
                             $_SESSION["transferir_cgnat"] = $migrar_cgnat;
                             $_SESSION['gerenciar_l2l'] = $gerenciar_l2l;
                             $_SESSION["consulta_log"] = $consulta_log;
+                            $_SESSION['block_customer_changes'] = $block_customer_changes;
 
                             header('Location: redirecionador_pagina.php');
                             mysqli_close($conectar);
