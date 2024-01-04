@@ -6,7 +6,7 @@
   #### Pegando Contrato
   $contrato = filter_input(INPUT_POST,'contrato');
 
-    if (isContractBlockedToChanges((int)$contrato)) {
+    if (isContractBlockedToChanges((int)$contrato) AND !$_SESSION['block_customer_changes']) {
         mysqli_close($conectar);
         echo '
           <script language= "JavaScript">
