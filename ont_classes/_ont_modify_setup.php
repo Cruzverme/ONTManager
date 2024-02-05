@@ -245,6 +245,11 @@
     }elseif(in_array($profile,$arrayVasProfileIpFixo)){
       $visivelIP = "style=display:visible;";
     }
+
+    $canChangeIp = "";
+    if (!$_SESSION['allow_ip_change']) {
+        $canChangeIp = "disabled";
+    }
   }
 ?>
 
@@ -363,7 +368,7 @@
             <div class="form-group form-group-sm ipFixoSelector" <?php echo $visivelIP; ?>>
               <label for="ipFixo" class="control-label col-sm-3">IP Fixo</label>
               <div class="col-sm-9">
-                <select class="form-control" name="ipFixo" id="ipFixo">
+                <select class="form-control" name="ipFixo" id="ipFixo" <?php echo $canChangeIp; ?>>
                   <?php echo "$optionIPFixo"; ?>
                 </select>
               </div>

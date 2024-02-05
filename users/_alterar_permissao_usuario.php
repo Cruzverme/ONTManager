@@ -46,6 +46,7 @@ $transferir_celula = $user_detail['transferir_celula'];
 $gerenciar_l2l = $user_detail['gerenciar_l2l'];
 $consultaLog = $user_detail['consulta_log'];
 $blockCustomerChanges = $user_detail['block_customer_changes'];
+$allowIpChange = $user_detail['allow_ip_change'];
 ?>
 
     <div id="page-wrapper">
@@ -157,6 +158,9 @@ $blockCustomerChanges = $user_detail['block_customer_changes'];
                                         <input name="personalizada22" value=22
                                                type="checkbox" <?php if ($blockCustomerChanges == 1) echo "checked"; ?>>
                                         Bloquear Mudança de Contrato <br/>
+                                        <input name="personalizada23" value=23
+                                               type="checkbox" <?php if ($allowIpChange == 1) echo "checked"; ?>>
+                                        Permitir Mudança de IP <br/>
                                     </div>
                                 </fieldset>
                                 <div class="form-group">

@@ -186,7 +186,7 @@
               Slot: $slot, CTO: $cto Contrato: $contrato,
               MAC: $mac_atual, Perfil: $vasProfileOld, 
               Internet: $pacoteAtual, Telefone: $telNumber,
-              Senha Telefone: $telPass',$usuario, $serial, $cto, $contrato)";
+              Senha Telefone: $telPass, Ip Fixo: $ip_fixo_atual',$usuario, $serial, $cto, $contrato)";
 
     $executa_log = mysqli_query($conectar,$sql_insert_log);
 
@@ -221,7 +221,7 @@
               Slot: $slot, CTO: $cto Contrato: $contrato,
               MAC: $serial, Novo Perfil: $vasProfile, 
               Internet: $pacote, Telefone: $telNumber,
-              Senha Telefone: $telPass','$usuario', '$serial', '$cto', '$contrato')";
+              Senha Telefone: $telPass, Ip Fixo: $ip_fixo','$usuario', '$serial', '$cto', '$contrato')";
       
       $executa_log = mysqli_query($conectar,$sql_insert_log);
 
@@ -239,7 +239,7 @@
               Slot: $slot, CTO: $cto Contrato: $contrato,
               MAC: $serial, Novo Perfil: $vasProfile, 
               Internet: $pacote, Telefone: $telNumber,
-              Senha Telefone: $telPass','$usuario', '$serial', '$cto', '$contrato')";
+              Senha Telefone: $telPass, Ip Fixo: $ip_fixo','$usuario', '$serial', '$cto', '$contrato')";
 
       $executa_log = mysqli_query($conectar,$sql_insert_log);
 
@@ -414,7 +414,7 @@
               Slot: $slot, CTO: $cto Contrato: $contrato,
               MAC: $serial, Novo Perfil: $vasProfile, 
               Internet: $pacote, Telefone: $telNumber,
-              Senha Telefone: $telPass','$usuario', '$serial', '$cto', '$contrato')";
+              Senha Telefone: $telPass, Ip Fixo: $ip_fixo','$usuario', '$serial', '$cto', '$contrato')";
 
           $executa_log = mysqli_query($conectar,$sql_insert_log);
   
@@ -458,7 +458,7 @@
               informações relatadas: OLT: $device, PON: $pon, Frame: $frame,
               Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
               MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
-              Senha Telefone: $telPass','$usuario')";
+              Senha Telefone: $telPass, Ip Fixo: $ip_fixo','$usuario')";
           $executa_log = mysqli_query($conectar,$sql_insert_log);
 
           array_push($array_processos_historico,"<span style='color:green'>Internet Reativada!</span>");
@@ -519,7 +519,7 @@
             Slot: $slot, CTO: $cto Contrato: $contrato,
             MAC: $serial, Novo Perfil: $vasProfile, 
             Internet: $pacote, Telefone: $telNumber,
-            Senha Telefone: $telPass','$usuario', '$serial', '$cto', '$contrato')";
+            Senha Telefone: $telPass, Ip Fixo: $ip_fixo','$usuario', '$serial', '$cto', '$contrato')";
     
         $executa_log = mysqli_query($conectar,$sql_insert_log);
       }else{
@@ -562,7 +562,7 @@
               Slot: $slot, CTO: $cto Contrato: $contrato,
               MAC: $serial, Novo Perfil: $vasProfile, 
               Internet: $pacote, Telefone: $telNumber,
-              Senha Telefone: $telPass','$usuario', '$serial', '$cto', '$contrato')";
+              Senha Telefone: $telPass, Ip Fixo: $ip_fixo','$usuario', '$serial', '$cto', '$contrato')";
       
           $executa_log = mysqli_query($conectar,$sql_insert_log);
 
@@ -623,7 +623,7 @@
               Slot: $slot, CTO: $cto Contrato: $contrato,
               MAC: $serial, Novo Perfil: $vasProfile, 
               Internet: $pacote, Telefone: $telNumber,
-              Senha Telefone: $telPass','$usuario', '$serial', '$cto', '$contrato')";
+              Senha Telefone: $telPass, Ip Fixo: $ip_fixo','$usuario', '$serial', '$cto', '$contrato')";
 
         $executa_log = mysqli_query($conectar,$sql_insert_log);
 
@@ -687,7 +687,7 @@
               Slot: $slot, CTO: $cto Contrato: $contrato,
               MAC: $serial, Novo Perfil: $vasProfile, 
               Internet: $pacote, Telefone: $telNumber,
-              Senha Telefone: $telPass','$usuario', '$serial', '$cto', '$contrato')";
+              Senha Telefone: $telPass, Ip Fixo: $ip_fixo','$usuario', '$serial', '$cto', '$contrato')";
 
           $executa_log = mysqli_query($conectar,$sql_insert_log);
 
