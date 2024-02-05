@@ -374,7 +374,7 @@
                 informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
                 Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
                 MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
-                Senha Telefone: $telPass','$usuario', '$serial', '$cto', '$contrato')";
+                Senha Telefone: $telPass, Ip Fixo: $ip_fixo','$usuario', '$serial', '$cto', '$contrato')";
 
           $executa_log = mysqli_query($conectar,$sql_insert_log);
 
@@ -424,7 +424,7 @@
               informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
               Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
               MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
-              Senha Telefone: $telPass','$usuario')";
+              Senha Telefone: $telPass, Ip Fixo: $ip_fixo','$usuario')";
           $executa_log = mysqli_query($conectar,$sql_insert_log);
 
           array_push($array_processos_historico,"<p style='color:green'>Internet Ativada!</p>");
@@ -460,7 +460,7 @@
                 informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
                 Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
                 MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
-                Senha Telefone: $telPass','$usuario', '$serial', '$cto', '$contrato')";
+                Senha Telefone: $telPass, Ip Fixo: $ip_fixo','$usuario', '$serial', '$cto', '$contrato')";
 
           $executa_log = mysqli_query($conectar,$sql_insert_log);
 
@@ -512,7 +512,7 @@
                 informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
                 Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
                 MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
-                Senha Telefone: $telPass','$usuario', '$serial', '$cto', '$contrato')";
+                Senha Telefone: $telPass, Ip Fixo: $ip_fixo','$usuario', '$serial', '$cto', '$contrato')";
 
             $executa_log = mysqli_query($conectar,$sql_insert_log);
 
@@ -594,7 +594,7 @@
                 informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
                 Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
                 MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
-                Senha Telefone: $telPass','$usuario', '$serial', '$cto', '$contrato')";
+                Senha Telefone: $telPass, Ip Fixo: $ip_fixo','$usuario', '$serial', '$cto', '$contrato')";
 
           $executa_log = mysqli_query($conectar,$sql_insert_log);
 
@@ -661,7 +661,7 @@
                 informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
                 Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
                 MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
-                Senha Telefone: $telPass','$usuario', '$serial', '$cto', '$contrato')";
+                Senha Telefone: $telPass, Ip Fixo: $ip_fixo','$usuario', '$serial', '$cto', '$contrato')";
 
             $executa_log = mysqli_query($conectar,$sql_insert_log);
 
@@ -730,7 +730,7 @@
               informações relatadas: OLT: $deviceName, PON: $pon, Frame: $frame,
               Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
               MAC: $serial, Perfil: $vasProfile, Internet: $pacote, Telefone: $telNumber,
-              Senha Telefone: $telPass','$usuario', '$serial', '$cto', '$contrato')";
+              Senha Telefone: $telPass, Ip Fixo: $ip_fixo','$usuario', '$serial', '$cto', '$contrato')";
     $executa_log = mysqli_query($conectar,$sql_insert_log);
   }
 
