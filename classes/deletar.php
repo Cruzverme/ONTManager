@@ -111,7 +111,7 @@
               VALUES ('ONT REMOVIDA 
               informações relatadas: OLT: $infoDev, PON: $pon, Frame: $frame,
               Porta de Atendimento: $porta_atendimento, Slot: $slot, CTO: $cto Contrato: $contrato,
-              MAC: $serial,$usuario)";
+              MAC: $serial', $usuario)";
         $executa_log = mysqli_query($conectar,$sql_insert_log);
 
         array_push($array_processos_historico,"<span style='color: green'>ONT $serial do Contrato $contrato foi removida</span>");
