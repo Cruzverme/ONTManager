@@ -205,14 +205,24 @@
     sleep(1);
 
     $ontInfo = obterInformacoesOnt($ontID);
-    if ($ontInfo['errorCode'] !== "0") {
-        $trato = tratar_errors($ontInfo['errorCode']);
+    $errorCode = $ontInfo['errorCode'];
+    if ($errorCode !== "0") {
+        $trato = tratar_errors($errorCode);
         $array_process_result[] = "!!!! Houve erro ao inserir a ONT no u2000: $trato !!!!";
 
         //se der erro ele irá apagar o registro salvo na tabela local ont
         $sql_apagar_onu = ("DELETE FROM ont WHERE contrato = '$contrato' AND serial = '$serial_number'");
         mysqli_query($conectar, $sql_apagar_onu);
-        deletar_onu_2000($device,$frame,$slot,$pon,14,'10.80.80.8',NULL);
+        deletar_onu_2000($device,$frame,$slot,$pon,$ontID,null,NULL);
+
+        $sql_insert_log = "INSERT INTO log (registro,codigo_usuario, mac, cto, contrato)
+                VALUES ('ERRO NO U2000 AO GERAR ONTID $trato Número Sem Tratamento: $errorCode e U2000: $ontID 
+                informações relatadas: OLT: $device, PON: $pon, Frame: $frame,
+                Porta de Atendimento: $porta_selecionado, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial_number, Perfil: $vasProfile, Internet: $pacote_internet, Telefone: $sip_number,
+                Senha Telefone: $sip_password','$usuario', '$serial_number', '$cto', '$contrato')";
+        $executa_log = mysqli_query($conectar,$sql_insert_log);
+
         $array_process_result[] = "Removido do Banco Local!";
         return exitWithMessage($array_process_result, $connectionsList);
     }
@@ -229,6 +239,13 @@
     $executa_insere_ont_id = mysqli_query($conectar,$insere_ont_id);
 
     $array_process_result[] = "Inserido ID da ONT!";
+    $sql_insert_log = "INSERT INTO log (registro,codigo_usuario, mac, cto, contrato)
+                VALUES ('ONT Cadastrada
+                informações relatadas: OntID: $onuID, OLT: $device, PON: $pon, Frame: $frame,
+                Porta de Atendimento: $porta_selecionado, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial_number, Perfil: $vasProfile, Internet: $pacote_internet, Telefone: $sip_number,
+                Senha Telefone: $sip_password','$usuario', '$serial_number', '$cto', '$contrato')";
+    $executa_log = mysqli_query($conectar,$sql_insert_log);
 
 #### SELECT OLT IP ####
     $sql_pega_olt_ip = "SELECT olt_ip FROM pon WHERE deviceName = ? LIMIT 1";
@@ -297,7 +314,7 @@
 
         if ($servicePortL2LIds['error'] != "0") {//se der erro na service port internet
             $trato = tratar_errors($servicePortL2LIds['error']);
-
+            $errorCode = $servicePortL2LIds['error'];
             $array_process_result[] = "Erro ao criar o service porta de Lan to Lan: $trato";
 
             //se der erro ele irá apagar o registro salvo na tabela local ont
@@ -314,6 +331,15 @@
 
             deletar_onu_2000($device, $frame, $slot, $pon, $onuID, $ip_olt, NULL);
             $array_process_result[] = "Removido do u2000";
+
+            $sql_insert_log = "INSERT INTO log (registro,codigo_usuario, mac, cto, contrato)
+                VALUES ('ERRO NO U2000 AO GERAR SERVIÇO L2L $trato Número Sem Tratamento: $errorCode e U2000: $ontID 
+                informações relatadas: OLT: $device, PON: $pon, Frame: $frame,
+                Porta de Atendimento: $porta_selecionado, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial_number, Perfil: $vasProfile, Internet: $pacote_internet, Telefone: $sip_number,
+                Senha Telefone: $sip_password','$usuario', '$serial_number', '$cto', '$contrato')";
+            $executa_log = mysqli_query($conectar,$sql_insert_log);
+
             return exitWithMessage($array_process_result, $connectionsList);
         }
         $array_process_result[] = "2-Service Port de Clear Channel Criada $servicePortL2LIds[servicesPortsIds]!";
@@ -354,6 +380,15 @@
 
             $array_process_result[] = "Removido do Radius";
             deletar_onu_2000($device, $frame, $slot, $pon, $onuID, $ip_olt, NULL);
+
+            $sql_insert_log = "INSERT INTO log (registro,codigo_usuario, mac, cto, contrato)
+                VALUES ('ERRO NO U2000 AO GERAR SERVICE PORT DE GERENCIA $trato Número Sem Tratamento: $errorCode e U2000: $ontID 
+                informações relatadas: OLT: $device, PON: $pon, Frame: $frame,
+                Porta de Atendimento: $porta_selecionado, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial_number, Perfil: $vasProfile, Internet: $pacote_internet, Telefone: $sip_number,
+                Senha Telefone: $sip_password','$usuario', '$serial_number', '$cto', '$contrato')";
+            $executa_log = mysqli_query($conectar,$sql_insert_log);
+
             $array_process_result[] = "Removido do u2000";
 
             return exitWithMessage($array_process_result, $connectionsList);
@@ -369,6 +404,15 @@
         $executa_insere_service_internet = mysqli_query($conectar, $insere_service_internet);
 
         $array_process_result[] = "4-Lan to Lan Cadastrada!";
+
+        $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
+                VALUES ('ServicePort Gerencia/Internet Cadastrada  
+                informações relatadas: OLT: $device, PON: $pon, Frame: $frame, 
+                Porta de Atendimento: $porta_selecionado, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial_number, Perfil: $vasProfile, Internet: $pacote_internet, Telefone: $sip_number,
+                Senha Telefone: $sip_password','$usuario')";
+        $executa_log = mysqli_query($conectar,$sql_insert_log);
+
     }
 
 ##################################### I N T E R N E T ##############################################
@@ -399,6 +443,15 @@
             $array_process_result[] = "Removido do Radius";
 
             deletar_onu_2000($device,$frame,$slot,$pon,$onuID,$ip_olt,NULL);
+
+            $sql_insert_log = "INSERT INTO log (registro,codigo_usuario, mac, cto, contrato)
+                VALUES ('ERRO Não encontrei o Service Port ID Criado! 
+                informações relatadas: OLT: $device, PON: $pon, Frame: $frame,
+                Porta de Atendimento: $porta_selecionado, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial_number, Perfil: $vasProfile, Internet: $pacote_internet, Telefone: $sip_number,
+                Senha Telefone: $sip_password','$usuario', '$serial_number', '$cto', '$contrato')";
+            $executa_log = mysqli_query($conectar,$sql_insert_log);
+
             $array_process_result[] = "Removido do u2000";
 
             return exitWithMessage($array_process_result, $connectionsList);
@@ -434,6 +487,15 @@
         $executa_insere_service_internet = mysqli_query($conectar, $insere_service_internet);
 
         $array_process_result[] = "3-Internet Cadastrada!";
+
+        $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
+                VALUES ('ServicePort Internet Ativada  
+                informações relatadas: OLT: $device, PON: $pon, Frame: $frame, 
+                Porta de Atendimento: $porta_selecionado, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial_number, Perfil: $vasProfile, Internet: $pacote_internet, Telefone: $sip_number,
+                Senha Telefone: $sip_password','$usuario')";
+        $executa_log = mysqli_query($conectar,$sql_insert_log);
+
     }
 
 ######################################### I P T V ##################################################
@@ -467,6 +529,15 @@
             $array_process_result[] = "Removido do Radius";
 
             deletar_onu_2000($device, $frame, $slot, $pon, $onuID, $ip_olt, $servicePortIPTV);
+
+            $sql_insert_log = "INSERT INTO log (registro,codigo_usuario, mac, cto, contrato)
+                VALUES ('ERRO NO U2000 AO GERAR SERVICE PORT IPTV $trato Número Sem Tratamento: $errorCode e U2000: $ontID 
+                informações relatadas: OLT: $device, PON: $pon, Frame: $frame,
+                Porta de Atendimento: $porta_selecionado, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial_number, Perfil: $vasProfile, Internet: $pacote_internet, Telefone: $sip_number,
+                Senha Telefone: $sip_password','$usuario', '$serial_number', '$cto', '$contrato')";
+            $executa_log = mysqli_query($conectar,$sql_insert_log);
+
             $array_process_result[] = "Removido do do u2000";
 
             return exitWithMessage($array_process_result, $connectionsList);
@@ -482,6 +553,15 @@
         $insere_service_iptv = "UPDATE ont SET service_port_iptv='$servicePortIptvID' WHERE serial = '$serial_number'";
         $executa_insere_service_iptv = mysqli_query($conectar,$insere_service_iptv);
         $array_process_result[] = "Atualizado Service Port na ONT";
+
+        $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
+                VALUES ('ServicePort IPTV Cadastrada  
+                informações relatadas: OLT: $device, PON: $pon, Frame: $frame, 
+                Porta de Atendimento: $porta_selecionado, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial_number, Perfil: $vasProfile, Internet: $pacote_internet, Telefone: $sip_number,
+                Senha Telefone: $sip_password','$usuario')";
+        $executa_log = mysqli_query($conectar,$sql_insert_log);
+
 
         ### BTV ###
         $btv_olt = insere_btv_iptv($device,$frame,$slot,$pon,$onuID);
@@ -512,10 +592,27 @@
             deletar_onu_2000($device, $frame, $slot, $pon, $onuID, $ip_olt, $servicePortIPTV);
             $array_process_result[] = "Removido do do u2000";
 
+            $sql_insert_log = "INSERT INTO log (registro,codigo_usuario, mac, cto, contrato)
+                VALUES ('ERRO NO U2000 AO GERAR BTV $trato Número Sem Tratamento: $errorCode e U2000: $ontID 
+                informações relatadas: OLT: $device, PON: $pon, Frame: $frame,
+                Porta de Atendimento: $porta_selecionado, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial_number, Perfil: $vasProfile, Internet: $pacote_internet, Telefone: $sip_number,
+                Senha Telefone: $sip_password','$usuario', '$serial_number', '$cto', '$contrato')";
+            $executa_log = mysqli_query($conectar,$sql_insert_log);
+
             return exitWithMessage($array_process_result, $connectionsList);
         }
         $array_process_result[] = "BTV Criado na OLT";
         $array_process_result[] = "IPTV Ativada!";
+
+        $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
+                VALUES ('BTV CRIADO  
+                informações relatadas: OLT: $device, PON: $pon, Frame: $frame, 
+                Porta de Atendimento: $porta_selecionado, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial_number, Perfil: $vasProfile, Internet: $pacote_internet, Telefone: $sip_number,
+                Senha Telefone: $sip_password','$usuario')";
+        $executa_log = mysqli_query($conectar,$sql_insert_log);
+
     }
 ##################################### T E L E F O N E ##############################################
     if ($voip) {
@@ -552,6 +649,15 @@
             $array_process_result[] = "Removido do Radius";
 
             deletar_onu_2000($device,$frame,$slot,$pon,$onuID,$ip_olt,NULL);
+
+            $sql_insert_log = "INSERT INTO log (registro,codigo_usuario, mac, cto, contrato)
+                VALUES ('ERRO NO U2000 AO ATIVAR POTS DE TELEFONIA $trato Número Sem Tratamento: $errorCode e U2000: $ontID 
+                informações relatadas: OLT: $device, PON: $pon, Frame: $frame,
+                Porta de Atendimento: $porta_selecionado, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial_number, Perfil: $vasProfile, Internet: $pacote_internet, Telefone: $sip_number,
+                Senha Telefone: $sip_password','$usuario', '$serial_number', '$cto', '$contrato')";
+            $executa_log = mysqli_query($conectar,$sql_insert_log);
+
             $array_process_result[] = "Removido do do u2000";
 
             return exitWithMessage($array_process_result, $connectionsList);
@@ -588,6 +694,15 @@
             $array_process_result[] = "Removido do Radius";
 
             deletar_onu_2000($device,$frame,$slot,$pon,$onuID,$ip_olt,NULL);
+
+            $sql_insert_log = "INSERT INTO log (registro,codigo_usuario, mac, cto, contrato)
+                VALUES ('ERRO NO U2000 AO GERAR SERVICE PORT DE TELEFONIA $trato Número Sem Tratamento: $errorCode e U2000: $ontID 
+                informações relatadas: OLT: $device, PON: $pon, Frame: $frame,
+                Porta de Atendimento: $porta_selecionado, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial_number, Perfil: $vasProfile, Internet: $pacote_internet, Telefone: $sip_number,
+                Senha Telefone: $sip_password','$usuario', '$serial_number', '$cto', '$contrato')";
+            $executa_log = mysqli_query($conectar,$sql_insert_log);
+
             $array_process_result[] = "Removido do do u2000";
 
             return exitWithMessage($array_process_result, $connectionsList);
@@ -599,6 +714,14 @@
 
         $servicePortTelefoneID= $pega_id[0] - 1;
         $array_process_result[] = "Service Port Telefonia Criado: $servicePortTelefoneID";
+
+        $sql_insert_log = "INSERT INTO log (registro,codigo_usuario)
+                VALUES ('ServicePort Telefone Cadastrada  
+                informações relatadas: OLT: $device, PON: $pon, Frame: $frame, 
+                Porta de Atendimento: $porta_selecionado, Slot: $slot, CTO: $cto Contrato: $contrato,
+                MAC: $serial_number, Perfil: $vasProfile, Internet: $pacote_internet, Telefone: $sip_number,
+                Senha Telefone: $sip_password','$usuario')";
+        $executa_log = mysqli_query($conectar,$sql_insert_log);
 
         $insere_service_telefone = "UPDATE ont SET service_port_telefone='$servicePortTelefoneID' WHERE serial = '$serial_number'";
         $executa_insere_service_telefone = mysqli_query($conectar,$insere_service_telefone);
