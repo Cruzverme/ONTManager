@@ -147,15 +147,20 @@ $conversor = in_array(CONVERSOR_KEY, $itens) ? true : false;
 
                                 <div class="form-group">
                                     <label>IP</label>
-                                    <?php
-                                    $sql_lista_ips = "SELECT numero_ip FROM ips_valido WHERE utilizado = false";
-                                    $executa_ips = mysqli_query($conectar, $sql_lista_ips);
-                                    ?>
                                     <select class="form-control" name="ipFixo">
                                         <option value="" selected disabled>Selecione o IP</option>
-                                        <?php while ($listaIP = mysqli_fetch_array($executa_ips, MYSQLI_BOTH)): ?>
-                                            <option><?php echo $listaIP[0]; ?></option>
-                                        <?php endwhile; ?>
+                                        <?php
+                                            $staticIpList = Packages::getStaticIpListAvailable($conectar, $contrato);
+                                            if ($staticIpList) {
+                                                foreach ($staticIpList as $ip):
+                                                    ?>
+                                                    <option value="<?php echo $ip; ?>"><?php echo $ip; ?></option>
+                                                <?php
+                                                endforeach;
+                                            } else {
+                                                echo "<option value=''>Erro ao obter lista de IPs</option>";
+                                            }
+                                        ?>
                                     </select>
                                 </div>
                             <?php else: ?>
