@@ -27,15 +27,9 @@
 
       if( $linhas_retornadas != 1 )
       {
-        for($ctoAtual = 1; $ctoAtual <= $maxCTO; $ctoAtual++)
-        {
+        
+        
           $InternaCTO = $ctoEspecifica;
-          if($ctoAtual != 1)
-          {
-            $disponibilizar = 0;
-            $quantidadePortaAtendimento = 1;
-            $InternaCTO = "$ctoEspecifica.$ctoAtual";
-          } 
           echo "$InternaCTO<br>";
           for($portas = 1; $portas <= $quantidadePortaAtendimento; $portas++)
           {
@@ -45,7 +39,7 @@
             $checar_insert = mysqli_query($conectar,$sql_insere_caixa);
             $checar_insert = true;
           }
-        }
+        
       }
     
       if($checar_insert)

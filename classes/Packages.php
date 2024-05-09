@@ -72,4 +72,51 @@ class Packages
             392
         );
     }
+
+    public static function getStaticIpListAvailable($connection, $contrato = 0)
+    {
+        $ipList = [];
+        $sqlIpList = "SELECT numero_ip FROM ips_valido WHERE utilizado_por = ? AND utilizado = 0";
+        $stmt = mysqli_prepare($connection, $sqlIpList);
+
+        if (!$stmt) {
+            return false;
+        }
+        mysqli_stmt_bind_param($stmt, "i", $contrato);
+
+        if (!mysqli_stmt_execute($stmt)) {
+            return false;
+        }
+
+        $result = mysqli_stmt_get_result($stmt);
+
+        while ($row = mysqli_fetch_assoc($result)) {
+            $ipList[] = $row['numero_ip'];
+        }
+
+
+        if (empty($ipList)) {
+            $sqlIpList = "SELECT numero_ip FROM ips_valido WHERE utilizado = 0";
+            $stmt = mysqli_prepare($connection, $sqlIpList);
+
+            if (!$stmt) {
+                return false;
+            }
+
+            if (!mysqli_stmt_execute($stmt)) {
+                return false;
+            }
+
+            $result = mysqli_stmt_get_result($stmt);
+
+            while ($row = mysqli_fetch_assoc($result)) {
+                $ipList[] = $row['numero_ip'];
+            }
+        }
+
+
+        mysqli_stmt_close($stmt);
+
+        return $ipList;
+    }
 }

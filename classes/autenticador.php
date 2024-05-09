@@ -76,7 +76,8 @@ if (!mysqli_connect_errno()) {
                                 $permitir_cadastro_corporativo,
                                 $gerenciar_l2l,
                                 $consulta_log,
-                                $block_customer_changes
+                                $block_customer_changes,
+                                $allow_ip_change
                             );
                             mysqli_stmt_fetch($stmt_select_permissoes);
 
@@ -103,6 +104,7 @@ if (!mysqli_connect_errno()) {
                             $_SESSION['gerenciar_l2l'] = $gerenciar_l2l;
                             $_SESSION["consulta_log"] = $consulta_log;
                             $_SESSION['block_customer_changes'] = $block_customer_changes;
+                            $_SESSION['allow_ip_change'] = $allow_ip_change;
 
                             header('Location: redirecionador_pagina.php');
                             mysqli_close($conectar);

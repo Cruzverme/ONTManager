@@ -24,6 +24,7 @@ const CODIGO_CADASTRO_IP = 19;
 const CODIGO_GERENCIA_L2L = 20;
 const CODIGO_CONSULTA_LOG = 21;
 const CODIGO_BLOQUEIO_ALTERACAO_CONTRATO = 22;
+const CODIGO_PERMITIR_ALTERACAO_IP = 23;
 
 function checkPermission($userPermission, $permissionCode)
 {
@@ -88,6 +89,7 @@ if (!mysqli_connect_errno()) {
         $gerenciar_l2l = filter_input(INPUT_POST, "personalizada20") ?? 0;
         $consulta_log = filter_input(INPUT_POST,"personalizada21") ?? 0;
         $blockCustomerChanges = filter_input(INPUT_POST,"personalizada22") ?? 0;
+        $allowIpChange = filter_input(INPUT_POST,"personalizada23") ?? 0;
 
         //fim variaveis de permissao
 
@@ -115,6 +117,7 @@ if (!mysqli_connect_errno()) {
         $permitir_gerenciar_l2l = checkPermission($gerenciar_l2l, CODIGO_GERENCIA_L2L);
         $permitir_consulta_log = checkPermission($consulta_log, CODIGO_CONSULTA_LOG);
         $permitir_bloqueio_alteracao_contrato = checkPermission($blockCustomerChanges, CODIGO_BLOQUEIO_ALTERACAO_CONTRATO);
+        $permitir_alteracao_ip = checkPermission($allowIpChange, CODIGO_PERMITIR_ALTERACAO_IP);
         #######  FIM PERMISSOES PERSONALIZADAS ########
         // Consulta preparada para atualizar informações do usuário
         if ($senha == null) {
@@ -160,11 +163,12 @@ if (!mysqli_connect_errno()) {
                 cadastrar_ip = ?,
                 gerenciar_l2l = ?,
                 consulta_log = ?,
-                block_customer_changes = ?
+                block_customer_changes = ?,
+                allow_ip_change = ?
                 WHERE usuario = ?";
 
             $stmt_cadastrar_permissao = mysqli_prepare($conectar, $sql_cadastrar_permissao);
-            mysqli_stmt_bind_param($stmt_cadastrar_permissao, "iiiiiiiiiiiiiiiiiiiiiii",
+            mysqli_stmt_bind_param($stmt_cadastrar_permissao, "iiiiiiiiiiiiiiiiiiiiiiii",
                 $permitir_cadastrar_ONU,
                 $permitir_cadastro_corporativo,
                 $permitir_removerONU,
@@ -187,6 +191,7 @@ if (!mysqli_connect_errno()) {
                 $permitir_gerenciar_l2l,
                 $permitir_consulta_log,
                 $permitir_bloqueio_alteracao_contrato,
+                $permitir_alteracao_ip,
                 $userID
             );
 
