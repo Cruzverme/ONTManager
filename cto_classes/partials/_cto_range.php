@@ -73,6 +73,7 @@
     <label>Quantidade de Portas de Atendimento</label>                                                
     <select class="form-control" name="porta">
         echo "<option value=8>8</option>";
+        echo "<option value=16>16</option>";
     </select>
 </div>
 <input type="hidden" name="tipoCTO" value=<?php echo $tipoCTO ?>>                           

@@ -18,7 +18,7 @@
   $vasProfile = filter_input(INPUT_POST,"vasProfile");
   $modo_bridge = filter_input(INPUT_POST,'modo_bridge');
   $ip_fixo = filter_input(INPUT_POST,'ipFixo');
-  $mac = filter_input(INPUT_POST,'mac');
+  $mac = filter_input(INPUT_POST,'mac');$mac = empty($mac) ? $mac = $serial : $mac;
   $cgnat_status = filter_input(INPUT_POST,'cgnat');$cgnat_status == null? $cgnat_status = false : $cgnat_status;
   
     ######### VERIFICA O SERVICO QUE SERA ATIVO
@@ -274,7 +274,7 @@
       ########### FIM APAGA RADIUS e ONT ##############
 
       //Dessassocia IP
-      $sql_remove_utilizado_antigo = "UPDATE ips_valido SET utilizado=false,utilizado_por=NULL,mac_serial=NULL
+      $sql_remove_utilizado_antigo = "UPDATE ips_valido SET utilizado=false, mac_serial=NULL
         WHERE numero_ip ='$ip_fixo_atual'";
       $executa_atualiza_utitlizado_ip = mysqli_query($conectar,$sql_remove_utilizado_antigo);
 
@@ -328,12 +328,13 @@
       if($internet_ip)
       {
         array_push($array_processos_historico,"<hr><span style='font-weight:bold;'>### INTERNET ###</span>");
-        
+
         // verifica se houve mudança de MAC
-        if($mac != $mac_atual)
+        $mac_novo = $mac_atual;
+
+        if ($mac != $mac_atual) {
           $mac_novo = $mac;
-        else
-          $mac_novo = $mac_atual;
+        }
 
         // verifica se houve mudança de IP
         if($ip_fixo != $ip_fixo_atual)
