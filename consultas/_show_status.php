@@ -234,7 +234,7 @@ function getEthPortStatus($ontInformation, $frame, $slot, $pon) {
         }
     }
 
-    return array_reverse($ethPorts);
+    return $ethPorts;
 }
 
 function extractEthPortInfo($data) {
