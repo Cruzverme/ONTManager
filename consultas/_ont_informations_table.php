@@ -170,6 +170,7 @@
                     <?php echo $informationProcessed['frame']?>,
                     <?php echo $informationProcessed['slot']?>,
                     <?php echo $informationProcessed['pon']?>,
+                    <?php echo $informationProcessed['ontId']?>,
                     'reset');"
                 >
                     <i class='fa fa-spinner fa-spin fa-fw'></i> REINICIAR
@@ -178,6 +179,7 @@
                     <?php echo $informationProcessed['frame']?>,
                     <?php echo $informationProcessed['slot']?>,
                     <?php echo $informationProcessed['pon']?>,
+                    <?php echo $informationProcessed['ontId']?>,
                     'fabric');"
                 >
                     <i class='fa fa-cog fa-spin fa-fw'></i> PADRÃO DE FÁBRICA
