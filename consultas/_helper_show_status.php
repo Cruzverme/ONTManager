@@ -18,6 +18,6 @@ if($acao == "fabric")
   $reseta_equipamento = reseta_ont($device,$frame,$slot,$pon,$ontID);
   echo "Estou Sendo Reiniciada, Favor Aguarde Meu Retorno!";  
 }else{
-  echo "Não consegui entender o que é pra fazer!";
+  echo "Erro ao tentar realizar ação!";
 }
 ?>
