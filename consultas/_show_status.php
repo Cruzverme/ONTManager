@@ -308,7 +308,7 @@ if ($mac) {
 
 if ($contrato) {
     if (checar_contrato($contrato) === null) {
-        echo "<p style='text-align:center'>Contrato Inexistente ou Cancelado!</p>";
+        echo "<p class='error_message'>Contrato Inexistente ou Cancelado!</p>";
         mysqli_close($conectar);
         exit;
     }
@@ -325,6 +325,8 @@ if ($contrato) {
     } else {
         echo "<p class='error_message'>Nenhum equipamento cadastrado para o contrato $contrato !</p>";
     }
+} else {
+    echo "<p class='error_message'>Não foi encontrado contrato vinculado ao MAC!</p>";
 }
 
 mysqli_close($conectar);
