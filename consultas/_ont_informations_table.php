@@ -40,6 +40,33 @@
                 </tbody>
             </table>
 
+            <table class='table info-table'>
+                <thead>
+                <tr>
+                    <th>TIPO WAN</th>
+                    <th>IPV4</th>
+                    <th>WAN MASK</th>
+                    <th>WAN GATEWAY</th>
+                    <th>TIPO CONEXÃO</th>
+                </tr>
+                </thead>
+                <?php foreach ($informationProcessed['informations']['wan'] as $wan): ?>
+                    <tbody>
+                    <tr>
+                        <td><?php echo $wan['wan_type']?></td>
+                        <td>
+                            <a target="_blank" href="https://<?php echo $wan['ipv4']?>:80">
+                                <?php echo $wan['ipv4']?>
+                            </a>
+                        </td>
+                        <td><?php echo $wan['wan_mask']?></td>
+                        <td><?php echo $wan['wan_gateway']?></td>
+                        <td><?php echo $wan['conection_type'] ?></td>
+                    </tr>
+                    </tbody>
+                <?php endforeach; ?>
+            </table>
+
             <!-- INFORMAÇÕES SINAL -->
             <table class='table info-table'>
                 <thead>
@@ -92,52 +119,6 @@
                 </tbody>
             </table>
 
-            <!-- INFORMAÇÕES ADICIONAIS -->
-            <h4 class='informacoes_legend section-title' onclick='levanta();'>
-                INFORMAÇÕES ADICIONAIS<i class='fa fa-chevron-down'></i>
-            </h4>
-
-            <div class='hider_infos' style='display:none'>
-                <table class='table info-table'>
-                    <thead>
-                    <tr>
-                        <th>TIPO WAN</th>
-                        <th>IPV4</th>
-                        <th>WAN MASK</th>
-                        <th>WAN GATEWAY</th>
-                        <th>TIPO CONEXÃO</th>
-                    </tr>
-                    </thead>
-                    <?php foreach ($informationProcessed['informations']['wan'] as $wan): ?>
-                        <tbody>
-                            <tr>
-                                <td><?php echo $wan['wan_type']?></td>
-                                <td>
-                                    <a target="_blank" href="https://<?php echo $wan['ipv4']?>:80">
-                                        <?php echo $wan['ipv4']?>
-                                    </a>
-                                </td>
-                                <td><?php echo $wan['wan_mask']?></td>
-                                <td><?php echo $wan['wan_gateway']?></td>
-                                <td><?php echo $wan['conection_type'] ?></td>
-                            </tr>
-                        </tbody>
-                    <?php endforeach; ?>
-                </table>
-
-                <!-- SERVICE PORTS -->
-                <legend class="legend_label">SERVICE PORT</legend>
-                <table class='table info-table'>
-                    <tbody>
-                    <tr>
-                        <?php foreach ($informationProcessed['informations']['service_port'] as $svrPort): ?>
-                            <td style="font-weight: bold"><?php echo $svrPort ?></td>
-                        <?php endforeach;?>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <hr/>
             <!-- STATUS DE PORTA -->
             <legend class="legend_label">STATUS DE PORTA</legend>
             <table class='table info-table'>
@@ -158,6 +139,27 @@
                 </tr>
                 </tbody>
             </table>
+
+            <!-- INFORMAÇÕES ADICIONAIS -->
+            <h4 class='informacoes_legend section-title' onclick='levanta();'>
+                INFORMAÇÕES ADICIONAIS<i class='fa fa-chevron-down'></i>
+            </h4>
+
+            <div class='hider_infos' style='display:none'>
+                <!-- SERVICE PORTS -->
+                <legend class="legend_label">SERVICE PORT</legend>
+                <table class='table info-table'>
+                    <tbody>
+                    <tr>
+                        <?php foreach ($informationProcessed['informations']['service_port'] as $svrPort): ?>
+                            <td style="font-weight: bold"><?php echo $svrPort ?></td>
+                        <?php endforeach;?>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr/>
+
 
             <!-- AÇÕES -->
             <div style='text-align:center'>
