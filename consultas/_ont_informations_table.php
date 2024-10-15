@@ -166,20 +166,20 @@
                 <button class='btn btn-secondary' onClick="consultar();">
                     <i class="fa fa-refresh fa-spin fa-fw"></i> ATUALIZAR DADOS
                 </button>
-                <button class='btn btn-secondary' onClick="return acordaONT(<?php echo $informationProcessed['device']?>,
-                    <?php echo $informationProcessed['frame']?>,
-                    <?php echo $informationProcessed['slot']?>,
-                    <?php echo $informationProcessed['pon']?>,
-                    <?php echo $informationProcessed['ontId']?>,
+                <button class='btn btn-secondary' onClick="return acordaONT('<?php echo $informationProcessed['device']?>',
+                    '<?php echo $informationProcessed['frame']?>',
+                    '<?php echo $informationProcessed['slot']?>',
+                    '<?php echo $informationProcessed['pon']?>',
+                    '<?php echo $informationProcessed['ontId']?>',
                     'reset');"
                 >
                     <i class='fa fa-spinner fa-spin fa-fw'></i> REINICIAR
                 </button>
-                <button class='btn btn-secondary' onClick="return acordaONT(<?php echo $informationProcessed['device']?>,
-                    <?php echo $informationProcessed['frame']?>,
-                    <?php echo $informationProcessed['slot']?>,
-                    <?php echo $informationProcessed['pon']?>,
-                    <?php echo $informationProcessed['ontId']?>,
+                <button class='btn btn-secondary' onClick="return acordaONT('<?php echo $informationProcessed['device']?>',
+                    '<?php echo $informationProcessed['frame']?>',
+                    '<?php echo $informationProcessed['slot']?>',
+                    '<?php echo $informationProcessed['pon']?>',
+                    '<?php echo $informationProcessed['ontId']?>',
                     'fabric');"
                 >
                     <i class='fa fa-cog fa-spin fa-fw'></i> PADRÃO DE FÁBRICA
