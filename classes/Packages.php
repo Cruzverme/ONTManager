@@ -26,6 +26,21 @@ class Packages
     }
 
     /**
+     * Return list vasProfile with voip
+     *
+     * @return string[]
+     */
+    public static function getVasProfileWithVoip(): array
+    {
+        return [
+            "VAS_Internet-VoIP", "VAS_IPTV-VoIP", "VAS_Internet-VoIP-IPTV",
+            "VAS_Internet-twoVoIP-IPTV", "VAS_Internet-twoVoIP",
+            "VAS_Internet-VoIP-CORP-IP", "VAS_Internet-VoIP-IPTV-CORP-IP",
+            "VAS_Internet-VoIP-IPTV-CORP-IP-B", "VAS_Internet-VoIP-CORP-IP-Bridge"
+        ];
+    }
+
+    /**
      * Get velocity values
      *
      * @param $conectar

@@ -1,9 +1,10 @@
 <?php 
   include_once "../classes/html_inicio.php";
   include_once "../classes/funcoes.php";
+  include_once "../classes/Packages.php";
   include "../db/db_config_mysql.php";
 
-  #### Pegando Contrato
+#### Pegando Contrato
   $contrato = filter_input(INPUT_POST,'contrato');
 
     if (isContractBlockedToChanges((int)$contrato) AND !$_SESSION['block_customer_changes']) {
@@ -172,7 +173,7 @@
     $telefoniaVisivel = "style=display:none";
 
 #####Verifica Programação que contém IPFixo
-  $arrayProgramacaoIpFixo = array(330,331,332,333,334,335,336,349,350,351,352,353,354, 358,372,374,377,380,381,388,389, 392, 400, 401, 402);
+  $arrayProgramacaoIpFixo = Packages::getFixedIpPackCode();
   $arrayVasProfileIpFixoBridge = [
                             'Internet - Bridge' => "VAS_Internet-CORP-IP-Bridge",
                             'Internet e IPTV - Bridge' => "VAS_Internet-IPTV-CORP-IP-Bridge",
