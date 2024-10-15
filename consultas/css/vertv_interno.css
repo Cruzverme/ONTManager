@@ -19,3 +19,65 @@ div.loading .modal-espera{
 div.loading .modal-espera{
 	display: block;
 }
+
+.error_message {
+	text-align: center;
+	color: #FF6347;
+	background-color: #2c2c2c;
+	border: 1px solid #FF6347;
+	padding: 10px;
+	font-size: 16px;
+	font-weight: bold;
+	margin-top: 20px;
+	border-radius: 5px;
+}
+
+.section-title {
+	font-size: 18px;
+	color: #ff9700;
+	margin-top: 20px;
+	text-align: center;
+	text-transform: uppercase;
+	padding-bottom: 10px;
+}
+
+.info-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+}
+
+.info-table th, .info-table td {
+	border: 1px solid #777;
+	padding: 10px;
+	text-align: center;
+}
+
+.info-table th {
+	background-color: #5a5a5a;
+	color: #f8f8f8;
+}
+
+.legend_label {
+	text-align: center;
+	color: #ff9700;
+}
+
+.info-table tr {
+	background-color: #787878;
+}
+
+.status-online {
+	background-color: #add8e6;
+	color: black;
+}
+
+.connected {
+	background-color: #008000;
+	color: white !important;
+}
+
+.disconnected {
+	background-color: #ff0000;
+	color: white !important;
+}
