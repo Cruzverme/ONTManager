@@ -729,7 +729,7 @@
         'SFI' => 'Falha no sinal (sinal fraco ou comprometido).',
         'LOAI' => 'Falha no reconhecimento entre ONU e OLT.',
         'LOAMI' => 'Perda de mensagens de gerenciamento PLOAM.',
-        'FAULT IN DACT' => 'Falha na Desativação.',
+        'DACT FAILURE' => 'Falha na Desativação.',
         'DACT' => 'Desativada.',
         'RESET' => 'Reinicialização.',
         'RE-REGISTER' => 'Re-registro da ONT.',
