@@ -9,7 +9,7 @@
 
   function checar_contrato($contrato)
   {
-    $json_file = file_get_contents("http://177.47.128.110:21000/sisspc/demos/get_contrato_status_ftth_cplus.php?contra=$contrato");
+    $json_file = file_get_contents("http://192.168.80.5/sisspc/demos/get_contrato_status_ftth_cplus.php?contra=$contrato");
     
    // $json_teste = json_encode($json_file, true);
    // $json_str = json_decode($json_teste, true);
@@ -21,7 +21,7 @@
     if(empty($contratoInterno))
     {
       //caso contrato esteja com ponto cancelado porem [e uma reconexao]
-      $json_file_segunda = file_get_contents("http://177.47.128.110:21000/sisspc/demos/get_contrato_status_ftth_reconexao.php?contra=$contrato");
+      $json_file_segunda = file_get_contents("http://192.168.80.5/sisspc/demos/get_contrato_status_ftth_reconexao.php?contra=$contrato");
       $json_str_segunda = json_decode($json_file_segunda,true);
 
       $contratoInterno2 = $json_str_segunda['contrato'];
@@ -239,7 +239,7 @@
   {
     
     //pega o Alias do assinante
-    $json_file = file_get_contents("http://177.47.128.110:21000/sisspc/demos/get_pacote_ftth_cplus.php?contra=$contrato");
+    $json_file = file_get_contents("http://192.168.80.5/sisspc/demos/get_pacote_ftth_cplus.php?contra=$contrato");
     //$json_teste = json_encode($json_file, true) ;
    // $json_str = json_decode($json_teste, true);   
     $json_str = json_decode($json_file, true);
