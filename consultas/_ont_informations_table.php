@@ -19,6 +19,7 @@
                     <th>CTO-PORTA DE ATENDIMENTO</th>
                     <th>STATUS</th>
                     <th>ULTIMA VEZ OFFLINE</th>
+                    <th>MOTIVO</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -35,6 +36,9 @@
                     </td>
                     <td style='font-weight: bold'>
                         <?php echo $informationProcessed['informations']['ont']['last_timeout']?>
+                    </td>
+                    <td style='font-weight: bold'>
+                        <?php echo $informationProcessed['informations']['ont']['last_timeout_reason']?>
                     </td>
                 </tr>
                 </tbody>

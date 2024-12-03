@@ -112,6 +112,7 @@ function extractOntInfo($data) {
         'pon' => $values[3] ?? null,
         'status' => $values[7] == 'Up' ? "ONLINE" : "OFFLINE",
         'last_timeout' => $values[12] != '--' ? "{$values[12]} - {$values[13]}" : 'SEM REGISTRO',
+        'last_timeout_reason' => $values[7] == 'Up' ? '---' : getAcronymMeaning(strtoupper($values[14]))
     ];
 }
 

@@ -1,15 +1,15 @@
 <?php 
 
-  include_once "/var/www/html/ontManager/u2000/tl1_sender.php";
+  include_once "../u2000/tl1_sender.php";
   
-  require '/var/www/html/ontManager/vendor/autoload.php'; //autoload do projeto
+  require '../vendor/autoload.php'; //autoload do projeto
 
   use PhpOffice\PhpSpreadsheet\Spreadsheet; //classe responsável pela manipulação da planilha
   use PhpOffice\PhpSpreadsheet\Writer\Xlsx; //classe que salvará a planilha em .xlsx
 
   function checar_contrato($contrato)
   {
-    $json_file = file_get_contents("http://192.168.80.5/sisspc/demos/get_contrato_status_ftth_cplus.php?contra=$contrato");
+    $json_file = file_get_contents("http://177.47.128.110:21000/sisspc/demos/get_contrato_status_ftth_cplus.php?contra=$contrato");
     
    // $json_teste = json_encode($json_file, true);
    // $json_str = json_decode($json_teste, true);
@@ -21,7 +21,7 @@
     if(empty($contratoInterno))
     {
       //caso contrato esteja com ponto cancelado porem [e uma reconexao]
-      $json_file_segunda = file_get_contents("http://192.168.80.5/sisspc/demos/get_contrato_status_ftth_reconexao.php?contra=$contrato");
+      $json_file_segunda = file_get_contents("http://177.47.128.110:21000/sisspc/demos/get_contrato_status_ftth_reconexao.php?contra=$contrato");
       $json_str_segunda = json_decode($json_file_segunda,true);
 
       $contratoInterno2 = $json_str_segunda['contrato'];
@@ -239,7 +239,7 @@
   {
     
     //pega o Alias do assinante
-    $json_file = file_get_contents("http://192.168.80.5/sisspc/demos/get_pacote_ftth_cplus.php?contra=$contrato");
+    $json_file = file_get_contents("http://177.47.128.110:21000/sisspc/demos/get_pacote_ftth_cplus.php?contra=$contrato");
     //$json_teste = json_encode($json_file, true) ;
    // $json_str = json_decode($json_teste, true);   
     $json_str = json_decode($json_file, true);
@@ -718,5 +718,32 @@
 
       }
       return false;
+  }
+
+  function getAcronymMeaning($acronym) {
+    $meanings = [
+        'ONUDEL' => 'O ONT foi excluído.',
+        'ONTDISCONNECT' => 'O ONT está desconectado.',
+        'LOSI' => 'Possível problema de fibra.',
+        'LOFI' => 'Perda de frames - Interrupção temporária.',
+        'SFI' => 'Falha no sinal (sinal fraco ou comprometido).',
+        'LOAI' => 'Falha no reconhecimento entre ONU e OLT.',
+        'LOAMI' => 'Perda de mensagens de gerenciamento PLOAM.',
+        'FAULT IN DACT' => 'Falha na Desativação.',
+        'DACT' => 'Desativada.',
+        'RESET' => 'Reinicialização.',
+        'RE-REGISTER' => 'Re-registro da ONT.',
+        'POPUP FAILURE' => 'Falha de Ativação.',
+        'AUTHOR FAILURE' => 'A autenticação da ONT falha.',
+        'DYING-GASP' => 'Energia Elétrica.',
+        'OFF-LINE FAILURE' => 'O ONT não consegue ficar offline.',
+        'DEACTIVE BECAUSE OF RING' => 'Desativada por estar sendo afetada por Loop.'
+    ];
+
+    if (array_key_exists($acronym, $meanings)) {
+      return $meanings[$acronym];
+    }
+
+    return $acronym;
   }
 ?>
