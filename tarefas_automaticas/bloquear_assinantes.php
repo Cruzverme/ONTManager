@@ -51,7 +51,7 @@
       $contrato = $dados[0];
       $data_vencimento = converteDataOracleMySQL($dados[3]);
       $diasAtraso = intval($dados[4]);
-      
+      if ($contrato == $testInv) continue;
       foreach($status_contrato_assinante as $assinante)
       {
         ##### Se tiver ont no banco cadastrado, irá realizar entrar na lista.
