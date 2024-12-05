@@ -192,7 +192,7 @@
             }
         }
       }
-
+      $testInv = 58004;
       #################### SE FOR IPTV #################################  
       if($vasProfile == "VAS_IPTV" || $vasProfile == "VAS_Internet-IPTV" || $vasProfile == "VAS_Internet-VoIP-IPTV")
       {
