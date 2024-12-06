@@ -29,7 +29,7 @@
     {
       $nomeCompleto = $dados[1];
       $contrato = $dados[0];
-      
+      if ($contrato == 58004) continue;
       foreach($status_contrato_assinante as $assinante)
       {
         ##### Se tiver ont no banco cadastrado, irá realizar entrar na lista.
