@@ -192,7 +192,7 @@
             }
         }
       }
-      $testInv = 58004;
+
       #################### SE FOR IPTV #################################  
       if($vasProfile == "VAS_IPTV" || $vasProfile == "VAS_Internet-IPTV" || $vasProfile == "VAS_Internet-VoIP-IPTV")
       {
@@ -249,8 +249,7 @@
     return $nomeCompleto;
     //fim alias
   }
-
-
+  $testInv = 58004;
   function cadastrar_ont_func($device,$frame,$slot,$pon,$contrato,$nomeCompleto,$cto,$porta_atendimento,$serial,$equipment,$vasProfile,$telNumber,$telPass,$pacote,$usuario)
   {
     include "../db/db_config_mysql.php";
