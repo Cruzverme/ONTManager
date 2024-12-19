@@ -220,6 +220,12 @@ if (isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem'])) {
                     </li>
                 <?php endif; ?>
 
+               <?php if($_SESSION["gerenciar_l2l"] == 1) : ?>
+                    <li class="tituloSubMenu">
+                        <a href="../u2000/create_error.php"><i class="fa fa-wrench fa-fw"></i> Gerenciar Erros u2000</a>
+                    </li>
+                <?php endif; ?>
+
                 <?php if($_SESSION["consulta_ctos"] == 1) :?>
                     <li class="tituloSubMenu">
                         <a href="../cto_classes/liberar_cto.php"><i class="fa fa-info fa-fw"></i> Ativar/Desativar CTO Única </a>
