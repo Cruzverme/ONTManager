@@ -12,7 +12,13 @@ $result = $conectar->query($sql);
 $data = [];
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
+        $newRow = [
+            'code' => mb_convert_encoding($row['code'], 'UTF-8', 'UTF-8'),
+            'description' => mb_convert_encoding($row['description'], 'UTF-8', 'UTF-8'),
+            'occurrences_number' => mb_convert_encoding($row['occurrences_number'], 'UTF-8', 'UTF-8'),
+            'updated_at' => mb_convert_encoding($row['updated_at'], 'UTF-8', 'UTF-8'),
+        ];
+        $data[] = $newRow;
     }
 }
 
