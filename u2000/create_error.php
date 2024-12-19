@@ -14,7 +14,7 @@ if ($_SESSION["gerenciar_l2l"] == 0) {
 ?>
 <div id="page-wrapper">
     <div class="container">
-        <div class="col-md-12">
+        <div class="row">
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Gerenciador Erros U2000</h3>
@@ -35,10 +35,10 @@ if ($_SESSION["gerenciar_l2l"] == 0) {
             </div>
         </div>
 
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-title">
-                    <h4>Lista de Códigos de Erro</h4>
+        <div class="row">
+            <div class="panel-table panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Lista de Códigos de Erro</h4>
                 </div>
                 <div class="panel-body">
                     <div class='table-responsive'>
