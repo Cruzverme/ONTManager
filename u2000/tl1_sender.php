@@ -2,94 +2,43 @@
 
   function tratar_errors($errorCode)
   {
-    switch($errorCode)
-    {
-      case 'vtv99999':
-        return "Ocorreu um erro ao tentar abrir conexão com u2000";
-      case '1615003666':
-        return "VasProfile Não Existe!";
-        break;
-      case '2686058498':
-        return "Informação Faltando";
-        break;
-      case '1615331079':
-        return "Contrato já existe no u2000";
-        break;
-      case '1616637952':
-        return "Nome do servicePort já existente";
-        break;
-      case '2689014776':
-        return 'Serial já cadastrado no u2000';
-        break;
-      case '2686058497':
-        return "Erro de Sintaxe";
-        break;
-      case '2686058500':
-        return "Parametro Incorreto";
-        break;
-      case '2686058531':
-        return "OLT Inexistente";
-        break;
-      case '1610612764':
-        return "Limite de Tempo Esgotado";
-        break;
-      case '2686058552':
-        return "Recurso Inexistente";
-        break;
-      case '2689017157':
-        return "Sistema está ocupado, tente novamente em segundos!";
-        break;
-      case '2689012370':
-        return "ONT Não Está Online";
-        break;
-      case '2689014724':
-        return "ONT Está Offline";
-        break;
-      case '2689016790':
-        return "Porta PON Inexistente";
-        break;
-      case '2689014716':
-        return "ONT Inexistente no Sistema";
-        break;
-      case '1615331086':
-        return "ONU Inexistente no Sistema";
-        break;
-      case '76546031':
-        return "Usuário ou Senha Invalida";
-        break;
-      case '76545967':
-        return "Licença Invalida";
-        break;
-      case '2686058556':
-        return "Usuário Já Logado";
-        break;
-      case '1618280737':
-        return "Limite Máximo de Conexão Excedido";
-        break;
-      case '1610612773':
-        return "Sincronizando, Por Favor Aguarde!";
-        break;
-      case '1616445448':
-        return "Falha ao Realizar Login";
-        break;
-      case '1610612765':
-        return "OLT Offline";
-        break;
-      case '2689021114':
-        return "A ONT Esta Iniciando, Aguarde!";
-        break;
-      case '2686058521':
-        return "Usuário Não Logado";
-        break;
-      case '2686058576':
-        return "Service port não existe";
-        break;
-      case '0':
-        return "Sucesso";
-        break;
-      default:
-        return "OCORREU UM ERRO DESCONHECIDO DE CODIGO $errorCode";
+    include_once "../db/db_config_mysql.php";
+
+    if ($conectar->connect_error) {
+      return "Erro ao conectar ao banco de dados.";
     }
+
+    if (empty($errorCode)) {
+      return "Código do erro não fornecido.";
+    }
+
+    $sql = "SELECT description, occurrences_number FROM error_codes WHERE code = ?";
+    $stmt = $conectar->prepare($sql);
+    $stmt->bind_param("s", $errorCode);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+      $row = $result->fetch_assoc();
+
+      $newOccurrences = $row['occurrences_number'] + 1;
+      $updateSql = "UPDATE error_codes SET occurrences_number = ? WHERE code = ?";
+      $updateStmt = $conectar->prepare($updateSql);
+      $updateStmt->bind_param("is", $newOccurrences, $errorCode);
+      $updateStmt->execute();
+
+      return $row['description'];
+    }
+
+    $insertSql = "INSERT INTO error_codes (code, description, occurrences_number) VALUES (?, 'NULL', 1)";
+    $insertStmt  = $conectar->prepare($insertSql);
+
+    $insertStmt->bind_param("s", $errorCode);
+    $insertStmt->execute();
+
+    return "OCORREU UM ERRO DESCONHECIDO DE CODIGO $errorCode";
+
+    $conectar->close();
   }
 
   function logar_tl1()

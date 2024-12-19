@@ -1,0 +1,13 @@
+.panel-body {
+    width: 100%;
+    overflow: hidden; /* Garante que nada "vaze" da div */
+}
+
+#description {
+    resize: vertical; /* Permite apenas redimensionamento vertical do textarea */
+}
+
+form {
+    max-width: 100%; /* Limita a largura máxima do formulário */
+    margin: auto; /* Centraliza o formulário horizontalmente */
+}
