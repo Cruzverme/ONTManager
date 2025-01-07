@@ -3,42 +3,57 @@
   function tratar_errors($errorCode)
   {
     include_once "../db/db_config_mysql.php";
-
-    if ($conectar->connect_error) {
-      return "Erro ao conectar ao banco de dados.";
-    }
+  
+    if (mysqli_connect_errno()) {
+      return "Erro ao conectar ao banco de dados: " . mysqli_connect_error();
+    }   
 
     if (empty($errorCode)) {
       return "Código do erro não fornecido.";
     }
-
+    
     $sql = "SELECT description, occurrences_number FROM error_codes WHERE code = ?";
-    $stmt = $conectar->prepare($sql);
-    $stmt->bind_param("s", $errorCode);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $stmt = mysqli_prepare($conectar, $sql);
 
-    if ($result->num_rows > 0) {
-      $row = $result->fetch_assoc();
+    if ($stmt) {
+      mysqli_stmt_bind_param($stmt, "s", $errorCode);
+      mysqli_stmt_execute($stmt);
+      $result = mysqli_stmt_get_result($stmt);
 
-      $newOccurrences = $row['occurrences_number'] + 1;
-      $updateSql = "UPDATE error_codes SET occurrences_number = ? WHERE code = ?";
-      $updateStmt = $conectar->prepare($updateSql);
-      $updateStmt->bind_param("is", $newOccurrences, $errorCode);
-      $updateStmt->execute();
+      if ($result && mysqli_num_rows($result) > 0) {
+          $row = mysqli_fetch_assoc($result);
 
-      return $row['description'];
+          // Incrementar o número de ocorrências
+          $newOccurrences = $row['occurrences_number'] + 1;
+
+          // Atualizar o registro
+          $updateSql = "UPDATE error_codes SET occurrences_number = ? WHERE code = ?";
+          $updateStmt = mysqli_prepare($conectar, $updateSql);
+
+          if ($updateStmt) {
+              mysqli_stmt_bind_param($updateStmt, "is", $newOccurrences, $errorCode);
+              mysqli_stmt_execute($updateStmt);
+              mysqli_stmt_close($updateStmt);
+          }
+
+          mysqli_stmt_close($stmt);
+          return $row['description'];
+      } 
+      mysqli_stmt_close($stmt);
     }
 
+
     $insertSql = "INSERT INTO error_codes (code, description, occurrences_number) VALUES (?, 'NULL', 1)";
-    $insertStmt  = $conectar->prepare($insertSql);
+    $insertStmt = mysqli_prepare($conectar, $insertSql);
 
-    $insertStmt->bind_param("s", $errorCode);
-    $insertStmt->execute();
-
+    if ($insertStmt) {
+      mysqli_stmt_bind_param($insertStmt, "s", $errorCode);
+      mysqli_stmt_execute($insertStmt);
+      mysqli_stmt_close($insertStmt);
+    }
+    
     return "OCORREU UM ERRO DESCONHECIDO DE CODIGO $errorCode";
 
-    $conectar->close();
   }
 
   function logar_tl1()
