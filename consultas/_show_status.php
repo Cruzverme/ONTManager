@@ -303,7 +303,7 @@ function processServiceSipStatus($servSipStatus) {
 $contrato = filter_input(INPUT_POST, 'contrato');
 $mac = filter_input(INPUT_POST, 'mac');
 
-if ($mac) {
+if ($mac && empty($contrato)) {
     $contrato = fetchContratoByMac($mac, $conectar);
 }
 
