@@ -99,7 +99,7 @@
   $sql_verifica_limite = "SELECT limite_equipamentos FROM ont WHERE contrato='$contrato'";
   $execute_sql_limite_result = mysqli_query($conectar,$sql_verifica_limite);
   $limite_registro = mysqli_fetch_assoc($execute_sql_limite_result);
-  $limite_registro = $limite_registro['limite_equipamentos'];
+  $limite_registro = $limite_registro['limite_equipamentos'] ?? null;
 
   if ($limite_registro != null AND $limite_registro < "1" )
   {

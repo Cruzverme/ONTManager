@@ -1,9 +1,9 @@
-<?php 
+<?php
 
   function tratar_errors($errorCode)
   {
-    include_once "../db/db_config_mysql.php";
-  
+    include "../db/db_config_mysql.php";
+
     if (mysqli_connect_errno()) {
       return "Erro ao conectar ao banco de dados: " . mysqli_connect_error();
     }   
