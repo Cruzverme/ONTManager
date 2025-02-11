@@ -240,6 +240,10 @@ a{
 	text-decoration: none;
 }
 
+.panel-table{
+	background: #666;
+}
+
 .login-panel{
 	margin-top:10%;
 	background: #666;	
