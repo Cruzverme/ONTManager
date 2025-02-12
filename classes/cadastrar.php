@@ -2,6 +2,8 @@
   include_once "../db/db_config_mysql.php";
   include_once "../db/db_config_radius.php";
   include_once "../u2000/tl1_sender.php";
+  include "../user_manager/token_verify.php";
+
   // Inicia sessões
   session_start();
 
@@ -15,7 +17,7 @@
   $frame = filter_input(INPUT_POST,"frame");
   $slot = filter_input(INPUT_POST,"slot");
   $pon = filter_input(INPUT_POST,"pon");
-  $usuario = $_SESSION["id_usuario"];
+  $usuario = $userId;
   $contrato = filter_input(INPUT_POST,"contrato");
   $nome = filter_input(INPUT_POST,"nome");
   $serial = strtoupper(filter_input(INPUT_POST,"serial"));

@@ -1,15 +1,7 @@
   <?php
       // Verificador de sessão 
     include "../classes/html_inicio.php";
-    
-    if($_SESSION["cadastrar_usuario"] == 0) {
-      echo '
-      <script language= "JavaScript">
-        alert("Sem Permissão de Acesso!");
-        location.href="../classes/redirecionador_pagina.php";    
-      </script>
-      ';
-    }
+    checkPermission('cadastrar_usuario');
 
   ?>
   

@@ -1,11 +1,11 @@
 <?php
   
   include_once "../db/db_config_mysql.php";
+  include "../user_manager/token_verify.php";
   //iniciando sessao para enviar as msgs
   session_start();
   
-  $usuario = $_SESSION["id_usuario"];
-  
+  $usuario = $userId;
   $tipoCTO = filter_input(INPUT_POST,'tipoCTO');
   $ctoSelect = filter_input(INPUT_POST,'ctoSelect');
   $quantidadePortaAtendimento = filter_input(INPUT_POST,'porta');

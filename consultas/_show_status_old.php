@@ -4,7 +4,7 @@
   include_once "../u2000/tl1_sender.php";
   include_once "../classes/funcoes.php";
 
-  if($_SESSION["consulta_onts"] == 0) 
+  if($permissions["consulta_onts"] == 0)
   {
     echo '
     <script language= "JavaScript">

@@ -1,14 +1,7 @@
 <?php 
   include_once "../classes/html_inicio.php";
+  checkPermission('deletar_onu');
 
-  if($_SESSION["deletar_onu"] == 0) {
-    echo '
-    <script language= "JavaScript">
-      alert("Sem Permissão de Acesso!");
-      location.href="../classes/redirecionador_pagina.php";
-    </script>
-    ';
-  }
 ?>
 
   <div id="page-wrapper">

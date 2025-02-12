@@ -1,16 +1,8 @@
 <?php
-  include "../classes/html_inicio.php"; 
+  include "../classes/html_inicio.php";
   include_once "../db/db_config_mysql.php";
   set_time_limit(0);
-  if($_SESSION["consulta_relatorio_sinal"] == 0)
-  {
-    echo '
-    <script language= "JavaScript">
-      alert("Sem Permissão de Acesso!");
-      location.href="../classes/redirecionador_pagina.php";
-    </script>
-    ';
-  }
+  checkPermission('relatorio_sinal');
   
   
   //Consulta BD

@@ -1,16 +1,8 @@
 <?php 
   include_once "../classes/html_inicio.php";
   include_once "../db/db_config_mysql.php";
+  checkPermission('modificar_onu');
 
-  if($_SESSION["modificar_onu"] == 0) {
-    echo '
-    <script language= "JavaScript">
-      alert("Sem Permissão de Acesso!");
-      location.href="../classes/redirecionador_pagina.php";
-    </script>
-    ';
-  }
-  
   $vlan = filter_input(INPUT_GET,"vlan");
 
   $sql = "SELECT contrato FROM ont WHERE vlan_id=$vlan";

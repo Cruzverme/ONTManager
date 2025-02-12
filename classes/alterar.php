@@ -3,10 +3,11 @@
   include_once "../db/db_config_radius.php";
   include_once "../u2000/tl1_sender.php";
   include_once "funcoes.php";
+  include "../user_manager/token_verify.php";
   // Inicia sessões 
   session_start();
 
-  $usuario = $_SESSION["id_usuario"];
+  $usuario = $userId;
   $contrato = filter_input(INPUT_POST,"contrato");
   $serial = filter_input(INPUT_POST,"serial");
   $pacote = filter_input(INPUT_POST,"pacote");

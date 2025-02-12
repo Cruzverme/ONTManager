@@ -2,15 +2,9 @@
   include_once "../classes/html_inicio.php";
   include_once "../db/db_config_mysql.php";
   include_once "../classes/funcoes.php";
+  checkPermission('cadastrar_onu_corp');
+  checkPermission('gerenciar_l2l');
 
-  if($_SESSION['cadastrar_onu_corp'] == 0 && ($_SESSION['cadastrar_onu_corp'] == 0 && $_SESSION["gerenciar_l2l"] == 0)) {
-    echo '
-    <script language= "JavaScript">
-      alert("Sem Permissão de Acesso!");
-      location.href="../classes/redirecionador_pagina.php";    
-    </script>
-    ';
-  }
 
   $porta_selecionado = filter_input(INPUT_POST,'porta_atendimento');
   $frame = filter_input(INPUT_POST,'frame');

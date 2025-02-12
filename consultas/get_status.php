@@ -1,16 +1,7 @@
 <?php 
     
-  include "../classes/html_inicio.php"; 
-  
-  if($_SESSION["consulta_onts"] == 0) 
-  {
-    echo '
-    <script language= "JavaScript">
-      alert("Sem Permissão de Acesso!");
-      location.href="../classes/redirecionador_pagina.php";
-    </script>
-    ';
-  }
+  include "../classes/html_inicio.php";
+  checkPermission('consulta_ont');
 
 ?>
 

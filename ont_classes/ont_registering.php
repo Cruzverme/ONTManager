@@ -3,17 +3,7 @@ include_once "../classes/html_inicio.php";
 include_once "../db/db_config_mysql.php";
 include_once "../classes/funcoes.php";
 include_once "../classes/Packages.php";
-
-// Verifica permissão de acesso
-if (!$_SESSION["cadastrar_onu"]) {
-    echo '
-            <script language= "JavaScript">
-                alert("Sem Permissão de Acesso!");
-                location.href="../classes/redirecionador_pagina.php";
-            </script>
-        ';
-    exit;
-}
+checkPermission('cadastrar_onu');
 
 // Restante do código continua aqui, pois o usuário possui permissão de acesso
 
@@ -68,18 +58,18 @@ $conversor = in_array(CONVERSOR_KEY, $itens) ? true : false;
                             <legend>Selecione o Plano</legend>
                             <div class="form-group hider_planos">
                                 <?php
-                                $planos = Packages::getVasProfileList($conversor);
+                                    $planos = Packages::getVasProfileList($conversor);
 
-                                foreach ($planos as $value => $label) {
-                                    echo '<div class="radio">
-                                                <label>
-                                                <input type="radio" name="optionsRadios" value="' . $value . '"';
-                                    if ($value === 'VAS_Internet') {
-                                        echo ' checked';
+                                    foreach ($planos as $value => $label) {
+                                        echo '<div class="radio">
+                                                    <label>
+                                                    <input type="radio" name="optionsRadios" value="' . $value . '"';
+                                        if ($value === 'VAS_Internet') {
+                                            echo ' checked';
+                                        }
+                                        echo '>' . $label . '</label>
+                                                </div>';
                                     }
-                                    echo '>' . $label . '</label>
-                                            </div>';
-                                }
                                 ?>
                             </div>
                         </fieldset>
@@ -110,24 +100,24 @@ $conversor = in_array(CONVERSOR_KEY, $itens) ? true : false;
                                     <select class="form-control" name="pacote" required>
                                         <option value="" selected disabled> Selecione a Velocidade </option>
                                         <?php
-                                        $codigo = '';
-                                        $hasCplusReference = false;
+                                            $codigo = '';
+                                            $hasCplusReference = false;
 
-                                        $planos = Packages::getVelocityPack($conectar);
+                                            $planos = Packages::getVelocityPack($conectar);
 
-                                        foreach ($itens as $codigoPlano) :
-                                            foreach ($planos as $plano) :
-                                                if ($codigoPlano == $plano['referencia_cplus']) {
-                                                    $codigo = $plano['referencia_cplus'];
-                                                    echo "<option value='{$plano['nomenclatura_velocidade']}'>{$plano['nome']}</option>";
-                                                    $hasCplusReference = true;
-                                                }
+                                            foreach ($itens as $codigoPlano) :
+                                                foreach ($planos as $plano) :
+                                                    if ($codigoPlano == $plano['referencia_cplus']) {
+                                                        $codigo = $plano['referencia_cplus'];
+                                                        echo "<option value='{$plano['nomenclatura_velocidade']}'>{$plano['nome']}</option>";
+                                                        $hasCplusReference = true;
+                                                    }
+                                                endforeach;
                                             endforeach;
-                                        endforeach;
 
-                                        if (!$hasCplusReference) {
-                                            echo "<option value='none'>Velocidade Não Cadastrada no Contrato, Favor Verificar no Control Plus</option>";
-                                        }
+                                            if (!$hasCplusReference) {
+                                                echo "<option value='none'>Velocidade Não Cadastrada no Contrato, Favor Verificar no Control Plus</option>";
+                                            }
                                         ?>
                                     </select>
                                 </div>
@@ -172,10 +162,10 @@ $conversor = in_array(CONVERSOR_KEY, $itens) ? true : false;
                                 <label>Equipamento</label>
                                 <select class="form-control" name="equipamentos">
                                     <?php
-                                    $sql_consulta_equipamentos = "SELECT * FROM equipamentos";
-                                    $executa_query_equipamentos = mysqli_query($conectar, $sql_consulta_equipamentos);
-                                    while ($equipamentos = mysqli_fetch_array($executa_query_equipamentos, MYSQLI_BOTH)): ?>
-                                        <option value="<?php echo $equipamentos['modelo']; ?>"><?php echo $equipamentos['modelo']; ?></option>
+                                        $sql_consulta_equipamentos = "SELECT * FROM equipamentos";
+                                        $executa_query_equipamentos = mysqli_query($conectar, $sql_consulta_equipamentos);
+                                        while ($equipamentos = mysqli_fetch_array($executa_query_equipamentos, MYSQLI_BOTH)): ?>
+                                            <option value="<?php echo $equipamentos['modelo']; ?>"><?php echo $equipamentos['modelo']; ?></option>
                                     <?php endwhile; ?>
                                 </select>
                             </div>

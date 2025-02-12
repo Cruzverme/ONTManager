@@ -1,16 +1,7 @@
 <?php
 
 include_once "../db/db_config_mysql.php";
-include "../classes/verifica_sessao.php";
-
-if ($_SESSION["consulta_log"] == 0) {
-    echo '
-        <script language= "JavaScript">
-            alert("Sem Permissão de Acesso!");
-            location.href="../classes/redirecionador_pagina.php";
-        </script>
-    ';
-}
+include "../user_manager/token_verify.php";
 
 ## Read value
 $draw = $_POST['draw'];

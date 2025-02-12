@@ -46,7 +46,7 @@ if ($caixa_atendimento || $deviceName) {
                             <td><?= $porta_atendimento ?></td>
                             <?php
                             if ($porta_disponivel == 0) {
-                                if ($_SESSION["cadastrar_onu"] == 1) {
+                                if ($permissions["cadastrar_onu"] == 1) {
                                     ?>
                                     <td>
                                         <a href="./_input_contrato.php?porta_atendimento=<?= $porta_atendimento ?>&frame=<?= $frame ?>&slot=<?= $slot ?>&pon=<?= $pon ?>&cto=<?= $caixa_atendimento ?>&device=<?= $device ?>">

@@ -2,16 +2,8 @@
   
   include_once "../classes/html_inicio.php";
   include_once "../classes/funcoes.php";
-  
-  if($_SESSION["alterar_macONT"] == 0) 
-  {
-    echo '
-    <script language= "JavaScript">
-      alert("Sem Permissão de Acesso!");
-      location.href="../classes/redirecionador_pagina.php";
-    </script>
-    ';
-  }
+  checkPermission('alterar_mac_ont');
+
 ?>
   <?php 
     include "../db/db_config_mysql.php";

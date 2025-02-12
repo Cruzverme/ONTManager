@@ -2,15 +2,8 @@
     
   include "../classes/html_inicio.php";
   include_once "../db/db_config_mysql.php";
-
-  if($_SESSION['cadastrar_onu_corp'] == 0 && ($_SESSION['cadastrar_onu_corp'] == 0 && $_SESSION["gerenciar_l2l"] == 0)) {
-    echo '
-    <script language= "JavaScript">
-      alert("Sem Permissão de Acesso!");
-      location.href="../classes/redirecionador_pagina.php";
-    </script>
-    ';
-  }
+  checkPermission('cadastrar_onu_corp');
+  checkPermission('gerenciar_l2l');
 
 ?>
 
@@ -46,7 +39,7 @@
                     }else{
                       $selecionado = "";
                     }
-                      if($_SESSION['nome_usuario'] != 'Charles Pereira' || $_SESSION['nome_usuario'] != 'Administrador') {
+                      if($userName != 'Charles Pereira' || $userName != 'Administrador') {
                         echo "<option name='cto' value=$caixa_atendimento[caixa_atendimento] $selecionado $disponivel>$caixa_atendimento[caixa_atendimento]</option>";
                       } else{
                         echo "<option>EM MANUTENCAO!, VOLTE LOGO MAIS!</option>";break;}
@@ -54,7 +47,7 @@
               ?>
               </select>
               <span class="input-group-btn">
-                <?php if($_SESSION['nome_usuario'] != 'Charles Pereira' || $_SESSION['nome_usuario'] != 'Administrador') { ?>
+                <?php if($userName != 'Charles Pereira' || $userName != 'Administrador') { ?>
                 <button class="btn btn-secondary form-control" type="submit" >Buscar</button>
                 <?php } else {?>
                 <button class="btn btn-secondary form-control" type="submit" disabled>Buscar</button>

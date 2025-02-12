@@ -1,17 +1,8 @@
 <?php 
     
-  include "../classes/html_inicio.php"; 
+  include "../classes/html_inicio.php";
   include_once "../db/db_config_mysql.php";
-  
-  if($_SESSION["consulta_relatorio_sinal"] == 0) 
-  {
-    echo '
-    <script language= "JavaScript">
-      alert("Sem Permissão de Acesso!");
-      location.href="../classes/redirecionador_pagina.php";
-    </script>
-    ';
-  }
+  checkPermission('relatorio_sinal');
 
   $select_sinais = "SELECT contrato,cto,porta_atendimento,sinal,sinalByOLT,sinalTX,data_registro FROM sinais_diarios order  by cto DESC";
   $executa_select = mysqli_query($conectar,$select_sinais);

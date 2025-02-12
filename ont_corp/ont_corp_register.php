@@ -2,15 +2,7 @@
   include_once "../classes/html_inicio.php";
   include_once "../db/db_config_mysql.php";
   include_once "../classes/funcoes.php";
-
-  if($_SESSION["cadastrar_onu"] == 0) {
-    echo '
-    <script language= "JavaScript">
-      alert("Sem Permissão de Acesso!");
-      location.href="../classes/redirecionador_pagina.php";    
-    </script>
-    ';
-  }
+  checkPermission('cadastrar_onu');
 
   $porta_selecionado = filter_input(INPUT_POST,'porta_atendimento');
   $frame = filter_input(INPUT_POST,'frame');

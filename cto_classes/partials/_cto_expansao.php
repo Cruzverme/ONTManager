@@ -21,10 +21,10 @@
       }
       
       $unico = array_unique($celulas_caixa);
-      
-      if($_SESSION['nome_usuario'] != 'Charles Pereira' || $_SESSION['nome_usuario'] != 'Administrador') {
+
+      if($userName != 'Charles Pereira' || $userName != 'Administrador') {
         $quantidade_celulas = sizeOf($unico);
-        
+
         if($quantidade_celulas != $quantidade_celulas_atual){
           echo "$caixa_atendimento[caixa_atendimento]";
           if($caixa_atendimento['tipoCTO'] != 'associada')

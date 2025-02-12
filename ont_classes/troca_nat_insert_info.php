@@ -2,15 +2,7 @@
   include_once "../classes/html_inicio.php";
   include_once "../db/db_config_mysql.php";
   include_once "../classes/funcoes.php";
-
-  if($_SESSION["cadastrar_onu"] == 0) {
-    echo '
-    <script language= "JavaScript">
-      alert("Sem Permissão de Acesso!");
-      location.href="../classes/redirecionador_pagina.php";    
-    </script>
-    ';
-  }
+  checkPermission('cadastrar_onu');
 
   $area = filter_input(INPUT_POST,'olt');
   $sql = "select deviceName from pon where pon_id = $area";

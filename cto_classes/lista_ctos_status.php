@@ -1,13 +1,13 @@
 <?php 
-  include "../classes/html_inicio.php"; 
+  include "../classes/html_inicio.php";
   include_once "../db/db_config_mysql.php";
+  checkPermission('cadastrar_olt');
 
-
-  if($_SESSION["cadastrar_olt"] == 0) {
+  if($permissions["cadastrar_olt"] == 0) {
     echo '
     <script language= "JavaScript">
       alert("Sem Permissão de Acesso!");
-      location.href="../classes/redirecionador_pagina.php";    
+      location.href="../user_manager/router.php";    
     </script>
     ';
   }

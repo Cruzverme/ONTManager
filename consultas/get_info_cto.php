@@ -1,17 +1,8 @@
 <?php 
     
-  include "../classes/html_inicio.php"; 
+  include "../classes/html_inicio.php";
   include_once "../db/db_config_mysql.php";
-  
-  if($_SESSION["consulta_ctos"] == 0) 
-  {
-    echo '
-    <script language= "JavaScript">
-      alert("Sem Permissão de Acesso!");
-      location.href="../classes/redirecionador_pagina.php";
-    </script>
-    ';
-  }
+  checkPermission('consulta_cto');
 
 ?>
 

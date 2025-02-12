@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt">
 <?php
-// Verificador de sessão
-include "../classes/verifica_sessao.php";
+session_start();
+include "../user_manager/token_verify.php";
+include "../user_manager/check_permissions.php";
 
 #capturar mensagem
 if (isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem'])) {
@@ -33,7 +34,7 @@ if (isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem'])) {
         <ul class="nav navbar-top-links navbar-right">
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user fa-fw"></i> <?php echo $_SESSION["nome_usuario"]; ?> <i class="fa fa-caret-down"></i>
+                    <i class="fa fa-user fa-fw"></i> <span id="userName"><?php echo $userName ?></span> <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
                     <!--<li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
@@ -54,43 +55,43 @@ if (isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem'])) {
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
                 <!-- Cadastros -->
-                <?php if ($_SESSION["cadastrar_onu"] == 1 || $_SESSION["cadastrar_cto"] == 1 ||
-                    $_SESSION["cadastrar_olt"] == 1 || $_SESSION["cadastrar_velocidade"] == 1 ||
-                    $_SESSION["cadastrar_usuario"] == 1 || $_SESSION["cadastrar_equipamento"] == 1) : ?>
+                <?php if ($permissions["cadastrar_onu"] == 1 || $permissions["cadastrar_cto"] == 1 ||
+                    $permissions["cadastrar_olt"] == 1 || $permissions["cadastrar_velocidade"] == 1 ||
+                    $permissions["cadastrar_usuario"] == 1 || $permissions["cadastrar_equipamento"] == 1) : ?>
                     <li>
                         <a class="tituloSubMenu" href="#">Cadastros</a>
                         <ul class="nav" id="side-menu">
-                            <?php if ($_SESSION["cadastrar_onu"] == 1) : ?>
+                            <?php if ($permissions['cadastrar_onu'] == 1) : ?>
                                 <li>
                                     <a href="../ont_classes/ont_register.php"><i class="fa fa-cloud-upload fa-fw"></i> Cadastrar ONT</a>
                                 </li>
                             <?php endif; ?>
-                            <?php if($_SESSION["cadastrar_cto"] == 1) : ?>
+                            <?php if($permissions["cadastrar_cto"] == 1) : ?>
                                 <li>
                                     <a href="../cto_classes/show_ctos.php"><i class="fa fa-sitemap fa-fw"></i> Cadastrar CTO</a>
                                 </li>
                             <?php endif; ?>
-                            <?php if($_SESSION["cadastrar_olt"] == 1) : ?>
+                            <?php if($permissions["cadastrar_olt"] == 1) : ?>
                                 <li>
                                     <a href="../cto_classes/pon_create.php"><i class="fa fa-columns fa-fw"></i> Cadastro de Slot da OLT </a>
                                 </li>
                             <?php endif; ?>
-                            <?php if($_SESSION["cadastrar_ip"] == 1) : ?>
+                            <?php if($permissions["cadastrar_ip"] == 1) : ?>
                                 <li>
                                     <a href="../ip/new_ip.php"><i class="fa fa-rss fa-fw"></i> Cadastrar IP</a>
                                 </li>
                             <?php endif; ?>
-                            <?php if($_SESSION["cadastrar_velocidade"] == 1) : ?>
+                            <?php if($permissions["cadastrar_velocidade"] == 1) : ?>
                                 <li>
                                     <a href="../planos/planos_create.php"><i class="fa fa-wifi fa-fw"></i> Cadastrar Nova Velocidade</a>
                                 </li>
                             <?php endif; ?>
-                            <?php if($_SESSION["cadastrar_equipamento"] == 1) : ?>
+                            <?php if($permissions["cadastrar_equipamento"] == 1) : ?>
                                 <li>
                                     <a href="../equipamento/cadastro_equipamento.php"><i class="fa fa-server fa-fw"></i> Cadastrar Equipamento</a>
                                 </li>
                             <?php endif; ?>
-                            <?php if($_SESSION["cadastrar_usuario"] == 1) : ?>
+                            <?php if($permissions["cadastrar_usuario"] == 1) : ?>
                                 <li>
                                     <a href="../users/usuario_new.php"><i class="fa fa-users fa-fw"></i> Cadastrar Usuario</a>
                                 </li>
@@ -100,7 +101,7 @@ if (isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem'])) {
                 <?php endif; ?>
 
                 <!-- Corporativo -->
-                <?php if ($_SESSION["cadastrar_onu_corp"] || $_SESSION["gerenciar_l2l"]) : ?>
+                <?php if ($permissions["cadastrar_onu_corp"] || $permissions["gerenciar_l2l"]) : ?>
                 <li>
                     <a class="tituloSubMenu" href="#">Clear Channel</a>
                     <ul class="nav" id="side-menu">
@@ -109,7 +110,7 @@ if (isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem'])) {
                                 <i class="fa fa-cloud-upload fa-fw"></i> Cadastrar Cliente L2L
                             </a>
                         </li>
-                        <?php if ($_SESSION['gerenciar_l2l']) : ?>
+                        <?php if ($permissions['gerenciar_l2l']) : ?>
                         <li>
                             <a href="../clear_channel/channel_config.php">
                                 <i class="fa fa-cloud-upload fa-fw"></i> Gerenciar L2L
@@ -121,27 +122,27 @@ if (isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem'])) {
                 <?php endif; ?>
 
                 <!-- Modificações -->
-                <?php if ($_SESSION["modificar_onu"] == 1 || $_SESSION["alterar_macONT"] == 1 ||
-                    $_SESSION["desativar_ativar_onu"] == 1 || $_SESSION["alterar_usuario"] == 1) : ?>
+                <?php if ($permissions["modificar_onu"] == 1 || $permissions["alterar_mac_ont"] == 1 ||
+                    $permissions["desativar_ativar_onu"] == 1 || $permissions["alterar_usuario"] == 1) : ?>
                     <li>
                         <a class="tituloSubMenu" href="#">Modificações</a>
                         <ul class="nav" id="side-menu">
-                            <?php if($_SESSION["modificar_onu"] == 1) : ?>
+                            <?php if($permissions["modificar_onu"] == 1) : ?>
                                 <li>
                                     <a href="../ont_classes/ont_change.php"><i class="fa fa-wrench fa-fw"></i> Alterar ONT</a>
                                 </li>
                             <?php endif; ?>
-                            <?php if($_SESSION["alterar_macONT"] == 1) : ?>
+                            <?php if($permissions["alterar_mac_ont"] == 1) : ?>
                                 <li>
                                     <a href="../ont_classes/alterar_mac_ont.php"><i class="fa fa-exchange fa-fw"></i> Trocar ONT</a>
                                 </li>
                             <?php endif; ?>
-                            <?php if($_SESSION["desativar_ativar_onu"] == 1) : ?>
+                            <?php if($permissions["desativar_ativar_onu"] == 1) : ?>
                                 <li>
                                     <a href="../ont_classes/ont_disable.php"><i class="fa fa-pause-circle fa-fw"></i> Desabilitar e Habilitar Cliente </a>
                                 </li>
                             <?php endif; ?>
-                            <?php if($_SESSION["alterar_usuario"] == 1) : ?>
+                            <?php if($permissions["alterar_usuario"] == 1) : ?>
                                 <li>
                                     <a href="../users/alteracao_usuario.php"><i class="fa fa-users fa-fw"></i> Listar e Alterar Usuario</a>
                                 </li>
@@ -151,21 +152,21 @@ if (isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem'])) {
                 <?php endif; ?>
 
                 <!-- Remoções -->
-                <?php if ($_SESSION["deletar_onu"] == 1 || $_SESSION["remover_cto"] == 1 || $_SESSION["remover_olt"] == 1) : ?>
+                <?php if ($permissions["deletar_onu"] == 1 || $permissions["remover_cto"] == 1 || $permissions["remover_olt"] == 1) : ?>
                     <li>
                         <a class="tituloSubMenu" href="#">Remoções</a>
                         <ul class="nav" id="side-menu">
-                            <?php if($_SESSION["deletar_onu"] == 1) : ?>
+                            <?php if($permissions["deletar_onu"] == 1) : ?>
                                 <li>
                                     <a href="../ont_classes/ont_delete.php"><i class="fa fa-ban fa-fw"></i> Remover ONT</a>
                                 </li>
                             <?php endif; ?>
-                            <?php if($_SESSION["remover_cto"] == 1) : ?>
+                            <?php if($permissions["remover_cto"] == 1) : ?>
                                 <li>
                                     <a href="../cto_classes/remover_cto.php"><i class="fa fa-ban fa-fw"></i> Remover CTO</a>
                                 </li>
                             <?php endif; ?>
-                            <?php if($_SESSION["remover_olt"] == 1) : ?>
+                            <?php if($permissions["remover_olt"] == 1) : ?>
                                 <li>
                                     <a href="../cto_classes/remover_olt.php"><i class="fa fa-ban fa-fw"></i> Remover OLT</a>
                                 </li>
@@ -175,27 +176,27 @@ if (isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem'])) {
                 <?php endif; ?>
 
                 <!-- Consultas -->
-                <?php if ($_SESSION["consulta_onts"] == 1 || $_SESSION["consulta_ctos"] == 1 ||
-                    $_SESSION["consulta_relatorio_sinal"] == 1 || $_SESSION["desativar_ativar_onu"] == 1) : ?>
+                <?php if ($permissions["consulta_ont"] == 1 || $permissions["consulta_cto"] == 1 ||
+                    $permissions["relatorio_sinal"] == 1 || $permissions["desativar_ativar_onu"] == 1) : ?>
                     <li>
                         <a class="tituloSubMenu" href="#">Consultas</a>
                         <ul class="nav" id="side-menu">
-                            <?php if($_SESSION["consulta_onts"] == 1) : ?>
+                            <?php if($permissions["consulta_ont"] == 1) : ?>
                                 <li>
                                     <a href="../consultas/get_status.php"><i class="fa fa-info fa-fw"></i> Consulta de ONT</a>
                                 </li>
                             <?php endif; ?>
-                            <?php if($_SESSION["consulta_ctos"] == 1) : ?>
+                            <?php if($permissions["consulta_cto"] == 1) : ?>
                                 <li>
                                     <a href="../consultas/get_info_cto.php"><i class="fa fa-info fa-fw"></i> Consulta de CTO e OLT</a>
                                 </li>
                             <?php endif; ?>
-                            <?php if($_SESSION["cadastrar_ip"] == 1) : ?>
+                            <?php if($permissions["cadastrar_ip"] == 1) : ?>
                                 <li>
                                     <a href="../ip/show_ip.php"><i class="fa fa-rss fa-fw"></i> Exibir IPs</a>
                                 </li>
                             <?php endif; ?>
-                            <?php if($_SESSION["consulta_relatorio_sinal"] == 1) : ?>
+                            <?php if($permissions["relatorio_sinal"] == 1) : ?>
                                 <li>
                                     <a href="../consultas/relatorio_sinal_ruim.php"><i class="fa fa-bug fa-fw"></i> Relatório de Sinais </a>
                                 </li>
@@ -203,7 +204,7 @@ if (isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem'])) {
                                     <a href="../consultas/analise_pon.php"><i class="fa fa-bug fa-fw"></i> Relatório de Sinais Por Porta Pon </a>
                                 </li>
                             <?php endif; ?>
-                            <?php if($_SESSION["desativar_ativar_onu"] == 1) : ?>
+                            <?php if($permissions["desativar_ativar_onu"] == 1) : ?>
                                 <li>
                                     <a href="../consultas/show_bloqueados.php"><i class="fa fa-bug fa-fw"></i> Clientes Inconsistentes com Cplus </a>
                                 </li>
@@ -211,7 +212,7 @@ if (isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem'])) {
                                     <a href="../consultas/show_cancelados.php"><i class="fa fa-bug fa-fw"></i> Clientes Cancelados no Cplus </a>
                                 </li>
                             <?php endif; ?>
-                            <?php if ($_SESSION["consulta_log"]) : ?>
+                            <?php if ($permissions["consulta_log"]) : ?>
                                 <li>
                                     <a href="../logs/show_log.php"><i class="fa fa-rss fa-fw"></i> Consultar Log</a>
                                 </li>
@@ -220,30 +221,30 @@ if (isset($_SESSION['menssagem']) && !empty($_SESSION['menssagem'])) {
                     </li>
                 <?php endif; ?>
 
-               <?php if($_SESSION["gerenciar_l2l"] == 1) : ?>
+               <?php if($permissions["gerenciar_l2l"] == 1) : ?>
                     <li class="tituloSubMenu">
                         <a href="../u2000/create_error.php"><i class="fa fa-wrench fa-fw"></i> Gerenciar Erros u2000</a>
                     </li>
                 <?php endif; ?>
 
-                <?php if($_SESSION["consulta_ctos"] == 1) :?>
+                <?php if($permissions["consulta_cto"] == 1) :?>
                     <li class="tituloSubMenu">
                         <a href="../cto_classes/liberar_cto.php"><i class="fa fa-info fa-fw"></i> Ativar/Desativar CTO Única </a>
                     </li>
                 <?php endif; ?>
 
-                <?php if($_SESSION["transferir_celula"] == 1) :?>
+                <?php if($permissions["transferir_celula"] == 1) :?>
                     <li class="tituloSubMenu">
                         <a href="../cto_classes/transfer_olt_select.php"><i class="fa fa-bug fa-fw"></i> Transferir Celula </a>
                     </li>
                 <?php endif; ?>
 
-                <?php if($_SESSION["transferir_cgnat"] == 1) :?>
+                <?php if($permissions["migrar_cgnat"] == 1) :?>
                     <li class="tituloSubMenu">
                         <a href="../ont_classes/troca_nat.php"><i class="fa fa-bug fa-fw"></i> Migrar para CGNAT </a>
                     </li>
                 <?php endif; ?>
-                <?php if($_SESSION['block_customer_changes']) :?>
+                <?php if($permissions['block_customer_changes']) :?>
                     <li class="tituloSubMenu">
                         <a href="../change_blocker/blockedList.php">
                             <i class="fa fa-bug fa-fw"></i> Bloqueio de Alteração de Contrato

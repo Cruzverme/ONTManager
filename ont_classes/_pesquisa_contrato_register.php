@@ -1,13 +1,7 @@
 <?php
   include_once "../classes/html_inicio.php";
-  if($_SESSION["cadastrar_onu"] == 0) {
-    echo '
-    <script language= "JavaScript">
-      alert("Sem Permissão de Acesso!");
-      location.href="../classes/redirecionador_pagina.php";    
-    </script>
-    ';
-  }
+  checkPermission('cadastrar_onu');
+
 
   $porta_selecionado = filter_input(INPUT_GET,'porta_atendimento');
   $frame = filter_input(INPUT_GET,'frame');

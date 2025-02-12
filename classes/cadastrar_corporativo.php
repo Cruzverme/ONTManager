@@ -3,6 +3,7 @@
   include_once "../db/db_config_mysql.php";
   include_once "../db/db_config_radius.php";
   include_once "../u2000/tl1_sender.php";
+  include "../user_manager/token_verify.php";
   // Inicia sessões 
   session_start();
 
@@ -13,7 +14,7 @@
   $modelo_ont = filter_input(INPUT_POST,'modelo_ont');
   $sip_number = filter_input(INPUT_POST,'sip_number');
   $sip_password = filter_input(INPUT_POST,'sip_password');
-  $usuario = $_SESSION["id_usuario"];
+  $usuario = $userId;
 
   $porta_selecionado = filter_input(INPUT_POST,'porta_atendimento');
   $frame = filter_input(INPUT_POST,'frame');

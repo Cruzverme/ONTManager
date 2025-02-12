@@ -1,5 +1,6 @@
 <?php
   include_once "../db/db_config_mysql.php";
+  include "../user_manager/token_verify.php";
 //iniciando sessao para enviar as msgs
   session_start();
 
@@ -10,7 +11,7 @@
       $senha = md5($_POST["senha"]);
       $nova_senha = md5($_POST["nova_senha"]);
       
-      $user_id= $_SESSION["id_usuario"];
+      $user_id= $userId;
 
       
         $sql_usuario_senha = ("SELECT senha FROM usuarios WHERE senha = '$senha' AND usuario_id = '$user_id'");

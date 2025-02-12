@@ -1,7 +1,7 @@
 <?php
 include_once "../db/db_config_mysql.php";
 session_start();
-$usuario_logado =  $_SESSION["id_usuario"];
+$usuario_logado =  $userId;
 
 function redirectWithError($message)
 {

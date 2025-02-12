@@ -1,5 +1,6 @@
 <?php
 include_once "../db/db_config_mysql.php";
+include "../user_manager/token_verify.php";
 session_start();
 
 const CODIGO_CADASTRAR_ONU = 1;
@@ -39,7 +40,7 @@ function redirectToPage($message, $location)
 }
 
 if (!mysqli_connect_errno()) {
-    $usuario_logado = $_SESSION["id_usuario"];
+    $usuario_logado = $userID;
     $usuario = filter_input(INPUT_POST, 'usuario');
     $botao = filter_input(INPUT_POST, 'botao_validador');
 
@@ -138,7 +139,7 @@ if (!mysqli_connect_errno()) {
             mysqli_stmt_execute($stmt_get_userID);
             mysqli_stmt_store_result($stmt_get_userID);
 
-            mysqli_stmt_bind_result($stmt_get_userID, $userID);
+            mysqli_stmt_bind_result($stmt_get_userID, $userIdentification);
             mysqli_stmt_fetch($stmt_get_userID);
 
             $sql_cadastrar_permissao = "UPDATE usuario_permissao SET 
@@ -192,7 +193,7 @@ if (!mysqli_connect_errno()) {
                 $permitir_consulta_log,
                 $permitir_bloqueio_alteracao_contrato,
                 $permitir_alteracao_ip,
-                $userID
+                $userIdentification
             );
 
             $permissoes = mysqli_stmt_execute($stmt_cadastrar_permissao);

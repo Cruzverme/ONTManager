@@ -1,12 +1,12 @@
 <?php
 include_once "../../db/db_config_mysql.php";
-include "../../classes/verifica_sessao.php";
+include_once "../../user_manager/token_verify.php";
 
-if ($_SESSION["block_customer_changes"] == 0) {
+if ($permissions["block_customer_changes"] == 0) {
     echo '
         <script language= "JavaScript">
             alert("Sem Permissão de Acesso!");
-            location.href="../classes/redirecionador_pagina.php";
+            location.href="../user_manager/router.php";
         </script>
     ';
 }

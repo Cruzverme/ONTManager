@@ -1,14 +1,7 @@
 <?php
 
 include_once "../classes/html_inicio.php";
-if (!$_SESSION["block_customer_changes"]) {
-    echo '
-        <script language= "JavaScript">
-            alert("Sem Permissão de Acesso!");
-            location.href="../classes/redirecionador_pagina.php";
-        </script>
-    ';
-}
+checkPermission('block_customer_changes');
 
 ?>
     <div id="page-wrapper">

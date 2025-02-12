@@ -2,16 +2,8 @@
   
   include_once "../classes/html_inicio.php";
   include_once "../classes/funcoes.php";
-  
-  if($_SESSION["desativar_ativar_onu"] == 0) 
-  {
-    echo '
-    <script language= "JavaScript">
-      alert("Sem Permissão de Acesso!");
-      location.href="../classes/redirecionador_pagina.php";
-    </script>
-    ';
-  }
+  checkPermission('desativar_ativar_onu');
+
 ?>
   <?php 
     include "../db/db_config_mysql.php";

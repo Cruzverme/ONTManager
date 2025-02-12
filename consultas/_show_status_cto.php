@@ -3,12 +3,12 @@
   include_once "../db/db_config_mysql.php";
   include_once "../u2000/tl1_sender.php";
 
-  if($_SESSION["consulta_ctos"] == 0) 
+  if($permissions["consulta_ctos"] == 0)
   {
     echo '
     <script language= "JavaScript">
       alert("Sem Permissão de Acesso!");
-      location.href="../classes/redirecionador_pagina.php";
+      location.href="../user_manager/router.php";
     </script>
     ';
   }

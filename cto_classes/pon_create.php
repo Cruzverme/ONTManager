@@ -1,14 +1,7 @@
 <?php 
-  include "../classes/html_inicio.php"; 
+  include "../classes/html_inicio.php";
+  checkPermission('cadastrar_olt');
 
-  if($_SESSION["cadastrar_olt"] == 0) {
-    echo '
-    <script language= "JavaScript">
-      alert("Sem Permissão de Acesso!");
-      location.href="../classes/redirecionador_pagina.php";    
-    </script>
-    ';
-  }
 ?>
 
 <div id="page-wrapper">
