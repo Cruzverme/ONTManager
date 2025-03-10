@@ -52,7 +52,7 @@
             <td>$porta_atendimento</td>";
             if($porta_disponivel == 0)
             {
-              if($_SESSION["cadastrar_onu"] == 1)
+              if($permissions["cadastrar_onu"] == 1)
               {
                 echo "
                   <td><a href='../ont_classes/_pesquisa_contrato_register.php?porta_atendimento=$porta_atendimento&frame=$frame&slot=$slot&pon=$pon&cto=$caixa_atendimento&device=$device'>DISPONÍVEL</a></td>

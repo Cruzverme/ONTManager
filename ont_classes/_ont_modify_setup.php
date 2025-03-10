@@ -58,6 +58,10 @@
   ### VAS PROFILE BRIDGE EM TRIPLE PLAY 
   $profile == "VAS_Internet-VoIP-IPTV-CORP-IP-B"? $profile = "VAS_Internet-VoIP-IPTV-CORP-IP-B" : $profile;
 
+  $optionVelocidade = '';
+  $optionMAC = '';
+  $optionEquipamento = '';
+
   ###### VERIFICA SE O CONTRATO TEM MAC CADASTRADO
   if(empty($serial))
   {
@@ -72,9 +76,9 @@
 
   ##pega os planos cadastrados no banco
   $sql_lista_velocidades = "SELECT nome,nomenclatura_velocidade, referencia_cplus FROM planos";
-  $executa_query = mysqli_query($conectar,$sql_lista_velocidades); 
+  $executa_query = mysqli_query($conectar,$sql_lista_velocidades);
 
-  while ($listaPlanos = mysqli_fetch_array($executa_query, MYSQLI_ASSOC)) 
+  while ($listaPlanos = mysqli_fetch_array($executa_query, MYSQLI_ASSOC))
   {  
     ### PEGA O NOME DO PACOTE ATUAL
     if($pacote == $listaPlanos['nomenclatura_velocidade'])
@@ -87,10 +91,8 @@
         $codigo = $listaPlanos['referencia_cplus'];
         $planoAtualCplus = $listaPlanos['nomenclatura_velocidade'];
         $nomePlanoAtualCplus = $listaPlanos['nome'];
-        if($planoAtualCplus == $pacote)
-          $optionVelocidade =" $optionVelocidade <option value='$planoAtualCplus' selected>$nomePlanoAtualCplus</option>";
-        else
-          $optionVelocidade =" $optionVelocidade <option value='$planoAtualCplus'>$nomePlanoAtualCplus</option>";
+        $selected = ($planoAtualCplus === $pacote) ? 'selected' : '';
+        $optionVelocidade .= "<option value='$planoAtualCplus' $selected>$nomePlanoAtualCplus</option>";
         $verificacao = 1;
       }
     }
@@ -143,12 +145,9 @@
   $executa_query_equipamentos = mysqli_query($conectar,$sql_consulta_equipamentos);
   while ($equipamentos = mysqli_fetch_array($executa_query_equipamentos, MYSQLI_BOTH)) 
   {
-    if($equipamento_cliente == $equipamentos['modelo'])
-      $equipamento_selecionado = "<option value=$equipamentos[modelo] selected>$equipamentos[modelo]</option>";
-    else 
-      $equipamento_selecionado = "<option value=$equipamentos[modelo]>$equipamentos[modelo]</option>";
-    
-    $optionEquipamento = "$optionEquipamento $equipamento_selecionado";
+      $modelo = htmlspecialchars($equipamentos['modelo'], ENT_QUOTES, 'UTF-8');
+      $selected = ($equipamento_cliente == $equipamentos['modelo']) ? 'selected' : '';
+      $optionEquipamento .= "<option value='$modelo' $selected>$modelo</option>";
   }
 
 ##### TRATA TELEFONIA
